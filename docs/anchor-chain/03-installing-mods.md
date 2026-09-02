@@ -16,7 +16,7 @@ Anchor Chain supports two primary deployment methods for C# plugins:
    ```
    Sea Power/BepInEx/plugins/
    ```
-   *Example:* `Sea Power/BepInEx/plugins/MyCustomPlugin/MyCustomPlugin.dll`
+   _Example:_ `Sea Power/BepInEx/plugins/MyCustomPlugin/MyCustomPlugin.dll`
 3. Launch the game.
 
 ---
@@ -24,6 +24,7 @@ Anchor Chain supports two primary deployment methods for C# plugins:
 ## Steam Workshop Plugins
 
 When you subscribe to an Anchor Chain-enabled mod on Steam Workshop:
+
 - Steam downloads the mod into `steamapps/workshop/content/1286220/<ModID>/`.
 - Anchor Chain automatically scans Workshop item folders for `BepInEx` plugins or `.dll` assemblies and loads them at startup.
 
@@ -32,9 +33,11 @@ When you subscribe to an Anchor Chain-enabled mod on Steam Workshop:
 ## Configuration and Logs
 
 - **Plugin Settings:** Many plugins generate configuration files upon first launch. These are saved in:
+
   ```
   Sea Power/BepInEx/config/
   ```
+
   Configurations use standard `.cfg` format and can be edited with Notepad or VS Code.
 
 - **Diagnostics & Troubleshooting:**

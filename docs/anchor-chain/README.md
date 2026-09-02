@@ -1,6 +1,6 @@
 # Anchor Chain — Sea Power Mod Loader Documentation
 
-**Anchor Chain** is a community-developed chainloader and modding framework for *Sea Power: Naval Combat in the Missile Age*. It utilizes **BepInEx 5** and **HarmonyX** to enable custom code execution, C# plugin loading, and runtime patching for advanced mods (such as custom ship models, loadout managers, weapon behaviors, and mechanics beyond base INI overrides).
+**Anchor Chain** is a community-developed chainloader and modding framework for _Sea Power: Naval Combat in the Missile Age_. It utilizes **BepInEx 5** and **HarmonyX** to enable custom code execution, C# plugin loading, and runtime patching for advanced mods (such as custom ship models, loadout managers, weapon behaviors, and mechanics beyond base INI overrides).
 
 ---
 

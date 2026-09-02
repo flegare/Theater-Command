@@ -882,16 +882,16 @@ Keep and reuse knowledge, not the current screen structure:
 
 ### Current Interface Disposition
 
-| Current dashboard element | Campaign disposition |
-|---|---|
-| BLUFOR/OPFOR perspective buttons | Replaced by the campaign's fixed player country. Other perspectives exist only in server-enabled God Mode. |
-| Tactical GIS/radar map | Remains in the telemetry lab. The campaign gets a new strategic Leaflet map driven by perspective-safe APIs. |
-| Direct BLUFOR/OPFOR Ollama buttons | Replaced by queued national staff proposals using doctrine candidates and structured validation. |
-| Issued UDP command log | Not carried into the foundation. Campaign orders mutate only campaign state through application commands. |
-| AAR event table | Replaced by campaign event timeline, operation history, and versioned strategic/tactical resolution reports. |
-| Telemetry tree and raw packet view | Moved to God Mode diagnostics after telemetry integration Gate H. |
-| Mock distance/EMCON toolbar | Replaced by deterministic scenario fixtures, replay CLI, and God Mode developer controls. |
-| Game/Ollama status badges | Split into campaign health and optional integration/AI status; neither blocks ordinary campaign play. |
+| Current dashboard element          | Campaign disposition                                                                                         |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| BLUFOR/OPFOR perspective buttons   | Replaced by the campaign's fixed player country. Other perspectives exist only in server-enabled God Mode.   |
+| Tactical GIS/radar map             | Remains in the telemetry lab. The campaign gets a new strategic Leaflet map driven by perspective-safe APIs. |
+| Direct BLUFOR/OPFOR Ollama buttons | Replaced by queued national staff proposals using doctrine candidates and structured validation.             |
+| Issued UDP command log             | Not carried into the foundation. Campaign orders mutate only campaign state through application commands.    |
+| AAR event table                    | Replaced by campaign event timeline, operation history, and versioned strategic/tactical resolution reports. |
+| Telemetry tree and raw packet view | Moved to God Mode diagnostics after telemetry integration Gate H.                                            |
+| Mock distance/EMCON toolbar        | Replaced by deterministic scenario fixtures, replay CLI, and God Mode developer controls.                    |
+| Game/Ollama status badges          | Split into campaign health and optional integration/AI status; neither blocks ordinary campaign play.        |
 
 ### Local PC Operating Envelope
 

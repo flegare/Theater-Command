@@ -33,32 +33,32 @@ hostile ships.
 ## Staged TODO
 
 - [ ] **Audit the official trigger catalogue and shipped missions.** Identify the exact supported
-  condition for a unit reaching a health/damage threshold, plus actions that can stop a vessel,
-  alter weapon status, alter side/AI behaviour, and display a message. Record exact `.ini` keys
-  and one known-good example for each.
+      condition for a unit reaching a health/damage threshold, plus actions that can stop a vessel,
+      alter weapon status, alter side/AI behaviour, and display a message. Record exact `.ini` keys
+      and one known-good example for each.
 - [ ] **Build an isolated hand-authored test mission.** One Blue ship and one damaged AGI, with no
-  campaign generator involved. Verify that the condition fires at the intended threshold without
-  any `Script runtime startup failed` error.
+      campaign generator involved. Verify that the condition fires at the intended threshold without
+      any `Script runtime startup failed` error.
 - [ ] **Define a minimal surrender state.** Prefer native trigger actions over custom runtime code:
-  set weapons safe/hold, stop or assign a safe loiter waypoint, flag the unit as surrendered, and
-  show an unambiguous message. Do not change the AGI's faction unless the engine explicitly
-  supports that safely.
+      set weapons safe/hold, stop or assign a safe loiter waypoint, flag the unit as surrendered, and
+      show an unambiguous message. Do not change the AGI's faction unless the engine explicitly
+      supports that safely.
 - [ ] **Add a one-shot guard.** The surrender trigger must run once only, skip sunk units, and not
-  compete with other mission triggers. Give it stable generated IDs and a `surrendered` marker so
-  campaign-generated missions are reproducible.
+      compete with other mission triggers. Give it stable generated IDs and a `surrendered` marker so
+      campaign-generated missions are reproducible.
 - [ ] **Integrate it as an opt-in mission feature.** Add structured fields such as
-  `surrenderPolicy` / `surrenderAtHealthFraction` to the mission model. Apply it to eligible
-  reconnaissance vessels only, initially `wp_agi_okean_mod`.
+      `surrenderPolicy` / `surrenderAtHealthFraction` to the mission model. Apply it to eligible
+      reconnaissance vessels only, initially `wp_agi_okean_mod`.
 - [ ] **Expose the outcome to the player.** Add objective/briefing text such as “Compel the AGI to
-  heave to; avoid sinking it.” A completed state should be visible both in Sea Power's mission UI
-  and, where applicable, the campaign result returned to the website.
+      heave to; avoid sinking it.” A completed state should be visible both in Sea Power's mission UI
+      and, where applicable, the campaign result returned to the website.
 - [ ] **Test generated missions.** Add unit tests for emitted trigger sections and mission
-  metadata; run the project checks, build, and Playwright test. Then launch the `.ini` in Sea
-  Power and exercise: no damage, 49% health, under 50% health, sinking before trigger, and reload.
+      metadata; run the project checks, build, and Playwright test. Then launch the `.ini` in Sea
+      Power and exercise: no damage, 49% health, under 50% health, sinking before trigger, and reload.
 - [ ] **Evaluate the 1 nm small-boat interaction separately.** Confirm whether the editor can
-  spawn a boat at runtime, create a movement order, and detect proximity. Only then add a Zodiac
-  or boarding craft as a second scripted phase. If unsupported, represent boarding through the
-  mission message and objective completion instead.
+      spawn a boat at runtime, create a movement order, and detect proximity. Only then add a Zodiac
+      or boarding craft as a second scripted phase. If unsupported, represent boarding through the
+      mission message and objective completion instead.
 
 ## Acceptance criteria for the first release
 

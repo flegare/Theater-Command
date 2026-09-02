@@ -1,6 +1,6 @@
 # Tutorial: Writing a Basic Anchor Chain Plugin
 
-This step-by-step guide demonstrates how to create a basic C# plugin for *Sea Power* using Anchor Chain, BepInEx 5, and Harmony.
+This step-by-step guide demonstrates how to create a basic C# plugin for _Sea Power_ using Anchor Chain, BepInEx 5, and Harmony.
 
 ---
 

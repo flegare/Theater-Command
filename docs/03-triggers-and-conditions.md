@@ -9,7 +9,7 @@
 
 ## Mental model
 
-A **trigger** is a rule: *when these **conditions** are met, run these **actions**.*
+A **trigger** is a rule: _when these **conditions** are met, run these **actions**._
 
 ```ini
 [TriggerN]
@@ -38,19 +38,20 @@ Action_<something>=<value>
 
 ## Condition types (from the editor's Condition Type dropdown)
 
-| Type | Fires when… | Key parameters |
-|------|-------------|----------------|
-| `Generic` | catch-all / manually controlled | — |
-| `Time` | mission clock reaches a value | `Condition_CondN_Time=<seconds>` |
-| `UnitDestroyed` | specified unit(s) destroyed | `Condition_CondN_Units=Taskforce2Vessel1` |
-| `UnitEntersArea` | a unit enters a defined zone | area center + `Area Radius, nm`, side filter |
-| `NoUnitsOfTypeLeft` | a whole category is eliminated | `Unit Type`, `Condition Side` |
-| `UnitDetected` | a unit is detected (sensor contact) | target unit + detecting side |
-| `UnitClassified` | a contact is identified/classified | target unit + side |
-| `TriggerCompleted` | another trigger has fired | linked trigger name |
-| `TriggerFailed` | another trigger has failed | linked trigger name |
+| Type                | Fires when…                         | Key parameters                               |
+| ------------------- | ----------------------------------- | -------------------------------------------- |
+| `Generic`           | catch-all / manually controlled     | —                                            |
+| `Time`              | mission clock reaches a value       | `Condition_CondN_Time=<seconds>`             |
+| `UnitDestroyed`     | specified unit(s) destroyed         | `Condition_CondN_Units=Taskforce2Vessel1`    |
+| `UnitEntersArea`    | a unit enters a defined zone        | area center + `Area Radius, nm`, side filter |
+| `NoUnitsOfTypeLeft` | a whole category is eliminated      | `Unit Type`, `Condition Side`                |
+| `UnitDetected`      | a unit is detected (sensor contact) | target unit + detecting side                 |
+| `UnitClassified`    | a contact is identified/classified  | target unit + side                           |
+| `TriggerCompleted`  | another trigger has fired           | linked trigger name                          |
+| `TriggerFailed`     | another trigger has failed          | linked trigger name                          |
 
 **Common condition modifiers**
+
 - `Condition Side` — Blue / Red / Neutral filter.
 - `Unit Type` — Vessels / Submarines / Aircraft / Helicopters / Land Units / Biologic.
 - `Minimum Units` — threshold count (0+).
@@ -61,17 +62,17 @@ Action_<something>=<value>
 
 ## Actions (seen in base-game missions + common set)
 
-| Action key | Effect |
-|------------|--------|
-| `Action_Units=<UnitSection>` | Target unit(s) the action applies to |
-| `Action_SetEnabledStatus=True\|False` | Activate/deactivate a `Disabled=True` unit (spawn-on-cue) |
-| `Action_UnitRevealToTaskforce=Taskforce1\|Identify` | Reveal/identify a unit to a side |
-| `Action_TaskforceN_FreeContent=<MessageId>` | Show a briefing/message window |
-| `Action_EndMission=True` | End the scenario |
-| `Action_Victory=Taskforce1` | Assign victory to a side |
-| `Action_ObjectivesCompleted=<ObjectiveId>` | Mark an objective complete (scores it) |
-| `Action_EnableTriggers=<TriggerName>` | Enable another trigger |
-| `Action_ReActivateTriggers=<TriggerName>` | Re-arm a trigger so it can fire again |
+| Action key                                          | Effect                                                    |
+| --------------------------------------------------- | --------------------------------------------------------- |
+| `Action_Units=<UnitSection>`                        | Target unit(s) the action applies to                      |
+| `Action_SetEnabledStatus=True\|False`               | Activate/deactivate a `Disabled=True` unit (spawn-on-cue) |
+| `Action_UnitRevealToTaskforce=Taskforce1\|Identify` | Reveal/identify a unit to a side                          |
+| `Action_TaskforceN_FreeContent=<MessageId>`         | Show a briefing/message window                            |
+| `Action_EndMission=True`                            | End the scenario                                          |
+| `Action_Victory=Taskforce1`                         | Assign victory to a side                                  |
+| `Action_ObjectivesCompleted=<ObjectiveId>`          | Mark an objective complete (scores it)                    |
+| `Action_EnableTriggers=<TriggerName>`               | Enable another trigger                                    |
+| `Action_ReActivateTriggers=<TriggerName>`           | Re-arm a trigger so it can fire again                     |
 
 > Not exhaustive — the DOCX lists more (waypoint/movement orders, weapon-release control, variable
 > setting for campaigns, taskforce swap, etc.). Cross-check exact key names there.
@@ -112,6 +113,7 @@ whether an earlier objective succeeded or failed.
 ## Worked example (real, from the tutorial)
 
 See [`examples/example_mission_Officer_Training_1.ini`](examples/example_mission_Officer_Training_1.ini):
+
 - `Trigger1` fires at `Time=1` to show the opening briefing.
 - `Trigger2`/`Trigger4`/`Trigger5` start disabled and activate enemy septar targets on cue via
   `Action_SetEnabledStatus=True` + `Action_UnitRevealToTaskforce`.
@@ -120,6 +122,7 @@ See [`examples/example_mission_Officer_Training_1.ini`](examples/example_mission
 ---
 
 ## Sources
+
 - **Official:** `official/Mission Editor. Triggers and conditions.docx` (definitive).
 - [PMC Tactical — Mission Editor: Triggers](https://sea-power.pmctactical.org/mission-editor-triggers.php)
 - [PMC Tactical — Mission Editor beginner tutorial](https://sea-power.pmctactical.org/mission-editor-beginner-tutorial.php)

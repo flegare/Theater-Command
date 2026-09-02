@@ -1,6 +1,6 @@
 # 04 — Dynamic Campaign Guide (Task Force Mode)
 
-*Source: [Steam Guide — Task Force Mode Campaign Creation](https://steamcommunity.com/sharedfiles/filedetails/?id=3756769210) (user-recommended), plus base-game campaign files.*
+_Source: [Steam Guide — Task Force Mode Campaign Creation](https://steamcommunity.com/sharedfiles/filedetails/?id=3756769210) (user-recommended), plus base-game campaign files._
 
 > **Task Force Mode** is Sea Power's dynamic-campaign system. The player builds a persistent task force
 > from a points budget; ships, aircraft, damage, ammo, and crew experience **carry across missions**.
@@ -36,6 +36,7 @@ StreamingAssets\user\<Your Mod Name>\
 ## `campaign.ini`
 
 ### 1. Enable Task Force Mode
+
 ```ini
 [TaskForceMode]
 Enabled=True
@@ -48,6 +49,7 @@ ShipIncludesAirwing=True     ; carriers bring their airwing at no extra points
 ```
 
 ### 2. Difficulty presets — `[TaskForceModeDifficulty_<Id>]`
+
 ```ini
 [TaskForceModeDifficulty_Easy]
 StartingPoints=65
@@ -65,6 +67,7 @@ InitialUnlockedLoadouts=Default
 ```
 
 ### 3. Repair & rearm economy
+
 ```ini
 DamageToAllowRepair=Light,Moderate
 DamageToDisallowRepair=Heavy            ; heavy damage can't be repaired
@@ -72,7 +75,9 @@ RepairPointsCost=Light,0.1|Moderate,0.25   ; % of the unit's purchase price
 ```
 
 ### 4. Per-mission blocks — `[MissionN]`
+
 Each mission the campaign runs gets a block controlling economy, threats, and generation:
+
 ```ini
 [Mission1]
 MissionFile=missions\01 First Mission.ini
@@ -104,6 +109,7 @@ TaskForceModeRibbonAwards=combat_action_ribbon|navy_unit_commendation
 ```
 
 **Conditional rearm/repair** (tie to campaign variables set by mission triggers):
+
 ```ini
 TaskForceModeRearmByVariableAND=AmmoCarrierSurvived,IsTrue
 TaskForceModeRearmByVariableOR=AmmoShipSurvived,IsTrue|DepotCaptured,IsTrue
@@ -116,13 +122,14 @@ TaskForceModeRearmByVariableOR=AmmoShipSurvived,IsTrue|DepotCaptured,IsTrue
 
 The `TaskForceModeMissionGenerationType` field controls how the player's force enters the mission:
 
-| Type | Behaviour | Use when |
-|------|-----------|----------|
-| **Generated** | Places the force around **one anchor vessel** in the mission file; generator arranges the rest by saved formation data. Simplest. | New campaigns / most missions |
-| **Replaced** | Numbered `TaskForceModeReplacedUnitIndex` slots are filled with player ships, preserving exact positions and trigger links. | Scenario scripting depends on specific positions/section names |
-| **Blank / Empty** | Mission runs with no persistent-force integration. | Side missions, set-pieces |
+| Type              | Behaviour                                                                                                                         | Use when                                                       |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| **Generated**     | Places the force around **one anchor vessel** in the mission file; generator arranges the rest by saved formation data. Simplest. | New campaigns / most missions                                  |
+| **Replaced**      | Numbered `TaskForceModeReplacedUnitIndex` slots are filled with player ships, preserving exact positions and trigger links.       | Scenario scripting depends on specific positions/section names |
+| **Blank / Empty** | Mission runs with no persistent-force integration.                                                                                | Side missions, set-pieces                                      |
 
 ### Generated — anchor vessel (in the mission `.ini`)
+
 ```ini
 [Taskforce1Vessel1]
 Type=usn_ddg_kidd
@@ -133,13 +140,16 @@ Heading=090
 Telegraph=3
 TaskForceModeAnchor=True          ; exactly ONE anchor per mission
 ```
+
 Placeholder (visible while editing, removed at launch):
+
 ```ini
 [Taskforce1Vessel2]
 TaskForceModePlaceholderUnit=True
 ```
 
 ### Replaced — numbered slots
+
 ```ini
 [Taskforce1Vessel1]
 TaskForceModeAnchor=True
@@ -155,6 +165,7 @@ TaskForceModeReplacedUnitIndex=2   ; filled sequentially with player ships
 
 Three unit categories populate the Task Force Builder. Format:
 `unit_type=Variant/Squadron list|point_cost`
+
 ```ini
 [AllowedVessels]
 usn_ddg_kidd=Variant3,Variant4|30
@@ -170,12 +181,14 @@ usn_sh-2f=Squadron6|4
 ```
 
 **Each purchasable unit must declare its cost in its own unit `.ini`** (under `vessels\`, `aircraft\`, …):
+
 ```ini
 [TaskForce]
 TaskForceCost=27
 LoadoutCost_Late=10
 LoadoutCost_AntiShipHeavy=3
 ```
+
 > ⚠️ Modded units without a `[TaskForce] TaskForceCost=` default to **0 points** — a common bug.
 
 ---
@@ -202,15 +215,18 @@ TaskForceModeAirTaskingAvailable=True
 TaskForceModeAirTaskingFlight1=CAP|CAP|Fighter|2|AirToAir/AirToAirLongRange
 TaskForceModeAirTaskingFlight2=Recon|Recon|MPA/ASW/ESM/AEW|1|ASW/Recon/AntiShip/AEW
 ```
+
 ```ini
 ; in the mission .ini: bind aircraft to those flight slots (they start airborne)
 [Taskforce1Aircraft1]
 TaskForceModeAirTaskingSlot=1
 TaskForceModeAirTaskingRole=CAP
 ```
+
 > Use unique keys `Flight1`, `Flight2`, `Flight3` — duplicating `Flight1` is a common mistake.
 
 **Airbase prep** (needs a player land unit with "airbase"/"airfield" in its `Type`):
+
 ```ini
 TaskForceModeAirbasePrepAvailable=True
 TaskForceModeAirbasePrepReadySlots=2
@@ -222,6 +238,7 @@ TaskForceModeAirbasePrepInProgressSlots=4
 ## `commander_settings.ini` — progression, ranks, awards
 
 ### Nations & discounts
+
 ```ini
 [CommanderSettings]
 CommanderNations=US|Japan|Australia
@@ -233,14 +250,17 @@ CommanderStartingRankLevel=1
 ```
 
 ### Officer ranks
+
 ```ini
 [OfficerRanks]
 ; DisplayName, Abbrev, Grade, RankLevel, InsigniaImage
 US=Ensign,ENS,O-1,1,ui/campaign/officer_ranks/usa/insignia_ens.png|Lieutenant,LT,O-3,3,ui/campaign/officer_ranks/usa/insignia_lt.png
 ```
+
 Promotions trigger on reaching a `RankLevel` (mission action `TaskForceModeCommanderIncreaseRank=1`).
 
 ### Ribbons & medals
+
 ```ini
 [TaskForceRibbons]
 RibbonIds=combat_action_ribbon|navy_unit_commendation
@@ -254,10 +274,12 @@ MedalImagePath=campaigns/my-campaign/art/medals/combat_action_medal.png
 CitationRecipient_en={CommanderRank} {CommanderName}
 CitationText_en=For service as Commander, {TaskForceName}, during operations...
 ```
+
 Citation tokens: `{CommanderRank}`, `{CommanderName}`, `{CommanderLastName}`, `{TaskForceName}`.
 Award in a mission: `TaskForceModeRibbonAwards=combat_action_ribbon` (optionally `,US,Japan` nation-restricted).
 
 Optional onboarding of a fresh commander:
+
 ```ini
 TaskForceModeServiceRecordOnboarding=True
 ```
@@ -275,6 +297,7 @@ TaskForceModeServiceRecordOnboarding=True
 7. `commander_settings.ini` with basic nation/rank data.
 
 ## Common mistakes
+
 - Editing base files under `original\` (a patch wipes them).
 - Forgetting `[TaskForceMode] Enabled=True`.
 - Missing `TaskForceCost` on modded units → they cost 0.

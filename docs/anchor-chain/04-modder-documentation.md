@@ -2,7 +2,7 @@
 
 ## Core Concepts for Developers
 
-When developing plugins for *Sea Power*, Anchor Chain provides runtime initialization, harmony patching hooks, and access to Sea Power's core assemblies:
+When developing plugins for _Sea Power_, Anchor Chain provides runtime initialization, harmony patching hooks, and access to Sea Power's core assemblies:
 
 - `Assembly-CSharp.dll` — Core game logic (units, weapons, sensors, UI, mission engine).
 - `UnityEngine.CoreModule.dll` — Unity engine core APIs.
@@ -16,6 +16,7 @@ When developing plugins for *Sea Power*, Anchor Chain provides runtime initializ
 Sea Power runs on **Unity Engine** with C# Mono/IL2CPP Managed assemblies.
 
 Key namespaces and types commonly patched:
+
 - `ScriptRuntime` — Handles mission scripting and INI parsing.
 - `World` / `Zone` — World scale coordinates and environment rendering.
 - `Group` — Task group management and unit formation logic.

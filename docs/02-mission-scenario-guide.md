@@ -27,19 +27,23 @@ A mission file is a sequence of `[Section]` blocks. Order isn't strict, but the 
 ---
 
 ## `[General]`
+
 ```ini
 [General]
 Type=Tutorial      ; Tutorial | Mission (standard scenario) | etc.
 ```
 
 ## `[Debug]` (optional, strip before release)
+
 ```ini
 [Debug]
 DisableEnemyAIPlayer=True
 ```
 
 ## `[Language_xx]` — text & briefings
+
 One block per supported language (`en`, `de`, `fr`, `es`, `ru`, `cn`, `ja`, `ko`, `vn`). Only `en` is required.
+
 ```ini
 [Language_en]
 Name=Officer Training 1 - Basic Ship Controls
@@ -48,11 +52,13 @@ Taskforce1StartmessageFreeContentPath=missions\Tutorials\Officer_Training_1_brie
 Taskforce1StartmessageFreeContentAssets=missions\Tutorials\Officer_Training_1_briefing
 Objective_CompleteMission=Complete all tutorials     ; localized objective label
 ```
+
 - `..._FreeContentPath` points to a briefing XML window shown to the player.
 - `..._FreeContentAssets` points to the folder holding the briefing's images.
 - `Objective_<Id>=` gives the human-readable text for an objective referenced in `[TaskforceN_Objectives]`.
 
 ## `[Environment]`
+
 ```ini
 [Environment]
 Date=1985,6,26           ; YYYY,M,D — drives which equipment/units are era-appropriate
@@ -67,7 +73,9 @@ LoadBackgroundData=False
 ```
 
 ## `[Mission]`
+
 Declares which taskforce the player controls and how many objects exist (counts must match the number of defined sections).
+
 ```ini
 [Mission]
 Difficulty=1
@@ -77,12 +85,15 @@ NumberOfTaskforce1Vessels=1
 NumberOfTaskforce2Vessels=3
 NumberOfTriggers=5
 ```
+
 > `NumberOf...` values are load-time bookkeeping — keep them in sync with the actual `[TaskforceNVesselM]` / `[TriggerN]` sections you write, or units/triggers get dropped.
 
 ---
 
 ## Units — `[TaskforceNVesselM]`
+
 Each unit is its own section. `N` = taskforce number, `M` = unit index within it.
+
 ```ini
 [Taskforce1Vessel1]
 Type=usn_ffg_oliver_hazard_perry   ; unit ID — must exist under vessels\ (or your mod)
@@ -93,7 +104,9 @@ RelativePositionInNM=-0.02,0,-1.87  ; X,Y,Z offset in nautical miles from map ce
 Telegraph=0                         ; engine order / starting speed setting
 Heading=90                          ; degrees
 ```
+
 Common extra keys:
+
 - `Disabled=True` — unit exists but is inactive until a trigger enables it (see below).
 - `LoadoutVariant=Default` — weapons loadout selection.
 - `SquadronReference=SquadronN` — for aircraft/helicopter groups.
@@ -106,18 +119,20 @@ Common extra keys:
 
 Position is an offset in **nautical miles from the mission's map centre** (`MapCenterLatitude` / `MapCenterLongitude` in `[Environment]`). Derived by cross-checking real base-game missions against real-world geography:
 
-| Axis | Meaning |
-|------|---------|
-| **X** | **+East / −West** (nm) |
-| **Z** | **+North / −South** (nm) |
+| Axis  | Meaning                                                                                   |
+| ----- | ----------------------------------------------------------------------------------------- |
+| **X** | **+East / −West** (nm)                                                                    |
+| **Z** | **+North / −South** (nm)                                                                  |
 | **Y** | vertical: `0` = surface ship · `low` = land/coast unit · a depth value for submerged subs |
 
 **Convert real lat/long → offset** (so you don't eyeball positions):
+
 ```
 NM_north = (lat − MapCenterLatitude) × 60
 NM_east  = (lon − MapCenterLongitude) × 60
 RelativePositionInNM = NM_east, 0, NM_north
 ```
+
 (Both axes are simply arc-minutes of lat/lon. **Verified in-game 2026-07-23** by comparing a save file's `GeoPosition` against the mission's `RelativePositionInNM` for a stationary unit: the game applies **no** `cos(latitude)` compression to X, so the "X" axis is minutes of longitude, not true nautical miles east. A save file (`saves\missions\*.sav`) stores `GeoPosition=lat,lon,depth` per unit — saving in-game and reading it back is the easiest way to capture an exact position, e.g. a dock.)
 
 `Heading` is degrees clockwise from north. `Waypoints=x,0,z` (same axes) gives a unit a move order; chain multiple with `|`.
@@ -127,11 +142,13 @@ RelativePositionInNM = NM_east, 0, NM_north
 ---
 
 ## Triggers — `[TriggerN]`
+
 The scripting engine. Each trigger = a set of **conditions** that, when satisfied, fire **actions**.
 See [`03-triggers-and-conditions.md`](03-triggers-and-conditions.md) and the official
 `Mission Editor. Triggers and conditions.docx` for the full catalogue.
 
 Examples straight from the tutorial:
+
 ```ini
 [Trigger1]                                  ; show the opening briefing at t=1s
 Name=Start message
@@ -159,17 +176,20 @@ Action_EndMission=True
 Action_Victory=Taskforce1
 Action_ObjectivesCompleted=CompleteMission
 ```
+
 Pattern: `Condition_<id>_Type=...` defines a condition, `ConditionsCompleted=<Cond1 AND Cond2>` sets
 the boolean logic, and `Action_...=` keys define what happens.
 
 ---
 
 ## Objectives — `[TaskforceN_Objectives]`
+
 ```ini
 [Taskforce1_Objectives]
 CompleteMission=5,-5,Complete,Main
 ;            = points_success, points_fail, initial_state, category(Main|Secondary)
 ```
+
 The objective **ID** (`CompleteMission`) is displayed via the matching `Objective_CompleteMission=` label
 in each `[Language_xx]` block, and is completed by `Action_ObjectivesCompleted=CompleteMission` in a trigger.
 
@@ -232,5 +252,6 @@ Action_ObjectivesCompleted=SinkEnemy
 [Taskforce1_Objectives]
 SinkEnemy=10,-10,Incomplete,Main
 ```
+
 > Verify exact condition/action key spellings against the official DOCX before relying on them — the
-> catalogue is large and this skeleton shows the *shape*, not every valid keyword.
+> catalogue is large and this skeleton shows the _shape_, not every valid keyword.

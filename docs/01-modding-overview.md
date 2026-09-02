@@ -1,6 +1,6 @@
 # 01 — Modding Overview: Folders, Load Order & Workshop
 
-*Sources: game's shipped docs + [Steam Mod Creation Guide](https://steamcommunity.com/sharedfiles/filedetails/?id=3364482257).*
+_Sources: game's shipped docs + [Steam Mod Creation Guide](https://steamcommunity.com/sharedfiles/filedetails/?id=3364482257)._
 
 ---
 
@@ -22,6 +22,7 @@ Sea Power\
 Everything except 3D model files is a plain-text **`.ini`** file. Open with Notepad, Notepad++, or VS Code.
 
 ### The mirror principle
+
 A mod folder **mirrors the structure of `original\`**. To change a vessel, you place a file at the same relative path inside your mod folder. To add a mission, you place `missions\my_mission.ini` inside your mod folder. The game searches enabled folders in load order and uses the **first** match it finds.
 
 ---
@@ -100,14 +101,14 @@ Only `Language_en` is strictly required; others fall back to English.
 
 From the Mod Manager → **Create Mod**:
 
-| Field | Notes |
-|-------|-------|
-| **Pick Folder** | Select your top-level mod folder in `user\`. |
-| **Mod Name** | Workshop title. |
-| **Mod Description** | Shown under the preview image. |
-| **Preview Image** | < 1 MB, ideally square. |
-| **Change Log** | Appears when updating an existing mod (optional but recommended). |
-| **Visibility** | Public (default) / friends / private. |
+| Field               | Notes                                                                                      |
+| ------------------- | ------------------------------------------------------------------------------------------ |
+| **Pick Folder**     | Select your top-level mod folder in `user\`.                                               |
+| **Mod Name**        | Workshop title.                                                                            |
+| **Mod Description** | Shown under the preview image.                                                             |
+| **Preview Image**   | < 1 MB, ideally square.                                                                    |
+| **Change Log**      | Appears when updating an existing mod (optional but recommended).                          |
+| **Visibility**      | Public (default) / friends / private.                                                      |
 | **Update Existing** | Searches the first 50 mods tied to your SteamID so you can update instead of re-uploading. |
 
 Click **Submit Mod** → the Steam client opens the submission page to confirm. Uploaded mods land at:

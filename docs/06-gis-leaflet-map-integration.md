@@ -6,7 +6,7 @@ This document specifies the **Open-Source Leaflet GIS Map Engine** integrated in
 
 ## 🗺️ Geographic Projection Mathematics
 
-In *Sea Power*, game coordinates specify Easting ($X$) and Northing ($Z$) in **Nautical Miles (NM)** relative to the scenario reference origin:
+In _Sea Power_, game coordinates specify Easting ($X$) and Northing ($Z$) in **Nautical Miles (NM)** relative to the scenario reference origin:
 
 $$\text{Reference Origin: } \phi_0 = 62.0^\circ\text{ N (GIUK Gap / Norwegian Sea)}, \quad \lambda_0 = -15.0^\circ\text{ W}$$
 
@@ -33,7 +33,7 @@ Users can toggle between three high-definition map tile providers using the Leaf
 
 ## ⚓ Features & Interactive Popups
 
-* **Rotated Vessel Markers:** Markers reflect true vessel heading ($0^\circ-360^\circ$).
-* **Embarked Storage Badges:** Co-located or embarked aircraft display badges: `USS Nimitz [+24 units in storage]`.
-* **Interactive Dark Popups:** Clicking any vessel or aircraft opens a rich popup displaying speed (kts), heading ($^\circ$), altitude (m), geographic coordinates, and an embarked air group breakdown.
-* **Vector Mode Toggle:** Users can instantly toggle between **`🗺️ GIS Map`** and **`📡 Radar Grid`** with one click.
+- **Rotated Vessel Markers:** Markers reflect true vessel heading ($0^\circ-360^\circ$).
+- **Embarked Storage Badges:** Co-located or embarked aircraft display badges: `USS Nimitz [+24 units in storage]`.
+- **Interactive Dark Popups:** Clicking any vessel or aircraft opens a rich popup displaying speed (kts), heading ($^\circ$), altitude (m), geographic coordinates, and an embarked air group breakdown.
+- **Vector Mode Toggle:** Users can instantly toggle between **`🗺️ GIS Map`** and **`📡 Radar Grid`** with one click.

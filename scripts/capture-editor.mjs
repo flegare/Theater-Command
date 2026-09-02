@@ -79,7 +79,9 @@ async function main() {
       console.log("Saved port-operations-readiness.png");
 
       // Check if Embark on Sealift is available on this counter
-      const embarkBtn = page.locator('button:has-text("Embark on Sealift")').first();
+      const embarkBtn = page
+        .locator('button:has-text("Embark on Sealift")')
+        .first();
       if (await embarkBtn.isVisible()) {
         console.log("Clicking Embark on Sealift...");
         await embarkBtn.click();
@@ -130,7 +132,7 @@ async function main() {
         await page.waitForTimeout(1000);
       }
 
-      const confirmBtn = page.locator('button.movement-confirm-btn');
+      const confirmBtn = page.locator("button.movement-confirm-btn");
       if (await confirmBtn.isVisible()) {
         console.log("Confirming movement order...");
         await confirmBtn.click();

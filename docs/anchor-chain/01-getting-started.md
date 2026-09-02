@@ -2,11 +2,12 @@
 
 ## What is Anchor Chain?
 
-**Anchor Chain** is a code-modding framework and chainloader designed specifically for *Sea Power: Naval Combat in the Missile Age*. 
+**Anchor Chain** is a code-modding framework and chainloader designed specifically for _Sea Power: Naval Combat in the Missile Age_.
 
 While standard Sea Power modding relies on `.ini` file shadowing in `StreamingAssets`, Anchor Chain enables **C# code modification**, runtime IL patching via **HarmonyX**, and custom assembly injection via **BepInEx 5**.
 
 ### Key Features
+
 - **Code Execution:** Run custom C# DLL plugins inside the Sea Power Unity process.
 - **HarmonyX Patching:** Intercept, modify, or override base game methods at runtime without altering game files on disk.
 - **Assembly Loading:** Load custom 3D models, assets, UI panels, and weapon logic into game scenes.
@@ -39,6 +40,7 @@ Sea Power.exe (Unity Engine)
 ---
 
 ## Quick Reference Links
+
 - Documentation Home: [`README.md`](README.md)
 - Installation Guide: [`02-install-anchor-chain.md`](02-install-anchor-chain.md)
 - Plugin Development: [`05-writing-a-basic-plugin.md`](05-writing-a-basic-plugin.md)
