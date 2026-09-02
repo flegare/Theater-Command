@@ -50,5 +50,5 @@ Desktop.ini
 *.sln
 *.sw?
 
-# Antigravity reports & evaluation
-agy_report/*
+# Antigravity reports
+agy_report/
