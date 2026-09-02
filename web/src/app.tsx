@@ -46,6 +46,12 @@ import {
   findFormationHexPath,
   type HexPathResult,
 } from "../../src/domain/hexPathfinding.js";
+import {
+  COLD_WAR_MARKET_CATALOG,
+  type MilitaryMarketListing,
+  type MarketOrderRecord,
+} from "../../src/domain/militaryMarket.js";
+import { type DiplomaticTreatyRecord } from "../../src/domain/diplomacy.js";
 
 type Catalog = {
   theaters: Array<{ id: string; name: string; summary: string }>;
@@ -994,6 +1000,82 @@ function CommandCenter({
     },
   });
 
+  const [isMarketOpen, setIsMarketOpen] = useState(false);
+  const [isTreatiesOpen, setIsTreatiesOpen] = useState(false);
+
+  const marketCatalog = useQuery({
+    queryKey: ["marketCatalog"],
+    queryFn: () =>
+      api<{
+        ok: boolean;
+        catalog: MilitaryMarketListing[];
+        pendingOrders: MarketOrderRecord[];
+      }>("/api/v1/campaigns/current/market/catalog"),
+    enabled: isMarketOpen,
+  });
+
+  const purchaseSurplusMutation = useMutation({
+    mutationFn: (input: {
+      listingId: string;
+      targetHexId: string;
+      customName?: string | undefined;
+    }) =>
+      api<{ ok: boolean; order: unknown }>(
+        "/api/v1/campaigns/current/market/purchase",
+        {
+          method: "POST",
+          body: JSON.stringify(input),
+        },
+      ),
+    onSuccess: () => {
+      hexGrid.refetch();
+      campaignState.refetch();
+      marketCatalog.refetch();
+      setIsMarketOpen(false);
+    },
+  });
+
+  const diplomacyTreaties = useQuery({
+    queryKey: ["diplomacyTreaties"],
+    queryFn: () =>
+      api<{ ok: boolean; treaties: DiplomaticTreatyRecord[] }>(
+        "/api/v1/campaigns/current/diplomacy/treaties",
+      ),
+    enabled: isTreatiesOpen,
+  });
+
+  const establishTreatyMutation = useMutation({
+    mutationFn: (input: {
+      treatyType: string;
+      targetCountryId: string;
+      durationTurns: number;
+    }) =>
+      api<{ ok: boolean; treaty: unknown }>(
+        "/api/v1/campaigns/current/diplomacy/treaties",
+        {
+          method: "POST",
+          body: JSON.stringify(input),
+        },
+      ),
+    onSuccess: () => {
+      diplomacyTreaties.refetch();
+    },
+  });
+
+  const upgradeHexInvestmentMutation = useMutation({
+    mutationFn: (hexId: string) =>
+      api<{ ok: boolean }>(
+        `/api/v1/campaigns/current/hex-cells/${encodeURIComponent(hexId)}/investment/upgrade`,
+        {
+          method: "POST",
+        },
+      ),
+    onSuccess: () => {
+      hexGrid.refetch();
+      campaignState.refetch();
+    },
+  });
+
   return (
     <main className="app-shell">
       <header className="app-header">
@@ -1095,6 +1177,22 @@ function CommandCenter({
           </button>
           <button
             type="button"
+            className="recruitment-catalog-button"
+            style={{ background: "#0284c7" }}
+            onClick={() => setIsMarketOpen(true)}
+          >
+            🛒 Surplus Market
+          </button>
+          <button
+            type="button"
+            className="recruitment-catalog-button"
+            style={{ background: "#475569" }}
+            onClick={() => setIsTreatiesOpen(true)}
+          >
+            📜 Treaties
+          </button>
+          <button
+            type="button"
             className="advance-turn-button"
             onClick={() => advanceDay.mutate()}
             disabled={advanceDay.isPending}
@@ -1120,6 +1218,27 @@ function CommandCenter({
         }
         onRecruit={(input) => recruitFormationMutation.mutate(input)}
         isRecruiting={recruitFormationMutation.isPending}
+      />
+
+      <MilitarySurplusMarketModal
+        isOpen={isMarketOpen}
+        onClose={() => setIsMarketOpen(false)}
+        hexGrid={hexGrid.data}
+        funds={
+          campaignState.data?.economy.funds ?? hexGrid.data?.economy.funds ?? 0
+        }
+        catalog={marketCatalog.data?.catalog ?? COLD_WAR_MARKET_CATALOG}
+        pendingOrders={marketCatalog.data?.pendingOrders ?? []}
+        onPurchase={(input) => purchaseSurplusMutation.mutate(input)}
+        isPurchasing={purchaseSurplusMutation.isPending}
+      />
+
+      <DiplomaticTreatiesModal
+        isOpen={isTreatiesOpen}
+        onClose={() => setIsTreatiesOpen(false)}
+        treaties={diplomacyTreaties.data?.treaties ?? []}
+        onEstablish={(input) => establishTreatyMutation.mutate(input)}
+        isEstablishing={establishTreatyMutation.isPending}
       />
 
       <FormationCompositionEditorModal
@@ -1199,6 +1318,9 @@ function CommandCenter({
             }
             onEngageHex={(hexId) => engageHex.mutate({ hexId })}
             onOpenFormationEditor={(form) => setEditingFormation(form)}
+            onUpgradeInvestment={(hexId) =>
+              upgradeHexInvestmentMutation.mutate(hexId)
+            }
             actionPending={
               laneAction.isPending ||
               laneMission.isPending ||
@@ -1599,6 +1721,7 @@ function createHexTacticalPopupContent(
   onTrainFormation?: (formationId: string, turns?: number) => void,
   playerCountryId?: string,
   playerCountryName?: string,
+  onUpgradeInvestment?: (hexId: string) => void,
 ): HTMLElement {
   const popup = document.createElement("div");
   popup.className = "hex-tactical-popup";
@@ -1643,6 +1766,23 @@ function createHexTacticalPopupContent(
   header.appendChild(badge);
   popup.appendChild(header);
 
+  // 1. Contested / Occupation Progress Status Callout
+  if (hex.status === "contested") {
+    const contestedAlert = document.createElement("div");
+    contestedAlert.className = "contested-alert-box";
+    contestedAlert.style.cssText =
+      "background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #fca5a5; padding: 6px 10px; border-radius: 4px; margin-bottom: 8px; font-size: 11px; font-weight: bold;";
+    contestedAlert.innerHTML = `⚠️ <span>CONTESTED SECTOR — Hostile forces engaged! Daily economic yields frozen to $0.</span>`;
+    popup.appendChild(contestedAlert);
+  } else if (hex.captureTurnsCounter && hex.captureTurnsCounter > 0) {
+    const captureAlert = document.createElement("div");
+    captureAlert.className = "capture-progress-box";
+    captureAlert.style.cssText =
+      "background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; color: #fcd34d; padding: 6px 10px; border-radius: 4px; margin-bottom: 8px; font-size: 11px; font-weight: bold;";
+    captureAlert.innerHTML = `⏳ <span>Occupation Progress: <strong>${hex.captureTurnsCounter}/5 Turns</strong> (${(hex.occupyingCountryId ?? "Enemy").toUpperCase()})</span>`;
+    popup.appendChild(captureAlert);
+  }
+
   // Cold War 1983 Historical Context Callout
   if (hex.coldWarContext) {
     const intelBox = document.createElement("div");
@@ -1661,6 +1801,72 @@ function createHexTacticalPopupContent(
     ${hex.population ? `<span>👥 <strong>${hex.population.toLocaleString()}</strong> Pop</span>` : ""}
   `;
   popup.appendChild(yieldsBox);
+
+  // 2. Physical Stockpile Depots
+  if (hex.depots) {
+    const depotsBox = document.createElement("div");
+    depotsBox.className = "hex-popup-depots";
+    depotsBox.style.cssText =
+      "background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(148, 163, 184, 0.2); padding: 6px 8px; border-radius: 4px; margin-bottom: 8px; font-size: 11px;";
+    depotsBox.innerHTML = `
+      <div style="font-weight: 600; color: #94a3b8; margin-bottom: 4px; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px;">📦 Physical Stockpile Depots</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; color: #cbd5e1;">
+        <span>🛢️ Fuel: <strong>${hex.depots.fuelBarrels ?? 100} bbl</strong></span>
+        <span>🚀 Missiles: <strong>${hex.depots.munitionsMissiles ?? 20}</strong></span>
+        <span>🐟 Torpedoes: <strong>${hex.depots.munitionsTorpedoes ?? 10}</strong></span>
+        <span>💥 Shells: <strong>${hex.depots.munitionsShells ?? 200}</strong></span>
+        ${hex.depots.strategicOreTitanium ? `<span>⚙️ Titanium: <strong>${hex.depots.strategicOreTitanium}</strong></span>` : ""}
+        ${hex.depots.strategicOreIron ? `<span>⛏️ Iron: <strong>${hex.depots.strategicOreIron}</strong></span>` : ""}
+        ${hex.depots.strategicOreUranium ? `<span>☢️ Uranium: <strong>${hex.depots.strategicOreUranium}</strong></span>` : ""}
+      </div>
+    `;
+    popup.appendChild(depotsBox);
+  }
+
+  // 3. Regional Capital Investment Tier & Upgrade
+  const investmentTier = hex.investmentTier ?? 0;
+  const tierNames = [
+    "Tier 0: Standard Administration (1.0x)",
+    "Tier 1: Industrial Modernization (+15% funds, +10 prod, +15 fuel)",
+    "Tier 2: Logistics Hub & Fortifications (+35% funds, +25 prod, +40 fuel)",
+    "Tier 3: Strategic Command & Complex (+60% funds, +50 prod, +80 fuel)",
+  ];
+  const nextTierCosts = [500, 1200, 2500];
+
+  const investmentBox = document.createElement("div");
+  investmentBox.className = "hex-popup-investment";
+  investmentBox.style.cssText =
+    "background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(56, 189, 248, 0.3); padding: 8px; border-radius: 4px; margin-bottom: 8px; font-size: 11px;";
+
+  const tierHeader = document.createElement("div");
+  tierHeader.style.cssText =
+    "display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;";
+  tierHeader.innerHTML = `<span style="font-weight: bold; color: #38bdf8;">🏛️ Regional Investment</span><span style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; padding: 2px 6px; border-radius: 3px; font-weight: bold;">Tier ${investmentTier}</span>`;
+  investmentBox.appendChild(tierHeader);
+
+  const tierDesc = document.createElement("div");
+  tierDesc.style.cssText =
+    "color: #94a3b8; font-size: 10px; margin-bottom: 6px;";
+  tierDesc.textContent = tierNames[investmentTier] ?? tierNames[0] ?? "";
+  investmentBox.appendChild(tierDesc);
+
+  if (isPlayerSovereignHex && investmentTier < 3 && onUpgradeInvestment) {
+    const upgradeCost = nextTierCosts[investmentTier];
+    const upgBtn = document.createElement("button");
+    upgBtn.className = "action-button";
+    upgBtn.style.cssText =
+      "width: 100%; font-size: 11px; padding: 6px 10px; background: #0284c7; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; transition: background 0.15s;";
+    upgBtn.textContent = `🏗️ Upgrade to Tier ${investmentTier + 1} ($${upgradeCost})`;
+    upgBtn.onclick = (e) => {
+      e.stopPropagation();
+      upgBtn.disabled = true;
+      upgBtn.textContent = "Upgrading Sector...";
+      upgBtn.style.background = "#64748b";
+      onUpgradeInvestment(hex.id);
+    };
+    investmentBox.appendChild(upgBtn);
+  }
+  popup.appendChild(investmentBox);
 
   // Stationed Formations Section
   const formSection = document.createElement("div");
@@ -2438,6 +2644,467 @@ function RecruitmentCatalogModal({
               : !canAfford
                 ? "Insufficient Funds / Production"
                 : `Recruit Formation ($${selectedArchetype.fundsCost} / ${selectedArchetype.productionCost} P)`}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MilitarySurplusMarketModal({
+  isOpen,
+  onClose,
+  hexGrid,
+  funds,
+  catalog,
+  pendingOrders,
+  onPurchase,
+  isPurchasing,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  hexGrid?: HexGridStateSnapshot | undefined;
+  funds: number;
+  catalog: MilitaryMarketListing[];
+  pendingOrders: MarketOrderRecord[];
+  onPurchase: (input: {
+    listingId: string;
+    targetHexId: string;
+    customName?: string | undefined;
+  }) => void;
+  isPurchasing: boolean;
+}): ReactElement | null {
+  const [selectedListingId, setSelectedListingId] = useState<string>(
+    catalog[0]?.id ?? "surplus-hauk-fast-patrol",
+  );
+  const [targetHexId, setTargetHexId] = useState<string>("");
+  const [customName, setCustomName] = useState<string>("");
+
+  const friendlyPortHexes = useMemo(() => {
+    const list = (hexGrid?.hexCells ?? []).filter(
+      (h) =>
+        h.ownership.side === "blufor" &&
+        (h.facilities.includes("naval_base") ||
+          h.facilities.includes("air_base") ||
+          h.facilities.includes("shipyard") ||
+          Boolean(
+            h.childSites &&
+            h.childSites.some(
+              (cs) =>
+                cs.kind === "naval_base" ||
+                cs.kind === "air_base" ||
+                cs.kind === "world_port",
+            ),
+          )),
+    );
+    if (list.length > 0) return list;
+    return (hexGrid?.hexCells ?? []).filter(
+      (h) => h.ownership.side === "blufor",
+    );
+  }, [hexGrid]);
+
+  useEffect(() => {
+    if (!targetHexId && friendlyPortHexes.length > 0) {
+      setTargetHexId(friendlyPortHexes[0]!.id);
+    }
+  }, [friendlyPortHexes, targetHexId]);
+
+  if (!isOpen) return null;
+
+  const selectedListing =
+    catalog.find((l) => l.id === selectedListingId) ?? catalog[0];
+  const canAfford = selectedListing
+    ? funds >= selectedListing.costFunds
+    : false;
+
+  return (
+    <div className="recruitment-modal-backdrop" onClick={onClose}>
+      <div className="recruitment-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="recruitment-modal-header">
+          <h3>🛒 Cold War Surplus Military Market</h3>
+          <button
+            type="button"
+            className="recruitment-modal-close"
+            onClick={onClose}
+          >
+            ✕
+          </button>
+        </div>
+
+        <div className="recruitment-modal-body">
+          {pendingOrders.length > 0 && (
+            <div
+              style={{
+                background: "rgba(30, 41, 59, 0.8)",
+                border: "1px solid rgba(56, 189, 248, 0.4)",
+                borderRadius: "6px",
+                padding: "10px 14px",
+                marginBottom: "16px",
+              }}
+            >
+              <div
+                style={{
+                  color: "#38bdf8",
+                  fontWeight: 600,
+                  fontSize: "12px",
+                  marginBottom: "6px",
+                  textTransform: "uppercase",
+                }}
+              >
+                ⏳ Commissioning & Delivery Queue ({pendingOrders.length})
+              </div>
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "6px" }}
+              >
+                {pendingOrders.map((ord) => (
+                  <div
+                    key={ord.id}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      fontSize: "12px",
+                      background: "rgba(15, 23, 42, 0.6)",
+                      padding: "6px 10px",
+                      borderRadius: "4px",
+                    }}
+                  >
+                    <span>
+                      🚢 <strong>{ord.unitName}</strong> → Sector{" "}
+                      {ord.targetHexId}
+                    </span>
+                    <span style={{ color: "#fbbf24", fontWeight: "bold" }}>
+                      {ord.turnsRemaining}{" "}
+                      {ord.turnsRemaining === 1 ? "Turn" : "Turns"} Remaining
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="recruitment-controls-row">
+            <div className="recruitment-control-group">
+              <label>Surplus Listing Catalog</label>
+              <select
+                value={selectedListingId}
+                onChange={(e) => setSelectedListingId(e.target.value)}
+              >
+                {catalog.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name} (${item.costFunds} / {item.deliveryTurns} Turn
+                    Delivery)
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="recruitment-control-group">
+              <label>Delivery Port Sector</label>
+              <select
+                value={targetHexId}
+                onChange={(e) => setTargetHexId(e.target.value)}
+              >
+                {friendlyPortHexes.map((hex) => (
+                  <option key={hex.id} value={hex.id}>
+                    {hex.name} ({hex.id})
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div
+            className="recruitment-control-group"
+            style={{ marginTop: "12px" }}
+          >
+            <label>Custom Unit Name / Callsign (Optional)</label>
+            <input
+              type="text"
+              placeholder={selectedListing?.name ?? "Custom unit name"}
+              value={customName}
+              onChange={(e) => setCustomName(e.target.value)}
+            />
+          </div>
+
+          {selectedListing && (
+            <div
+              className="recruitment-preview-panel"
+              style={{
+                marginTop: "16px",
+                background: "rgba(15, 23, 42, 0.7)",
+                padding: "12px",
+                borderRadius: "6px",
+                border: "1px solid rgba(148, 163, 184, 0.2)",
+              }}
+            >
+              <h4 style={{ margin: "0 0 6px", color: "#f8fafc" }}>
+                {selectedListing.name}
+              </h4>
+              <p
+                style={{
+                  margin: "0 0 10px",
+                  color: "#94a3b8",
+                  fontSize: "12px",
+                }}
+              >
+                {selectedListing.description}
+              </p>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(4, 1fr)",
+                  gap: "8px",
+                  fontSize: "11px",
+                }}
+              >
+                <div
+                  style={{
+                    background: "rgba(30, 41, 59, 0.6)",
+                    padding: "6px",
+                    borderRadius: "4px",
+                  }}
+                >
+                  <span style={{ color: "#94a3b8" }}>Cost:</span>{" "}
+                  <strong style={{ color: "#38bdf8" }}>
+                    ${selectedListing.costFunds}
+                  </strong>
+                </div>
+                <div
+                  style={{
+                    background: "rgba(30, 41, 59, 0.6)",
+                    padding: "6px",
+                    borderRadius: "4px",
+                  }}
+                >
+                  <span style={{ color: "#94a3b8" }}>Delivery:</span>{" "}
+                  <strong style={{ color: "#fbbf24" }}>
+                    {selectedListing.deliveryTurns} Turns
+                  </strong>
+                </div>
+                <div
+                  style={{
+                    background: "rgba(30, 41, 59, 0.6)",
+                    padding: "6px",
+                    borderRadius: "4px",
+                  }}
+                >
+                  <span style={{ color: "#94a3b8" }}>Origin:</span>{" "}
+                  <strong style={{ color: "#f1f5f9" }}>
+                    {selectedListing.sourceCountry.toUpperCase()}
+                  </strong>
+                </div>
+                <div
+                  style={{
+                    background: "rgba(30, 41, 59, 0.6)",
+                    padding: "6px",
+                    borderRadius: "4px",
+                  }}
+                >
+                  <span style={{ color: "#94a3b8" }}>Strength:</span>{" "}
+                  <strong style={{ color: "#4ade80" }}>
+                    {selectedListing.strength}%
+                  </strong>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="recruitment-modal-footer">
+          <button
+            type="button"
+            className="action-button secondary-action"
+            onClick={onClose}
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            className="recruitment-submit-btn"
+            disabled={
+              isPurchasing || !canAfford || !targetHexId || !selectedListing
+            }
+            onClick={() => {
+              if (selectedListing && targetHexId) {
+                onPurchase({
+                  listingId: selectedListing.id,
+                  targetHexId,
+                  customName: customName.trim() || undefined,
+                });
+              }
+            }}
+          >
+            {isPurchasing
+              ? "Purchasing..."
+              : !canAfford
+                ? `Insufficient Funds (Need $${selectedListing?.costFunds})`
+                : `Purchase & Deploy ($${selectedListing?.costFunds})`}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DiplomaticTreatiesModal({
+  isOpen,
+  onClose,
+  treaties,
+  onEstablish,
+  isEstablishing,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  treaties: DiplomaticTreatyRecord[];
+  onEstablish: (input: {
+    treatyType: string;
+    targetCountryId: string;
+    durationTurns: number;
+  }) => void;
+  isEstablishing: boolean;
+}): ReactElement | null {
+  const [treatyType, setTreatyType] = useState<string>("ceasefire");
+  const [targetCountryId, setTargetCountryId] =
+    useState<string>("soviet-union");
+  const [durationTurns, setDurationTurns] = useState<number>(5);
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="recruitment-modal-backdrop" onClick={onClose}>
+      <div className="recruitment-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="recruitment-modal-header">
+          <h3>📜 Diplomatic Treaties & Ceasefires</h3>
+          <button
+            type="button"
+            className="recruitment-modal-close"
+            onClick={onClose}
+          >
+            ✕
+          </button>
+        </div>
+
+        <div className="recruitment-modal-body">
+          <div
+            style={{
+              background: "rgba(30, 41, 59, 0.8)",
+              border: "1px solid rgba(148, 163, 184, 0.2)",
+              borderRadius: "6px",
+              padding: "10px 14px",
+              marginBottom: "16px",
+            }}
+          >
+            <div
+              style={{
+                color: "#94a3b8",
+                fontWeight: 600,
+                fontSize: "12px",
+                marginBottom: "6px",
+                textTransform: "uppercase",
+              }}
+            >
+              Active Treaties ({treaties.length})
+            </div>
+            {treaties.length === 0 ? (
+              <p style={{ margin: 0, color: "#64748b", fontSize: "12px" }}>
+                No active bilateral treaties in effect.
+              </p>
+            ) : (
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "6px" }}
+              >
+                {treaties.map((t) => (
+                  <div
+                    key={t.id}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      fontSize: "12px",
+                      background: "rgba(15, 23, 42, 0.6)",
+                      padding: "6px 10px",
+                      borderRadius: "4px",
+                    }}
+                  >
+                    <span>
+                      🤝 <strong>{t.treatyType.toUpperCase()}</strong> (
+                      {t.partyACountryId} & {t.partyBCountryId})
+                    </span>
+                    <span style={{ color: "#4ade80", fontWeight: "bold" }}>
+                      {t.turnsRemaining} Turns Remaining
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="recruitment-controls-row">
+            <div className="recruitment-control-group">
+              <label>Treaty Type</label>
+              <select
+                value={treatyType}
+                onChange={(e) => setTreatyType(e.target.value)}
+              >
+                <option value="ceasefire">
+                  Ceasefire (Hostilities Paused)
+                </option>
+                <option value="non_aggression">Non-Aggression Pact</option>
+                <option value="alliance">Defensive Coalition Alliance</option>
+                <option value="mutual_defense">Mutual Defense Pact</option>
+              </select>
+            </div>
+
+            <div className="recruitment-control-group">
+              <label>Target Nation</label>
+              <select
+                value={targetCountryId}
+                onChange={(e) => setTargetCountryId(e.target.value)}
+              >
+                <option value="soviet-union">Soviet Union (OPFOR)</option>
+                <option value="east-germany">East Germany (OPFOR)</option>
+                <option value="poland">Poland (OPFOR)</option>
+                <option value="sweden">Sweden (Neutral)</option>
+                <option value="finland">Finland (Neutral)</option>
+              </select>
+            </div>
+          </div>
+
+          <div
+            className="recruitment-control-group"
+            style={{ marginTop: "12px" }}
+          >
+            <label>Duration: {durationTurns} Turns</label>
+            <input
+              type="range"
+              min={1}
+              max={15}
+              value={durationTurns}
+              onChange={(e) => setDurationTurns(Number(e.target.value))}
+            />
+          </div>
+        </div>
+
+        <div className="recruitment-modal-footer">
+          <button
+            type="button"
+            className="action-button secondary-action"
+            onClick={onClose}
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            className="recruitment-submit-btn"
+            disabled={isEstablishing}
+            onClick={() => {
+              onEstablish({
+                treatyType,
+                targetCountryId,
+                durationTurns,
+              });
+            }}
+          >
+            {isEstablishing ? "Ratifying..." : "Ratify Diplomatic Treaty"}
           </button>
         </div>
       </div>
@@ -3230,6 +3897,7 @@ function StrategicMap({
   onTrainFormation,
   onEngageHex,
   onOpenFormationEditor,
+  onUpgradeInvestment,
   actionPending,
   world,
   onViewportChange,
@@ -3257,6 +3925,7 @@ function StrategicMap({
   onTrainFormation?: (formationId: string, turns?: number) => void;
   onEngageHex?: (hexId: string) => void;
   onOpenFormationEditor?: (formation: CampaignFormation) => void;
+  onUpgradeInvestment?: (hexId: string) => void;
   actionPending: boolean;
   world?: WorldZone | undefined;
   onViewportChange: (bounds: MapBounds) => void;
@@ -3324,6 +3993,8 @@ function StrategicMap({
   onEngageHexRef.current = onEngageHex;
   const onOpenFormationEditorRef = useRef(onOpenFormationEditor);
   onOpenFormationEditorRef.current = onOpenFormationEditor;
+  const onUpgradeInvestmentRef = useRef(onUpgradeInvestment);
+  onUpgradeInvestmentRef.current = onUpgradeInvestment;
 
   const onStartMovePlanning = useCallback(
     (form: CampaignFormation, hex: StrategicHexCell) => {
@@ -3381,7 +4052,9 @@ function StrategicMap({
       }
       const axial = coordinatesToAxial(event.latlng.lat, event.latlng.lng);
       const hexId = getHexIdForAxial(axial.q, axial.r);
-      const hex = getHexCellDefinition(hexId, axial);
+      const hex =
+        hexGridRef.current?.hexCells.find((h) => h.id === hexId) ??
+        getHexCellDefinition(hexId, axial);
 
       // Handle Interactive Click-to-Move Pathfinding Destination
       if (movePlanningRef.current) {
@@ -3441,6 +4114,7 @@ function StrategicMap({
         onTrainFormationRef.current,
         playerCountryIdRef.current,
         playerCountryNameRef.current,
+        onUpgradeInvestmentRef.current,
       );
 
       L.popup({
@@ -3818,6 +4492,7 @@ function StrategicMap({
           onTrainFormationRef.current,
           playerCountryIdRef.current,
           playerCountryNameRef.current,
+          onUpgradeInvestmentRef.current,
         );
         L.popup({
           maxWidth: 360,

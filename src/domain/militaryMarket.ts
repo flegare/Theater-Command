@@ -1,6 +1,15 @@
 import type { CampaignDatabase } from "../infrastructure/database.js";
-import { randomUUID } from "node:crypto";
 import type { FormationUnitType } from "./militaryFormations.js";
+
+function generateUUID(): string {
+  if (
+    typeof globalThis.crypto !== "undefined" &&
+    typeof globalThis.crypto.randomUUID === "function"
+  ) {
+    return globalThis.crypto.randomUUID();
+  }
+  return `order-${Math.random().toString(36).slice(2)}-${Date.now()}`;
+}
 
 export type MilitaryMarketListing = {
   id: string;
@@ -147,7 +156,7 @@ export function purchaseMarketUnit(
     );
   }
 
-  const orderId = randomUUID();
+  const orderId = generateUUID();
   const now = new Date().toISOString();
   const finalName = customName?.trim() || `${listing.name} (Surplus)`;
 

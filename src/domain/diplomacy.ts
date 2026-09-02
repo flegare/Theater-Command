@@ -1,5 +1,14 @@
 import type { CampaignDatabase } from "../infrastructure/database.js";
-import { randomUUID } from "node:crypto";
+
+function generateUUID(): string {
+  if (
+    typeof globalThis.crypto !== "undefined" &&
+    typeof globalThis.crypto.randomUUID === "function"
+  ) {
+    return globalThis.crypto.randomUUID();
+  }
+  return `treaty-${Math.random().toString(36).slice(2)}-${Date.now()}`;
+}
 
 export type TreatyType =
   "ceasefire" | "non_aggression" | "tribute" | "alliance" | "mutual_defense";
@@ -26,7 +35,7 @@ export function establishDiplomaticTreaty(
   durationTurns: number,
   terms: Record<string, unknown> = {},
 ): DiplomaticTreatyRecord {
-  const treatyId = randomUUID();
+  const treatyId = generateUUID();
   const now = new Date().toISOString();
   const termsJson = JSON.stringify(terms);
 

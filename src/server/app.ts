@@ -53,6 +53,17 @@ import {
   type FormationUnitType,
   type FlotillaComposition,
 } from "../domain/militaryFormations.js";
+import {
+  COLD_WAR_MARKET_CATALOG,
+  purchaseMarketUnit,
+  getPendingMarketOrders,
+} from "../domain/militaryMarket.js";
+import { upgradeHexInvestment } from "../domain/hexInvestments.js";
+import {
+  establishDiplomaticTreaty,
+  getActiveDiplomaticTreaties,
+  type TreatyType,
+} from "../domain/diplomacy.js";
 import type { AppConfig } from "../infrastructure/config.js";
 import type { CampaignDatabase } from "../infrastructure/database.js";
 import {
@@ -2201,6 +2212,239 @@ export function createApp(
         ...result,
         requestId: response.locals.requestId,
       });
+    },
+  );
+
+  // 1. Military Market: Get Catalog and Pending Deliveries
+  app.get(
+    "/api/v1/campaigns/current/market/catalog",
+    requireCampaignSession,
+    (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+      const pendingOrders = getPendingMarketOrders(
+        dependencies.database,
+        request.perspective!.campaignId,
+      );
+      response.status(200).json({
+        ok: true,
+        catalog: COLD_WAR_MARKET_CATALOG,
+        pendingOrders,
+        requestId: response.locals.requestId,
+      });
+    },
+  );
+
+  // 2. Military Market: Purchase Surplus Asset
+  app.post(
+    "/api/v1/campaigns/current/market/purchase",
+    requireCampaignSession,
+    (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+      const parsed = z
+        .object({
+          listingId: z.string().min(1),
+          targetHexId: z.string().min(1),
+          customName: z.string().optional(),
+        })
+        .safeParse(request.body);
+      if (!parsed.success) {
+        response.status(400).json({
+          error: {
+            code: "INVALID_MARKET_PURCHASE_PAYLOAD",
+            message: "A valid listing ID and target port hex ID are required.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      try {
+        const order = purchaseMarketUnit(
+          dependencies.database,
+          request.perspective!.campaignId,
+          request.perspective!.playerCountryId,
+          parsed.data.listingId,
+          parsed.data.targetHexId,
+          parsed.data.customName,
+        );
+        response.status(200).json({
+          ok: true,
+          order,
+          requestId: response.locals.requestId,
+        });
+      } catch (err: unknown) {
+        const message =
+          err instanceof Error
+            ? err.message
+            : "Failed to purchase surplus unit.";
+        response.status(400).json({
+          error: {
+            code: "MARKET_PURCHASE_FAILED",
+            message,
+            requestId: response.locals.requestId,
+          },
+        });
+      }
+    },
+  );
+
+  // 3. Hex Regional Investment: Upgrade Tier
+  app.post(
+    "/api/v1/campaigns/current/hex-cells/:hexId/investment/upgrade",
+    requireCampaignSession,
+    (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+      const hexIdParam =
+        typeof request.params.hexId === "string" ? request.params.hexId : "";
+      try {
+        const result = upgradeHexInvestment(
+          dependencies.database,
+          request.perspective!.campaignId,
+          hexIdParam,
+        );
+        response.status(200).json({
+          ok: true,
+          ...result,
+          requestId: response.locals.requestId,
+        });
+      } catch (err: unknown) {
+        const message =
+          err instanceof Error
+            ? err.message
+            : "Failed to upgrade hex investment tier.";
+        response.status(400).json({
+          error: {
+            code: "HEX_INVESTMENT_UPGRADE_FAILED",
+            message,
+            requestId: response.locals.requestId,
+          },
+        });
+      }
+    },
+  );
+
+  // 4. Diplomacy: Get Active Treaties
+  app.get(
+    "/api/v1/campaigns/current/diplomacy/treaties",
+    requireCampaignSession,
+    (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+      const treaties = getActiveDiplomaticTreaties(
+        dependencies.database,
+        request.perspective!.campaignId,
+      );
+      response.status(200).json({
+        ok: true,
+        treaties,
+        requestId: response.locals.requestId,
+      });
+    },
+  );
+
+  // 5. Diplomacy: Establish Treaty
+  app.post(
+    "/api/v1/campaigns/current/diplomacy/treaties",
+    requireCampaignSession,
+    (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+      const parsed = z
+        .object({
+          treatyType: z.enum([
+            "ceasefire",
+            "non_aggression",
+            "tribute",
+            "alliance",
+            "mutual_defense",
+          ]),
+          targetCountryId: z.string().min(1),
+          durationTurns: z.number().int().min(1).max(30).default(5),
+          terms: z.record(z.string(), z.unknown()).optional(),
+        })
+        .safeParse(request.body);
+      if (!parsed.success) {
+        response.status(400).json({
+          error: {
+            code: "INVALID_DIPLOMACY_PAYLOAD",
+            message: "A valid treaty type and target country ID are required.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      try {
+        const treaty = establishDiplomaticTreaty(
+          dependencies.database,
+          request.perspective!.campaignId,
+          parsed.data.treatyType as TreatyType,
+          request.perspective!.playerCountryId,
+          parsed.data.targetCountryId,
+          parsed.data.durationTurns,
+          parsed.data.terms ?? {},
+        );
+        response.status(200).json({
+          ok: true,
+          treaty,
+          requestId: response.locals.requestId,
+        });
+      } catch (err: unknown) {
+        const message =
+          err instanceof Error
+            ? err.message
+            : "Failed to establish diplomatic treaty.";
+        response.status(400).json({
+          error: {
+            code: "DIPLOMACY_ESTABLISH_FAILED",
+            message,
+            requestId: response.locals.requestId,
+          },
+        });
+      }
     },
   );
 
