@@ -1,0 +1,223 @@
+{
+  "generatedAt": "2026-08-12T01:52:58.253Z",
+  "baseURL": "http://127.0.0.1:3100",
+  "model": "gemma3:4b",
+  "captures": [
+    {
+      "page": "desktop/northern-flank/setup",
+      "path": "S:\\SteamLibrary\\steamapps\\common\\Sea Power\\theater_campaign\\artifacts\\visual-audit\\desktop-northern-flank-setup.png"
+    },
+    {
+      "page": "desktop/northern-flank/command",
+      "path": "S:\\SteamLibrary\\steamapps\\common\\Sea Power\\theater_campaign\\artifacts\\visual-audit\\desktop-northern-flank-command.png"
+    },
+    {
+      "page": "desktop/north-pacific/setup",
+      "path": "S:\\SteamLibrary\\steamapps\\common\\Sea Power\\theater_campaign\\artifacts\\visual-audit\\desktop-north-pacific-setup.png"
+    },
+    {
+      "page": "desktop/north-pacific/command",
+      "path": "S:\\SteamLibrary\\steamapps\\common\\Sea Power\\theater_campaign\\artifacts\\visual-audit\\desktop-north-pacific-command.png"
+    },
+    {
+      "page": "desktop/persian-gulf/setup",
+      "path": "S:\\SteamLibrary\\steamapps\\common\\Sea Power\\theater_campaign\\artifacts\\visual-audit\\desktop-persian-gulf-setup.png"
+    },
+    {
+      "page": "desktop/persian-gulf/command",
+      "path": "S:\\SteamLibrary\\steamapps\\common\\Sea Power\\theater_campaign\\artifacts\\visual-audit\\desktop-persian-gulf-command.png"
+    },
+    {
+      "page": "desktop/indian-ocean/setup",
+      "path": "S:\\SteamLibrary\\steamapps\\common\\Sea Power\\theater_campaign\\artifacts\\visual-audit\\desktop-indian-ocean-setup.png"
+    },
+    {
+      "page": "desktop/indian-ocean/command",
+      "path": "S:\\SteamLibrary\\steamapps\\common\\Sea Power\\theater_campaign\\artifacts\\visual-audit\\desktop-indian-ocean-command.png"
+    },
+    {
+      "page": "mobile/northern-flank/setup",
+      "path": "S:\\SteamLibrary\\steamapps\\common\\Sea Power\\theater_campaign\\artifacts\\visual-audit\\mobile-northern-flank-setup.png"
+    },
+    {
+      "page": "mobile/northern-flank/command",
+      "path": "S:\\SteamLibrary\\steamapps\\common\\Sea Power\\theater_campaign\\artifacts\\visual-audit\\mobile-northern-flank-command.png"
+    },
+    {
+      "page": "mobile/north-pacific/setup",
+      "path": "S:\\SteamLibrary\\steamapps\\common\\Sea Power\\theater_campaign\\artifacts\\visual-audit\\mobile-north-pacific-setup.png"
+    },
+    {
+      "page": "mobile/north-pacific/command",
+      "path": "S:\\SteamLibrary\\steamapps\\common\\Sea Power\\theater_campaign\\artifacts\\visual-audit\\mobile-north-pacific-command.png"
+    },
+    {
+      "page": "mobile/persian-gulf/setup",
+      "path": "S:\\SteamLibrary\\steamapps\\common\\Sea Power\\theater_campaign\\artifacts\\visual-audit\\mobile-persian-gulf-setup.png"
+    },
+    {
+      "page": "mobile/persian-gulf/command",
+      "path": "S:\\SteamLibrary\\steamapps\\common\\Sea Power\\theater_campaign\\artifacts\\visual-audit\\mobile-persian-gulf-command.png"
+    },
+    {
+      "page": "mobile/indian-ocean/setup",
+      "path": "S:\\SteamLibrary\\steamapps\\common\\Sea Power\\theater_campaign\\artifacts\\visual-audit\\mobile-indian-ocean-setup.png"
+    },
+    {
+      "page": "mobile/indian-ocean/command",
+      "path": "S:\\SteamLibrary\\steamapps\\common\\Sea Power\\theater_campaign\\artifacts\\visual-audit\\mobile-indian-ocean-command.png"
+    }
+  ],
+  "reviews": [
+    {
+      "page": "desktop-indian-ocean-command.png",
+      "review": {
+        "score": 7,
+        "issues": [
+          {
+            "severity": "critical",
+            "area": "domain",
+            "finding": "The campaign brief is extremely vague. It states 'India - 1975: Indian Ocean' but provides no context or strategic objectives beyond the listed national objectives. This makes it difficult to understand the game’s purpose and how a player should operate.",
+            "fix": "Expand the campaign brief with more details about the situation in 1975, including the geopolitical context, key players, and initial strategic goals for India."
+          }
+        ],
+        "pass": false
+      }
+    },
+    {
+      "page": "desktop-indian-ocean-setup.png",
+      "review": {
+        "score": 7,
+        "issues": [
+          {
+            "severity": "critical",
+            "area": "readability",
+            "finding": "The text 'Assume national command' is too small and difficult to read, especially in relation to the surrounding elements.",
+            "fix": "Increase the font size for 'Assume national command' to improve readability."
+          }
+        ],
+        "pass": false
+      }
+    },
+    {
+      "page": "desktop-north-pacific-command.png",
+      "review": {
+        "score": 7,
+        "issues": [
+          {
+            "severity": "critical",
+            "area": "domain",
+            "finding": "The campaign title 'Japan - 1975: North Pacific' is highly unusual and potentially confusing for a Cold War strategic command game. The timeframe (1975) feels anachronistic, and the specific location ('North Pacific') lacks context within the broader geopolitical landscape of the Cold War. This immediately undermines credibility."
+          },
+          {
+            "severity": "major",
+            "area": "layout",
+            "finding": "The map area is excessively large and dominates the screen, potentially overwhelming the user. It would benefit from a more refined framing to highlight key areas of interest."
+          },
+          {
+            "severity": "minor",
+            "area": "readability",
+            "finding": "The text 'OpenStreetMap contributors' is small and slightly difficult to read. Increasing its font size or moving it to a less prominent location would improve readability."
+          }
+        ]
+      }
+    },
+    {
+      "page": "desktop-north-pacific-setup.png",
+      "review": {
+        "score": 7,
+        "issues": [
+          {
+            "severity": "critical",
+            "area": "readability",
+            "finding": "The text 'Assume national command' is slightly small and could be more prominent, especially given its importance as the initial instruction.",
+            "fix": "Increase font size for 'Assume national command' to improve readability."
+          }
+        ],
+        "pass": false
+      }
+    }
+  ],
+  "functionalChecks": [
+    {
+      "theater": "northern-flank",
+      "device": "desktop",
+      "setupBriefVisible": true
+    },
+    {
+      "theater": "northern-flank",
+      "device": "desktop",
+      "commandMapVisible": true
+    },
+    {
+      "theater": "north-pacific",
+      "device": "desktop",
+      "setupBriefVisible": true
+    },
+    {
+      "theater": "north-pacific",
+      "device": "desktop",
+      "commandMapVisible": true
+    },
+    {
+      "theater": "persian-gulf",
+      "device": "desktop",
+      "setupBriefVisible": true
+    },
+    {
+      "theater": "persian-gulf",
+      "device": "desktop",
+      "commandMapVisible": true
+    },
+    {
+      "theater": "indian-ocean",
+      "device": "desktop",
+      "setupBriefVisible": true
+    },
+    {
+      "theater": "indian-ocean",
+      "device": "desktop",
+      "commandMapVisible": true
+    },
+    {
+      "theater": "northern-flank",
+      "device": "mobile",
+      "setupBriefVisible": true
+    },
+    {
+      "theater": "northern-flank",
+      "device": "mobile",
+      "commandMapVisible": true
+    },
+    {
+      "theater": "north-pacific",
+      "device": "mobile",
+      "setupBriefVisible": true
+    },
+    {
+      "theater": "north-pacific",
+      "device": "mobile",
+      "commandMapVisible": true
+    },
+    {
+      "theater": "persian-gulf",
+      "device": "mobile",
+      "setupBriefVisible": true
+    },
+    {
+      "theater": "persian-gulf",
+      "device": "mobile",
+      "commandMapVisible": true
+    },
+    {
+      "theater": "indian-ocean",
+      "device": "mobile",
+      "setupBriefVisible": true
+    },
+    {
+      "theater": "indian-ocean",
+      "device": "mobile",
+      "commandMapVisible": true
+    }
+  ]
+}

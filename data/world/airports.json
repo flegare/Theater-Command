@@ -1,0 +1,7149 @@
+{
+  "version": 1,
+  "records": [
+    {
+      "id": "Lakatamia Airbase",
+      "countryId": null,
+      "name": "Lakatamia Airbase",
+      "type": "airport",
+      "latitude": 35.106345,
+      "longitude": 33.322201
+    },
+    {
+      "id": "Q1022397",
+      "countryId": null,
+      "name": "Maputo Int'l",
+      "type": "airport",
+      "latitude": -25.924277,
+      "longitude": 32.574192
+    },
+    {
+      "id": "Q1025454",
+      "countryId": null,
+      "name": "Jackson Int'l",
+      "type": "airport",
+      "latitude": 32.31006,
+      "longitude": -90.075099
+    },
+    {
+      "id": "Q1030564",
+      "countryId": null,
+      "name": "Gen. Márquez de León Int'l",
+      "type": "airport",
+      "latitude": 24.07609,
+      "longitude": -110.367198
+    },
+    {
+      "id": "Q1030919",
+      "countryId": null,
+      "name": "Marechal Rondon Int'l",
+      "type": "airport",
+      "latitude": -15.651147,
+      "longitude": -56.120177
+    },
+    {
+      "id": "Q1043631",
+      "countryId": null,
+      "name": "Lagos Murtala Muhammed",
+      "type": "airport",
+      "latitude": 6.578259,
+      "longitude": 3.321124
+    },
+    {
+      "id": "Q1046748",
+      "countryId": null,
+      "name": "Osaka Int'l",
+      "type": "airport",
+      "latitude": 34.790198,
+      "longitude": 135.442475
+    },
+    {
+      "id": "Q1046755",
+      "countryId": null,
+      "name": "Don Muang Int'l",
+      "type": "airport",
+      "latitude": 13.920277,
+      "longitude": 100.602579
+    },
+    {
+      "id": "Q1048131",
+      "countryId": null,
+      "name": "Casper/Natrona County Int'l",
+      "type": "airport",
+      "latitude": 42.89719,
+      "longitude": -106.464445
+    },
+    {
+      "id": "Q1048704",
+      "countryId": null,
+      "name": "Mactan-Cebu Int'l",
+      "type": "airport",
+      "latitude": 10.315876,
+      "longitude": 123.979135
+    },
+    {
+      "id": "Q1049719",
+      "countryId": null,
+      "name": "Tahiti Faa'a Int'l",
+      "type": "airport",
+      "latitude": -17.559458,
+      "longitude": -149.609758
+    },
+    {
+      "id": "Q1050244",
+      "countryId": null,
+      "name": "Khartoum",
+      "type": "airport",
+      "latitude": 15.592223,
+      "longitude": 32.550153
+    },
+    {
+      "id": "Q1050707",
+      "countryId": null,
+      "name": "Paphos Int'l",
+      "type": "airport",
+      "latitude": 34.713401,
+      "longitude": 32.483232
+    },
+    {
+      "id": "Q1052673",
+      "countryId": null,
+      "name": "Windsor",
+      "type": "airport",
+      "latitude": 42.265878,
+      "longitude": -82.960088
+    },
+    {
+      "id": "Q1054163",
+      "countryId": null,
+      "name": "Pochentong",
+      "type": "airport",
+      "latitude": 11.552645,
+      "longitude": 104.845028
+    },
+    {
+      "id": "Q1054212",
+      "countryId": null,
+      "name": "Albenga",
+      "type": "airport",
+      "latitude": 44.045877,
+      "longitude": 8.123145
+    },
+    {
+      "id": "Q1054472",
+      "countryId": null,
+      "name": "Siem Reap Int'l",
+      "type": "airport",
+      "latitude": 13.408797,
+      "longitude": 103.815781
+    },
+    {
+      "id": "Q1054857",
+      "countryId": null,
+      "name": "Sendai",
+      "type": "airport",
+      "latitude": 38.138208,
+      "longitude": 140.930247
+    },
+    {
+      "id": "Q1058344",
+      "countryId": null,
+      "name": "Simón Bolivar Int'l",
+      "type": "airport",
+      "latitude": 10.597355,
+      "longitude": -67.005749
+    },
+    {
+      "id": "Q1061330",
+      "countryId": null,
+      "name": "Christchurch Int'l",
+      "type": "airport",
+      "latitude": -43.488549,
+      "longitude": 172.538676
+    },
+    {
+      "id": "Q1061437",
+      "countryId": null,
+      "name": "Chicago Midway Int'l",
+      "type": "airport",
+      "latitude": 41.788349,
+      "longitude": -87.742127
+    },
+    {
+      "id": "Q1061846",
+      "countryId": null,
+      "name": "Bali Int'l",
+      "type": "airport",
+      "latitude": -8.744757,
+      "longitude": 115.162323
+    },
+    {
+      "id": "Q1062676",
+      "countryId": null,
+      "name": "De Las Américas Int'l",
+      "type": "airport",
+      "latitude": 18.43022,
+      "longitude": -69.676473
+    },
+    {
+      "id": "Q1065082",
+      "countryId": null,
+      "name": "Chiang Mai Int'l",
+      "type": "airport",
+      "latitude": 18.768847,
+      "longitude": 98.968118
+    },
+    {
+      "id": "Q1068685",
+      "countryId": null,
+      "name": "Someseni",
+      "type": "airport",
+      "latitude": 46.782663,
+      "longitude": 23.686981
+    },
+    {
+      "id": "Q1070747",
+      "countryId": null,
+      "name": "Mataveri Int'l",
+      "type": "airport",
+      "latitude": -27.158774,
+      "longitude": -109.430064
+    },
+    {
+      "id": "Q1088438",
+      "countryId": null,
+      "name": "Port Moresby Int'l",
+      "type": "airport",
+      "latitude": -9.438653,
+      "longitude": 147.211251
+    },
+    {
+      "id": "Q1100795",
+      "countryId": null,
+      "name": "Hopkins Int'l",
+      "type": "airport",
+      "latitude": 41.411192,
+      "longitude": -81.838441
+    },
+    {
+      "id": "Q1105469",
+      "countryId": null,
+      "name": "Cocos (Keeling) Islands",
+      "type": "airport",
+      "latitude": -12.185159,
+      "longitude": 96.828747
+    },
+    {
+      "id": "Q1109558",
+      "countryId": null,
+      "name": "Ljubljana",
+      "type": "airport",
+      "latitude": 46.230545,
+      "longitude": 14.454813
+    },
+    {
+      "id": "Q1119032",
+      "countryId": null,
+      "name": "Aden Adde Int'l",
+      "type": "airport",
+      "latitude": 2.016353,
+      "longitude": 45.303637
+    },
+    {
+      "id": "Q1124922",
+      "countryId": null,
+      "name": "Zvartnots Int'l",
+      "type": "airport",
+      "latitude": 40.152368,
+      "longitude": 44.400063
+    },
+    {
+      "id": "Q1130612",
+      "countryId": null,
+      "name": "Gran Canaria",
+      "type": "airport",
+      "latitude": 27.93689,
+      "longitude": -15.389925
+    },
+    {
+      "id": "Q1131604",
+      "countryId": null,
+      "name": "Oulu",
+      "type": "airport",
+      "latitude": 64.928799,
+      "longitude": 25.372837
+    },
+    {
+      "id": "Q1133357",
+      "countryId": null,
+      "name": "Seeb Int'l",
+      "type": "airport",
+      "latitude": 23.58857,
+      "longitude": 58.29048
+    },
+    {
+      "id": "Q1135486",
+      "countryId": null,
+      "name": "James M. Cox Dayton Int'l",
+      "type": "airport",
+      "latitude": 39.89904,
+      "longitude": -84.220459
+    },
+    {
+      "id": "Q1136355",
+      "countryId": null,
+      "name": "Antonio B. Won Pat Int'l",
+      "type": "airport",
+      "latitude": 13.492646,
+      "longitude": 144.80585
+    },
+    {
+      "id": "Q1137115",
+      "countryId": null,
+      "name": "Gothenburg",
+      "type": "airport",
+      "latitude": 57.685749,
+      "longitude": 12.293827
+    },
+    {
+      "id": "Q1137465",
+      "countryId": null,
+      "name": "Fukuoka",
+      "type": "airport",
+      "latitude": 33.584816,
+      "longitude": 130.44419
+    },
+    {
+      "id": "Q1138699",
+      "countryId": null,
+      "name": "Alma Ata N.W.",
+      "type": "airport",
+      "latitude": 43.355419,
+      "longitude": 76.878264
+    },
+    {
+      "id": "Q1139661",
+      "countryId": null,
+      "name": "Queen Beatrix Int'l",
+      "type": "airport",
+      "latitude": 12.503464,
+      "longitude": -70.007623
+    },
+    {
+      "id": "Q1141214",
+      "countryId": null,
+      "name": "Aeroport Tunis",
+      "type": "airport",
+      "latitude": 36.847448,
+      "longitude": 10.217699
+    },
+    {
+      "id": "Q1142219",
+      "countryId": null,
+      "name": "Jorge Chávez",
+      "type": "airport",
+      "latitude": -12.023716,
+      "longitude": -77.107566
+    },
+    {
+      "id": "Q1142225",
+      "countryId": null,
+      "name": "El Alto Int'l",
+      "type": "airport",
+      "latitude": -16.509879,
+      "longitude": -68.178006
+    },
+    {
+      "id": "Q1142384",
+      "countryId": null,
+      "name": "Heraklion Int'l",
+      "type": "airport",
+      "latitude": 35.336902,
+      "longitude": 25.174056
+    },
+    {
+      "id": "Q1142389",
+      "countryId": null,
+      "name": "Skopje",
+      "type": "airport",
+      "latitude": 41.956455,
+      "longitude": 21.628197
+    },
+    {
+      "id": "Q1144167",
+      "countryId": null,
+      "name": "Shenyang Taoxian Int'l",
+      "type": "airport",
+      "latitude": 41.634789,
+      "longitude": 123.487974
+    },
+    {
+      "id": "Q1144233",
+      "countryId": null,
+      "name": "Corfu Int'l (Ioannis Kapodistrias)",
+      "type": "airport",
+      "latitude": 39.606755,
+      "longitude": 19.914756
+    },
+    {
+      "id": "Q1146451",
+      "countryId": null,
+      "name": "Lihue",
+      "type": "airport",
+      "latitude": 21.978124,
+      "longitude": -159.349084
+    },
+    {
+      "id": "Q1147092",
+      "countryId": null,
+      "name": "Roman Tmetuchl Int'l",
+      "type": "airport",
+      "latitude": 7.364496,
+      "longitude": 134.532953
+    },
+    {
+      "id": "Q1148514",
+      "countryId": null,
+      "name": "Brunei Int'l",
+      "type": "airport",
+      "latitude": 4.945475,
+      "longitude": 114.933119
+    },
+    {
+      "id": "Q1148527",
+      "countryId": null,
+      "name": "Ashkhabad Northwest",
+      "type": "airport",
+      "latitude": 37.984853,
+      "longitude": 58.363966
+    },
+    {
+      "id": "Q1150557",
+      "countryId": null,
+      "name": "Nadi Int'l",
+      "type": "airport",
+      "latitude": -17.752913,
+      "longitude": 177.451151
+    },
+    {
+      "id": "Q1150574",
+      "countryId": null,
+      "name": "Wellington Int'l",
+      "type": "airport",
+      "latitude": -41.328989,
+      "longitude": 174.811665
+    },
+    {
+      "id": "Q1150665",
+      "countryId": null,
+      "name": "Niue Int'l",
+      "type": "airport",
+      "latitude": -19.076713,
+      "longitude": -169.92613
+    },
+    {
+      "id": "Q1151889",
+      "countryId": null,
+      "name": "Esfahan Int'l",
+      "type": "airport",
+      "latitude": 32.746081,
+      "longitude": 51.876392
+    },
+    {
+      "id": "Q1151896",
+      "countryId": null,
+      "name": "Shiraz Int'l",
+      "type": "airport",
+      "latitude": 29.545801,
+      "longitude": 52.589771
+    },
+    {
+      "id": "Q1151984",
+      "countryId": null,
+      "name": "Shahid Ashrafi Esfahani",
+      "type": "airport",
+      "latitude": 34.346417,
+      "longitude": 47.156584
+    },
+    {
+      "id": "Q1152024",
+      "countryId": null,
+      "name": "Mashhad",
+      "type": "airport",
+      "latitude": 36.22755,
+      "longitude": 59.642194
+    },
+    {
+      "id": "Q1152202",
+      "countryId": null,
+      "name": "Yap Int'l",
+      "type": "airport",
+      "latitude": 9.497917,
+      "longitude": 138.08643
+    },
+    {
+      "id": "Q1153219",
+      "countryId": null,
+      "name": "Gov. Jorge Teixeira de Oliveira Int'l",
+      "type": "airport",
+      "latitude": -8.714425,
+      "longitude": -63.898463
+    },
+    {
+      "id": "Q1156786",
+      "countryId": null,
+      "name": "Harbin Taiping",
+      "type": "airport",
+      "latitude": 45.620601,
+      "longitude": 126.236983
+    },
+    {
+      "id": "Q1156790",
+      "countryId": null,
+      "name": "Qingdao Liuting Int'l",
+      "type": "airport",
+      "latitude": 36.267758,
+      "longitude": 120.380686
+    },
+    {
+      "id": "Q1156865",
+      "countryId": null,
+      "name": "Indianapolis Int'l",
+      "type": "airport",
+      "latitude": 39.730204,
+      "longitude": -86.2734
+    },
+    {
+      "id": "Q1160343",
+      "countryId": null,
+      "name": "Calgary Int'l",
+      "type": "airport",
+      "latitude": 51.130857,
+      "longitude": -114.010561
+    },
+    {
+      "id": "Q1163183",
+      "countryId": null,
+      "name": "Charleston Int'l",
+      "type": "airport",
+      "latitude": 32.88453,
+      "longitude": -80.036934
+    },
+    {
+      "id": "Q1165280",
+      "countryId": null,
+      "name": "Abidjan Port Bouet",
+      "type": "airport",
+      "latitude": 5.254398,
+      "longitude": -3.932219
+    },
+    {
+      "id": "Q1165296",
+      "countryId": null,
+      "name": "Sanaa Int'l",
+      "type": "airport",
+      "latitude": 15.473903,
+      "longitude": 44.224647
+    },
+    {
+      "id": "Q1165367",
+      "countryId": null,
+      "name": "Strasbourg",
+      "type": "airport",
+      "latitude": 48.544696,
+      "longitude": 7.627842
+    },
+    {
+      "id": "Q1165584",
+      "countryId": null,
+      "name": "Oakland Int'l",
+      "type": "airport",
+      "latitude": 37.712304,
+      "longitude": -122.213261
+    },
+    {
+      "id": "Q1175431",
+      "countryId": null,
+      "name": "Gold Coast",
+      "type": "airport",
+      "latitude": -28.166517,
+      "longitude": 153.512876
+    },
+    {
+      "id": "Q1187633",
+      "countryId": null,
+      "name": "Rota Int'l",
+      "type": "airport",
+      "latitude": 14.171771,
+      "longitude": 145.24398
+    },
+    {
+      "id": "Q1188577",
+      "countryId": null,
+      "name": "Port Hedland Int'l",
+      "type": "airport",
+      "latitude": -20.378127,
+      "longitude": 118.631798
+    },
+    {
+      "id": "Q1188985",
+      "countryId": null,
+      "name": "Nausori Int'l",
+      "type": "airport",
+      "latitude": -18.0459,
+      "longitude": 178.560048
+    },
+    {
+      "id": "Q1191196",
+      "countryId": null,
+      "name": "Praia Int'l",
+      "type": "airport",
+      "latitude": 14.944989,
+      "longitude": -23.486202
+    },
+    {
+      "id": "Q1192811",
+      "countryId": null,
+      "name": "Francisco Bangoy Int'l",
+      "type": "airport",
+      "latitude": 7.130537,
+      "longitude": 125.645067
+    },
+    {
+      "id": "Q1192962",
+      "countryId": null,
+      "name": "Durham Int'l",
+      "type": "airport",
+      "latitude": 35.875232,
+      "longitude": -78.791381
+    },
+    {
+      "id": "Q1193001",
+      "countryId": null,
+      "name": "Mandalay Int'l",
+      "type": "airport",
+      "latitude": 21.705549,
+      "longitude": 95.970654
+    },
+    {
+      "id": "Q1194015",
+      "countryId": null,
+      "name": "Borg El Arab Int'l",
+      "type": "airport",
+      "latitude": 30.918371,
+      "longitude": 29.692666
+    },
+    {
+      "id": "Q1197677",
+      "countryId": null,
+      "name": "Changchun Longjia Int'l",
+      "type": "airport",
+      "latitude": 43.993011,
+      "longitude": 125.690457
+    },
+    {
+      "id": "Q1197688",
+      "countryId": null,
+      "name": "Guilin Liangjiang Int'l",
+      "type": "airport",
+      "latitude": 25.217606,
+      "longitude": 110.046893
+    },
+    {
+      "id": "Q1197691",
+      "countryId": null,
+      "name": "Hangzhou Xiaoshan Int'l",
+      "type": "airport",
+      "latitude": 30.235186,
+      "longitude": 120.432097
+    },
+    {
+      "id": "Q1199087",
+      "countryId": null,
+      "name": "Louisville Int'l",
+      "type": "airport",
+      "latitude": 38.186021,
+      "longitude": -85.741703
+    },
+    {
+      "id": "Q1200033",
+      "countryId": null,
+      "name": "Zamboanga Int'l",
+      "type": "airport",
+      "latitude": 6.919758,
+      "longitude": 122.062432
+    },
+    {
+      "id": "Q1205940",
+      "countryId": null,
+      "name": "Madinah Int'l",
+      "type": "airport",
+      "latitude": 24.544234,
+      "longitude": 39.699136
+    },
+    {
+      "id": "Q1209229",
+      "countryId": null,
+      "name": "Mudanjiang Hailang",
+      "type": "airport",
+      "latitude": 44.534294,
+      "longitude": 129.580152
+    },
+    {
+      "id": "Q1231062",
+      "countryId": null,
+      "name": "El Paso Int'l",
+      "type": "airport",
+      "latitude": 31.799086,
+      "longitude": -106.395715
+    },
+    {
+      "id": "Q1257392",
+      "countryId": null,
+      "name": "San Jose Int'l",
+      "type": "airport",
+      "latitude": 37.369491,
+      "longitude": -121.929429
+    },
+    {
+      "id": "Q1257667",
+      "countryId": null,
+      "name": "Saipan Int'l",
+      "type": "airport",
+      "latitude": 15.121517,
+      "longitude": 145.723695
+    },
+    {
+      "id": "Q1258402",
+      "countryId": null,
+      "name": "Eldoret Int'l",
+      "type": "airport",
+      "latitude": 0.405071,
+      "longitude": 35.223693
+    },
+    {
+      "id": "Q1266839",
+      "countryId": null,
+      "name": "Louis Botha",
+      "type": "airport",
+      "latitude": -29.965914,
+      "longitude": 30.945708
+    },
+    {
+      "id": "Q127530",
+      "countryId": null,
+      "name": "Miami Int'l",
+      "type": "airport",
+      "latitude": 25.794941,
+      "longitude": -80.278972
+    },
+    {
+      "id": "Q127671",
+      "countryId": null,
+      "name": "Arturo Merino Benitez Int'l",
+      "type": "airport",
+      "latitude": -33.396834,
+      "longitude": -70.793686
+    },
+    {
+      "id": "Q127721",
+      "countryId": null,
+      "name": "Carriel Sur Int'l",
+      "type": "airport",
+      "latitude": -36.776373,
+      "longitude": -73.062106
+    },
+    {
+      "id": "Q1279158",
+      "countryId": null,
+      "name": "Saratov",
+      "type": "airport",
+      "latitude": 51.560646,
+      "longitude": 46.035023
+    },
+    {
+      "id": "Q127951",
+      "countryId": null,
+      "name": "Vrazhdebna",
+      "type": "airport",
+      "latitude": 42.689184,
+      "longitude": 23.402452
+    },
+    {
+      "id": "Q127955",
+      "countryId": null,
+      "name": "Surcin",
+      "type": "airport",
+      "latitude": 44.819077,
+      "longitude": 20.291285
+    },
+    {
+      "id": "Q127958",
+      "countryId": null,
+      "name": "Thessaloniki",
+      "type": "airport",
+      "latitude": 40.523874,
+      "longitude": 22.976435
+    },
+    {
+      "id": "Q128016",
+      "countryId": null,
+      "name": "Zagreb",
+      "type": "airport",
+      "latitude": 45.733327,
+      "longitude": 16.061514
+    },
+    {
+      "id": "Q130193",
+      "countryId": null,
+      "name": "Victoria Int'l",
+      "type": "airport",
+      "latitude": 48.640529,
+      "longitude": -123.430625
+    },
+    {
+      "id": "Q1305028",
+      "countryId": null,
+      "name": "Kuching Int'l",
+      "type": "airport",
+      "latitude": 1.487208,
+      "longitude": 110.341837
+    },
+    {
+      "id": "Q131402",
+      "countryId": null,
+      "name": "Franz-Josef-Strauss",
+      "type": "airport",
+      "latitude": 48.353837,
+      "longitude": 11.788063
+    },
+    {
+      "id": "Q131402",
+      "countryId": null,
+      "name": "Munich Freight Terminal",
+      "type": "airport",
+      "latitude": 48.349796,
+      "longitude": 11.769483
+    },
+    {
+      "id": "Q1319833",
+      "countryId": null,
+      "name": "Macdonald-Cartier Int'l",
+      "type": "airport",
+      "latitude": 45.320135,
+      "longitude": -75.664893
+    },
+    {
+      "id": "Q1321142",
+      "countryId": null,
+      "name": "Joinville-Lauro C. de Loyola",
+      "type": "airport",
+      "latitude": -26.224294,
+      "longitude": -48.80165
+    },
+    {
+      "id": "Q1322423",
+      "countryId": null,
+      "name": "Chelyabinsk",
+      "type": "airport",
+      "latitude": 55.297792,
+      "longitude": 61.512259
+    },
+    {
+      "id": "Q1322497",
+      "countryId": null,
+      "name": "Nagoya",
+      "type": "airport",
+      "latitude": 35.254053,
+      "longitude": 136.919628
+    },
+    {
+      "id": "Q1322696",
+      "countryId": null,
+      "name": "Kigali Int'l",
+      "type": "airport",
+      "latitude": -1.963654,
+      "longitude": 30.134877
+    },
+    {
+      "id": "Q1323139",
+      "countryId": null,
+      "name": "Rovaniemi",
+      "type": "airport",
+      "latitude": 66.559556,
+      "longitude": 25.829441
+    },
+    {
+      "id": "Q1323755",
+      "countryId": null,
+      "name": "Winnipeg Int'l",
+      "type": "airport",
+      "latitude": 49.90333,
+      "longitude": -97.226769
+    },
+    {
+      "id": "Q1324587",
+      "countryId": null,
+      "name": "Bourgas",
+      "type": "airport",
+      "latitude": 42.567084,
+      "longitude": 27.516409
+    },
+    {
+      "id": "Q1327938",
+      "countryId": null,
+      "name": "Funafuti Int'l",
+      "type": "airport",
+      "latitude": -8.524854,
+      "longitude": 179.195442
+    },
+    {
+      "id": "Q1327949",
+      "countryId": null,
+      "name": "Sir Seretse Khama Int'l",
+      "type": "airport",
+      "latitude": -24.558072,
+      "longitude": 25.924381
+    },
+    {
+      "id": "Q1328849",
+      "countryId": null,
+      "name": "Novosibirsk Tolmachev",
+      "type": "airport",
+      "latitude": 55.009585,
+      "longitude": 82.667152
+    },
+    {
+      "id": "Q1330618",
+      "countryId": null,
+      "name": "Changsha Huanghua Int'l",
+      "type": "airport",
+      "latitude": 28.189922,
+      "longitude": 113.214054
+    },
+    {
+      "id": "Q1330995",
+      "countryId": null,
+      "name": "Mandelieu",
+      "type": "airport",
+      "latitude": 43.546098,
+      "longitude": 6.954316
+    },
+    {
+      "id": "Q1331032",
+      "countryId": null,
+      "name": "Gen. José M. Yáñez Int'l",
+      "type": "airport",
+      "latitude": 27.969455,
+      "longitude": -110.921651
+    },
+    {
+      "id": "Q1332588",
+      "countryId": null,
+      "name": "Palanga Int'l",
+      "type": "airport",
+      "latitude": 55.971343,
+      "longitude": 21.097446
+    },
+    {
+      "id": "Q1332829",
+      "countryId": null,
+      "name": "Polonia Int'l",
+      "type": "airport",
+      "latitude": 3.566592,
+      "longitude": 98.676193
+    },
+    {
+      "id": "Q1333912",
+      "countryId": null,
+      "name": "Cheddi Jagan Int'l",
+      "type": "airport",
+      "latitude": 6.498553,
+      "longitude": -58.254119
+    },
+    {
+      "id": "Q1333923",
+      "countryId": null,
+      "name": "San Diego Int'l",
+      "type": "airport",
+      "latitude": 32.732265,
+      "longitude": -117.197511
+    },
+    {
+      "id": "Q1334495",
+      "countryId": null,
+      "name": "Koltsovo",
+      "type": "airport",
+      "latitude": 56.732246,
+      "longitude": 60.805803
+    },
+    {
+      "id": "Q1335087",
+      "countryId": null,
+      "name": "La Chinita Int'l",
+      "type": "airport",
+      "latitude": 10.555759,
+      "longitude": -71.723769
+    },
+    {
+      "id": "Q1345361",
+      "countryId": null,
+      "name": "Cork",
+      "type": "airport",
+      "latitude": 51.848541,
+      "longitude": -8.490142
+    },
+    {
+      "id": "Q1345785",
+      "countryId": null,
+      "name": "Halifax Int'l",
+      "type": "airport",
+      "latitude": 44.886545,
+      "longitude": -63.514965
+    },
+    {
+      "id": "Q1347322",
+      "countryId": null,
+      "name": "Luxor",
+      "type": "airport",
+      "latitude": 25.673035,
+      "longitude": 32.703297
+    },
+    {
+      "id": "Q1347672",
+      "countryId": null,
+      "name": "Eppley Airfield",
+      "type": "airport",
+      "latitude": 41.299711,
+      "longitude": -95.899416
+    },
+    {
+      "id": "Q1350630",
+      "countryId": null,
+      "name": "Fuzhou Changle Int'l",
+      "type": "airport",
+      "latitude": 25.931823,
+      "longitude": 119.668044
+    },
+    {
+      "id": "Q1352042",
+      "countryId": null,
+      "name": "Punta Cana",
+      "type": "airport",
+      "latitude": 18.563039,
+      "longitude": -68.363235
+    },
+    {
+      "id": "Q1355258",
+      "countryId": null,
+      "name": "Stavanger Sola",
+      "type": "airport",
+      "latitude": 58.882156,
+      "longitude": 5.62981
+    },
+    {
+      "id": "Q1357851",
+      "countryId": null,
+      "name": "Bassel Al-Assad Int'l",
+      "type": "airport",
+      "latitude": 35.407311,
+      "longitude": 35.944241
+    },
+    {
+      "id": "Q1360523",
+      "countryId": null,
+      "name": "Luis Muñoz Marin",
+      "type": "airport",
+      "latitude": 18.438077,
+      "longitude": -66.00423
+    },
+    {
+      "id": "Q1364375",
+      "countryId": null,
+      "name": "Dunedin Int'l",
+      "type": "airport",
+      "latitude": -45.923431,
+      "longitude": 170.200027
+    },
+    {
+      "id": "Q1365099",
+      "countryId": null,
+      "name": "Kilimanjaro Int'l",
+      "type": "airport",
+      "latitude": -3.424445,
+      "longitude": 37.06519
+    },
+    {
+      "id": "Q1368739",
+      "countryId": null,
+      "name": "Hamilton Int'l",
+      "type": "airport",
+      "latitude": -37.865841,
+      "longitude": 175.336221
+    },
+    {
+      "id": "Q1371432",
+      "countryId": null,
+      "name": "U-Tapao",
+      "type": "airport",
+      "latitude": 12.685293,
+      "longitude": 101.000209
+    },
+    {
+      "id": "Q1371636",
+      "countryId": null,
+      "name": "Kunming Changshui Int'l",
+      "type": "airport",
+      "latitude": 25.101206,
+      "longitude": 102.928523
+    },
+    {
+      "id": "Q1375451",
+      "countryId": null,
+      "name": "Nanchang Changbei Int'l",
+      "type": "airport",
+      "latitude": 28.862489,
+      "longitude": 115.91198
+    },
+    {
+      "id": "Q1378110",
+      "countryId": null,
+      "name": "Yantai",
+      "type": "airport",
+      "latitude": 37.407704,
+      "longitude": 121.372047
+    },
+    {
+      "id": "Q1393401",
+      "countryId": null,
+      "name": "Zanzibar",
+      "type": "airport",
+      "latitude": -6.21857,
+      "longitude": 39.222332
+    },
+    {
+      "id": "Q1398872",
+      "countryId": null,
+      "name": "Aden Int'l",
+      "type": "airport",
+      "latitude": 12.8278,
+      "longitude": 45.030602
+    },
+    {
+      "id": "Q1411192",
+      "countryId": null,
+      "name": "Julius Nyerere Int'l",
+      "type": "airport",
+      "latitude": -6.86672,
+      "longitude": 39.207472
+    },
+    {
+      "id": "Q1415006",
+      "countryId": null,
+      "name": "Nassau Int'l",
+      "type": "airport",
+      "latitude": 25.048691,
+      "longitude": -77.464847
+    },
+    {
+      "id": "Q141677",
+      "countryId": null,
+      "name": "Hsien Yang",
+      "type": "airport",
+      "latitude": 34.442939,
+      "longitude": 108.755811
+    },
+    {
+      "id": "Q1418267",
+      "countryId": null,
+      "name": "São Tomé Salazar",
+      "type": "airport",
+      "latitude": 0.374744,
+      "longitude": 6.712822
+    },
+    {
+      "id": "Q1418829",
+      "countryId": null,
+      "name": "Basrah Int'l",
+      "type": "airport",
+      "latitude": 30.552799,
+      "longitude": 47.668377
+    },
+    {
+      "id": "Q1420178",
+      "countryId": null,
+      "name": "Tocumen Int'l",
+      "type": "airport",
+      "latitude": 9.066872,
+      "longitude": -79.387135
+    },
+    {
+      "id": "Q1420222",
+      "countryId": null,
+      "name": "Aleppo Int'l",
+      "type": "airport",
+      "latitude": 36.184624,
+      "longitude": 37.227341
+    },
+    {
+      "id": "Q1420233",
+      "countryId": null,
+      "name": "Bradley Int'l",
+      "type": "airport",
+      "latitude": 41.930316,
+      "longitude": -72.685395
+    },
+    {
+      "id": "Q1421504",
+      "countryId": null,
+      "name": "Greater Pittsburgh Int'l",
+      "type": "airport",
+      "latitude": 40.496052,
+      "longitude": -80.256129
+    },
+    {
+      "id": "Q1422154",
+      "countryId": null,
+      "name": "Simon Bolivar Int'l",
+      "type": "airport",
+      "latitude": -2.158338,
+      "longitude": -79.88701
+    },
+    {
+      "id": "Q1422858",
+      "countryId": null,
+      "name": "Philip S. W. Goldson Int'l",
+      "type": "airport",
+      "latitude": 17.536069,
+      "longitude": -88.308206
+    },
+    {
+      "id": "Q1425566",
+      "countryId": null,
+      "name": "Portland Int'l",
+      "type": "airport",
+      "latitude": 45.588957,
+      "longitude": -122.592739
+    },
+    {
+      "id": "Q1425838",
+      "countryId": null,
+      "name": "Lambert St Louis Int'l",
+      "type": "airport",
+      "latitude": 38.742716,
+      "longitude": -90.365955
+    },
+    {
+      "id": "Q1427782",
+      "countryId": null,
+      "name": "Viru Viru Int'l",
+      "type": "airport",
+      "latitude": -17.647947,
+      "longitude": -63.140389
+    },
+    {
+      "id": "Q14295",
+      "countryId": null,
+      "name": "Seattle-Tacoma Int'l",
+      "type": "airport",
+      "latitude": 47.443582,
+      "longitude": -122.30229
+    },
+    {
+      "id": "Q14300",
+      "countryId": null,
+      "name": "Canberra Int'l",
+      "type": "airport",
+      "latitude": -35.307186,
+      "longitude": 149.190761
+    },
+    {
+      "id": "Q14302",
+      "countryId": null,
+      "name": "Adelaide Int'l",
+      "type": "airport",
+      "latitude": -34.940586,
+      "longitude": 138.532101
+    },
+    {
+      "id": "Q1430711",
+      "countryId": null,
+      "name": "John G Diefenbaker Int'l",
+      "type": "airport",
+      "latitude": 52.170144,
+      "longitude": -106.690182
+    },
+    {
+      "id": "Q1430720",
+      "countryId": null,
+      "name": "General Juan N Alvarez Int'l",
+      "type": "airport",
+      "latitude": 16.761967,
+      "longitude": -99.754509
+    },
+    {
+      "id": "Q1430728",
+      "countryId": null,
+      "name": "Şakirpaşa",
+      "type": "airport",
+      "latitude": 36.985209,
+      "longitude": 35.296961
+    },
+    {
+      "id": "Q1430745",
+      "countryId": null,
+      "name": "Albany Int'l",
+      "type": "airport",
+      "latitude": 42.745662,
+      "longitude": -73.809352
+    },
+    {
+      "id": "Q1430822",
+      "countryId": null,
+      "name": "Cerro Moreno Int'l",
+      "type": "airport",
+      "latitude": -23.448955,
+      "longitude": -70.440991
+    },
+    {
+      "id": "Q1430853",
+      "countryId": null,
+      "name": "Arcata-Eureka",
+      "type": "airport",
+      "latitude": 40.971925,
+      "longitude": -124.107066
+    },
+    {
+      "id": "Q1430861",
+      "countryId": null,
+      "name": "Rodríguez Ballón Int'l",
+      "type": "airport",
+      "latitude": -16.344552,
+      "longitude": -71.567934
+    },
+    {
+      "id": "Q1430913",
+      "countryId": null,
+      "name": "Austin-Bergstrom Int'l",
+      "type": "airport",
+      "latitude": 30.202108,
+      "longitude": -97.666837
+    },
+    {
+      "id": "Q1430971",
+      "countryId": null,
+      "name": "Boise Air Terminal",
+      "type": "airport",
+      "latitude": 43.568959,
+      "longitude": -116.221841
+    },
+    {
+      "id": "Q1430981",
+      "countryId": null,
+      "name": "Bolshesavino",
+      "type": "airport",
+      "latitude": 57.919771,
+      "longitude": 56.01956
+    },
+    {
+      "id": "Q1431002",
+      "countryId": null,
+      "name": "Broome Int'l",
+      "type": "airport",
+      "latitude": -17.952576,
+      "longitude": 122.233851
+    },
+    {
+      "id": "Q1431012",
+      "countryId": null,
+      "name": "Gosselies",
+      "type": "airport",
+      "latitude": 50.45713,
+      "longitude": 4.454374
+    },
+    {
+      "id": "Q1431022",
+      "countryId": null,
+      "name": "Port Sudan New Int'l",
+      "type": "airport",
+      "latitude": 19.434105,
+      "longitude": 37.238748
+    },
+    {
+      "id": "Q1431046",
+      "countryId": null,
+      "name": "Cascais",
+      "type": "airport",
+      "latitude": 38.723535,
+      "longitude": -9.354582
+    },
+    {
+      "id": "Q1431055",
+      "countryId": null,
+      "name": "Cassidy Int'l",
+      "type": "airport",
+      "latitude": 1.986161,
+      "longitude": -157.349778
+    },
+    {
+      "id": "Q1431086",
+      "countryId": null,
+      "name": "Charlottetown",
+      "type": "airport",
+      "latitude": 46.285813,
+      "longitude": -63.131234
+    },
+    {
+      "id": "Q1431111",
+      "countryId": null,
+      "name": "Cibao Int'l",
+      "type": "airport",
+      "latitude": 19.465922,
+      "longitude": -70.694178
+    },
+    {
+      "id": "Q1431147",
+      "countryId": null,
+      "name": "Cozumel Int'l",
+      "type": "airport",
+      "latitude": 20.511554,
+      "longitude": -86.930406
+    },
+    {
+      "id": "Q1431168",
+      "countryId": null,
+      "name": "Hato Int'l",
+      "type": "airport",
+      "latitude": 12.184835,
+      "longitude": -68.956879
+    },
+    {
+      "id": "Q1431170",
+      "countryId": null,
+      "name": "Velazco Astete Int'l",
+      "type": "airport",
+      "latitude": -13.538219,
+      "longitude": -71.943664
+    },
+    {
+      "id": "Q1431200",
+      "countryId": null,
+      "name": "Del Bajio Int'l",
+      "type": "airport",
+      "latitude": 20.985887,
+      "longitude": -101.478753
+    },
+    {
+      "id": "Q1431204",
+      "countryId": null,
+      "name": "Des Moines Int'l",
+      "type": "airport",
+      "latitude": 41.53279,
+      "longitude": -93.648461
+    },
+    {
+      "id": "Q1431221",
+      "countryId": null,
+      "name": "Diego Aracena Int'l",
+      "type": "airport",
+      "latitude": -20.54784,
+      "longitude": -70.178635
+    },
+    {
+      "id": "Q1431225",
+      "countryId": null,
+      "name": "Voloskoye",
+      "type": "airport",
+      "latitude": 48.367572,
+      "longitude": 35.093906
+    },
+    {
+      "id": "Q1431229",
+      "countryId": null,
+      "name": "Donetsk",
+      "type": "airport",
+      "latitude": 48.069167,
+      "longitude": 37.744809
+    },
+    {
+      "id": "Q1431295",
+      "countryId": null,
+      "name": "Fairbanks Int'l",
+      "type": "airport",
+      "latitude": 64.818098,
+      "longitude": -147.865721
+    },
+    {
+      "id": "Q1431302",
+      "countryId": null,
+      "name": "Saiss",
+      "type": "airport",
+      "latitude": 33.930525,
+      "longitude": -4.982146
+    },
+    {
+      "id": "Q1431320",
+      "countryId": null,
+      "name": "Fort St. John (N. Peace)",
+      "type": "airport",
+      "latitude": 56.246035,
+      "longitude": -120.736439
+    },
+    {
+      "id": "Q1431328",
+      "countryId": null,
+      "name": "Foz do Iguaçu Int'l",
+      "type": "airport",
+      "latitude": -25.597683,
+      "longitude": -54.488592
+    },
+    {
+      "id": "Q1431348",
+      "countryId": null,
+      "name": "Gary/Chicago Int'l",
+      "type": "airport",
+      "latitude": 41.617793,
+      "longitude": -87.40836
+    },
+    {
+      "id": "Q1431350",
+      "countryId": null,
+      "name": "Gander Int'l",
+      "type": "airport",
+      "latitude": 48.946598,
+      "longitude": -54.575572
+    },
+    {
+      "id": "Q1431357",
+      "countryId": null,
+      "name": "Gaziantep Oğuzeli Int'l",
+      "type": "airport",
+      "latitude": 36.945363,
+      "longitude": 37.473803
+    },
+    {
+      "id": "Q1431444",
+      "countryId": null,
+      "name": "John C. Munro Hamilton Int'l",
+      "type": "airport",
+      "latitude": 43.163361,
+      "longitude": -79.926423
+    },
+    {
+      "id": "Q1431468",
+      "countryId": null,
+      "name": "Gen. Ignacio P. Garcia Int'l",
+      "type": "airport",
+      "latitude": 29.090077,
+      "longitude": -111.051902
+    },
+    {
+      "id": "Q1431475",
+      "countryId": null,
+      "name": "Hewanorra Int'l",
+      "type": "airport",
+      "latitude": 13.736524,
+      "longitude": -60.949974
+    },
+    {
+      "id": "Q1431490",
+      "countryId": null,
+      "name": "Hilo Int'l",
+      "type": "airport",
+      "latitude": 19.714798,
+      "longitude": -155.03963
+    },
+    {
+      "id": "Q1431553",
+      "countryId": null,
+      "name": "Inverness",
+      "type": "airport",
+      "latitude": 57.5395,
+      "longitude": -4.063592
+    },
+    {
+      "id": "Q1431564",
+      "countryId": null,
+      "name": "Irkutsk S.E.",
+      "type": "airport",
+      "latitude": 52.272889,
+      "longitude": 104.35586
+    },
+    {
+      "id": "Q1431579",
+      "countryId": null,
+      "name": "Jacksonville Int'l",
+      "type": "airport",
+      "latitude": 30.491353,
+      "longitude": -81.683577
+    },
+    {
+      "id": "Q1431631",
+      "countryId": null,
+      "name": "Juanda Int'l",
+      "type": "airport",
+      "latitude": -7.383579,
+      "longitude": 112.777035
+    },
+    {
+      "id": "Q1431637",
+      "countryId": null,
+      "name": "Kahului",
+      "type": "airport",
+      "latitude": 20.893289,
+      "longitude": -156.43743
+    },
+    {
+      "id": "Q1431644",
+      "countryId": null,
+      "name": "Kamloops",
+      "type": "airport",
+      "latitude": 50.705196,
+      "longitude": -120.441735
+    },
+    {
+      "id": "Q1431654",
+      "countryId": null,
+      "name": "Kano Mallam Aminu Int'l",
+      "type": "airport",
+      "latitude": 12.045707,
+      "longitude": 8.522137
+    },
+    {
+      "id": "Q1431674",
+      "countryId": null,
+      "name": "Kansas City Int'l",
+      "type": "airport",
+      "latitude": 39.297896,
+      "longitude": -94.715915
+    },
+    {
+      "id": "Q1431732",
+      "countryId": null,
+      "name": "Kirkwall",
+      "type": "airport",
+      "latitude": 58.954429,
+      "longitude": -2.901378
+    },
+    {
+      "id": "Q1431737",
+      "countryId": null,
+      "name": "Kirkenes Hoybuktmoen",
+      "type": "airport",
+      "latitude": 69.723832,
+      "longitude": 29.891349
+    },
+    {
+      "id": "Q1431740",
+      "countryId": null,
+      "name": "Kiruna_Airport",
+      "type": "airport",
+      "latitude": 67.825607,
+      "longitude": 20.335152
+    },
+    {
+      "id": "Q1431754",
+      "countryId": null,
+      "name": "Konya",
+      "type": "airport",
+      "latitude": 37.983995,
+      "longitude": 32.575673
+    },
+    {
+      "id": "Q1431888",
+      "countryId": null,
+      "name": "Lille-Lesquin",
+      "type": "airport",
+      "latitude": 50.571642,
+      "longitude": 3.105965
+    },
+    {
+      "id": "Q1431925",
+      "countryId": null,
+      "name": "Lomé Tokoin",
+      "type": "airport",
+      "latitude": 6.166874,
+      "longitude": 1.250932
+    },
+    {
+      "id": "Q1431949",
+      "countryId": null,
+      "name": "Los Mochis",
+      "type": "airport",
+      "latitude": 25.688509,
+      "longitude": -109.082695
+    },
+    {
+      "id": "Q1431971",
+      "countryId": null,
+      "name": "Lulea",
+      "type": "airport",
+      "latitude": 65.549036,
+      "longitude": 22.123027
+    },
+    {
+      "id": "Q1432006",
+      "countryId": null,
+      "name": "Sultan Hasanuddin Int'l",
+      "type": "airport",
+      "latitude": -5.058937,
+      "longitude": 119.545691
+    },
+    {
+      "id": "Q1432011",
+      "countryId": null,
+      "name": "Marka Int'l",
+      "type": "airport",
+      "latitude": 31.974199,
+      "longitude": 35.984105
+    },
+    {
+      "id": "Q1432022",
+      "countryId": null,
+      "name": "General Rafael Buelna Int'l",
+      "type": "airport",
+      "latitude": 23.166596,
+      "longitude": -106.270017
+    },
+    {
+      "id": "Q1432029",
+      "countryId": null,
+      "name": "El Plumerillo",
+      "type": "airport",
+      "latitude": -32.8278,
+      "longitude": -68.798484
+    },
+    {
+      "id": "Q1432089",
+      "countryId": null,
+      "name": "Mosul Int'l",
+      "type": "airport",
+      "latitude": 36.308601,
+      "longitude": 43.145802
+    },
+    {
+      "id": "Q1432118",
+      "countryId": null,
+      "name": "Lic M Crecencio Rejon Int'l",
+      "type": "airport",
+      "latitude": 20.93386,
+      "longitude": -89.663024
+    },
+    {
+      "id": "Q1432146",
+      "countryId": null,
+      "name": "Nashville Int'l",
+      "type": "airport",
+      "latitude": 36.131488,
+      "longitude": -86.669287
+    },
+    {
+      "id": "Q1432178",
+      "countryId": null,
+      "name": "Nizhny Novgorod Int'l",
+      "type": "airport",
+      "latitude": 56.218553,
+      "longitude": 43.789634
+    },
+    {
+      "id": "Q1432196",
+      "countryId": null,
+      "name": "Norfolk Int'l",
+      "type": "airport",
+      "latitude": 36.898239,
+      "longitude": -76.204423
+    },
+    {
+      "id": "Q1432206",
+      "countryId": null,
+      "name": "Norman Manley Int'l",
+      "type": "airport",
+      "latitude": 17.937575,
+      "longitude": -76.77869
+    },
+    {
+      "id": "Q1432218",
+      "countryId": null,
+      "name": "Xoxocotlán Int'l",
+      "type": "airport",
+      "latitude": 17.000559,
+      "longitude": -96.721796
+    },
+    {
+      "id": "Q1432234",
+      "countryId": null,
+      "name": "Odessa Int'l",
+      "type": "airport",
+      "latitude": 46.440627,
+      "longitude": 30.676831
+    },
+    {
+      "id": "Q1432246",
+      "countryId": null,
+      "name": "Omsk Tsentralny",
+      "type": "airport",
+      "latitude": 54.957648,
+      "longitude": 73.31636
+    },
+    {
+      "id": "Q1432281",
+      "countryId": null,
+      "name": "Osvaldo Vieira Int'l",
+      "type": "airport",
+      "latitude": 11.888923,
+      "longitude": -15.651186
+    },
+    {
+      "id": "Q1432286",
+      "countryId": null,
+      "name": "Sultan Mahmud Badaruddin II",
+      "type": "airport",
+      "latitude": -2.899993,
+      "longitude": 104.699128
+    },
+    {
+      "id": "Q1432305",
+      "countryId": null,
+      "name": "Palmerston N. Int'l",
+      "type": "airport",
+      "latitude": -40.323318,
+      "longitude": 175.621283
+    },
+    {
+      "id": "Q1432310",
+      "countryId": null,
+      "name": "Palm Beach Int'l",
+      "type": "airport",
+      "latitude": 26.688442,
+      "longitude": -80.090189
+    },
+    {
+      "id": "Q1432332",
+      "countryId": null,
+      "name": "Paysandu",
+      "type": "airport",
+      "latitude": -32.361455,
+      "longitude": -58.068535
+    },
+    {
+      "id": "Q1432424",
+      "countryId": null,
+      "name": "João Paulo II",
+      "type": "airport",
+      "latitude": 37.743332,
+      "longitude": -25.696988
+    },
+    {
+      "id": "Q1432440",
+      "countryId": null,
+      "name": "Port Columbus Int'l",
+      "type": "airport",
+      "latitude": 39.998118,
+      "longitude": -82.884031
+    },
+    {
+      "id": "Q1432442",
+      "countryId": null,
+      "name": "H F Verwoerd",
+      "type": "airport",
+      "latitude": -33.984088,
+      "longitude": 25.611778
+    },
+    {
+      "id": "Q1432453",
+      "countryId": null,
+      "name": "Port Harcourt Int'l",
+      "type": "airport",
+      "latitude": 5.007003,
+      "longitude": 6.949897
+    },
+    {
+      "id": "Q1432488",
+      "countryId": null,
+      "name": "Presidente Nicolau Lobato Int'l",
+      "type": "airport",
+      "latitude": -8.549312,
+      "longitude": 125.524854
+    },
+    {
+      "id": "Q1432525",
+      "countryId": null,
+      "name": "Pune",
+      "type": "airport",
+      "latitude": 18.579177,
+      "longitude": 73.908984
+    },
+    {
+      "id": "Q1432622",
+      "countryId": null,
+      "name": "Rosario – Islas Malvinas Int'l",
+      "type": "airport",
+      "latitude": -32.916227,
+      "longitude": -60.780079
+    },
+    {
+      "id": "Q1432638",
+      "countryId": null,
+      "name": "Rostov-on-Don",
+      "type": "airport",
+      "latitude": 47.255112,
+      "longitude": 39.803514
+    },
+    {
+      "id": "Q1432638",
+      "countryId": null,
+      "name": "Rostov S.W.",
+      "type": "airport",
+      "latitude": 47.115858,
+      "longitude": 39.797222
+    },
+    {
+      "id": "Q1432668",
+      "countryId": null,
+      "name": "Sacramento Int'l",
+      "type": "airport",
+      "latitude": 38.692724,
+      "longitude": -121.587895
+    },
+    {
+      "id": "Q1432702",
+      "countryId": null,
+      "name": "Salgado Filho Int'l",
+      "type": "airport",
+      "latitude": -29.990193,
+      "longitude": -51.177041
+    },
+    {
+      "id": "Q1432706",
+      "countryId": null,
+      "name": "San Antonio Int'l",
+      "type": "airport",
+      "latitude": 29.52662,
+      "longitude": -98.47197
+    },
+    {
+      "id": "Q1432711",
+      "countryId": null,
+      "name": "Teniente Gen. Benjamin Matienzo Int'l",
+      "type": "airport",
+      "latitude": -26.835731,
+      "longitude": -65.108125
+    },
+    {
+      "id": "Q1432740",
+      "countryId": null,
+      "name": "Santa Bernardina Int'l",
+      "type": "airport",
+      "latitude": -33.359108,
+      "longitude": -56.499264
+    },
+    {
+      "id": "Q1432764",
+      "countryId": null,
+      "name": "Antonio Maceo",
+      "type": "airport",
+      "latitude": 19.972429,
+      "longitude": -75.839888
+    },
+    {
+      "id": "Q1432786",
+      "countryId": null,
+      "name": "Zaporozhye Int'l",
+      "type": "airport",
+      "latitude": 47.873264,
+      "longitude": 35.301873
+    },
+    {
+      "id": "Q1432789",
+      "countryId": null,
+      "name": "Savannah Int'l",
+      "type": "airport",
+      "latitude": 32.135642,
+      "longitude": -81.209965
+    },
+    {
+      "id": "Q1432843",
+      "countryId": null,
+      "name": "Seychelles Int'l",
+      "type": "airport",
+      "latitude": -4.671069,
+      "longitude": 55.511552
+    },
+    {
+      "id": "Q1432871",
+      "countryId": null,
+      "name": "Simferopol Int'l",
+      "type": "airport",
+      "latitude": 45.020217,
+      "longitude": 33.996053
+    },
+    {
+      "id": "Q1432932",
+      "countryId": null,
+      "name": "Sumburgh",
+      "type": "airport",
+      "latitude": 59.87669,
+      "longitude": -1.288061
+    },
+    {
+      "id": "Q1432943",
+      "countryId": null,
+      "name": "Surgut",
+      "type": "airport",
+      "latitude": 61.340167,
+      "longitude": 73.408496
+    },
+    {
+      "id": "Q1432990",
+      "countryId": null,
+      "name": "Tallahassee Reg.",
+      "type": "airport",
+      "latitude": 30.395558,
+      "longitude": -84.344995
+    },
+    {
+      "id": "Q1433005",
+      "countryId": null,
+      "name": "Arkhangelsk-Talagi",
+      "type": "airport",
+      "latitude": 64.596744,
+      "longitude": 40.713347
+    },
+    {
+      "id": "Q1433022",
+      "countryId": null,
+      "name": "Tangier Ibn Battouta",
+      "type": "airport",
+      "latitude": 35.725766,
+      "longitude": -5.912881
+    },
+    {
+      "id": "Q1433064",
+      "countryId": null,
+      "name": "General Abelardo L Rodriguez Int'l",
+      "type": "airport",
+      "latitude": 32.54605,
+      "longitude": -116.975476
+    },
+    {
+      "id": "Q1433111",
+      "countryId": null,
+      "name": "Tucson Int'l",
+      "type": "airport",
+      "latitude": 32.120352,
+      "longitude": -110.937713
+    },
+    {
+      "id": "Q1433157",
+      "countryId": null,
+      "name": "V.C. Bird Int'l",
+      "type": "airport",
+      "latitude": 17.14036,
+      "longitude": -61.792368
+    },
+    {
+      "id": "Q1433189",
+      "countryId": null,
+      "name": "Victoria Falls",
+      "type": "airport",
+      "latitude": -18.099016,
+      "longitude": 25.846768
+    },
+    {
+      "id": "Q1433221",
+      "countryId": null,
+      "name": "Wewak Int'l",
+      "type": "airport",
+      "latitude": -3.580227,
+      "longitude": 143.669102
+    },
+    {
+      "id": "Q1433234",
+      "countryId": null,
+      "name": "Kansas City Int'l",
+      "type": "airport",
+      "latitude": 37.652928,
+      "longitude": -97.428739
+    },
+    {
+      "id": "Q1433251",
+      "countryId": null,
+      "name": "Whitehorse Int'l",
+      "type": "airport",
+      "latitude": 60.714152,
+      "longitude": -135.07621
+    },
+    {
+      "id": "Q1433263",
+      "countryId": null,
+      "name": "Gumrak",
+      "type": "airport",
+      "latitude": 48.791676,
+      "longitude": 44.354768
+    },
+    {
+      "id": "Q1433338",
+      "countryId": null,
+      "name": "Šiauliai Int'l",
+      "type": "airport",
+      "latitude": 55.903769,
+      "longitude": 23.383189
+    },
+    {
+      "id": "Q1444671",
+      "countryId": null,
+      "name": "Eloy Alfaro Int'l",
+      "type": "airport",
+      "latitude": -0.949557,
+      "longitude": -80.683385
+    },
+    {
+      "id": "Q1453722",
+      "countryId": null,
+      "name": "Freetown Lungi",
+      "type": "airport",
+      "latitude": 8.615424,
+      "longitude": -13.20023
+    },
+    {
+      "id": "Q1457975",
+      "countryId": null,
+      "name": "Achmad Yani",
+      "type": "airport",
+      "latitude": -6.978735,
+      "longitude": 110.378556
+    },
+    {
+      "id": "Q1461076",
+      "countryId": null,
+      "name": "New Orleans Int'l",
+      "type": "airport",
+      "latitude": 29.985114,
+      "longitude": -90.256694
+    },
+    {
+      "id": "Q1466205",
+      "countryId": null,
+      "name": "Trivandrum Int'l",
+      "type": "airport",
+      "latitude": 8.47651,
+      "longitude": 76.918903
+    },
+    {
+      "id": "Q1499872",
+      "countryId": null,
+      "name": "Will Rogers",
+      "type": "airport",
+      "latitude": 35.395277,
+      "longitude": -97.596118
+    },
+    {
+      "id": "Q1500002",
+      "countryId": null,
+      "name": "Southwest Florida Int'l",
+      "type": "airport",
+      "latitude": 26.527929,
+      "longitude": -81.755123
+    },
+    {
+      "id": "Q1510001",
+      "countryId": null,
+      "name": "Gerald R. Ford Int'l",
+      "type": "airport",
+      "latitude": 42.884778,
+      "longitude": -85.529573
+    },
+    {
+      "id": "Q151121",
+      "countryId": null,
+      "name": "Greater Cincinnati Int'l",
+      "type": "airport",
+      "latitude": 39.055419,
+      "longitude": -84.65617
+    },
+    {
+      "id": "Q15114",
+      "countryId": null,
+      "name": "Zurich Int'l",
+      "type": "airport",
+      "latitude": 47.45239,
+      "longitude": 8.562213
+    },
+    {
+      "id": "Q1516699",
+      "countryId": null,
+      "name": "St John's Int'l",
+      "type": "airport",
+      "latitude": 47.613118,
+      "longitude": -52.743334
+    },
+    {
+      "id": "Q1516769",
+      "countryId": null,
+      "name": "Bacha Khan Int'l",
+      "type": "airport",
+      "latitude": 33.991403,
+      "longitude": 71.518815
+    },
+    {
+      "id": "Q153592",
+      "countryId": null,
+      "name": "King Abdul Aziz Int'l",
+      "type": "airport",
+      "latitude": 21.670686,
+      "longitude": 39.1505
+    },
+    {
+      "id": "Q1547",
+      "countryId": null,
+      "name": "Lyon-Saint Exupery",
+      "type": "airport",
+      "latitude": 45.721019,
+      "longitude": 5.075944
+    },
+    {
+      "id": "Q1547557",
+      "countryId": null,
+      "name": "Mariscal Sucre Int'l",
+      "type": "airport",
+      "latitude": -0.145552,
+      "longitude": -78.489993
+    },
+    {
+      "id": "Q15498",
+      "countryId": null,
+      "name": "Hobart Int'l",
+      "type": "airport",
+      "latitude": -42.837608,
+      "longitude": 147.505996
+    },
+    {
+      "id": "Q1570890",
+      "countryId": null,
+      "name": "Amarillo Int'l",
+      "type": "airport",
+      "latitude": 35.218403,
+      "longitude": -101.705353
+    },
+    {
+      "id": "Q1571015",
+      "countryId": null,
+      "name": "Regina",
+      "type": "airport",
+      "latitude": 50.433219,
+      "longitude": -104.655434
+    },
+    {
+      "id": "Q157741",
+      "countryId": null,
+      "name": "Cologne/Bonn",
+      "type": "airport",
+      "latitude": 50.87826,
+      "longitude": 7.12236
+    },
+    {
+      "id": "Q1578972",
+      "countryId": null,
+      "name": "Albuquerque Int'l",
+      "type": "airport",
+      "latitude": 35.049158,
+      "longitude": -106.616685
+    },
+    {
+      "id": "Q158732",
+      "countryId": null,
+      "name": "Stuttgart",
+      "type": "airport",
+      "latitude": 48.690105,
+      "longitude": 9.193951
+    },
+    {
+      "id": "Q1595048",
+      "countryId": null,
+      "name": "Jabalpur",
+      "type": "airport",
+      "latitude": 23.184533,
+      "longitude": 80.058744
+    },
+    {
+      "id": "Q1595087",
+      "countryId": null,
+      "name": "Raipur",
+      "type": "airport",
+      "latitude": 21.185987,
+      "longitude": 81.740378
+    },
+    {
+      "id": "Q1655437",
+      "countryId": null,
+      "name": "Dhamial",
+      "type": "airport",
+      "latitude": 33.561415,
+      "longitude": 73.03205
+    },
+    {
+      "id": "Q1655986",
+      "countryId": null,
+      "name": "Com. Armando Tola Int'l",
+      "type": "airport",
+      "latitude": -50.283901,
+      "longitude": -72.053857
+    },
+    {
+      "id": "Q1656909",
+      "countryId": null,
+      "name": "Corpus Christi Int'l",
+      "type": "airport",
+      "latitude": 27.774456,
+      "longitude": -97.502268
+    },
+    {
+      "id": "Q1657258",
+      "countryId": null,
+      "name": "Columbia Metro",
+      "type": "airport",
+      "latitude": 33.934205,
+      "longitude": -81.109335
+    },
+    {
+      "id": "Q1657573",
+      "countryId": null,
+      "name": "Corumbá Int'l",
+      "type": "airport",
+      "latitude": -19.014166,
+      "longitude": -57.663608
+    },
+    {
+      "id": "Q1657780",
+      "countryId": null,
+      "name": "Dr. Babasaheb Ambedkar Int'l",
+      "type": "airport",
+      "latitude": 21.089932,
+      "longitude": 79.053798
+    },
+    {
+      "id": "Q1657858",
+      "countryId": null,
+      "name": "Detroit City",
+      "type": "airport",
+      "latitude": 42.409094,
+      "longitude": -83.003968
+    },
+    {
+      "id": "Q1657885",
+      "countryId": null,
+      "name": "Del Norte Int'l",
+      "type": "airport",
+      "latitude": 25.859874,
+      "longitude": -100.238394
+    },
+    {
+      "id": "Q1658031",
+      "countryId": null,
+      "name": "King Abdulaziz AB",
+      "type": "airport",
+      "latitude": 26.270368,
+      "longitude": 50.147725
+    },
+    {
+      "id": "Q1658243",
+      "countryId": null,
+      "name": "Devi Ahilyabai Holkar Int'l",
+      "type": "airport",
+      "latitude": 22.727749,
+      "longitude": 75.809292
+    },
+    {
+      "id": "Q166276",
+      "countryId": null,
+      "name": "Madrid Barajas",
+      "type": "airport",
+      "latitude": 40.468128,
+      "longitude": -3.569027
+    },
+    {
+      "id": "Q166512",
+      "countryId": null,
+      "name": "Chuuk Int'l",
+      "type": "airport",
+      "latitude": 7.457618,
+      "longitude": 151.842046
+    },
+    {
+      "id": "Q16810",
+      "countryId": null,
+      "name": "Kaohsiung Int'l",
+      "type": "airport",
+      "latitude": 22.571706,
+      "longitude": 120.345156
+    },
+    {
+      "id": "Q1692316",
+      "countryId": null,
+      "name": "John Wayne",
+      "type": "airport",
+      "latitude": 33.679486,
+      "longitude": -117.861489
+    },
+    {
+      "id": "Q1708497",
+      "countryId": null,
+      "name": "Deadhorse",
+      "type": "airport",
+      "latitude": 70.19751,
+      "longitude": -148.457855
+    },
+    {
+      "id": "Q1708612",
+      "countryId": null,
+      "name": "Dane Cty. Reg. (Truax Field)",
+      "type": "airport",
+      "latitude": 43.136308,
+      "longitude": -89.345785
+    },
+    {
+      "id": "Q1708737",
+      "countryId": null,
+      "name": "St Gatien",
+      "type": "airport",
+      "latitude": 49.361661,
+      "longitude": 0.158654
+    },
+    {
+      "id": "Q1708773",
+      "countryId": null,
+      "name": "Chetumal Int'l",
+      "type": "airport",
+      "latitude": 18.506434,
+      "longitude": -88.32426
+    },
+    {
+      "id": "Q174140",
+      "countryId": null,
+      "name": "Sangster Int'l",
+      "type": "airport",
+      "latitude": 18.501155,
+      "longitude": -77.918391
+    },
+    {
+      "id": "Q174233",
+      "countryId": null,
+      "name": "Astana Int'l",
+      "type": "airport",
+      "latitude": 51.026935,
+      "longitude": 71.460944
+    },
+    {
+      "id": "Q174764",
+      "countryId": null,
+      "name": "Mingaladon",
+      "type": "airport",
+      "latitude": 16.901154,
+      "longitude": 96.134195
+    },
+    {
+      "id": "Q17480",
+      "countryId": null,
+      "name": "Deurne",
+      "type": "airport",
+      "latitude": 51.189129,
+      "longitude": 4.450923
+    },
+    {
+      "id": "Q175028",
+      "countryId": null,
+      "name": "Syracuse Hancock Int'l",
+      "type": "airport",
+      "latitude": 43.131784,
+      "longitude": -76.113079
+    },
+    {
+      "id": "Q17528",
+      "countryId": null,
+      "name": "Broken Hill",
+      "type": "airport",
+      "latitude": -31.998997,
+      "longitude": 141.470407
+    },
+    {
+      "id": "Q17542",
+      "countryId": null,
+      "name": "Dubbo",
+      "type": "airport",
+      "latitude": -32.218681,
+      "longitude": 148.569717
+    },
+    {
+      "id": "Q17581",
+      "countryId": null,
+      "name": "Kingsford Smith",
+      "type": "airport",
+      "latitude": -33.936583,
+      "longitude": 151.166067
+    },
+    {
+      "id": "Q17606",
+      "countryId": null,
+      "name": "Alice Springs",
+      "type": "airport",
+      "latitude": -23.801968,
+      "longitude": 133.902918
+    },
+    {
+      "id": "Q17609",
+      "countryId": null,
+      "name": "Darwin Int'l",
+      "type": "airport",
+      "latitude": -12.408056,
+      "longitude": 130.877501
+    },
+    {
+      "id": "Q17704",
+      "countryId": null,
+      "name": "Hong Kong Int'l",
+      "type": "airport",
+      "latitude": 22.315333,
+      "longitude": 113.935016
+    },
+    {
+      "id": "Q177216",
+      "countryId": null,
+      "name": "Xiamen Gaoqi Int'l",
+      "type": "airport",
+      "latitude": 24.537193,
+      "longitude": 118.126969
+    },
+    {
+      "id": "Q177477",
+      "countryId": null,
+      "name": "Baikonur Cosmodrome",
+      "type": "airport",
+      "latitude": 45.963574,
+      "longitude": 63.307354
+    },
+    {
+      "id": "Q177689",
+      "countryId": null,
+      "name": "Kotoka Int'l",
+      "type": "airport",
+      "latitude": 5.606982,
+      "longitude": -0.171403
+    },
+    {
+      "id": "Q177844",
+      "countryId": null,
+      "name": "Minangkabau Int'l",
+      "type": "airport",
+      "latitude": -0.786046,
+      "longitude": 100.285456
+    },
+    {
+      "id": "Q178021",
+      "countryId": null,
+      "name": "Dublin",
+      "type": "airport",
+      "latitude": 53.427008,
+      "longitude": -6.243885
+    },
+    {
+      "id": "Q1781135",
+      "countryId": null,
+      "name": "Kona Int'l at Keahole",
+      "type": "airport",
+      "latitude": 19.737099,
+      "longitude": -156.040889
+    },
+    {
+      "id": "Q1797758",
+      "countryId": null,
+      "name": "Bermuda Int'l",
+      "type": "airport",
+      "latitude": 32.359174,
+      "longitude": -64.702774
+    },
+    {
+      "id": "Q180129",
+      "countryId": null,
+      "name": "Manchester-Boston Reg.",
+      "type": "airport",
+      "latitude": 42.927914,
+      "longitude": -71.437524
+    },
+    {
+      "id": "Q180464",
+      "countryId": null,
+      "name": "Afonso Pena Int'l",
+      "type": "airport",
+      "latitude": -25.536,
+      "longitude": -49.173709
+    },
+    {
+      "id": "Q181479",
+      "countryId": null,
+      "name": "Ben Gurion",
+      "type": "airport",
+      "latitude": 32.000747,
+      "longitude": 34.87085
+    },
+    {
+      "id": "Q183494",
+      "countryId": null,
+      "name": "Pengel Int'l",
+      "type": "airport",
+      "latitude": 5.456,
+      "longitude": -55.199911
+    },
+    {
+      "id": "Q1835533",
+      "countryId": null,
+      "name": "Chandigarh Int'l",
+      "type": "airport",
+      "latitude": 30.670725,
+      "longitude": 76.801726
+    },
+    {
+      "id": "Q1837108",
+      "countryId": null,
+      "name": "Châlons Vatry",
+      "type": "airport",
+      "latitude": 48.780395,
+      "longitude": 4.19112
+    },
+    {
+      "id": "Q1849321",
+      "countryId": null,
+      "name": "Agra",
+      "type": "airport",
+      "latitude": 27.157728,
+      "longitude": 77.960909
+    },
+    {
+      "id": "Q18499978",
+      "countryId": null,
+      "name": "Santos Air Force Base",
+      "type": "airport",
+      "latitude": -23.923759,
+      "longitude": -46.30527
+    },
+    {
+      "id": "Q1857178",
+      "countryId": null,
+      "name": "Richmond Int'l",
+      "type": "airport",
+      "latitude": 37.50829,
+      "longitude": -77.33312
+    },
+    {
+      "id": "Q1858312",
+      "countryId": null,
+      "name": "Barnaul",
+      "type": "airport",
+      "latitude": 53.363385,
+      "longitude": 83.550453
+    },
+    {
+      "id": "Q186614",
+      "countryId": null,
+      "name": "Moscow Domodedovo Int'l",
+      "type": "airport",
+      "latitude": 55.414153,
+      "longitude": 37.900253
+    },
+    {
+      "id": "Q1877066",
+      "countryId": null,
+      "name": "Kumasi",
+      "type": "airport",
+      "latitude": 6.714606,
+      "longitude": -1.592575
+    },
+    {
+      "id": "Q19101",
+      "countryId": null,
+      "name": "Leonardo da Vinci Int'l",
+      "type": "airport",
+      "latitude": 41.795079,
+      "longitude": 12.250101
+    },
+    {
+      "id": "Q192733",
+      "countryId": null,
+      "name": "Sheremtyevo",
+      "type": "airport",
+      "latitude": 55.966447,
+      "longitude": 37.415969
+    },
+    {
+      "id": "Q1927818",
+      "countryId": null,
+      "name": "Gob. Horacio Guzman Int'l",
+      "type": "airport",
+      "latitude": -24.386101,
+      "longitude": -65.093767
+    },
+    {
+      "id": "Q1927846",
+      "countryId": null,
+      "name": "Hermes Quijada Int'l",
+      "type": "airport",
+      "latitude": -53.781475,
+      "longitude": -67.753027
+    },
+    {
+      "id": "Q1931319",
+      "countryId": null,
+      "name": "Allahabad",
+      "type": "airport",
+      "latitude": 25.443522,
+      "longitude": 81.731727
+    },
+    {
+      "id": "Q1932794",
+      "countryId": null,
+      "name": "Queretaro Int'l",
+      "type": "airport",
+      "latitude": 20.622466,
+      "longitude": -100.187359
+    },
+    {
+      "id": "Q1932826",
+      "countryId": null,
+      "name": "Ponciano Arriaga Int'l",
+      "type": "airport",
+      "latitude": 22.255713,
+      "longitude": -100.936478
+    },
+    {
+      "id": "Q1932879",
+      "countryId": null,
+      "name": "Ign. Alberto Ongay Int'l",
+      "type": "airport",
+      "latitude": 19.814225,
+      "longitude": -90.503628
+    },
+    {
+      "id": "Q1932904",
+      "countryId": null,
+      "name": "Venustiano Carranza Int'l",
+      "type": "airport",
+      "latitude": 26.955393,
+      "longitude": -101.46496
+    },
+    {
+      "id": "Q1933813",
+      "countryId": null,
+      "name": "Robert L. Bradshaw Int'l",
+      "type": "airport",
+      "latitude": 17.311126,
+      "longitude": -62.714213
+    },
+    {
+      "id": "Q193439",
+      "countryId": null,
+      "name": "Dubai Int'l",
+      "type": "airport",
+      "latitude": 25.252566,
+      "longitude": 55.354077
+    },
+    {
+      "id": "Q1934952",
+      "countryId": null,
+      "name": "Port Sudan",
+      "type": "airport",
+      "latitude": 19.576064,
+      "longitude": 37.216066
+    },
+    {
+      "id": "Q193682",
+      "countryId": null,
+      "name": "Kansai Int'l",
+      "type": "airport",
+      "latitude": 34.434794,
+      "longitude": 135.24446
+    },
+    {
+      "id": "Q1936851",
+      "countryId": null,
+      "name": "Abdul Rachman Saleh",
+      "type": "airport",
+      "latitude": -7.92998,
+      "longitude": 112.711419
+    },
+    {
+      "id": "Q194316",
+      "countryId": null,
+      "name": "Suvarnabhumi Airport",
+      "type": "airport",
+      "latitude": 13.692612,
+      "longitude": 100.75091
+    },
+    {
+      "id": "Q1961870",
+      "countryId": null,
+      "name": "Casablanca-Anfa",
+      "type": "airport",
+      "latitude": 33.562788,
+      "longitude": -7.663219
+    },
+    {
+      "id": "Q197933",
+      "countryId": null,
+      "name": "Faleolo",
+      "type": "airport",
+      "latitude": -13.832501,
+      "longitude": -171.997322
+    },
+    {
+      "id": "Q1987608",
+      "countryId": null,
+      "name": "Tancredo Neves Int'l",
+      "type": "airport",
+      "latitude": -19.632782,
+      "longitude": -43.963582
+    },
+    {
+      "id": "Q201374",
+      "countryId": null,
+      "name": "Ingeniero Ambrosio L.V. Taravella Int'l",
+      "type": "airport",
+      "latitude": -31.315681,
+      "longitude": -64.212316
+    },
+    {
+      "id": "Q201785",
+      "countryId": null,
+      "name": "Eldorado Int'l",
+      "type": "airport",
+      "latitude": 4.698833,
+      "longitude": -74.143372
+    },
+    {
+      "id": "Q2034869",
+      "countryId": null,
+      "name": "Zhengzhou Xinzheng Int'l",
+      "type": "airport",
+      "latitude": 34.526303,
+      "longitude": 113.841831
+    },
+    {
+      "id": "Q20449639",
+      "countryId": null,
+      "name": "Adampur",
+      "type": "airport",
+      "latitude": 31.432942,
+      "longitude": 75.758483
+    },
+    {
+      "id": "Q20455825",
+      "countryId": null,
+      "name": "Valencia",
+      "type": "airport",
+      "latitude": 39.49146,
+      "longitude": -0.473475
+    },
+    {
+      "id": "Q204853",
+      "countryId": null,
+      "name": "Tokyo Int'l",
+      "type": "airport",
+      "latitude": 35.549061,
+      "longitude": 139.784046
+    },
+    {
+      "id": "Q2061693",
+      "countryId": null,
+      "name": "Wiley Post Will Rogers Mem.",
+      "type": "airport",
+      "latitude": 71.289299,
+      "longitude": -156.771835
+    },
+    {
+      "id": "Q206277",
+      "countryId": null,
+      "name": "Copenhagen",
+      "type": "airport",
+      "latitude": 55.628502,
+      "longitude": 12.649351
+    },
+    {
+      "id": "Q206349",
+      "countryId": null,
+      "name": "Jomo Kenyatta Int'l",
+      "type": "airport",
+      "latitude": -1.33053,
+      "longitude": 36.925089
+    },
+    {
+      "id": "Q2074717",
+      "countryId": null,
+      "name": "Pinto Martins Int'l",
+      "type": "airport",
+      "latitude": -3.778595,
+      "longitude": -38.540747
+    },
+    {
+      "id": "Q20932",
+      "countryId": null,
+      "name": "Incheon Int'l",
+      "type": "airport",
+      "latitude": 37.449209,
+      "longitude": 126.450876
+    },
+    {
+      "id": "Q210559",
+      "countryId": null,
+      "name": "Oslo Gardermoen",
+      "type": "airport",
+      "latitude": 60.193578,
+      "longitude": 11.099103
+    },
+    {
+      "id": "Q2107478",
+      "countryId": null,
+      "name": "Asyut",
+      "type": "airport",
+      "latitude": 27.050816,
+      "longitude": 31.016249
+    },
+    {
+      "id": "Q211734",
+      "countryId": null,
+      "name": "Eleftherios Venizelos Int'l",
+      "type": "airport",
+      "latitude": 37.936233,
+      "longitude": 23.947116
+    },
+    {
+      "id": "Q213717",
+      "countryId": null,
+      "name": "Chicago O'Hare Int'l",
+      "type": "airport",
+      "latitude": 41.976529,
+      "longitude": -87.905134
+    },
+    {
+      "id": "Q214861",
+      "countryId": null,
+      "name": "Hartsfield-Jackson Atlanta Int'l",
+      "type": "airport",
+      "latitude": 33.640529,
+      "longitude": -84.425397
+    },
+    {
+      "id": "Q215327",
+      "countryId": null,
+      "name": "Helsinki Vantaa",
+      "type": "airport",
+      "latitude": 60.318716,
+      "longitude": 24.968208
+    },
+    {
+      "id": "Q2161272",
+      "countryId": null,
+      "name": "Garoua Int'l",
+      "type": "airport",
+      "latitude": 9.330689,
+      "longitude": 13.372431
+    },
+    {
+      "id": "Q217226",
+      "countryId": null,
+      "name": "Tirane Rinas",
+      "type": "airport",
+      "latitude": 41.420851,
+      "longitude": 19.715032
+    },
+    {
+      "id": "Q2199514",
+      "countryId": null,
+      "name": "Radin Inten II",
+      "type": "airport",
+      "latitude": -5.242567,
+      "longitude": 105.17606
+    },
+    {
+      "id": "Q221279",
+      "countryId": null,
+      "name": "Vientiane",
+      "type": "airport",
+      "latitude": 17.97546,
+      "longitude": 102.568238
+    },
+    {
+      "id": "Q2213419",
+      "countryId": null,
+      "name": "Huntsville Int'l",
+      "type": "airport",
+      "latitude": 34.648334,
+      "longitude": -86.774943
+    },
+    {
+      "id": "Q221351",
+      "countryId": null,
+      "name": "Yaoundé Nsimalen Int'l",
+      "type": "airport",
+      "latitude": 3.714845,
+      "longitude": 11.547994
+    },
+    {
+      "id": "Q2231318",
+      "countryId": null,
+      "name": "Nova Lisboa",
+      "type": "airport",
+      "latitude": -12.802541,
+      "longitude": 15.749762
+    },
+    {
+      "id": "Q2231517",
+      "countryId": null,
+      "name": "Goloson Int'l",
+      "type": "airport",
+      "latitude": 15.74516,
+      "longitude": -86.851469
+    },
+    {
+      "id": "Q2231542",
+      "countryId": null,
+      "name": "Villahermosa",
+      "type": "airport",
+      "latitude": 17.993066,
+      "longitude": -92.819068
+    },
+    {
+      "id": "Q2231559",
+      "countryId": null,
+      "name": "Quetzalcoatl Int'l",
+      "type": "airport",
+      "latitude": 27.44969,
+      "longitude": -99.568008
+    },
+    {
+      "id": "Q2231716",
+      "countryId": null,
+      "name": "Federal de Bachigualato Int'l",
+      "type": "airport",
+      "latitude": 24.766804,
+      "longitude": -107.469864
+    },
+    {
+      "id": "Q2231898",
+      "countryId": null,
+      "name": "Zim Valencia",
+      "type": "airport",
+      "latitude": 10.154006,
+      "longitude": -67.922362
+    },
+    {
+      "id": "Q2231932",
+      "countryId": null,
+      "name": "Jacinto Lara Int'l",
+      "type": "airport",
+      "latitude": 10.0453,
+      "longitude": -69.356102
+    },
+    {
+      "id": "Q2233076",
+      "countryId": null,
+      "name": "Ciudad Juarez Int'l",
+      "type": "airport",
+      "latitude": 31.635757,
+      "longitude": -106.435847
+    },
+    {
+      "id": "Q2233085",
+      "countryId": null,
+      "name": "Tapachula Int'l",
+      "type": "airport",
+      "latitude": 14.791128,
+      "longitude": -92.370003
+    },
+    {
+      "id": "Q2233103",
+      "countryId": null,
+      "name": "Polokwane Int'l",
+      "type": "airport",
+      "latitude": -23.858986,
+      "longitude": 29.45334
+    },
+    {
+      "id": "Q223416",
+      "countryId": null,
+      "name": "Paris Orly",
+      "type": "airport",
+      "latitude": 48.731303,
+      "longitude": 2.367379
+    },
+    {
+      "id": "Q223499",
+      "countryId": null,
+      "name": "Arlanda",
+      "type": "airport",
+      "latitude": 59.65112,
+      "longitude": 17.93073
+    },
+    {
+      "id": "Q2235239",
+      "countryId": null,
+      "name": "Thompson",
+      "type": "airport",
+      "latitude": 55.797482,
+      "longitude": -97.860733
+    },
+    {
+      "id": "Q2235247",
+      "countryId": null,
+      "name": "Timmins",
+      "type": "airport",
+      "latitude": 48.566158,
+      "longitude": -81.372047
+    },
+    {
+      "id": "Q2247528",
+      "countryId": null,
+      "name": "Srinagar",
+      "type": "airport",
+      "latitude": 33.983091,
+      "longitude": 74.782624
+    },
+    {
+      "id": "Q2247541",
+      "countryId": null,
+      "name": "Vishakapatnam",
+      "type": "airport",
+      "latitude": 17.727958,
+      "longitude": 83.223522
+    },
+    {
+      "id": "Q2247561",
+      "countryId": null,
+      "name": "Gwalior",
+      "type": "airport",
+      "latitude": 26.285488,
+      "longitude": 78.217219
+    },
+    {
+      "id": "Q2247582",
+      "countryId": null,
+      "name": "Jammu",
+      "type": "airport",
+      "latitude": 32.681043,
+      "longitude": 74.842308
+    },
+    {
+      "id": "Q2298657",
+      "countryId": null,
+      "name": "Townsville",
+      "type": "airport",
+      "latitude": -19.256181,
+      "longitude": 146.770679
+    },
+    {
+      "id": "Q2308399",
+      "countryId": null,
+      "name": "Ramón Villeda Morales Int'l",
+      "type": "airport",
+      "latitude": 15.455863,
+      "longitude": -87.927237
+    },
+    {
+      "id": "Q2308547",
+      "countryId": null,
+      "name": "Alfonso Bonilla Aragón Int'l",
+      "type": "airport",
+      "latitude": 3.543286,
+      "longitude": -76.385071
+    },
+    {
+      "id": "Q2358345",
+      "countryId": null,
+      "name": "Bandar Abbass Int'l",
+      "type": "airport",
+      "latitude": 27.210326,
+      "longitude": 56.368886
+    },
+    {
+      "id": "Q2361055",
+      "countryId": null,
+      "name": "Taiyuan Wusu Int'l",
+      "type": "airport",
+      "latitude": 37.754512,
+      "longitude": 112.625892
+    },
+    {
+      "id": "Q240694",
+      "countryId": null,
+      "name": "Phuket Int'l",
+      "type": "airport",
+      "latitude": 8.107685,
+      "longitude": 98.306038
+    },
+    {
+      "id": "Q2413018",
+      "countryId": null,
+      "name": "Tromsø Langnes",
+      "type": "airport",
+      "latitude": 69.679679,
+      "longitude": 18.907262
+    },
+    {
+      "id": "Q2415100",
+      "countryId": null,
+      "name": "Iqaluit",
+      "type": "airport",
+      "latitude": 63.751152,
+      "longitude": -68.536729
+    },
+    {
+      "id": "Q242066",
+      "countryId": null,
+      "name": "Toronto-Pearson Int'l",
+      "type": "airport",
+      "latitude": 43.68096,
+      "longitude": -79.611419
+    },
+    {
+      "id": "Q2421203",
+      "countryId": null,
+      "name": "Shijiazhuang Zhengding Int'l",
+      "type": "airport",
+      "latitude": 38.278141,
+      "longitude": 114.692267
+    },
+    {
+      "id": "Q2443546",
+      "countryId": null,
+      "name": "Kananga",
+      "type": "airport",
+      "latitude": -5.900167,
+      "longitude": 22.478333
+    },
+    {
+      "id": "Q2444515",
+      "countryId": null,
+      "name": "Voronezh-Chertovitskoye",
+      "type": "airport",
+      "latitude": 51.812617,
+      "longitude": 39.22545
+    },
+    {
+      "id": "Q2448604",
+      "countryId": null,
+      "name": "Maceio/Zumbi dos Palmares Int'l",
+      "type": "airport",
+      "latitude": -9.514941,
+      "longitude": -35.792495
+    },
+    {
+      "id": "Q2492784",
+      "countryId": null,
+      "name": "Kharkov Int'l",
+      "type": "airport",
+      "latitude": 49.921536,
+      "longitude": 36.282201
+    },
+    {
+      "id": "Q2493876",
+      "countryId": null,
+      "name": "Freeport Int'l",
+      "type": "airport",
+      "latitude": 26.548247,
+      "longitude": -78.703934
+    },
+    {
+      "id": "Q2493883",
+      "countryId": null,
+      "name": "Gen R.S. Taboada Int'l",
+      "type": "airport",
+      "latitude": 32.628564,
+      "longitude": -115.247874
+    },
+    {
+      "id": "Q250026",
+      "countryId": null,
+      "name": "Yenisehir",
+      "type": "airport",
+      "latitude": 40.25554,
+      "longitude": 29.54492
+    },
+    {
+      "id": "Q2501155",
+      "countryId": null,
+      "name": "Rockhampton",
+      "type": "airport",
+      "latitude": -23.378599,
+      "longitude": 150.478897
+    },
+    {
+      "id": "Q2502241",
+      "countryId": null,
+      "name": "Nome",
+      "type": "airport",
+      "latitude": 64.507221,
+      "longitude": -165.441642
+    },
+    {
+      "id": "Q2505424",
+      "countryId": null,
+      "name": "Juneau Int'l",
+      "type": "airport",
+      "latitude": 58.358944,
+      "longitude": -134.583573
+    },
+    {
+      "id": "Q2507539",
+      "countryId": null,
+      "name": "Aba Tenna D. Yilma Int'l",
+      "type": "airport",
+      "latitude": 9.612678,
+      "longitude": 41.857757
+    },
+    {
+      "id": "Q2510194",
+      "countryId": null,
+      "name": "Mohamed Boudiaf Int'l",
+      "type": "airport",
+      "latitude": 36.283441,
+      "longitude": 6.621947
+    },
+    {
+      "id": "Q2519198",
+      "countryId": null,
+      "name": "Bouaké",
+      "type": "airport",
+      "latitude": 7.736105,
+      "longitude": -5.068942
+    },
+    {
+      "id": "Q25337089",
+      "countryId": null,
+      "name": "Nouakchott Int'l",
+      "type": "airport",
+      "latitude": 18.097923,
+      "longitude": -15.951926
+    },
+    {
+      "id": "Q2564541",
+      "countryId": null,
+      "name": "Goma Int'l",
+      "type": "airport",
+      "latitude": -1.658318,
+      "longitude": 29.240053
+    },
+    {
+      "id": "Q2576078",
+      "countryId": null,
+      "name": "Tabatinga Int'l",
+      "type": "airport",
+      "latitude": -4.250325,
+      "longitude": -69.939474
+    },
+    {
+      "id": "Q2578887",
+      "countryId": null,
+      "name": "Eurico de Aguiar Salles",
+      "type": "airport",
+      "latitude": -20.257416,
+      "longitude": -40.288537
+    },
+    {
+      "id": "Q2579272",
+      "countryId": null,
+      "name": "Augusto Severo Int'l",
+      "type": "airport",
+      "latitude": -5.899121,
+      "longitude": -35.248841
+    },
+    {
+      "id": "Q2579951",
+      "countryId": null,
+      "name": "Kashi",
+      "type": "airport",
+      "latitude": 39.537969,
+      "longitude": 76.013015
+    },
+    {
+      "id": "Q2580525",
+      "countryId": null,
+      "name": "Santo Pekoa Int'l",
+      "type": "airport",
+      "latitude": -15.505539,
+      "longitude": 167.220895
+    },
+    {
+      "id": "Q2584014",
+      "countryId": null,
+      "name": "Hodeidah Int'l",
+      "type": "airport",
+      "latitude": 14.755253,
+      "longitude": 42.971096
+    },
+    {
+      "id": "Q2587316",
+      "countryId": null,
+      "name": "Ponta Porã Int'l",
+      "type": "airport",
+      "latitude": -22.551787,
+      "longitude": -55.706079
+    },
+    {
+      "id": "Q2593243",
+      "countryId": null,
+      "name": "Lic. Jesús Terán Peredo Int'l",
+      "type": "airport",
+      "latitude": 21.701339,
+      "longitude": -102.314094
+    },
+    {
+      "id": "Q2593750",
+      "countryId": null,
+      "name": "Jose Maria Morelos Y Pavon",
+      "type": "airport",
+      "latitude": 19.338688,
+      "longitude": -99.570649
+    },
+    {
+      "id": "Q2631115",
+      "countryId": null,
+      "name": "Playa de Oro Int'l",
+      "type": "airport",
+      "latitude": 19.148086,
+      "longitude": -104.560095
+    },
+    {
+      "id": "Q2633549",
+      "countryId": null,
+      "name": "Turbat Int'l",
+      "type": "airport",
+      "latitude": 25.988795,
+      "longitude": 63.027933
+    },
+    {
+      "id": "Q265994",
+      "countryId": null,
+      "name": "Nurnberg",
+      "type": "airport",
+      "latitude": 49.494505,
+      "longitude": 11.077418
+    },
+    {
+      "id": "Q2661286",
+      "countryId": null,
+      "name": "Santa Genoveva",
+      "type": "airport",
+      "latitude": -16.632367,
+      "longitude": -49.226646
+    },
+    {
+      "id": "Q2661353",
+      "countryId": null,
+      "name": "Jiamusi Dongjiao",
+      "type": "airport",
+      "latitude": 46.843015,
+      "longitude": 130.456205
+    },
+    {
+      "id": "Q2667517",
+      "countryId": null,
+      "name": "Kodiak",
+      "type": "airport",
+      "latitude": 57.748592,
+      "longitude": -152.485639
+    },
+    {
+      "id": "Q2670003",
+      "countryId": null,
+      "name": "Rafael Nunez",
+      "type": "airport",
+      "latitude": 10.444938,
+      "longitude": -75.512335
+    },
+    {
+      "id": "Q2670307",
+      "countryId": null,
+      "name": "Chileka Int'l",
+      "type": "airport",
+      "latitude": -15.681384,
+      "longitude": 34.971944
+    },
+    {
+      "id": "Q2670961",
+      "countryId": null,
+      "name": "Atar Int'l",
+      "type": "airport",
+      "latitude": 20.498271,
+      "longitude": -13.05117
+    },
+    {
+      "id": "Q2671152",
+      "countryId": null,
+      "name": "Nouadhibou Int'l",
+      "type": "airport",
+      "latitude": 20.929052,
+      "longitude": -17.03344
+    },
+    {
+      "id": "Q2672666",
+      "countryId": null,
+      "name": "Amausi Int'l",
+      "type": "airport",
+      "latitude": 26.763933,
+      "longitude": 80.884172
+    },
+    {
+      "id": "Q2673008",
+      "countryId": null,
+      "name": "Lokpriya G. Bordoloi Int'l",
+      "type": "airport",
+      "latitude": 26.105248,
+      "longitude": 91.588229
+    },
+    {
+      "id": "Q2673010",
+      "countryId": null,
+      "name": "Lok Nayak Jaiprakash",
+      "type": "airport",
+      "latitude": 25.594443,
+      "longitude": 85.090902
+    },
+    {
+      "id": "Q2673205",
+      "countryId": null,
+      "name": "Guaraní Int'l",
+      "type": "airport",
+      "latitude": -25.456857,
+      "longitude": -54.8394
+    },
+    {
+      "id": "Q2674281",
+      "countryId": null,
+      "name": "Palonegro",
+      "type": "airport",
+      "latitude": 7.127709,
+      "longitude": -73.180921
+    },
+    {
+      "id": "Q269588",
+      "countryId": null,
+      "name": "Edmonton Int'l",
+      "type": "airport",
+      "latitude": 53.3072,
+      "longitude": -113.584493
+    },
+    {
+      "id": "Q2699491",
+      "countryId": null,
+      "name": "Hector Int'l",
+      "type": "airport",
+      "latitude": 46.919818,
+      "longitude": -96.825456
+    },
+    {
+      "id": "Q2720229",
+      "countryId": null,
+      "name": "Fresno Yosemite Int'l",
+      "type": "airport",
+      "latitude": 36.769813,
+      "longitude": -119.720001
+    },
+    {
+      "id": "Q2720492",
+      "countryId": null,
+      "name": "Los Cabos Int'l",
+      "type": "airport",
+      "latitude": 23.162657,
+      "longitude": -109.717858
+    },
+    {
+      "id": "Q2724008",
+      "countryId": null,
+      "name": "Yellowknife",
+      "type": "airport",
+      "latitude": 62.470737,
+      "longitude": -114.437846
+    },
+    {
+      "id": "Q2732089",
+      "countryId": null,
+      "name": "Norfolk Island",
+      "type": "airport",
+      "latitude": -29.035159,
+      "longitude": 167.943394
+    },
+    {
+      "id": "Q2748237",
+      "countryId": null,
+      "name": "Saint John",
+      "type": "airport",
+      "latitude": 45.329231,
+      "longitude": -65.890557
+    },
+    {
+      "id": "Q2748239",
+      "countryId": null,
+      "name": "Thunder Bay Int'l",
+      "type": "airport",
+      "latitude": 48.371881,
+      "longitude": -89.312142
+    },
+    {
+      "id": "Q2750047",
+      "countryId": null,
+      "name": "Burlington Int'l",
+      "type": "airport",
+      "latitude": 44.469207,
+      "longitude": -73.155079
+    },
+    {
+      "id": "Q2756149",
+      "countryId": null,
+      "name": "El Tepual Int'l",
+      "type": "airport",
+      "latitude": -41.433382,
+      "longitude": -73.098384
+    },
+    {
+      "id": "Q27596",
+      "countryId": null,
+      "name": "Kisangani Bangoka Int'l",
+      "type": "airport",
+      "latitude": 0.492225,
+      "longitude": 25.330271
+    },
+    {
+      "id": "Q27706",
+      "countryId": null,
+      "name": "Hamburg",
+      "type": "airport",
+      "latitude": 53.632001,
+      "longitude": 10.005648
+    },
+    {
+      "id": "Q2775871",
+      "countryId": null,
+      "name": "Surat",
+      "type": "airport",
+      "latitude": 21.12045,
+      "longitude": 72.742438
+    },
+    {
+      "id": "Q278667",
+      "countryId": null,
+      "name": "Rajiv Gandhi Int'l",
+      "type": "airport",
+      "latitude": 17.235983,
+      "longitude": 78.429536
+    },
+    {
+      "id": "Q2788745",
+      "countryId": null,
+      "name": "Bareilly",
+      "type": "airport",
+      "latitude": 28.421809,
+      "longitude": 79.452003
+    },
+    {
+      "id": "Q282909",
+      "countryId": null,
+      "name": "Lviv Danylo Halytskyi Int'l",
+      "type": "airport",
+      "latitude": 49.817851,
+      "longitude": 23.946127
+    },
+    {
+      "id": "Q2875375",
+      "countryId": null,
+      "name": "Annemasse",
+      "type": "airport",
+      "latitude": 46.195728,
+      "longitude": 6.264911
+    },
+    {
+      "id": "Q2875736",
+      "countryId": null,
+      "name": "Shah Makhdum",
+      "type": "airport",
+      "latitude": 24.444807,
+      "longitude": 88.613805
+    },
+    {
+      "id": "Q2875740",
+      "countryId": null,
+      "name": "Yeager",
+      "type": "airport",
+      "latitude": 38.370591,
+      "longitude": -81.596416
+    },
+    {
+      "id": "Q2875820",
+      "countryId": null,
+      "name": "Churchill",
+      "type": "airport",
+      "latitude": 58.749724,
+      "longitude": -94.081364
+    },
+    {
+      "id": "Q2876048",
+      "countryId": null,
+      "name": "Piloto Civil Norberto Fernandez Int'l",
+      "type": "airport",
+      "latitude": -51.611698,
+      "longitude": -69.306471
+    },
+    {
+      "id": "Q2876050",
+      "countryId": null,
+      "name": "Presidente Castro Pinto Int'l",
+      "type": "airport",
+      "latitude": -7.146175,
+      "longitude": -34.948893
+    },
+    {
+      "id": "Q2876099",
+      "countryId": null,
+      "name": "Kenitra Air Base",
+      "type": "airport",
+      "latitude": 34.298667,
+      "longitude": -6.597754
+    },
+    {
+      "id": "Q2876104",
+      "countryId": null,
+      "name": "Greater Moncton Int'l",
+      "type": "airport",
+      "latitude": 46.116206,
+      "longitude": -64.68867
+    },
+    {
+      "id": "Q2876127",
+      "countryId": null,
+      "name": "Sioux Falls Reg.",
+      "type": "airport",
+      "latitude": 43.580193,
+      "longitude": -96.731383
+    },
+    {
+      "id": "Q28934",
+      "countryId": null,
+      "name": "Brussels",
+      "type": "airport",
+      "latitude": 50.897295,
+      "longitude": 4.48464
+    },
+    {
+      "id": "Q289972",
+      "countryId": null,
+      "name": "Geneva",
+      "type": "airport",
+      "latitude": 46.23101,
+      "longitude": 6.107946
+    },
+    {
+      "id": "Q2902013",
+      "countryId": null,
+      "name": "Okadama",
+      "type": "airport",
+      "latitude": 43.11065,
+      "longitude": 141.3821
+    },
+    {
+      "id": "Q2902159",
+      "countryId": null,
+      "name": "Astor Piazzolla Int'l",
+      "type": "airport",
+      "latitude": -37.933216,
+      "longitude": -57.581615
+    },
+    {
+      "id": "Q2902692",
+      "countryId": null,
+      "name": "Jodhpur",
+      "type": "airport",
+      "latitude": 26.263762,
+      "longitude": 73.050549
+    },
+    {
+      "id": "Q2902808",
+      "countryId": null,
+      "name": "JAGS McCartney Int'l",
+      "type": "airport",
+      "latitude": 21.442124,
+      "longitude": -71.146134
+    },
+    {
+      "id": "Q2903059",
+      "countryId": null,
+      "name": "Aurangabad",
+      "type": "airport",
+      "latitude": 19.867297,
+      "longitude": 75.395843
+    },
+    {
+      "id": "Q29104",
+      "countryId": null,
+      "name": "Male Int'l",
+      "type": "airport",
+      "latitude": 4.188701,
+      "longitude": 73.52739
+    },
+    {
+      "id": "Q2915005",
+      "countryId": null,
+      "name": "Narsarsuaq",
+      "type": "airport",
+      "latitude": 61.162597,
+      "longitude": -45.416401
+    },
+    {
+      "id": "Q2919631",
+      "countryId": null,
+      "name": "Peace River",
+      "type": "airport",
+      "latitude": 56.231924,
+      "longitude": -117.443663
+    },
+    {
+      "id": "Q2980547",
+      "countryId": null,
+      "name": "Vava'u Int'l",
+      "type": "airport",
+      "latitude": -18.586006,
+      "longitude": -173.968094
+    },
+    {
+      "id": "Q2983967",
+      "countryId": null,
+      "name": "Hotan",
+      "type": "airport",
+      "latitude": 37.040036,
+      "longitude": 79.872301
+    },
+    {
+      "id": "Q29863",
+      "countryId": null,
+      "name": "Bromma",
+      "type": "airport",
+      "latitude": 59.35559,
+      "longitude": 17.945618
+    },
+    {
+      "id": "Q3016678",
+      "countryId": null,
+      "name": "Imperial Cty.",
+      "type": "airport",
+      "latitude": 32.833959,
+      "longitude": -115.571996
+    },
+    {
+      "id": "Q304438",
+      "countryId": null,
+      "name": "Baghdad Int'l",
+      "type": "airport",
+      "latitude": 33.268163,
+      "longitude": 44.228913
+    },
+    {
+      "id": "Q30603",
+      "countryId": null,
+      "name": "Zia Int'l Dhaka",
+      "type": "airport",
+      "latitude": 23.848124,
+      "longitude": 90.404924
+    },
+    {
+      "id": "Q3086140",
+      "countryId": null,
+      "name": "Ilorin Int'l",
+      "type": "airport",
+      "latitude": 8.435377,
+      "longitude": 4.49484
+    },
+    {
+      "id": "Q3086164",
+      "countryId": null,
+      "name": "Ignacio Agramonte",
+      "type": "airport",
+      "latitude": 21.424704,
+      "longitude": -77.845104
+    },
+    {
+      "id": "Q308987",
+      "countryId": null,
+      "name": "Centre Spatial Guyanais",
+      "type": "airport",
+      "latitude": 5.23941,
+      "longitude": -52.76843
+    },
+    {
+      "id": "Q31569",
+      "countryId": null,
+      "name": "Multan",
+      "type": "airport",
+      "latitude": 30.195078,
+      "longitude": 71.418995
+    },
+    {
+      "id": "Q31580",
+      "countryId": null,
+      "name": "Faisalabad Int'l",
+      "type": "airport",
+      "latitude": 31.362744,
+      "longitude": 72.987819
+    },
+    {
+      "id": "Q31581",
+      "countryId": null,
+      "name": "Quetta Int'l",
+      "type": "airport",
+      "latitude": 30.249043,
+      "longitude": 66.948731
+    },
+    {
+      "id": "Q319654",
+      "countryId": null,
+      "name": "LaGuardia",
+      "type": "airport",
+      "latitude": 40.774554,
+      "longitude": -73.871986
+    },
+    {
+      "id": "Q3207464",
+      "countryId": null,
+      "name": "Hubli",
+      "type": "airport",
+      "latitude": 15.359183,
+      "longitude": 75.086316
+    },
+    {
+      "id": "Q321224",
+      "countryId": null,
+      "name": "Vancouver Int'l",
+      "type": "airport",
+      "latitude": 49.193559,
+      "longitude": -123.180867
+    },
+    {
+      "id": "Q32159",
+      "countryId": null,
+      "name": "Singapore Changi",
+      "type": "airport",
+      "latitude": 1.356161,
+      "longitude": 103.986414
+    },
+    {
+      "id": "Q32190",
+      "countryId": null,
+      "name": "Beijing Capital",
+      "type": "airport",
+      "latitude": 40.078766,
+      "longitude": 116.588174
+    },
+    {
+      "id": "Q3234734",
+      "countryId": null,
+      "name": "Lanzhou Zhongchuan",
+      "type": "airport",
+      "latitude": 36.507884,
+      "longitude": 103.615415
+    },
+    {
+      "id": "Q3234818",
+      "countryId": null,
+      "name": "Hefei-Luogang",
+      "type": "airport",
+      "latitude": 31.779858,
+      "longitude": 117.304197
+    },
+    {
+      "id": "Q3238282",
+      "countryId": null,
+      "name": "Hohhot Baita Int'l",
+      "type": "airport",
+      "latitude": 40.85406,
+      "longitude": 111.814682
+    },
+    {
+      "id": "Q3238350",
+      "countryId": null,
+      "name": "Nanning Wuwu Int'l",
+      "type": "airport",
+      "latitude": 22.612037,
+      "longitude": 108.168012
+    },
+    {
+      "id": "Q3243622",
+      "countryId": null,
+      "name": "Ningbo Lishe Int'l",
+      "type": "airport",
+      "latitude": 29.820823,
+      "longitude": 121.461819
+    },
+    {
+      "id": "Q326268",
+      "countryId": null,
+      "name": "Sharm el-Sheikh Int'l",
+      "type": "airport",
+      "latitude": 27.980404,
+      "longitude": 34.390119
+    },
+    {
+      "id": "Q3270356",
+      "countryId": null,
+      "name": "Edmonton City Centre",
+      "type": "airport",
+      "latitude": 53.570944,
+      "longitude": -113.522974
+    },
+    {
+      "id": "Q3273382",
+      "countryId": null,
+      "name": "Hiroshima-Nishi",
+      "type": "airport",
+      "latitude": 34.371382,
+      "longitude": 132.419373
+    },
+    {
+      "id": "Q3274459",
+      "countryId": null,
+      "name": "Gandhinagar",
+      "type": "airport",
+      "latitude": 19.966021,
+      "longitude": 73.810567
+    },
+    {
+      "id": "Q3274467",
+      "countryId": null,
+      "name": "Vadodara",
+      "type": "airport",
+      "latitude": 22.336164,
+      "longitude": 73.226289
+    },
+    {
+      "id": "Q3274472",
+      "countryId": null,
+      "name": "Durango Int'l",
+      "type": "airport",
+      "latitude": 24.126195,
+      "longitude": -104.533846
+    },
+    {
+      "id": "Q3274478",
+      "countryId": null,
+      "name": "Gen Francisco J Mina Int'l",
+      "type": "airport",
+      "latitude": 22.289332,
+      "longitude": -97.869814
+    },
+    {
+      "id": "Q3274626",
+      "countryId": null,
+      "name": "Hindon Air Force Station",
+      "type": "airport",
+      "latitude": 28.707797,
+      "longitude": 77.350789
+    },
+    {
+      "id": "Q3274799",
+      "countryId": null,
+      "name": "Gen. Heriberto Jara Int'l",
+      "type": "airport",
+      "latitude": 19.142424,
+      "longitude": -96.18357
+    },
+    {
+      "id": "Q3275688",
+      "countryId": null,
+      "name": "Gerrard Smith",
+      "type": "airport",
+      "latitude": 19.689865,
+      "longitude": -79.879462
+    },
+    {
+      "id": "Q3276974",
+      "countryId": null,
+      "name": "Varanasi",
+      "type": "airport",
+      "latitude": 25.449908,
+      "longitude": 82.853874
+    },
+    {
+      "id": "Q32997",
+      "countryId": null,
+      "name": "Vasilyevka",
+      "type": "airport",
+      "latitude": 43.055453,
+      "longitude": 74.4688
+    },
+    {
+      "id": "Q32999",
+      "countryId": null,
+      "name": "Vienna Schwechat Int'l",
+      "type": "airport",
+      "latitude": 48.119756,
+      "longitude": 16.560768
+    },
+    {
+      "id": "Q330015",
+      "countryId": null,
+      "name": "Denver Int'l",
+      "type": "airport",
+      "latitude": 39.849461,
+      "longitude": -104.673797
+    },
+    {
+      "id": "Q3312799",
+      "countryId": null,
+      "name": "Teresina-Senador Petronio Portella",
+      "type": "airport",
+      "latitude": -5.063463,
+      "longitude": -42.82124
+    },
+    {
+      "id": "Q332302",
+      "countryId": null,
+      "name": "Lusaka Int'l",
+      "type": "airport",
+      "latitude": -15.326852,
+      "longitude": 28.445544
+    },
+    {
+      "id": "Q3360329",
+      "countryId": null,
+      "name": "Ibadan",
+      "type": "airport",
+      "latitude": 7.360344,
+      "longitude": 3.973813
+    },
+    {
+      "id": "Q3385055",
+      "countryId": null,
+      "name": "Brownsville-South Padre Island Int'l",
+      "type": "airport",
+      "latitude": 25.906274,
+      "longitude": -97.431765
+    },
+    {
+      "id": "Q3456412",
+      "countryId": null,
+      "name": "Great Falls Int'l",
+      "type": "airport",
+      "latitude": 47.482271,
+      "longitude": -111.356685
+    },
+    {
+      "id": "Q3465662",
+      "countryId": null,
+      "name": "Madurai",
+      "type": "airport",
+      "latitude": 9.837186,
+      "longitude": 78.091139
+    },
+    {
+      "id": "Q3495914",
+      "countryId": null,
+      "name": "Enrique Malek Int'l",
+      "type": "airport",
+      "latitude": 8.391261,
+      "longitude": -82.431758
+    },
+    {
+      "id": "Q3497025",
+      "countryId": null,
+      "name": "North Bay/Jack Garland",
+      "type": "airport",
+      "latitude": 46.358711,
+      "longitude": -79.42491
+    },
+    {
+      "id": "Q3497345",
+      "countryId": null,
+      "name": "Maiduguri Int'l",
+      "type": "airport",
+      "latitude": 11.853471,
+      "longitude": 13.085139
+    },
+    {
+      "id": "Q3497622",
+      "countryId": null,
+      "name": "Resolute Bay",
+      "type": "airport",
+      "latitude": 74.718186,
+      "longitude": -94.970802
+    },
+    {
+      "id": "Q3499608",
+      "countryId": null,
+      "name": "Exuma Int'l",
+      "type": "airport",
+      "latitude": 23.563883,
+      "longitude": -75.872613
+    },
+    {
+      "id": "Q3500191",
+      "countryId": null,
+      "name": "Nacional Tobías Bolaños",
+      "type": "airport",
+      "latitude": 9.958279,
+      "longitude": -84.138609
+    },
+    {
+      "id": "Q3502265",
+      "countryId": null,
+      "name": "Sudbury",
+      "type": "airport",
+      "latitude": 46.622751,
+      "longitude": -80.795775
+    },
+    {
+      "id": "Q3502284",
+      "countryId": null,
+      "name": "Brandon",
+      "type": "airport",
+      "latitude": 49.904728,
+      "longitude": -99.945896
+    },
+    {
+      "id": "Q3502288",
+      "countryId": null,
+      "name": "Wabush",
+      "type": "airport",
+      "latitude": 52.926071,
+      "longitude": -66.873009
+    },
+    {
+      "id": "Q3565547",
+      "countryId": null,
+      "name": "Missoula Int'l",
+      "type": "airport",
+      "latitude": 46.91876,
+      "longitude": -114.083695
+    },
+    {
+      "id": "Q3566301",
+      "countryId": null,
+      "name": "Minot Int'l",
+      "type": "airport",
+      "latitude": 48.255605,
+      "longitude": -101.291386
+    },
+    {
+      "id": "Q3612935",
+      "countryId": null,
+      "name": "Montgomery Reg.",
+      "type": "airport",
+      "latitude": 32.304588,
+      "longitude": -86.390307
+    },
+    {
+      "id": "Q36420",
+      "countryId": null,
+      "name": "Shanghai Pudong Int'l",
+      "type": "airport",
+      "latitude": 31.152309,
+      "longitude": 121.801519
+    },
+    {
+      "id": "Q36454",
+      "countryId": null,
+      "name": "Narita Int'l",
+      "type": "airport",
+      "latitude": 35.764056,
+      "longitude": 140.384402
+    },
+    {
+      "id": "Q36460",
+      "countryId": null,
+      "name": "Sir Seewoosagur Ramgoolam Int'l",
+      "type": "airport",
+      "latitude": -20.431757,
+      "longitude": 57.676986
+    },
+    {
+      "id": "Q370274",
+      "countryId": null,
+      "name": "Teniente Luis Candelaria Int'l",
+      "type": "airport",
+      "latitude": -41.145998,
+      "longitude": -71.16143
+    },
+    {
+      "id": "Q371471",
+      "countryId": null,
+      "name": "Vágar",
+      "type": "airport",
+      "latitude": 62.0625,
+      "longitude": -7.2708
+    },
+    {
+      "id": "Q371955",
+      "countryId": null,
+      "name": "Dawson Cr.",
+      "type": "airport",
+      "latitude": 55.739412,
+      "longitude": -120.185596
+    },
+    {
+      "id": "Q372615",
+      "countryId": null,
+      "name": "Toulouse-Blagnac",
+      "type": "airport",
+      "latitude": 43.630463,
+      "longitude": 1.373509
+    },
+    {
+      "id": "Q374558",
+      "countryId": null,
+      "name": "Taichung",
+      "type": "airport",
+      "latitude": 24.266656,
+      "longitude": 120.630704
+    },
+    {
+      "id": "Q3813535",
+      "countryId": null,
+      "name": "Burnpur",
+      "type": "airport",
+      "latitude": 23.631218,
+      "longitude": 86.974547
+    },
+    {
+      "id": "Q3813677",
+      "countryId": null,
+      "name": "Cabo Frio Int'l",
+      "type": "airport",
+      "latitude": -22.925632,
+      "longitude": -42.079252
+    },
+    {
+      "id": "Q381653",
+      "countryId": null,
+      "name": "Viracopos-Campinas Int'l",
+      "type": "airport",
+      "latitude": -23.009624,
+      "longitude": -47.141079
+    },
+    {
+      "id": "Q381668",
+      "countryId": null,
+      "name": "Torreon Int'l",
+      "type": "airport",
+      "latitude": 25.563216,
+      "longitude": -103.398788
+    },
+    {
+      "id": "Q381677",
+      "countryId": null,
+      "name": "José Martí Int'l",
+      "type": "airport",
+      "latitude": 22.997353,
+      "longitude": -82.407421
+    },
+    {
+      "id": "Q384788",
+      "countryId": null,
+      "name": "Ministro Pistarini Int'l",
+      "type": "airport",
+      "latitude": -34.813647,
+      "longitude": -58.541246
+    },
+    {
+      "id": "Q385191",
+      "countryId": null,
+      "name": "Hurghada Int'l",
+      "type": "airport",
+      "latitude": 27.180426,
+      "longitude": 33.807161
+    },
+    {
+      "id": "Q385356",
+      "countryId": null,
+      "name": "Raja Sansi Int'l",
+      "type": "airport",
+      "latitude": 31.706822,
+      "longitude": 74.807156
+    },
+    {
+      "id": "Q385406",
+      "countryId": null,
+      "name": "São Paulo-Guarulhos Int'l",
+      "type": "airport",
+      "latitude": -23.426116,
+      "longitude": -46.481754
+    },
+    {
+      "id": "Q386864",
+      "countryId": null,
+      "name": "Heydar Aliyev Int'l",
+      "type": "airport",
+      "latitude": 40.462747,
+      "longitude": 50.049839
+    },
+    {
+      "id": "Q387560",
+      "countryId": null,
+      "name": "Chengdushuang Liu",
+      "type": "airport",
+      "latitude": 30.581071,
+      "longitude": 103.956136
+    },
+    {
+      "id": "Q387593",
+      "countryId": null,
+      "name": "Bismarck Muni.",
+      "type": "airport",
+      "latitude": 46.775107,
+      "longitude": -100.757471
+    },
+    {
+      "id": "Q387704",
+      "countryId": null,
+      "name": "Gilberto Freyre Int'l",
+      "type": "airport",
+      "latitude": -8.131626,
+      "longitude": -34.918267
+    },
+    {
+      "id": "Q3885200",
+      "countryId": null,
+      "name": "Helena Reg.",
+      "type": "airport",
+      "latitude": 46.610204,
+      "longitude": -111.989897
+    },
+    {
+      "id": "Q388535",
+      "countryId": null,
+      "name": "Netaji Subhash Chandra Bose Int'l",
+      "type": "airport",
+      "latitude": 22.645389,
+      "longitude": 88.440001
+    },
+    {
+      "id": "Q389802",
+      "countryId": null,
+      "name": "Gen. Sevando Canales",
+      "type": "airport",
+      "latitude": 25.770841,
+      "longitude": -97.530822
+    },
+    {
+      "id": "Q3912553",
+      "countryId": null,
+      "name": "Sault Ste Marie",
+      "type": "airport",
+      "latitude": 46.485418,
+      "longitude": -84.500609
+    },
+    {
+      "id": "Q3912580",
+      "countryId": null,
+      "name": "Fort Smith",
+      "type": "airport",
+      "latitude": 60.019875,
+      "longitude": -111.96106
+    },
+    {
+      "id": "Q3912586",
+      "countryId": null,
+      "name": "Sydney/J.A. Douglas McCurdy",
+      "type": "airport",
+      "latitude": 46.167341,
+      "longitude": -60.046937
+    },
+    {
+      "id": "Q3914227",
+      "countryId": null,
+      "name": "Greater Rochester Int'l",
+      "type": "airport",
+      "latitude": 43.127552,
+      "longitude": -77.665245
+    },
+    {
+      "id": "Q3914300",
+      "countryId": null,
+      "name": "Repulse Bay",
+      "type": "airport",
+      "latitude": 66.533302,
+      "longitude": -86.25
+    },
+    {
+      "id": "Q392784",
+      "countryId": null,
+      "name": "Moi Int'l",
+      "type": "airport",
+      "latitude": -4.032653,
+      "longitude": 39.602663
+    },
+    {
+      "id": "Q401700",
+      "countryId": null,
+      "name": "Sardar Vallabhbhai Patel Int'l",
+      "type": "airport",
+      "latitude": 23.070745,
+      "longitude": 72.6209
+    },
+    {
+      "id": "Q403671",
+      "countryId": null,
+      "name": "Lisbon Portela",
+      "type": "airport",
+      "latitude": 38.770762,
+      "longitude": -9.130694
+    },
+    {
+      "id": "Q4079257",
+      "countryId": null,
+      "name": "Rostov N.",
+      "type": "airport",
+      "latitude": 47.277421,
+      "longitude": 39.6354
+    },
+    {
+      "id": "Q4203278",
+      "countryId": null,
+      "name": "Irkutsk N.W.",
+      "type": "airport",
+      "latitude": 52.361648,
+      "longitude": 104.197359
+    },
+    {
+      "id": "Q420847",
+      "countryId": null,
+      "name": "Libreville Leon M'ba Int'l",
+      "type": "airport",
+      "latitude": 0.457139,
+      "longitude": 9.410223
+    },
+    {
+      "id": "Q421811",
+      "countryId": null,
+      "name": "Hongqiao",
+      "type": "airport",
+      "latitude": 31.187257,
+      "longitude": 121.341184
+    },
+    {
+      "id": "Q429304",
+      "countryId": null,
+      "name": "Marrakech-Menara",
+      "type": "airport",
+      "latitude": 31.602295,
+      "longitude": -8.024605
+    },
+    {
+      "id": "Q430490",
+      "countryId": null,
+      "name": "Esenboğa Int'l",
+      "type": "airport",
+      "latitude": 40.115128,
+      "longitude": 32.99301
+    },
+    {
+      "id": "Q432474",
+      "countryId": null,
+      "name": "Vijaywada",
+      "type": "airport",
+      "latitude": 16.528643,
+      "longitude": 80.797308
+    },
+    {
+      "id": "Q44553",
+      "countryId": null,
+      "name": "Benina Int'l",
+      "type": "airport",
+      "latitude": 32.087277,
+      "longitude": 20.26804
+    },
+    {
+      "id": "Q44588",
+      "countryId": null,
+      "name": "Tripoli Int'l",
+      "type": "airport",
+      "latitude": 32.66917,
+      "longitude": 13.144259
+    },
+    {
+      "id": "Q44856",
+      "countryId": null,
+      "name": "Taoyuan",
+      "type": "airport",
+      "latitude": 25.076741,
+      "longitude": 121.23137
+    },
+    {
+      "id": "Q44868",
+      "countryId": null,
+      "name": "Guangzhou Baiyun Int'l",
+      "type": "airport",
+      "latitude": 23.389151,
+      "longitude": 113.297517
+    },
+    {
+      "id": "Q44923",
+      "countryId": null,
+      "name": "Bole Int'l",
+      "type": "airport",
+      "latitude": 8.98173,
+      "longitude": 38.79319
+    },
+    {
+      "id": "Q45523",
+      "countryId": null,
+      "name": "Brisbane Int'l",
+      "type": "airport",
+      "latitude": -27.385397,
+      "longitude": 153.120256
+    },
+    {
+      "id": "Q459096",
+      "countryId": null,
+      "name": "Dallas-Ft. Worth Int'l",
+      "type": "airport",
+      "latitude": 32.900151,
+      "longitude": -97.040371
+    },
+    {
+      "id": "Q45935",
+      "countryId": null,
+      "name": "Perth Int'l",
+      "type": "airport",
+      "latitude": -31.94113,
+      "longitude": 115.974225
+    },
+    {
+      "id": "Q45938",
+      "countryId": null,
+      "name": "Auckland Int'l",
+      "type": "airport",
+      "latitude": -37.006355,
+      "longitude": 174.791719
+    },
+    {
+      "id": "Q46033",
+      "countryId": null,
+      "name": "Frankfurt Int'l",
+      "type": "airport",
+      "latitude": 50.050677,
+      "longitude": 8.571823
+    },
+    {
+      "id": "Q461793",
+      "countryId": null,
+      "name": "Cairo Int'l",
+      "type": "airport",
+      "latitude": 30.11199,
+      "longitude": 31.399743
+    },
+    {
+      "id": "Q46280",
+      "countryId": null,
+      "name": "Charles de Gaulle Int'l",
+      "type": "airport",
+      "latitude": 49.01442,
+      "longitude": 2.541868
+    },
+    {
+      "id": "Q465071",
+      "countryId": null,
+      "name": "Okecie Int'l",
+      "type": "airport",
+      "latitude": 52.171027,
+      "longitude": 20.972726
+    },
+    {
+      "id": "Q466786",
+      "countryId": null,
+      "name": "Newark Int'l",
+      "type": "airport",
+      "latitude": 40.69048,
+      "longitude": -74.177147
+    },
+    {
+      "id": "Q466835",
+      "countryId": null,
+      "name": "Dulles Int'l",
+      "type": "airport",
+      "latitude": 38.952774,
+      "longitude": -77.447793
+    },
+    {
+      "id": "Q47151",
+      "countryId": null,
+      "name": "Kazan Int'l",
+      "type": "airport",
+      "latitude": 55.60806,
+      "longitude": 49.298446
+    },
+    {
+      "id": "Q47157",
+      "countryId": null,
+      "name": "King Khalid Int'l",
+      "type": "airport",
+      "latitude": 24.959032,
+      "longitude": 46.701829
+    },
+    {
+      "id": "Q474632",
+      "countryId": null,
+      "name": "Cairns Int'l",
+      "type": "airport",
+      "latitude": -16.876742,
+      "longitude": 145.753585
+    },
+    {
+      "id": "Q477677",
+      "countryId": null,
+      "name": "Boryspil Int'l",
+      "type": "airport",
+      "latitude": 50.340902,
+      "longitude": 30.895162
+    },
+    {
+      "id": "Q478595",
+      "countryId": null,
+      "name": "Tan Son Nhat",
+      "type": "airport",
+      "latitude": 10.816301,
+      "longitude": 106.664246
+    },
+    {
+      "id": "Q482315",
+      "countryId": null,
+      "name": "Amilcar Cabral Int'l",
+      "type": "airport",
+      "latitude": 16.734793,
+      "longitude": -22.944057
+    },
+    {
+      "id": "Q482493",
+      "countryId": null,
+      "name": "Gimpo Int'l",
+      "type": "airport",
+      "latitude": 37.557301,
+      "longitude": 126.802393
+    },
+    {
+      "id": "Q482497",
+      "countryId": null,
+      "name": "Jeju Int'l",
+      "type": "airport",
+      "latitude": 33.524717,
+      "longitude": 126.491629
+    },
+    {
+      "id": "Q483223",
+      "countryId": null,
+      "name": "Kimhae Int'l",
+      "type": "airport",
+      "latitude": 35.170284,
+      "longitude": 128.948801
+    },
+    {
+      "id": "Q483254",
+      "countryId": null,
+      "name": "Daegu Int'l",
+      "type": "airport",
+      "latitude": 35.899928,
+      "longitude": 128.637538
+    },
+    {
+      "id": "Q483469",
+      "countryId": null,
+      "name": "Yangyang Int'l",
+      "type": "airport",
+      "latitude": 38.058782,
+      "longitude": 128.662989
+    },
+    {
+      "id": "Q483675",
+      "countryId": null,
+      "name": "Cheongju Int'l",
+      "type": "airport",
+      "latitude": 36.722023,
+      "longitude": 127.495916
+    },
+    {
+      "id": "Q484730",
+      "countryId": null,
+      "name": "Ulsan",
+      "type": "airport",
+      "latitude": 35.592896,
+      "longitude": 129.355731
+    },
+    {
+      "id": "Q485662",
+      "countryId": null,
+      "name": "Gwangju",
+      "type": "airport",
+      "latitude": 35.140005,
+      "longitude": 126.810839
+    },
+    {
+      "id": "Q48821",
+      "countryId": null,
+      "name": "Kennedy Space Center",
+      "type": "airport",
+      "latitude": 28.51637,
+      "longitude": -80.636968
+    },
+    {
+      "id": "Q491767",
+      "countryId": null,
+      "name": "Sunan",
+      "type": "airport",
+      "latitude": 39.200177,
+      "longitude": 125.675322
+    },
+    {
+      "id": "Q49249",
+      "countryId": null,
+      "name": "Husein Sastranegara Int'l",
+      "type": "airport",
+      "latitude": -6.900424,
+      "longitude": 107.575612
+    },
+    {
+      "id": "Q500253",
+      "countryId": null,
+      "name": "Kuala Lumpur Int'l",
+      "type": "airport",
+      "latitude": 2.747513,
+      "longitude": 101.713886
+    },
+    {
+      "id": "Q500945",
+      "countryId": null,
+      "name": "Ferihegy",
+      "type": "airport",
+      "latitude": 47.433274,
+      "longitude": 19.26223
+    },
+    {
+      "id": "Q501083",
+      "countryId": null,
+      "name": "Gibraltar",
+      "type": "airport",
+      "latitude": 36.151275,
+      "longitude": -5.346772
+    },
+    {
+      "id": "Q502670",
+      "countryId": null,
+      "name": "Chennai Int'l",
+      "type": "airport",
+      "latitude": 12.98253,
+      "longitude": 80.163776
+    },
+    {
+      "id": "Q503364",
+      "countryId": null,
+      "name": "Bengaluru Int'l",
+      "type": "airport",
+      "latitude": 13.200611,
+      "longitude": 77.709558
+    },
+    {
+      "id": "Q504368",
+      "countryId": null,
+      "name": "Chhatrapati Shivaji Int'l",
+      "type": "airport",
+      "latitude": 19.095102,
+      "longitude": 72.874564
+    },
+    {
+      "id": "Q504382",
+      "countryId": null,
+      "name": "Adnan Menderes",
+      "type": "airport",
+      "latitude": 38.291235,
+      "longitude": 27.149298
+    },
+    {
+      "id": "Q505421",
+      "countryId": null,
+      "name": "Riga",
+      "type": "airport",
+      "latitude": 56.922004,
+      "longitude": 23.979379
+    },
+    {
+      "id": "Q505572",
+      "countryId": null,
+      "name": "Coimbatore",
+      "type": "airport",
+      "latitude": 11.030142,
+      "longitude": 77.038894
+    },
+    {
+      "id": "Q512128",
+      "countryId": null,
+      "name": "Philadelphia Int'l",
+      "type": "airport",
+      "latitude": 39.876087,
+      "longitude": -75.242986
+    },
+    {
+      "id": "Q513684",
+      "countryId": null,
+      "name": "Mehrabad Int'l",
+      "type": "airport",
+      "latitude": 35.691374,
+      "longitude": 51.320807
+    },
+    {
+      "id": "Q513689",
+      "countryId": null,
+      "name": "Léopold Sedar Senghor Int'l",
+      "type": "airport",
+      "latitude": 14.745631,
+      "longitude": -17.490408
+    },
+    {
+      "id": "Q515522",
+      "countryId": null,
+      "name": "Tulsa Int'l",
+      "type": "airport",
+      "latitude": 36.190128,
+      "longitude": -95.889882
+    },
+    {
+      "id": "Q515748",
+      "countryId": null,
+      "name": "Santa Barbara Muni.",
+      "type": "airport",
+      "latitude": 34.425731,
+      "longitude": -119.836602
+    },
+    {
+      "id": "Q517873",
+      "countryId": null,
+      "name": "Orio Al Serio",
+      "type": "airport",
+      "latitude": 45.665498,
+      "longitude": 9.698918
+    },
+    {
+      "id": "Q520142",
+      "countryId": null,
+      "name": "Kuujjuaq",
+      "type": "airport",
+      "latitude": 58.101959,
+      "longitude": -68.433342
+    },
+    {
+      "id": "Q521292",
+      "countryId": null,
+      "name": "Ta'izz Int'l",
+      "type": "airport",
+      "latitude": 13.685497,
+      "longitude": 44.134783
+    },
+    {
+      "id": "Q522496",
+      "countryId": null,
+      "name": "Bonriki Int'l",
+      "type": "airport",
+      "latitude": 1.380669,
+      "longitude": 173.145991
+    },
+    {
+      "id": "Q522898",
+      "countryId": null,
+      "name": "Yohannes Iv Int'l",
+      "type": "airport",
+      "latitude": 15.293616,
+      "longitude": 38.906354
+    },
+    {
+      "id": "Q525030",
+      "countryId": null,
+      "name": "Abuja Int'l",
+      "type": "airport",
+      "latitude": 9.004377,
+      "longitude": 7.27026
+    },
+    {
+      "id": "Q525486",
+      "countryId": null,
+      "name": "Macau Int'l",
+      "type": "airport",
+      "latitude": 22.157657,
+      "longitude": 113.574513
+    },
+    {
+      "id": "Q525609",
+      "countryId": null,
+      "name": "Chittagong",
+      "type": "airport",
+      "latitude": 22.245566,
+      "longitude": 91.814711
+    },
+    {
+      "id": "Q526488",
+      "countryId": null,
+      "name": "Salt Lake City Int'l",
+      "type": "airport",
+      "latitude": 40.786729,
+      "longitude": -111.981985
+    },
+    {
+      "id": "Q527157",
+      "countryId": null,
+      "name": "Kuwait Int'l",
+      "type": "airport",
+      "latitude": 29.23968,
+      "longitude": 47.971483
+    },
+    {
+      "id": "Q528184",
+      "countryId": null,
+      "name": "Turin Int'l",
+      "type": "airport",
+      "latitude": 45.19166,
+      "longitude": 7.644162
+    },
+    {
+      "id": "Q530773",
+      "countryId": null,
+      "name": "Augusto Cesar Sandino Int'l",
+      "type": "airport",
+      "latitude": 12.144636,
+      "longitude": -86.171285
+    },
+    {
+      "id": "Q531178",
+      "countryId": null,
+      "name": "Honolulu Int'l",
+      "type": "airport",
+      "latitude": 21.332022,
+      "longitude": -157.919783
+    },
+    {
+      "id": "Q534251",
+      "countryId": null,
+      "name": "Nauru Int'l",
+      "type": "airport",
+      "latitude": -0.545037,
+      "longitude": 166.91614
+    },
+    {
+      "id": "Q535161",
+      "countryId": null,
+      "name": "José María Córdova",
+      "type": "airport",
+      "latitude": 6.171002,
+      "longitude": -75.426956
+    },
+    {
+      "id": "Q5364362",
+      "countryId": null,
+      "name": "Elko Reg.",
+      "type": "airport",
+      "latitude": 40.827606,
+      "longitude": -115.786479
+    },
+    {
+      "id": "Q537950",
+      "countryId": null,
+      "name": "General Mitchell Int'l",
+      "type": "airport",
+      "latitude": 42.94792,
+      "longitude": -87.902106
+    },
+    {
+      "id": "Q5379973",
+      "countryId": null,
+      "name": "Ensenada",
+      "type": "airport",
+      "latitude": 31.797714,
+      "longitude": -116.595724
+    },
+    {
+      "id": "Q539298",
+      "countryId": null,
+      "name": "Hercilio Luz Int'l",
+      "type": "airport",
+      "latitude": -27.664628,
+      "longitude": -48.544812
+    },
+    {
+      "id": "Q540273",
+      "countryId": null,
+      "name": "Catania Fontanarossa",
+      "type": "airport",
+      "latitude": 37.470073,
+      "longitude": 15.067461
+    },
+    {
+      "id": "Q5432482",
+      "countryId": null,
+      "name": "Falls Int'l",
+      "type": "airport",
+      "latitude": 48.565993,
+      "longitude": -93.398003
+    },
+    {
+      "id": "Q5457039",
+      "countryId": null,
+      "name": "Flagstaff Pulliam",
+      "type": "airport",
+      "latitude": 35.138912,
+      "longitude": -111.674656
+    },
+    {
+      "id": "Q5472402",
+      "countryId": null,
+      "name": "Fort Worth Meacham Field",
+      "type": "airport",
+      "latitude": 32.820753,
+      "longitude": -97.355135
+    },
+    {
+      "id": "Q555863",
+      "countryId": null,
+      "name": "Juan Gualberto Gomez",
+      "type": "airport",
+      "latitude": 23.039542,
+      "longitude": -81.43671
+    },
+    {
+      "id": "Q555944",
+      "countryId": null,
+      "name": "Juana Azurduy de Padilla Int'l",
+      "type": "airport",
+      "latitude": -19.013916,
+      "longitude": -65.292863
+    },
+    {
+      "id": "Q556056",
+      "countryId": null,
+      "name": "Bulawayo",
+      "type": "airport",
+      "latitude": -20.015568,
+      "longitude": 28.622552
+    },
+    {
+      "id": "Q559107",
+      "countryId": null,
+      "name": "Nanjing Lukou Int'l",
+      "type": "airport",
+      "latitude": 31.735325,
+      "longitude": 118.866102
+    },
+    {
+      "id": "Q559454",
+      "countryId": null,
+      "name": "Zahedan Int'l",
+      "type": "airport",
+      "latitude": 29.475294,
+      "longitude": 60.900709
+    },
+    {
+      "id": "Q5642669",
+      "countryId": null,
+      "name": "Laredo Int'l",
+      "type": "airport",
+      "latitude": 27.543666,
+      "longitude": -99.45566
+    },
+    {
+      "id": "Q5672567",
+      "countryId": null,
+      "name": "Kaduna",
+      "type": "airport",
+      "latitude": 10.694619,
+      "longitude": 7.325253
+    },
+    {
+      "id": "Q56935",
+      "countryId": null,
+      "name": "Tiruchirappalli",
+      "type": "airport",
+      "latitude": 10.760357,
+      "longitude": 78.708958
+    },
+    {
+      "id": "Q56973",
+      "countryId": null,
+      "name": "Barcelona",
+      "type": "airport",
+      "latitude": 41.303155,
+      "longitude": 2.078003
+    },
+    {
+      "id": "Q570873",
+      "countryId": null,
+      "name": "Damascus Int'l",
+      "type": "airport",
+      "latitude": 33.411437,
+      "longitude": 36.512895
+    },
+    {
+      "id": "Q571536",
+      "countryId": null,
+      "name": "Tampa Int'l",
+      "type": "airport",
+      "latitude": 27.98004,
+      "longitude": -82.534824
+    },
+    {
+      "id": "Q572387",
+      "countryId": null,
+      "name": "Jaipur Int'l",
+      "type": "airport",
+      "latitude": 26.82118,
+      "longitude": 75.80101
+    },
+    {
+      "id": "Q573547",
+      "countryId": null,
+      "name": "Calicut Int'l",
+      "type": "airport",
+      "latitude": 11.139552,
+      "longitude": 75.950993
+    },
+    {
+      "id": "Q577067",
+      "countryId": null,
+      "name": "Vladivostok Int'l",
+      "type": "airport",
+      "latitude": 43.377649,
+      "longitude": 132.139842
+    },
+    {
+      "id": "Q580554",
+      "countryId": null,
+      "name": "Norrköping Airport",
+      "type": "airport",
+      "latitude": 58.583381,
+      "longitude": 16.233941
+    },
+    {
+      "id": "Q581545",
+      "countryId": null,
+      "name": "Kraków-Balice",
+      "type": "airport",
+      "latitude": 50.072263,
+      "longitude": 19.800977
+    },
+    {
+      "id": "Q58226",
+      "countryId": null,
+      "name": "Düsseldorf Int'l",
+      "type": "airport",
+      "latitude": 51.278182,
+      "longitude": 6.764944
+    },
+    {
+      "id": "Q583424",
+      "countryId": null,
+      "name": "Puebla",
+      "type": "airport",
+      "latitude": 19.163794,
+      "longitude": -98.37576
+    },
+    {
+      "id": "Q584102",
+      "countryId": null,
+      "name": "Shannon",
+      "type": "airport",
+      "latitude": 52.693454,
+      "longitude": -8.922429
+    },
+    {
+      "id": "Q586065",
+      "countryId": null,
+      "name": "Entebbe Int'l",
+      "type": "airport",
+      "latitude": 0.044941,
+      "longitude": 32.442757
+    },
+    {
+      "id": "Q58754",
+      "countryId": null,
+      "name": "Doha Int'l",
+      "type": "airport",
+      "latitude": 25.268246,
+      "longitude": 51.558549
+    },
+    {
+      "id": "Q587675",
+      "countryId": null,
+      "name": "El Salvador Int'l",
+      "type": "airport",
+      "latitude": 13.444748,
+      "longitude": -89.057204
+    },
+    {
+      "id": "Q587801",
+      "countryId": null,
+      "name": "Marechal Cunha Machado Int'l",
+      "type": "airport",
+      "latitude": -2.583509,
+      "longitude": -44.236234
+    },
+    {
+      "id": "Q589550",
+      "countryId": null,
+      "name": "Mundo Maya Int'l",
+      "type": "airport",
+      "latitude": 16.914974,
+      "longitude": -89.87784
+    },
+    {
+      "id": "Q592172",
+      "countryId": null,
+      "name": "Cochin Int'l",
+      "type": "airport",
+      "latitude": 10.155119,
+      "longitude": 76.39052
+    },
+    {
+      "id": "Q59633",
+      "countryId": null,
+      "name": "Svalbard Longyear",
+      "type": "airport",
+      "latitude": 78.246717,
+      "longitude": 15.495229
+    },
+    {
+      "id": "Q597139",
+      "countryId": null,
+      "name": "Reno-Tahoe Int'l",
+      "type": "airport",
+      "latitude": 39.50585,
+      "longitude": -119.775283
+    },
+    {
+      "id": "Q597649",
+      "countryId": null,
+      "name": "Douglas Int'l",
+      "type": "airport",
+      "latitude": 35.220428,
+      "longitude": -80.943928
+    },
+    {
+      "id": "Q597669",
+      "countryId": null,
+      "name": "Boa Vista Int'l",
+      "type": "airport",
+      "latitude": 2.841195,
+      "longitude": -60.692221
+    },
+    {
+      "id": "Q597986",
+      "countryId": null,
+      "name": "Greater Buffalo Int'l",
+      "type": "airport",
+      "latitude": 42.934034,
+      "longitude": -78.731997
+    },
+    {
+      "id": "Q598002",
+      "countryId": null,
+      "name": "Luanda 4 de Fevereiro",
+      "type": "airport",
+      "latitude": -8.848313,
+      "longitude": 13.234796
+    },
+    {
+      "id": "Q598033",
+      "countryId": null,
+      "name": "Laoag Int'l",
+      "type": "airport",
+      "latitude": 18.182418,
+      "longitude": 120.533876
+    },
+    {
+      "id": "Q598197",
+      "countryId": null,
+      "name": "Bilbao",
+      "type": "airport",
+      "latitude": 43.305083,
+      "longitude": -2.90609
+    },
+    {
+      "id": "Q598231",
+      "countryId": null,
+      "name": "Birsa Munda",
+      "type": "airport",
+      "latitude": 23.317725,
+      "longitude": 85.323597
+    },
+    {
+      "id": "Q598259",
+      "countryId": null,
+      "name": "Blue Grass",
+      "type": "airport",
+      "latitude": 38.037427,
+      "longitude": -84.598268
+    },
+    {
+      "id": "Q598269",
+      "countryId": null,
+      "name": "Logan Int'l",
+      "type": "airport",
+      "latitude": 45.803686,
+      "longitude": -108.536929
+    },
+    {
+      "id": "Q598642",
+      "countryId": null,
+      "name": "Kosrae Island",
+      "type": "airport",
+      "latitude": 5.35201,
+      "longitude": 162.957041
+    },
+    {
+      "id": "Q598850",
+      "countryId": null,
+      "name": "Biju Patnaik",
+      "type": "airport",
+      "latitude": 20.252666,
+      "longitude": 85.81689
+    },
+    {
+      "id": "Q601091",
+      "countryId": null,
+      "name": "Wang-Chia Tun Airbase",
+      "type": "airport",
+      "latitude": 30.601714,
+      "longitude": 114.246947
+    },
+    {
+      "id": "Q607211",
+      "countryId": null,
+      "name": "Campo Grande Int'l",
+      "type": "airport",
+      "latitude": -20.457272,
+      "longitude": -54.66895
+    },
+    {
+      "id": "Q60879",
+      "countryId": null,
+      "name": "Allama Iqbal Int'l",
+      "type": "airport",
+      "latitude": 31.52063,
+      "longitude": 74.410881
+    },
+    {
+      "id": "Q60900",
+      "countryId": null,
+      "name": "Katunayake Int'l",
+      "type": "airport",
+      "latitude": 7.178077,
+      "longitude": 79.885257
+    },
+    {
+      "id": "Q60910",
+      "countryId": null,
+      "name": "Malpensa",
+      "type": "airport",
+      "latitude": 45.627441,
+      "longitude": 8.71296
+    },
+    {
+      "id": "Q61052",
+      "countryId": null,
+      "name": "Karachi Civil",
+      "type": "airport",
+      "latitude": 24.898524,
+      "longitude": 67.152128
+    },
+    {
+      "id": "Q61066",
+      "countryId": null,
+      "name": "Tribhuvan Int'l",
+      "type": "airport",
+      "latitude": 27.700282,
+      "longitude": 85.35714
+    },
+    {
+      "id": "Q612731",
+      "countryId": null,
+      "name": "Bordeaux",
+      "type": "airport",
+      "latitude": 44.832111,
+      "longitude": -0.701793
+    },
+    {
+      "id": "Q6129080",
+      "countryId": null,
+      "name": "Sitka Rocky Gutierrez",
+      "type": "airport",
+      "latitude": 57.05349,
+      "longitude": -135.365692
+    },
+    {
+      "id": "Q613569",
+      "countryId": null,
+      "name": "Dallas Love Field",
+      "type": "airport",
+      "latitude": 32.844425,
+      "longitude": -96.849864
+    },
+    {
+      "id": "Q619881",
+      "countryId": null,
+      "name": "Benin",
+      "type": "airport",
+      "latitude": 6.317167,
+      "longitude": 5.603683
+    },
+    {
+      "id": "Q619980",
+      "countryId": null,
+      "name": "Bergen Flesland",
+      "type": "airport",
+      "latitude": 60.289061,
+      "longitude": 5.227253
+    },
+    {
+      "id": "Q619997",
+      "countryId": null,
+      "name": "Bethel",
+      "type": "airport",
+      "latitude": 60.778738,
+      "longitude": -161.838987
+    },
+    {
+      "id": "Q620706",
+      "countryId": null,
+      "name": "Djibouti-Ambouli Int'l",
+      "type": "airport",
+      "latitude": 11.552102,
+      "longitude": 43.149713
+    },
+    {
+      "id": "Q622296",
+      "countryId": null,
+      "name": "Ahwaz",
+      "type": "airport",
+      "latitude": 31.343159,
+      "longitude": 48.747107
+    },
+    {
+      "id": "Q623452",
+      "countryId": null,
+      "name": "Houari Boumediene",
+      "type": "airport",
+      "latitude": 36.699721,
+      "longitude": 3.212074
+    },
+    {
+      "id": "Q630524",
+      "countryId": null,
+      "name": "Ulemiste",
+      "type": "airport",
+      "latitude": 59.416501,
+      "longitude": 24.798965
+    },
+    {
+      "id": "Q630645",
+      "countryId": null,
+      "name": "Palermo",
+      "type": "airport",
+      "latitude": 38.186335,
+      "longitude": 13.105531
+    },
+    {
+      "id": "Q631430",
+      "countryId": null,
+      "name": "Kangerlussuaq",
+      "type": "airport",
+      "latitude": 67.018097,
+      "longitude": -50.694199
+    },
+    {
+      "id": "Q632277",
+      "countryId": null,
+      "name": "Almeria",
+      "type": "airport",
+      "latitude": 36.847767,
+      "longitude": -2.371601
+    },
+    {
+      "id": "Q635361",
+      "countryId": null,
+      "name": "Fort Lauderdale Hollywood Int'l",
+      "type": "airport",
+      "latitude": 26.07171,
+      "longitude": -80.145259
+    },
+    {
+      "id": "Q635826",
+      "countryId": null,
+      "name": "Sharjah Int'l",
+      "type": "airport",
+      "latitude": 25.321196,
+      "longitude": 55.520507
+    },
+    {
+      "id": "Q6364347",
+      "countryId": null,
+      "name": "Kanpur",
+      "type": "airport",
+      "latitude": 26.404168,
+      "longitude": 80.41447
+    },
+    {
+      "id": "Q637028",
+      "countryId": null,
+      "name": "Oran Es Senia",
+      "type": "airport",
+      "latitude": 35.620275,
+      "longitude": -0.606797
+    },
+    {
+      "id": "Q637639",
+      "countryId": null,
+      "name": "Bahrain Int'l",
+      "type": "airport",
+      "latitude": 26.269697,
+      "longitude": 50.626003
+    },
+    {
+      "id": "Q639161",
+      "countryId": null,
+      "name": "Madeira",
+      "type": "airport",
+      "latitude": 32.693364,
+      "longitude": -16.775637
+    },
+    {
+      "id": "Q641967",
+      "countryId": null,
+      "name": "Cancún",
+      "type": "airport",
+      "latitude": 21.040197,
+      "longitude": -86.874417
+    },
+    {
+      "id": "Q642313",
+      "countryId": null,
+      "name": "Dzaoudzi Pamanzi Int'l",
+      "type": "airport",
+      "latitude": -12.804947,
+      "longitude": 45.281786
+    },
+    {
+      "id": "Q6433783",
+      "countryId": null,
+      "name": "Kota",
+      "type": "airport",
+      "latitude": 25.163419,
+      "longitude": 75.850498
+    },
+    {
+      "id": "Q643562",
+      "countryId": null,
+      "name": "Abu Dhabi Int'l",
+      "type": "airport",
+      "latitude": 24.427227,
+      "longitude": 54.646329
+    },
+    {
+      "id": "Q643783",
+      "countryId": null,
+      "name": "Pristina",
+      "type": "airport",
+      "latitude": 42.585033,
+      "longitude": 21.030269
+    },
+    {
+      "id": "Q644978",
+      "countryId": null,
+      "name": "Conakry",
+      "type": "airport",
+      "latitude": 9.574181,
+      "longitude": -13.621066
+    },
+    {
+      "id": "Q645151",
+      "countryId": null,
+      "name": "Ernesto Cortissoz Int'l",
+      "type": "airport",
+      "latitude": 10.886678,
+      "longitude": -74.776556
+    },
+    {
+      "id": "Q645462",
+      "countryId": null,
+      "name": "Moshoeshoe I Int'l",
+      "type": "airport",
+      "latitude": -29.455574,
+      "longitude": 27.559216
+    },
+    {
+      "id": "Q645492",
+      "countryId": null,
+      "name": "Kinshasa N Djili Int'l",
+      "type": "airport",
+      "latitude": -4.389169,
+      "longitude": 15.446516
+    },
+    {
+      "id": "Q645760",
+      "countryId": null,
+      "name": "Kota Kinabalu Int'l",
+      "type": "airport",
+      "latitude": 5.922894,
+      "longitude": 116.051088
+    },
+    {
+      "id": "Q6464471",
+      "countryId": null,
+      "name": "La Plata",
+      "type": "airport",
+      "latitude": -34.965544,
+      "longitude": -57.895382
+    },
+    {
+      "id": "Q649827",
+      "countryId": null,
+      "name": "McNary Field",
+      "type": "airport",
+      "latitude": 44.910514,
+      "longitude": -123.007871
+    },
+    {
+      "id": "Q650285",
+      "countryId": null,
+      "name": "Ufa Int'l",
+      "type": "airport",
+      "latitude": 54.565132,
+      "longitude": 55.884077
+    },
+    {
+      "id": "Q650373",
+      "countryId": null,
+      "name": "Marshall Islands Int'l",
+      "type": "airport",
+      "latitude": 7.068118,
+      "longitude": 171.281919
+    },
+    {
+      "id": "Q651190",
+      "countryId": null,
+      "name": "Marseille Provence Airport",
+      "type": "airport",
+      "latitude": 43.44106,
+      "longitude": 5.221379
+    },
+    {
+      "id": "Q651339",
+      "countryId": null,
+      "name": "Point Salines Int'l",
+      "type": "airport",
+      "latitude": 12.007268,
+      "longitude": -61.785853
+    },
+    {
+      "id": "Q651495",
+      "countryId": null,
+      "name": "Mcghee Tyson",
+      "type": "airport",
+      "latitude": 35.805745,
+      "longitude": -83.989938
+    },
+    {
+      "id": "Q652085",
+      "countryId": null,
+      "name": "CFB Edmonton",
+      "type": "airport",
+      "latitude": 53.674916,
+      "longitude": -113.478839
+    },
+    {
+      "id": "Q652505",
+      "countryId": null,
+      "name": "Detroit Metro",
+      "type": "airport",
+      "latitude": 42.22572,
+      "longitude": -83.347894
+    },
+    {
+      "id": "Q652588",
+      "countryId": null,
+      "name": "Martín Miguel de Güemes Int",
+      "type": "airport",
+      "latitude": -24.844374,
+      "longitude": -65.478476
+    },
+    {
+      "id": "Q652872",
+      "countryId": null,
+      "name": "Mbuji Mayi",
+      "type": "airport",
+      "latitude": -6.124845,
+      "longitude": 23.572109
+    },
+    {
+      "id": "Q653299",
+      "countryId": null,
+      "name": "Prince Said Ibrahim Int'l",
+      "type": "airport",
+      "latitude": -11.536639,
+      "longitude": 43.274561
+    },
+    {
+      "id": "Q656807",
+      "countryId": null,
+      "name": "Rotterdam The Hague",
+      "type": "airport",
+      "latitude": 51.94913,
+      "longitude": 4.433844
+    },
+    {
+      "id": "Q656993",
+      "countryId": null,
+      "name": "Palma de Mallorca",
+      "type": "airport",
+      "latitude": 39.565776,
+      "longitude": 2.729977
+    },
+    {
+      "id": "Q657005",
+      "countryId": null,
+      "name": "Dresden",
+      "type": "airport",
+      "latitude": 51.125091,
+      "longitude": 13.764967
+    },
+    {
+      "id": "Q657271",
+      "countryId": null,
+      "name": "Eduardo Gomes Int'l",
+      "type": "airport",
+      "latitude": -3.032139,
+      "longitude": -60.046065
+    },
+    {
+      "id": "Q6586771",
+      "countryId": null,
+      "name": "Nogales Int'l",
+      "type": "airport",
+      "latitude": 31.225537,
+      "longitude": -110.972721
+    },
+    {
+      "id": "Q6587070",
+      "countryId": null,
+      "name": "Plan de Guadalupe",
+      "type": "airport",
+      "latitude": 25.547998,
+      "longitude": -100.932261
+    },
+    {
+      "id": "Q6587665",
+      "countryId": null,
+      "name": "Scholes Int'l",
+      "type": "airport",
+      "latitude": 29.267124,
+      "longitude": -94.855401
+    },
+    {
+      "id": "Q662434",
+      "countryId": null,
+      "name": "Helsinki-Malmi",
+      "type": "airport",
+      "latitude": 60.249378,
+      "longitude": 25.045535
+    },
+    {
+      "id": "Q664946",
+      "countryId": null,
+      "name": "Stockholm-Skavsta",
+      "type": "airport",
+      "latitude": 58.785104,
+      "longitude": 16.921606
+    },
+    {
+      "id": "Q665365",
+      "countryId": null,
+      "name": "Bremen",
+      "type": "airport",
+      "latitude": 53.052287,
+      "longitude": 8.785862
+    },
+    {
+      "id": "Q665948",
+      "countryId": null,
+      "name": "Owen Roberts Int'l",
+      "type": "airport",
+      "latitude": 19.295911,
+      "longitude": -81.357671
+    },
+    {
+      "id": "Q666704",
+      "countryId": null,
+      "name": "Habib Bourguiba Int'l",
+      "type": "airport",
+      "latitude": 35.76071,
+      "longitude": 10.753368
+    },
+    {
+      "id": "Q667326",
+      "countryId": null,
+      "name": "Windhoek Hosea Kutako Int'l",
+      "type": "airport",
+      "latitude": -22.486953,
+      "longitude": 17.463226
+    },
+    {
+      "id": "Q668329",
+      "countryId": null,
+      "name": "Beirut Int'l",
+      "type": "airport",
+      "latitude": 33.82544,
+      "longitude": 35.493085
+    },
+    {
+      "id": "Q669261",
+      "countryId": null,
+      "name": "Penang Int'l",
+      "type": "airport",
+      "latitude": 5.292656,
+      "longitude": 100.265786
+    },
+    {
+      "id": "Q670038",
+      "countryId": null,
+      "name": "Antananarivo Ivato",
+      "type": "airport",
+      "latitude": -18.799335,
+      "longitude": 47.475354
+    },
+    {
+      "id": "Q670072",
+      "countryId": null,
+      "name": "Fort McMurray",
+      "type": "airport",
+      "latitude": 56.656317,
+      "longitude": -111.22384
+    },
+    {
+      "id": "Q671475",
+      "countryId": null,
+      "name": "Gen E L Logan Int'l",
+      "type": "airport",
+      "latitude": 42.366566,
+      "longitude": -71.016407
+    },
+    {
+      "id": "Q672289",
+      "countryId": null,
+      "name": "Luqa",
+      "type": "airport",
+      "latitude": 35.848931,
+      "longitude": 14.495264
+    },
+    {
+      "id": "Q676576",
+      "countryId": null,
+      "name": "Washington Nat'l",
+      "type": "airport",
+      "latitude": 38.853716,
+      "longitude": -77.043337
+    },
+    {
+      "id": "Q679345",
+      "countryId": null,
+      "name": "Chubu Centrair Int'l",
+      "type": "airport",
+      "latitude": 34.85903,
+      "longitude": 136.814771
+    },
+    {
+      "id": "Q681134",
+      "countryId": null,
+      "name": "Bujumbura Int'l",
+      "type": "airport",
+      "latitude": -3.322044,
+      "longitude": 29.320984
+    },
+    {
+      "id": "Q684964",
+      "countryId": null,
+      "name": "Sanya Phoenix Int'l",
+      "type": "airport",
+      "latitude": 18.309096,
+      "longitude": 109.408239
+    },
+    {
+      "id": "Q690122",
+      "countryId": null,
+      "name": "Pulkovo 2",
+      "type": "airport",
+      "latitude": 59.805406,
+      "longitude": 30.307098
+    },
+    {
+      "id": "Q690636",
+      "countryId": null,
+      "name": "Taba Int'l",
+      "type": "airport",
+      "latitude": 29.594499,
+      "longitude": 34.775838
+    },
+    {
+      "id": "Q692279",
+      "countryId": null,
+      "name": "Clark Int'l",
+      "type": "airport",
+      "latitude": 15.187642,
+      "longitude": 120.55077
+    },
+    {
+      "id": "Q702035",
+      "countryId": null,
+      "name": "Tainan",
+      "type": "airport",
+      "latitude": 22.950668,
+      "longitude": 120.209733
+    },
+    {
+      "id": "Q7040641",
+      "countryId": null,
+      "name": "Shreveport Reg.",
+      "type": "airport",
+      "latitude": 32.45458,
+      "longitude": -93.828522
+    },
+    {
+      "id": "Q709169",
+      "countryId": null,
+      "name": "Pisa Galileo Galilei Int'l",
+      "type": "airport",
+      "latitude": 43.698322,
+      "longitude": 10.400134
+    },
+    {
+      "id": "Q7192417",
+      "countryId": null,
+      "name": "Pierre Regional",
+      "type": "airport",
+      "latitude": 44.380153,
+      "longitude": -100.292642
+    },
+    {
+      "id": "Q721258",
+      "countryId": null,
+      "name": "Bamako Sénou",
+      "type": "airport",
+      "latitude": 12.539336,
+      "longitude": -7.947272
+    },
+    {
+      "id": "Q721494",
+      "countryId": null,
+      "name": "Queen Alia Int'l",
+      "type": "airport",
+      "latitude": 31.722662,
+      "longitude": 35.989707
+    },
+    {
+      "id": "Q721497",
+      "countryId": null,
+      "name": "Roberts Int'l",
+      "type": "airport",
+      "latitude": 6.241835,
+      "longitude": -10.353085
+    },
+    {
+      "id": "Q721618",
+      "countryId": null,
+      "name": "Tabriz",
+      "type": "airport",
+      "latitude": 38.131111,
+      "longitude": 46.244713
+    },
+    {
+      "id": "Q721780",
+      "countryId": null,
+      "name": "Kamuzu Int'l",
+      "type": "airport",
+      "latitude": -13.788623,
+      "longitude": 33.782789
+    },
+    {
+      "id": "Q723325",
+      "countryId": null,
+      "name": "Princess Juliana Int'l",
+      "type": "airport",
+      "latitude": 18.042244,
+      "longitude": -63.112276
+    },
+    {
+      "id": "Q723622",
+      "countryId": null,
+      "name": "Sabiha Gökçen Havaalani",
+      "type": "airport",
+      "latitude": 40.9043,
+      "longitude": 29.309599
+    },
+    {
+      "id": "Q7285421",
+      "countryId": null,
+      "name": "Bairagarh",
+      "type": "airport",
+      "latitude": 23.285568,
+      "longitude": 77.340871
+    },
+    {
+      "id": "Q7286282",
+      "countryId": null,
+      "name": "Rajkot",
+      "type": "airport",
+      "latitude": 22.309282,
+      "longitude": 70.779955
+    },
+    {
+      "id": "Q729886",
+      "countryId": null,
+      "name": "Trondheim Vaernes",
+      "type": "airport",
+      "latitude": 63.472029,
+      "longitude": 10.91681
+    },
+    {
+      "id": "Q732278",
+      "countryId": null,
+      "name": "General R F Villalobos Int'l",
+      "type": "airport",
+      "latitude": 28.703998,
+      "longitude": -105.969205
+    },
+    {
+      "id": "Q733738",
+      "countryId": null,
+      "name": "Melbourne Int'l",
+      "type": "airport",
+      "latitude": -37.669941,
+      "longitude": 144.848998
+    },
+    {
+      "id": "Q733998",
+      "countryId": null,
+      "name": "Rio de Janeiro-Antonio Carlos Jobim Int'l",
+      "type": "airport",
+      "latitude": -22.812344,
+      "longitude": -43.248381
+    },
+    {
+      "id": "Q736627",
+      "countryId": null,
+      "name": "Montréal-Trudeau",
+      "type": "airport",
+      "latitude": 45.458351,
+      "longitude": -73.749316
+    },
+    {
+      "id": "Q738866",
+      "countryId": null,
+      "name": "Lubumbashi Luano Int'l",
+      "type": "airport",
+      "latitude": -11.5908,
+      "longitude": 27.5292
+    },
+    {
+      "id": "Q7399709",
+      "countryId": null,
+      "name": "Sahnewal",
+      "type": "airport",
+      "latitude": 30.85036,
+      "longitude": 75.957072
+    },
+    {
+      "id": "Q740392",
+      "countryId": null,
+      "name": "Sarajevo",
+      "type": "airport",
+      "latitude": 43.825887,
+      "longitude": 18.336619
+    },
+    {
+      "id": "Q741262",
+      "countryId": null,
+      "name": "Pohnpei Int'l",
+      "type": "airport",
+      "latitude": 6.981307,
+      "longitude": 158.203304
+    },
+    {
+      "id": "Q744748",
+      "countryId": null,
+      "name": "George Bush Intercontinental",
+      "type": "airport",
+      "latitude": 29.986591,
+      "longitude": -95.333705
+    },
+    {
+      "id": "Q744802",
+      "countryId": null,
+      "name": "Kabul Int'l",
+      "type": "airport",
+      "latitude": 34.563398,
+      "longitude": 69.210074
+    },
+    {
+      "id": "Q749497",
+      "countryId": null,
+      "name": "Soekarno-Hatta Int'l",
+      "type": "airport",
+      "latitude": -6.126603,
+      "longitude": 106.654296
+    },
+    {
+      "id": "Q752537",
+      "countryId": null,
+      "name": "Aswan Int'l",
+      "type": "airport",
+      "latitude": 23.968277,
+      "longitude": 32.824437
+    },
+    {
+      "id": "Q753531",
+      "countryId": null,
+      "name": "Yundum Int'l",
+      "type": "airport",
+      "latitude": 13.34386,
+      "longitude": -16.652313
+    },
+    {
+      "id": "Q7555807",
+      "countryId": null,
+      "name": "Solapur",
+      "type": "airport",
+      "latitude": 17.625415,
+      "longitude": 75.93306
+    },
+    {
+      "id": "Q7560814",
+      "countryId": null,
+      "name": "Sonari",
+      "type": "airport",
+      "latitude": 22.815415,
+      "longitude": 86.172466
+    },
+    {
+      "id": "Q7580920",
+      "countryId": null,
+      "name": "Springfield Reg.",
+      "type": "airport",
+      "latitude": 37.242144,
+      "longitude": -93.382638
+    },
+    {
+      "id": "Q760897",
+      "countryId": null,
+      "name": "Harare Int'l",
+      "type": "airport",
+      "latitude": -17.9228,
+      "longitude": 31.1014
+    },
+    {
+      "id": "Q762986",
+      "countryId": null,
+      "name": "Val de Caes Int'l",
+      "type": "airport",
+      "latitude": -1.389746,
+      "longitude": -48.47956
+    },
+    {
+      "id": "Q7639037",
+      "countryId": null,
+      "name": "Sunchon",
+      "type": "airport",
+      "latitude": 39.411966,
+      "longitude": 125.890825
+    },
+    {
+      "id": "Q764554",
+      "countryId": null,
+      "name": "Łódź Władysław Reymont",
+      "type": "airport",
+      "latitude": 51.727207,
+      "longitude": 19.403215
+    },
+    {
+      "id": "Q765608",
+      "countryId": null,
+      "name": "La Aurora",
+      "type": "airport",
+      "latitude": 14.588161,
+      "longitude": -90.530181
+    },
+    {
+      "id": "Q765650",
+      "countryId": null,
+      "name": "Ürümqi Diwopu Int'l",
+      "type": "airport",
+      "latitude": 43.898338,
+      "longitude": 87.46713
+    },
+    {
+      "id": "Q767753",
+      "countryId": null,
+      "name": "Anchorage Int'l",
+      "type": "airport",
+      "latitude": 61.172894,
+      "longitude": -149.981725
+    },
+    {
+      "id": "Q7703252",
+      "countryId": null,
+      "name": "Terrance B. Lettsome Int'l",
+      "type": "airport",
+      "latitude": 18.444362,
+      "longitude": -64.537151
+    },
+    {
+      "id": "Q773330",
+      "countryId": null,
+      "name": "Da Nang",
+      "type": "airport",
+      "latitude": 16.053144,
+      "longitude": 108.202706
+    },
+    {
+      "id": "Q773547",
+      "countryId": null,
+      "name": "Ouagadougou",
+      "type": "airport",
+      "latitude": 12.35358,
+      "longitude": -1.513805
+    },
+    {
+      "id": "Q774669",
+      "countryId": null,
+      "name": "Tianjin Binhai Int'l",
+      "type": "airport",
+      "latitude": 39.129461,
+      "longitude": 117.352723
+    },
+    {
+      "id": "Q777855",
+      "countryId": null,
+      "name": "Minsk Int'l",
+      "type": "airport",
+      "latitude": 53.889379,
+      "longitude": 28.034193
+    },
+    {
+      "id": "Q778213",
+      "countryId": null,
+      "name": "Tbilisi Int'l",
+      "type": "airport",
+      "latitude": 41.669442,
+      "longitude": 44.964615
+    },
+    {
+      "id": "Q779571",
+      "countryId": null,
+      "name": "Prince George",
+      "type": "airport",
+      "latitude": 53.884249,
+      "longitude": -122.674015
+    },
+    {
+      "id": "Q779984",
+      "countryId": null,
+      "name": "Gdansk Lech Walesa",
+      "type": "airport",
+      "latitude": 54.380703,
+      "longitude": 18.468442
+    },
+    {
+      "id": "Q786209",
+      "countryId": null,
+      "name": "Lhasa Gonggar",
+      "type": "airport",
+      "latitude": 29.293694,
+      "longitude": 90.900561
+    },
+    {
+      "id": "Q787782",
+      "countryId": null,
+      "name": "T.F. Green",
+      "type": "airport",
+      "latitude": 41.726002,
+      "longitude": -71.435784
+    },
+    {
+      "id": "Q788417",
+      "countryId": null,
+      "name": "Chongqing Jiangbei Int'l",
+      "type": "airport",
+      "latitude": 29.724042,
+      "longitude": 106.63802
+    },
+    {
+      "id": "Q790043",
+      "countryId": null,
+      "name": "Bangui M'Poko Int'l",
+      "type": "airport",
+      "latitude": 4.398852,
+      "longitude": 18.524124
+    },
+    {
+      "id": "Q7938056",
+      "countryId": null,
+      "name": "Viña del Mar",
+      "type": "airport",
+      "latitude": -32.948392,
+      "longitude": -71.480603
+    },
+    {
+      "id": "Q794542",
+      "countryId": null,
+      "name": "Cayenne – Rochambeau",
+      "type": "airport",
+      "latitude": 4.821267,
+      "longitude": -52.363807
+    },
+    {
+      "id": "Q794549",
+      "countryId": null,
+      "name": "Québec",
+      "type": "airport",
+      "latitude": 46.791568,
+      "longitude": -71.383928
+    },
+    {
+      "id": "Q794552",
+      "countryId": null,
+      "name": "Mirabel Int'l",
+      "type": "airport",
+      "latitude": 45.683225,
+      "longitude": -74.028738
+    },
+    {
+      "id": "Q794560",
+      "countryId": null,
+      "name": "Mais Gate Int'l",
+      "type": "airport",
+      "latitude": 18.575683,
+      "longitude": -72.294478
+    },
+    {
+      "id": "Q8066777",
+      "countryId": null,
+      "name": "Zaria",
+      "type": "airport",
+      "latitude": 11.135296,
+      "longitude": 7.687268
+    },
+    {
+      "id": "Q810875",
+      "countryId": null,
+      "name": "Baton Rouge Metro",
+      "type": "airport",
+      "latitude": 30.532614,
+      "longitude": -91.156754
+    },
+    {
+      "id": "Q811239",
+      "countryId": null,
+      "name": "Bauerfield Int'l",
+      "type": "airport",
+      "latitude": -17.701699,
+      "longitude": 168.319623
+    },
+    {
+      "id": "Q816717",
+      "countryId": null,
+      "name": "Benazir Bhutto Int'l",
+      "type": "airport",
+      "latitude": 33.607446,
+      "longitude": 73.100794
+    },
+    {
+      "id": "Q821275",
+      "countryId": null,
+      "name": "Indira Gandhi Int'l",
+      "type": "airport",
+      "latitude": 28.559204,
+      "longitude": 77.087836
+    },
+    {
+      "id": "Q821750",
+      "countryId": null,
+      "name": "OR Tambo Int'l",
+      "type": "airport",
+      "latitude": -26.132095,
+      "longitude": 28.231989
+    },
+    {
+      "id": "Q827480",
+      "countryId": null,
+      "name": "Antalya",
+      "type": "airport",
+      "latitude": 36.915323,
+      "longitude": 30.802553
+    },
+    {
+      "id": "Q828379",
+      "countryId": null,
+      "name": "Bratislava-M.R. Štefánik",
+      "type": "airport",
+      "latitude": 48.169838,
+      "longitude": 17.199985
+    },
+    {
+      "id": "Q828386",
+      "countryId": null,
+      "name": "Linate",
+      "type": "airport",
+      "latitude": 45.460394,
+      "longitude": 9.279966
+    },
+    {
+      "id": "Q837745",
+      "countryId": null,
+      "name": "Chinggis Khaan Int'l",
+      "type": "airport",
+      "latitude": 47.852526,
+      "longitude": 106.762874
+    },
+    {
+      "id": "Q839584",
+      "countryId": null,
+      "name": "Severomorsk-3 (Murmansk N.E.)",
+      "type": "airport",
+      "latitude": 69.016871,
+      "longitude": 33.290353
+    },
+    {
+      "id": "Q842297",
+      "countryId": null,
+      "name": "Shenzhen Bao'an Int'l",
+      "type": "airport",
+      "latitude": 22.646508,
+      "longitude": 113.815853
+    },
+    {
+      "id": "Q843204",
+      "countryId": null,
+      "name": "Reykjavik Air Terminal",
+      "type": "airport",
+      "latitude": 64.131873,
+      "longitude": -21.946634
+    },
+    {
+      "id": "Q843229",
+      "countryId": null,
+      "name": "Aeroportul National Bucuresti-Baneasa",
+      "type": "airport",
+      "latitude": 44.497041,
+      "longitude": 26.085725
+    },
+    {
+      "id": "Q844098",
+      "countryId": null,
+      "name": "Noi Bai",
+      "type": "airport",
+      "latitude": 21.21456,
+      "longitude": 105.803759
+    },
+    {
+      "id": "Q844825",
+      "countryId": null,
+      "name": "Podgorica",
+      "type": "airport",
+      "latitude": 42.367934,
+      "longitude": 19.246687
+    },
+    {
+      "id": "Q844951",
+      "countryId": null,
+      "name": "Kishinev S.E.",
+      "type": "airport",
+      "latitude": 46.934162,
+      "longitude": 28.936049
+    },
+    {
+      "id": "Q847711",
+      "countryId": null,
+      "name": "Vilnius",
+      "type": "airport",
+      "latitude": 54.643055,
+      "longitude": 25.280716
+    },
+    {
+      "id": "Q847772",
+      "countryId": null,
+      "name": "Triad Int'l",
+      "type": "airport",
+      "latitude": 36.105378,
+      "longitude": -79.936487
+    },
+    {
+      "id": "Q847779",
+      "countryId": null,
+      "name": "Wilmington Int'l",
+      "type": "airport",
+      "latitude": 34.266784,
+      "longitude": -77.910376
+    },
+    {
+      "id": "Q849314",
+      "countryId": null,
+      "name": "Alicante",
+      "type": "airport",
+      "latitude": 38.286641,
+      "longitude": -0.55723
+    },
+    {
+      "id": "Q849347",
+      "countryId": null,
+      "name": "Venice Marco Polo",
+      "type": "airport",
+      "latitude": 45.504848,
+      "longitude": 12.341067
+    },
+    {
+      "id": "Q849383",
+      "countryId": null,
+      "name": "Naples Int'l",
+      "type": "airport",
+      "latitude": 40.878073,
+      "longitude": 14.282844
+    },
+    {
+      "id": "Q853886",
+      "countryId": null,
+      "name": "Mccarran Int'l",
+      "type": "airport",
+      "latitude": 36.08496,
+      "longitude": -115.151324
+    },
+    {
+      "id": "Q854130",
+      "countryId": null,
+      "name": "Cape Town Int'l",
+      "type": "airport",
+      "latitude": -33.970447,
+      "longitude": 18.597657
+    },
+    {
+      "id": "Q856939",
+      "countryId": null,
+      "name": "Cotonou Cadjehon",
+      "type": "airport",
+      "latitude": 6.358247,
+      "longitude": 2.3838
+    },
+    {
+      "id": "Q858844",
+      "countryId": null,
+      "name": "Almaty Int'l",
+      "type": "airport",
+      "latitude": 43.346494,
+      "longitude": 77.012046
+    },
+    {
+      "id": "Q859876",
+      "countryId": null,
+      "name": "Honiara Int'l",
+      "type": "airport",
+      "latitude": -9.427576,
+      "longitude": 160.045855
+    },
+    {
+      "id": "Q860559",
+      "countryId": null,
+      "name": "Lic Benito Juarez Int'l",
+      "type": "airport",
+      "latitude": 19.43547,
+      "longitude": -99.082608
+    },
+    {
+      "id": "Q860952",
+      "countryId": null,
+      "name": "Tashkent Int'l",
+      "type": "airport",
+      "latitude": 41.262234,
+      "longitude": 69.266614
+    },
+    {
+      "id": "Q862401",
+      "countryId": null,
+      "name": "Congonhas Int'l",
+      "type": "airport",
+      "latitude": -23.626859,
+      "longitude": -46.659116
+    },
+    {
+      "id": "Q86446",
+      "countryId": null,
+      "name": "Ninoy Aquino Int'l",
+      "type": "airport",
+      "latitude": 14.506832,
+      "longitude": 121.004122
+    },
+    {
+      "id": "Q86473",
+      "countryId": null,
+      "name": "Atatürk Hava Limani",
+      "type": "airport",
+      "latitude": 40.977839,
+      "longitude": 28.819549
+    },
+    {
+      "id": "Q865724",
+      "countryId": null,
+      "name": "Birmingham Int'l",
+      "type": "airport",
+      "latitude": 33.561867,
+      "longitude": -86.752377
+    },
+    {
+      "id": "Q866831",
+      "countryId": null,
+      "name": "Memphis Int'l",
+      "type": "airport",
+      "latitude": 35.04441,
+      "longitude": -89.981628
+    },
+    {
+      "id": "Q8685",
+      "countryId": null,
+      "name": "John F Kennedy Int'l",
+      "type": "airport",
+      "latitude": 40.64596,
+      "longitude": -73.786327
+    },
+    {
+      "id": "Q8688",
+      "countryId": null,
+      "name": "San Francisco Int'l",
+      "type": "airport",
+      "latitude": 37.617025,
+      "longitude": -122.38347
+    },
+    {
+      "id": "Q868994",
+      "countryId": null,
+      "name": "Clinton National",
+      "type": "airport",
+      "latitude": 34.72843,
+      "longitude": -92.220588
+    },
+    {
+      "id": "Q8691",
+      "countryId": null,
+      "name": "London Heathrow",
+      "type": "airport",
+      "latitude": 51.470996,
+      "longitude": -0.453157
+    },
+    {
+      "id": "Q8694",
+      "countryId": null,
+      "name": "Manchester Int'l",
+      "type": "airport",
+      "latitude": 53.36249,
+      "longitude": -2.273372
+    },
+    {
+      "id": "Q8699",
+      "countryId": null,
+      "name": "Leeds Bradford",
+      "type": "airport",
+      "latitude": 53.869082,
+      "longitude": -1.659831
+    },
+    {
+      "id": "Q8703",
+      "countryId": null,
+      "name": "London Gatwick",
+      "type": "airport",
+      "latitude": 51.155757,
+      "longitude": -0.162962
+    },
+    {
+      "id": "Q8712",
+      "countryId": null,
+      "name": "London Luton",
+      "type": "airport",
+      "latitude": 51.880295,
+      "longitude": -0.376227
+    },
+    {
+      "id": "Q8716",
+      "countryId": null,
+      "name": "Edinburgh Int'l",
+      "type": "airport",
+      "latitude": 55.948554,
+      "longitude": -3.364285
+    },
+    {
+      "id": "Q8719",
+      "countryId": null,
+      "name": "Birmingham Int'l",
+      "type": "airport",
+      "latitude": 52.452909,
+      "longitude": -1.733732
+    },
+    {
+      "id": "Q8721",
+      "countryId": null,
+      "name": "Glasgow Int'l",
+      "type": "airport",
+      "latitude": 55.864183,
+      "longitude": -4.431678
+    },
+    {
+      "id": "Q872186",
+      "countryId": null,
+      "name": "Luxembourg-Findel",
+      "type": "airport",
+      "latitude": 49.634304,
+      "longitude": 6.216421
+    },
+    {
+      "id": "Q8725",
+      "countryId": null,
+      "name": "Bristol Int'l",
+      "type": "airport",
+      "latitude": 51.386293,
+      "longitude": -2.710865
+    },
+    {
+      "id": "Q8727",
+      "countryId": null,
+      "name": "Liverpool John Lennon",
+      "type": "airport",
+      "latitude": 53.336375,
+      "longitude": -2.858621
+    },
+    {
+      "id": "Q8731",
+      "countryId": null,
+      "name": "Los Angeles Int'l",
+      "type": "airport",
+      "latitude": 33.944174,
+      "longitude": -118.402469
+    },
+    {
+      "id": "Q875749",
+      "countryId": null,
+      "name": "Minneapolis St. Paul Int'l",
+      "type": "airport",
+      "latitude": 44.882026,
+      "longitude": -93.2081
+    },
+    {
+      "id": "Q892783",
+      "countryId": null,
+      "name": "La Tontouta Int'l",
+      "type": "airport",
+      "latitude": -22.013639,
+      "longitude": 166.217232
+    },
+    {
+      "id": "Q8975",
+      "countryId": null,
+      "name": "Newcastle Int'l",
+      "type": "airport",
+      "latitude": 55.037085,
+      "longitude": -1.710346
+    },
+    {
+      "id": "Q8979",
+      "countryId": null,
+      "name": "Belfast Int'l",
+      "type": "airport",
+      "latitude": 54.661558,
+      "longitude": -6.216169
+    },
+    {
+      "id": "Q8992",
+      "countryId": null,
+      "name": "Glasgow Prestwick",
+      "type": "airport",
+      "latitude": 55.508892,
+      "longitude": -4.610972
+    },
+    {
+      "id": "Q8994",
+      "countryId": null,
+      "name": "Cardiff",
+      "type": "airport",
+      "latitude": 51.398622,
+      "longitude": -3.339569
+    },
+    {
+      "id": "Q902486",
+      "countryId": null,
+      "name": "Grantley Adams Int'l",
+      "type": "airport",
+      "latitude": 13.079661,
+      "longitude": -59.487419
+    },
+    {
+      "id": "Q903521",
+      "countryId": null,
+      "name": "Silvio Pettirossi Int'l",
+      "type": "airport",
+      "latitude": -25.241659,
+      "longitude": -57.513908
+    },
+    {
+      "id": "Q905933",
+      "countryId": null,
+      "name": "Niamey",
+      "type": "airport",
+      "latitude": 13.476757,
+      "longitude": 2.177307
+    },
+    {
+      "id": "Q9064",
+      "countryId": null,
+      "name": "Carrasco Int'l",
+      "type": "airport",
+      "latitude": -34.841049,
+      "longitude": -56.026636
+    },
+    {
+      "id": "Q9074",
+      "countryId": null,
+      "name": "Nueva Hespérides Int'l",
+      "type": "airport",
+      "latitude": -31.437388,
+      "longitude": -57.984082
+    },
+    {
+      "id": "Q909488",
+      "countryId": null,
+      "name": "Juscelino Kubitschek Int'l",
+      "type": "airport",
+      "latitude": -15.869999,
+      "longitude": -47.920789
+    },
+    {
+      "id": "Q912583",
+      "countryId": null,
+      "name": "Hat Yai Int'l",
+      "type": "airport",
+      "latitude": 6.936342,
+      "longitude": 100.393751
+    },
+    {
+      "id": "Q912916",
+      "countryId": null,
+      "name": "Sky Harbor Int'l",
+      "type": "airport",
+      "latitude": 33.435861,
+      "longitude": -112.013635
+    },
+    {
+      "id": "Q917528",
+      "countryId": null,
+      "name": "Spokane Int'l",
+      "type": "airport",
+      "latitude": 47.625478,
+      "longitude": -117.536837
+    },
+    {
+      "id": "Q919952",
+      "countryId": null,
+      "name": "Carlos Ibáñez de Campo Int'l",
+      "type": "airport",
+      "latitude": -53.00507,
+      "longitude": -70.843124
+    },
+    {
+      "id": "Q922675",
+      "countryId": null,
+      "name": "Sadiq Abubakar III",
+      "type": "airport",
+      "latitude": 12.917482,
+      "longitude": 5.200226
+    },
+    {
+      "id": "Q926029",
+      "countryId": null,
+      "name": "Deputado Luis Eduardo Magalhaes Int'l",
+      "type": "airport",
+      "latitude": -12.914361,
+      "longitude": -38.334799
+    },
+    {
+      "id": "Q929859",
+      "countryId": null,
+      "name": "Orlando Int'l",
+      "type": "airport",
+      "latitude": 28.431151,
+      "longitude": -81.307371
+    },
+    {
+      "id": "Q930733",
+      "countryId": null,
+      "name": "Toncontin Int'l",
+      "type": "airport",
+      "latitude": 14.059985,
+      "longitude": -87.219212
+    },
+    {
+      "id": "Q932025",
+      "countryId": null,
+      "name": "Don Miguel Hidalgo Int'l",
+      "type": "airport",
+      "latitude": 20.524686,
+      "longitude": -103.300766
+    },
+    {
+      "id": "Q932514",
+      "countryId": null,
+      "name": "Tenerife N.",
+      "type": "airport",
+      "latitude": 28.487577,
+      "longitude": -16.346318
+    },
+    {
+      "id": "Q938233",
+      "countryId": null,
+      "name": "Simpang Tiga",
+      "type": "airport",
+      "latitude": 0.464601,
+      "longitude": 101.446569
+    },
+    {
+      "id": "Q93902",
+      "countryId": null,
+      "name": "Prince Rupert",
+      "type": "airport",
+      "latitude": 54.292,
+      "longitude": -130.445587
+    },
+    {
+      "id": "Q939543",
+      "countryId": null,
+      "name": "Kiev Zhuliany Int'l",
+      "type": "airport",
+      "latitude": 50.412808,
+      "longitude": 30.445131
+    },
+    {
+      "id": "Q939904",
+      "countryId": null,
+      "name": "Pago Pago Int'l",
+      "type": "airport",
+      "latitude": -14.329064,
+      "longitude": -170.713307
+    },
+    {
+      "id": "Q943743",
+      "countryId": null,
+      "name": "Francisco Sa Carneiro",
+      "type": "airport",
+      "latitude": 41.236871,
+      "longitude": -8.671272
+    },
+    {
+      "id": "Q948809",
+      "countryId": null,
+      "name": "Chacalluta Int'l",
+      "type": "airport",
+      "latitude": -18.349206,
+      "longitude": -70.33573
+    },
+    {
+      "id": "Q94895",
+      "countryId": null,
+      "name": "Baltimore-Washington Int'l Thurgood Marshall",
+      "type": "airport",
+      "latitude": 39.179394,
+      "longitude": -76.668643
+    },
+    {
+      "id": "Q949831",
+      "countryId": null,
+      "name": "Ontario Int'l",
+      "type": "airport",
+      "latitude": 34.060191,
+      "longitude": -117.592328
+    },
+    {
+      "id": "Q950834",
+      "countryId": null,
+      "name": "Kurumoch",
+      "type": "airport",
+      "latitude": 53.508385,
+      "longitude": 50.147266
+    },
+    {
+      "id": "Q954472",
+      "countryId": null,
+      "name": "Rarotonga Int'l",
+      "type": "airport",
+      "latitude": -21.200982,
+      "longitude": -159.798156
+    },
+    {
+      "id": "Q955433",
+      "countryId": null,
+      "name": "Mohamed V Int'l",
+      "type": "airport",
+      "latitude": 33.374727,
+      "longitude": -7.581456
+    },
+    {
+      "id": "Q965083",
+      "countryId": null,
+      "name": "Dalian Zhoushuizi Int'l",
+      "type": "airport",
+      "latitude": 38.96157,
+      "longitude": 121.538914
+    },
+    {
+      "id": "Q9688",
+      "countryId": null,
+      "name": "Berlin-Tegel Int'l",
+      "type": "airport",
+      "latitude": 52.554429,
+      "longitude": 13.290309
+    },
+    {
+      "id": "Q969087",
+      "countryId": null,
+      "name": "City of Colorado Springs",
+      "type": "airport",
+      "latitude": 38.797425,
+      "longitude": -104.70088
+    },
+    {
+      "id": "Q9694",
+      "countryId": null,
+      "name": "Schiphol",
+      "type": "airport",
+      "latitude": 52.308932,
+      "longitude": 4.764377
+    },
+    {
+      "id": "Q975696",
+      "countryId": null,
+      "name": "Fua'amotu Int'l",
+      "type": "airport",
+      "latitude": -21.24861,
+      "longitude": -175.135635
+    },
+    {
+      "id": "Q979272",
+      "countryId": null,
+      "name": "Ndjamena",
+      "type": "airport",
+      "latitude": 12.12954,
+      "longitude": 15.033045
+    },
+    {
+      "id": "Q99172",
+      "countryId": null,
+      "name": "Ruzyn",
+      "type": "airport",
+      "latitude": 50.107651,
+      "longitude": 14.267485
+    }
+  ]
+}

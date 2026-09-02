@@ -1,0 +1,51 @@
+{
+  "generatedAt": "2026-08-13T00:36:37.606Z",
+  "purpose": "Reference geography only; not campaign truth or military strength.",
+  "sources": [
+    {
+      "name": "naturalEarthCountries",
+      "url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_admin_0_countries.geojson",
+      "license": "Public domain",
+      "attribution": "Natural Earth / Nathaniel Kelso",
+      "cachedFile": "raw/naturalEarthCountries.json",
+      "normalizedFile": "countries.json",
+      "recordCount": 258
+    },
+    {
+      "name": "naturalEarthRegions",
+      "url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_admin_1_states_provinces.geojson",
+      "license": "Public domain",
+      "attribution": "Natural Earth / Nathaniel Kelso",
+      "cachedFile": "raw/naturalEarthRegions.json",
+      "normalizedFile": "regions.json",
+      "recordCount": 4596
+    },
+    {
+      "name": "naturalEarthPlaces",
+      "url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_populated_places.geojson",
+      "license": "Public domain",
+      "attribution": "Natural Earth / Nathaniel Kelso",
+      "cachedFile": "raw/naturalEarthPlaces.json",
+      "normalizedFile": "places.json",
+      "recordCount": 7342
+    },
+    {
+      "name": "naturalEarthPorts",
+      "url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_ports.geojson",
+      "license": "Public domain",
+      "attribution": "Natural Earth / Nathaniel Kelso",
+      "cachedFile": "raw/naturalEarthPorts.json",
+      "normalizedFile": "ports.json",
+      "recordCount": 1081
+    },
+    {
+      "name": "naturalEarthAirports",
+      "url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_airports.geojson",
+      "license": "Public domain",
+      "attribution": "Natural Earth / Nathaniel Kelso",
+      "cachedFile": "raw/naturalEarthAirports.json",
+      "normalizedFile": "airports.json",
+      "recordCount": 893
+    }
+  ]
+}

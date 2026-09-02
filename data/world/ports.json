@@ -1,0 +1,8653 @@
+{
+  "version": 1,
+  "records": [
+    {
+      "id": "A Coruna",
+      "countryId": null,
+      "name": "A Coruna",
+      "type": "port",
+      "latitude": 43.363056,
+      "longitude": -8.387927
+    },
+    {
+      "id": "Aalborg",
+      "countryId": null,
+      "name": "Aalborg",
+      "type": "port",
+      "latitude": 57.061111,
+      "longitude": 10.0053
+    },
+    {
+      "id": "Aberdeen",
+      "countryId": null,
+      "name": "Aberdeen",
+      "type": "port",
+      "latitude": 57.142222,
+      "longitude": -2.074617
+    },
+    {
+      "id": "Abidjan",
+      "countryId": null,
+      "name": "Abidjan",
+      "type": "port",
+      "latitude": 5.233056,
+      "longitude": -3.966667
+    },
+    {
+      "id": "Abidjan",
+      "countryId": null,
+      "name": "Abidjan",
+      "type": "port",
+      "latitude": 5.283333,
+      "longitude": -4.02126
+    },
+    {
+      "id": "Abu Dhabi",
+      "countryId": null,
+      "name": "Abu Dhabi",
+      "type": "port",
+      "latitude": 24.525,
+      "longitude": 54.372674
+    },
+    {
+      "id": "Acapulco",
+      "countryId": null,
+      "name": "Acapulco",
+      "type": "port",
+      "latitude": 16.844444,
+      "longitude": -99.902473
+    },
+    {
+      "id": "Adelaide",
+      "countryId": null,
+      "name": "Adelaide",
+      "type": "port",
+      "latitude": -34.799167,
+      "longitude": 138.50795
+    },
+    {
+      "id": "Aden",
+      "countryId": null,
+      "name": "Aden",
+      "type": "port",
+      "latitude": 12.795556,
+      "longitude": 44.989694
+    },
+    {
+      "id": "Agadir",
+      "countryId": null,
+      "name": "Agadir",
+      "type": "port",
+      "latitude": 30.423889,
+      "longitude": -9.634923
+    },
+    {
+      "id": "Aguadilla",
+      "countryId": null,
+      "name": "Aguadilla",
+      "type": "port",
+      "latitude": 18.429444,
+      "longitude": -67.157067
+    },
+    {
+      "id": "Ahus",
+      "countryId": null,
+      "name": "Ahus",
+      "type": "port",
+      "latitude": 55.925556,
+      "longitude": 14.305477
+    },
+    {
+      "id": "Ajaccio",
+      "countryId": null,
+      "name": "Ajaccio",
+      "type": "port",
+      "latitude": 41.92,
+      "longitude": 8.73881
+    },
+    {
+      "id": "Akita",
+      "countryId": null,
+      "name": "Akita",
+      "type": "port",
+      "latitude": 39.762222,
+      "longitude": 140.03987
+    },
+    {
+      "id": "Al Fujayrah",
+      "countryId": null,
+      "name": "Al Fujayrah",
+      "type": "port",
+      "latitude": 25.178333,
+      "longitude": 56.356537
+    },
+    {
+      "id": "Al Hoceima",
+      "countryId": null,
+      "name": "Al Hoceima",
+      "type": "port",
+      "latitude": 35.247778,
+      "longitude": -3.919847
+    },
+    {
+      "id": "Al Kuwayt",
+      "countryId": null,
+      "name": "Al Kuwayt",
+      "type": "port",
+      "latitude": 29.38,
+      "longitude": 47.96
+    },
+    {
+      "id": "Albany",
+      "countryId": null,
+      "name": "Albany",
+      "type": "port",
+      "latitude": -35.031667,
+      "longitude": 117.88669
+    },
+    {
+      "id": "Alesund",
+      "countryId": null,
+      "name": "Alesund",
+      "type": "port",
+      "latitude": 62.4725,
+      "longitude": 6.171614
+    },
+    {
+      "id": "Alexandria",
+      "countryId": null,
+      "name": "Alexandria",
+      "type": "port",
+      "latitude": 38.801111,
+      "longitude": -77.03722
+    },
+    {
+      "id": "Alexandria",
+      "countryId": null,
+      "name": "Alexandria",
+      "type": "port",
+      "latitude": 31.334923,
+      "longitude": 30.167657
+    },
+    {
+      "id": "Alexandroupolis",
+      "countryId": null,
+      "name": "Alexandroupolis",
+      "type": "port",
+      "latitude": 40.841389,
+      "longitude": 25.889164
+    },
+    {
+      "id": "Algeciras",
+      "countryId": null,
+      "name": "Algeciras",
+      "type": "port",
+      "latitude": 36.147778,
+      "longitude": -5.400353
+    },
+    {
+      "id": "Alger",
+      "countryId": null,
+      "name": "Alger",
+      "type": "port",
+      "latitude": 36.76,
+      "longitude": 3.06
+    },
+    {
+      "id": "Alghero",
+      "countryId": null,
+      "name": "Alghero",
+      "type": "port",
+      "latitude": 40.562778,
+      "longitude": 8.307951
+    },
+    {
+      "id": "Alicante",
+      "countryId": null,
+      "name": "Alicante",
+      "type": "port",
+      "latitude": 38.335278,
+      "longitude": -0.48828
+    },
+    {
+      "id": "Alleppey",
+      "countryId": null,
+      "name": "Alleppey",
+      "type": "port",
+      "latitude": 9.491944,
+      "longitude": 76.310424
+    },
+    {
+      "id": "Almeria",
+      "countryId": null,
+      "name": "Almeria",
+      "type": "port",
+      "latitude": 36.832222,
+      "longitude": -2.47126
+    },
+    {
+      "id": "Alotau",
+      "countryId": null,
+      "name": "Alotau",
+      "type": "port",
+      "latitude": -10.312778,
+      "longitude": 150.45106
+    },
+    {
+      "id": "Alta",
+      "countryId": null,
+      "name": "Alta",
+      "type": "port",
+      "latitude": 69.967778,
+      "longitude": 23.237044
+    },
+    {
+      "id": "Amagasaki",
+      "countryId": null,
+      "name": "Amagasaki",
+      "type": "port",
+      "latitude": 34.691389,
+      "longitude": 135.383333
+    },
+    {
+      "id": "Ambriz",
+      "countryId": null,
+      "name": "Ambriz",
+      "type": "port",
+      "latitude": -7.833056,
+      "longitude": 13.093757
+    },
+    {
+      "id": "Amderma",
+      "countryId": null,
+      "name": "Amderma",
+      "type": "port",
+      "latitude": 69.756111,
+      "longitude": 61.559187
+    },
+    {
+      "id": "Amsterdam",
+      "countryId": null,
+      "name": "Amsterdam",
+      "type": "port",
+      "latitude": 52.413056,
+      "longitude": 4.824087
+    },
+    {
+      "id": "Anadyr",
+      "countryId": null,
+      "name": "Anadyr",
+      "type": "port",
+      "latitude": 64.744167,
+      "longitude": 177.538634
+    },
+    {
+      "id": "Anchorage",
+      "countryId": null,
+      "name": "Anchorage",
+      "type": "port",
+      "latitude": 61.235556,
+      "longitude": -149.88775
+    },
+    {
+      "id": "Ancona",
+      "countryId": null,
+      "name": "Ancona",
+      "type": "port",
+      "latitude": 43.618333,
+      "longitude": 13.492344
+    },
+    {
+      "id": "Ancud",
+      "countryId": null,
+      "name": "Ancud",
+      "type": "port",
+      "latitude": -41.868611,
+      "longitude": -73.825677
+    },
+    {
+      "id": "Andenes",
+      "countryId": null,
+      "name": "Andenes",
+      "type": "port",
+      "latitude": 69.324167,
+      "longitude": 16.123734
+    },
+    {
+      "id": "Annapolis",
+      "countryId": null,
+      "name": "Annapolis",
+      "type": "port",
+      "latitude": 38.965,
+      "longitude": -76.474264
+    },
+    {
+      "id": "Antalaha",
+      "countryId": null,
+      "name": "Antalaha",
+      "type": "port",
+      "latitude": -14.9,
+      "longitude": 50.276207
+    },
+    {
+      "id": "Antofagasta",
+      "countryId": null,
+      "name": "Antofagasta",
+      "type": "port",
+      "latitude": -23.650278,
+      "longitude": -70.40371
+    },
+    {
+      "id": "Antwerpen",
+      "countryId": null,
+      "name": "Antwerpen",
+      "type": "port",
+      "latitude": 51.297778,
+      "longitude": 4.293757
+    },
+    {
+      "id": "Aomori",
+      "countryId": null,
+      "name": "Aomori",
+      "type": "port",
+      "latitude": 40.831389,
+      "longitude": 140.742874
+    },
+    {
+      "id": "Apalachicola",
+      "countryId": null,
+      "name": "Apalachicola",
+      "type": "port",
+      "latitude": 29.7275,
+      "longitude": -84.98669
+    },
+    {
+      "id": "Apia",
+      "countryId": null,
+      "name": "Apia",
+      "type": "port",
+      "latitude": -13.828333,
+      "longitude": -171.75795
+    },
+    {
+      "id": "Aracaju",
+      "countryId": null,
+      "name": "Aracaju",
+      "type": "port",
+      "latitude": -10.925278,
+      "longitude": -37.039517
+    },
+    {
+      "id": "Arcachon",
+      "countryId": null,
+      "name": "Arcachon",
+      "type": "port",
+      "latitude": 44.659167,
+      "longitude": -1.142344
+    },
+    {
+      "id": "Arecibo",
+      "countryId": null,
+      "name": "Arecibo",
+      "type": "port",
+      "latitude": 18.481389,
+      "longitude": -66.700353
+    },
+    {
+      "id": "Arendal",
+      "countryId": null,
+      "name": "Arendal",
+      "type": "port",
+      "latitude": 58.454167,
+      "longitude": 8.75742
+    },
+    {
+      "id": "Argentia",
+      "countryId": null,
+      "name": "Argentia",
+      "type": "port",
+      "latitude": 47.293056,
+      "longitude": -53.986867
+    },
+    {
+      "id": "Arica",
+      "countryId": null,
+      "name": "Arica",
+      "type": "port",
+      "latitude": -18.473056,
+      "longitude": -70.321967
+    },
+    {
+      "id": "Arkhangelsk",
+      "countryId": null,
+      "name": "Arkhangelsk",
+      "type": "port",
+      "latitude": 64.5425,
+      "longitude": 40.55636
+    },
+    {
+      "id": "Arrecife",
+      "countryId": null,
+      "name": "Arrecife",
+      "type": "port",
+      "latitude": 28.948965,
+      "longitude": -13.623954
+    },
+    {
+      "id": "Assab",
+      "countryId": null,
+      "name": "Assab",
+      "type": "port",
+      "latitude": 13,
+      "longitude": 42.75
+    },
+    {
+      "id": "Astoria",
+      "countryId": null,
+      "name": "Astoria",
+      "type": "port",
+      "latitude": 46.189444,
+      "longitude": -123.826207
+    },
+    {
+      "id": "Auckland",
+      "countryId": null,
+      "name": "Auckland",
+      "type": "port",
+      "latitude": -36.836389,
+      "longitude": 174.769494
+    },
+    {
+      "id": "Aveiro",
+      "countryId": null,
+      "name": "Aveiro",
+      "type": "port",
+      "latitude": 40.643611,
+      "longitude": -8.71967
+    },
+    {
+      "id": "Aviles",
+      "countryId": null,
+      "name": "Aviles",
+      "type": "port",
+      "latitude": 43.578611,
+      "longitude": -5.920024
+    },
+    {
+      "id": "Bagnoli",
+      "countryId": null,
+      "name": "Bagnoli",
+      "type": "port",
+      "latitude": 40.803333,
+      "longitude": 14.160071
+    },
+    {
+      "id": "Bahia Blanca",
+      "countryId": null,
+      "name": "Bahia Blanca",
+      "type": "port",
+      "latitude": -38.791389,
+      "longitude": -62.270907
+    },
+    {
+      "id": "Bakar",
+      "countryId": null,
+      "name": "Bakar",
+      "type": "port",
+      "latitude": 45.299722,
+      "longitude": 14.540754
+    },
+    {
+      "id": "Balboa",
+      "countryId": null,
+      "name": "Balboa",
+      "type": "port",
+      "latitude": 8.955556,
+      "longitude": -79.568787
+    },
+    {
+      "id": "Baltimore",
+      "countryId": null,
+      "name": "Baltimore",
+      "type": "port",
+      "latitude": 39.2325,
+      "longitude": -76.555654
+    },
+    {
+      "id": "Baltimore",
+      "countryId": null,
+      "name": "Baltimore",
+      "type": "port",
+      "latitude": 39.2325,
+      "longitude": -76.555654
+    },
+    {
+      "id": "Bandar Abbas",
+      "countryId": null,
+      "name": "Bandar Abbas",
+      "type": "port",
+      "latitude": 27.140833,
+      "longitude": 56.20424
+    },
+    {
+      "id": "Bandirma",
+      "countryId": null,
+      "name": "Bandirma",
+      "type": "port",
+      "latitude": 40.354167,
+      "longitude": 27.957244
+    },
+    {
+      "id": "Banes",
+      "countryId": null,
+      "name": "Banes",
+      "type": "port",
+      "latitude": 20.919167,
+      "longitude": -75.703357
+    },
+    {
+      "id": "Bangkok",
+      "countryId": null,
+      "name": "Bangkok",
+      "type": "port",
+      "latitude": 13.695833,
+      "longitude": 100.584923
+    },
+    {
+      "id": "Bangkok",
+      "countryId": null,
+      "name": "Bangkok",
+      "type": "port",
+      "latitude": 13.606944,
+      "longitude": 100.56914
+    },
+    {
+      "id": "Bangor",
+      "countryId": null,
+      "name": "Bangor",
+      "type": "port",
+      "latitude": 44.791944,
+      "longitude": -68.769847
+    },
+    {
+      "id": "Banjarmasin",
+      "countryId": null,
+      "name": "Banjarmasin",
+      "type": "port",
+      "latitude": -3.321944,
+      "longitude": 114.5553
+    },
+    {
+      "id": "Banjul",
+      "countryId": null,
+      "name": "Banjul",
+      "type": "port",
+      "latitude": 13.444444,
+      "longitude": -16.570377
+    },
+    {
+      "id": "Bantry",
+      "countryId": null,
+      "name": "Bantry",
+      "type": "port",
+      "latitude": 51.680556,
+      "longitude": -9.456184
+    },
+    {
+      "id": "Baracoa",
+      "countryId": null,
+      "name": "Baracoa",
+      "type": "port",
+      "latitude": 20.353056,
+      "longitude": -74.502297
+    },
+    {
+      "id": "Barahona",
+      "countryId": null,
+      "name": "Barahona",
+      "type": "port",
+      "latitude": 18.212222,
+      "longitude": -71.086514
+    },
+    {
+      "id": "Barcelona",
+      "countryId": null,
+      "name": "Barcelona",
+      "type": "port",
+      "latitude": 41.354722,
+      "longitude": 2.168787
+    },
+    {
+      "id": "Bari",
+      "countryId": null,
+      "name": "Bari",
+      "type": "port",
+      "latitude": 41.136944,
+      "longitude": 16.8553
+    },
+    {
+      "id": "Barletta",
+      "countryId": null,
+      "name": "Barletta",
+      "type": "port",
+      "latitude": 41.325556,
+      "longitude": 16.28775
+    },
+    {
+      "id": "Barranquilla",
+      "countryId": null,
+      "name": "Barranquilla",
+      "type": "port",
+      "latitude": 10.967222,
+      "longitude": -74.756184
+    },
+    {
+      "id": "Barrow Island",
+      "countryId": null,
+      "name": "Barrow Island",
+      "type": "port",
+      "latitude": -20.725833,
+      "longitude": 115.470907
+    },
+    {
+      "id": "Basse-Terre",
+      "countryId": null,
+      "name": "Basse-Terre",
+      "type": "port",
+      "latitude": 15.996389,
+      "longitude": -61.727091
+    },
+    {
+      "id": "Bassein",
+      "countryId": null,
+      "name": "Bassein",
+      "type": "port",
+      "latitude": 16.779722,
+      "longitude": 94.72338
+    },
+    {
+      "id": "Basseterre",
+      "countryId": null,
+      "name": "Basseterre",
+      "type": "port",
+      "latitude": 17.278827,
+      "longitude": -62.750002
+    },
+    {
+      "id": "Bastia",
+      "countryId": null,
+      "name": "Bastia",
+      "type": "port",
+      "latitude": 42.7,
+      "longitude": 9.451943
+    },
+    {
+      "id": "Bata",
+      "countryId": null,
+      "name": "Bata",
+      "type": "port",
+      "latitude": 1.824167,
+      "longitude": 9.738104
+    },
+    {
+      "id": "Bathurst",
+      "countryId": null,
+      "name": "Bathurst",
+      "type": "port",
+      "latitude": 47.616667,
+      "longitude": -65.65
+    },
+    {
+      "id": "Batsfjord",
+      "countryId": null,
+      "name": "Batsfjord",
+      "type": "port",
+      "latitude": 70.634167,
+      "longitude": 29.717727
+    },
+    {
+      "id": "Batumi",
+      "countryId": null,
+      "name": "Batumi",
+      "type": "port",
+      "latitude": 41.648889,
+      "longitude": 41.65053
+    },
+    {
+      "id": "Bay City",
+      "countryId": null,
+      "name": "Bay City",
+      "type": "port",
+      "latitude": 43.6,
+      "longitude": -83.86
+    },
+    {
+      "id": "Bayonne",
+      "countryId": null,
+      "name": "Bayonne",
+      "type": "port",
+      "latitude": 40.6625,
+      "longitude": -74.102474
+    },
+    {
+      "id": "Bayonne",
+      "countryId": null,
+      "name": "Bayonne",
+      "type": "port",
+      "latitude": 43.519722,
+      "longitude": -1.493757
+    },
+    {
+      "id": "Beaumont",
+      "countryId": null,
+      "name": "Beaumont",
+      "type": "port",
+      "latitude": 30.077778,
+      "longitude": -94.084217
+    },
+    {
+      "id": "Beihai",
+      "countryId": null,
+      "name": "Beihai",
+      "type": "port",
+      "latitude": 21.458611,
+      "longitude": 109.070554
+    },
+    {
+      "id": "Beira",
+      "countryId": null,
+      "name": "Beira",
+      "type": "port",
+      "latitude": -19.819167,
+      "longitude": 34.83351
+    },
+    {
+      "id": "Beirut",
+      "countryId": null,
+      "name": "Beirut",
+      "type": "port",
+      "latitude": 33.905,
+      "longitude": 35.519494
+    },
+    {
+      "id": "Bejaia",
+      "countryId": null,
+      "name": "Bejaia",
+      "type": "port",
+      "latitude": 36.75,
+      "longitude": 5.08
+    },
+    {
+      "id": "Belawan",
+      "countryId": null,
+      "name": "Belawan",
+      "type": "port",
+      "latitude": 3.78,
+      "longitude": 98.68
+    },
+    {
+      "id": "Belem",
+      "countryId": null,
+      "name": "Belem",
+      "type": "port",
+      "latitude": -1.451667,
+      "longitude": -48.484747
+    },
+    {
+      "id": "Belfast",
+      "countryId": null,
+      "name": "Belfast",
+      "type": "port",
+      "latitude": 54.620556,
+      "longitude": -5.891107
+    },
+    {
+      "id": "Belize City",
+      "countryId": null,
+      "name": "Belize City",
+      "type": "port",
+      "latitude": 17.479722,
+      "longitude": -88.201943
+    },
+    {
+      "id": "Bellingham",
+      "countryId": null,
+      "name": "Bellingham",
+      "type": "port",
+      "latitude": 48.740556,
+      "longitude": -122.500353
+    },
+    {
+      "id": "Berbera",
+      "countryId": null,
+      "name": "Berbera",
+      "type": "port",
+      "latitude": 10.440833,
+      "longitude": 45
+    },
+    {
+      "id": "Berdyansk",
+      "countryId": null,
+      "name": "Berdyansk",
+      "type": "port",
+      "latitude": 46.751389,
+      "longitude": 36.773204
+    },
+    {
+      "id": "Bergen",
+      "countryId": null,
+      "name": "Bergen",
+      "type": "port",
+      "latitude": 60.396944,
+      "longitude": 5.31967
+    },
+    {
+      "id": "Bhavnagar",
+      "countryId": null,
+      "name": "Bhavnagar",
+      "type": "port",
+      "latitude": 21.77,
+      "longitude": 72.206007
+    },
+    {
+      "id": "Bilbao",
+      "countryId": null,
+      "name": "Bilbao",
+      "type": "port",
+      "latitude": 43.3425,
+      "longitude": -3.026914
+    },
+    {
+      "id": "Bissau",
+      "countryId": null,
+      "name": "Bissau",
+      "type": "port",
+      "latitude": 11.858333,
+      "longitude": -15.572674
+    },
+    {
+      "id": "Bluefields",
+      "countryId": null,
+      "name": "Bluefields",
+      "type": "port",
+      "latitude": 12.011944,
+      "longitude": -83.75689
+    },
+    {
+      "id": "Bocas del Toro",
+      "countryId": null,
+      "name": "Bocas del Toro",
+      "type": "port",
+      "latitude": 9.34,
+      "longitude": -82.237574
+    },
+    {
+      "id": "Bodo",
+      "countryId": null,
+      "name": "Bodo",
+      "type": "port",
+      "latitude": 67.288889,
+      "longitude": 14.372674
+    },
+    {
+      "id": "Bombay",
+      "countryId": null,
+      "name": "Bombay",
+      "type": "port",
+      "latitude": 18.83,
+      "longitude": 72.83
+    },
+    {
+      "id": "Bonanza",
+      "countryId": null,
+      "name": "Bonanza",
+      "type": "port",
+      "latitude": 36.8,
+      "longitude": -6.33
+    },
+    {
+      "id": "Bora-Bora",
+      "countryId": null,
+      "name": "Bora-Bora",
+      "type": "port",
+      "latitude": -16.516667,
+      "longitude": -151.75
+    },
+    {
+      "id": "Bordeaux",
+      "countryId": null,
+      "name": "Bordeaux",
+      "type": "port",
+      "latitude": 44.865278,
+      "longitude": -0.55318
+    },
+    {
+      "id": "Boston",
+      "countryId": null,
+      "name": "Boston",
+      "type": "port",
+      "latitude": 42.363611,
+      "longitude": -71.035453
+    },
+    {
+      "id": "Botany Bay",
+      "countryId": null,
+      "name": "Botany Bay",
+      "type": "port",
+      "latitude": -33.973056,
+      "longitude": 151.209541
+    },
+    {
+      "id": "Boulogne-sur-Mer",
+      "countryId": null,
+      "name": "Boulogne-sur-Mer",
+      "type": "port",
+      "latitude": 50.723611,
+      "longitude": 1.575501
+    },
+    {
+      "id": "Bowen",
+      "countryId": null,
+      "name": "Bowen",
+      "type": "port",
+      "latitude": -20.020833,
+      "longitude": 148.25053
+    },
+    {
+      "id": "Bremen",
+      "countryId": null,
+      "name": "Bremen",
+      "type": "port",
+      "latitude": 53.0975,
+      "longitude": 8.75106
+    },
+    {
+      "id": "Bremerhaven",
+      "countryId": null,
+      "name": "Bremerhaven",
+      "type": "port",
+      "latitude": 53.563611,
+      "longitude": 8.553004
+    },
+    {
+      "id": "Bremerton",
+      "countryId": null,
+      "name": "Bremerton",
+      "type": "port",
+      "latitude": 47.5625,
+      "longitude": -122.63775
+    },
+    {
+      "id": "Brest",
+      "countryId": null,
+      "name": "Brest",
+      "type": "port",
+      "latitude": 48.380556,
+      "longitude": -4.471437
+    },
+    {
+      "id": "Bridgeport",
+      "countryId": null,
+      "name": "Bridgeport",
+      "type": "port",
+      "latitude": 41.1725,
+      "longitude": -73.176384
+    },
+    {
+      "id": "Bridgetown",
+      "countryId": null,
+      "name": "Bridgetown",
+      "type": "port",
+      "latitude": 13.106944,
+      "longitude": -59.624087
+    },
+    {
+      "id": "Brindisi",
+      "countryId": null,
+      "name": "Brindisi",
+      "type": "port",
+      "latitude": 40.646389,
+      "longitude": 17.956007
+    },
+    {
+      "id": "Brisbane",
+      "countryId": null,
+      "name": "Brisbane",
+      "type": "port",
+      "latitude": -27.3825,
+      "longitude": 153.168433
+    },
+    {
+      "id": "Bristol",
+      "countryId": null,
+      "name": "Bristol",
+      "type": "port",
+      "latitude": 51.498889,
+      "longitude": -2.707774
+    },
+    {
+      "id": "Bronnoysund",
+      "countryId": null,
+      "name": "Bronnoysund",
+      "type": "port",
+      "latitude": 65.4725,
+      "longitude": 12.201943
+    },
+    {
+      "id": "Broome",
+      "countryId": null,
+      "name": "Broome",
+      "type": "port",
+      "latitude": -18.0025,
+      "longitude": 122.209187
+    },
+    {
+      "id": "Brownsville",
+      "countryId": null,
+      "name": "Brownsville",
+      "type": "port",
+      "latitude": 47.651389,
+      "longitude": -122.608657
+    },
+    {
+      "id": "Brownsville",
+      "countryId": null,
+      "name": "Brownsville",
+      "type": "port",
+      "latitude": 25.957222,
+      "longitude": -97.38457
+    },
+    {
+      "id": "Brussel (Bruxelles)",
+      "countryId": null,
+      "name": "Brussel (Bruxelles)",
+      "type": "port",
+      "latitude": 50.886111,
+      "longitude": 4.38616
+    },
+    {
+      "id": "Buchanan",
+      "countryId": null,
+      "name": "Buchanan",
+      "type": "port",
+      "latitude": 5.858056,
+      "longitude": -10.05265
+    },
+    {
+      "id": "Buenaventura",
+      "countryId": null,
+      "name": "Buenaventura",
+      "type": "port",
+      "latitude": 3.883056,
+      "longitude": -77.053357
+    },
+    {
+      "id": "Buenos Aires",
+      "countryId": null,
+      "name": "Buenos Aires",
+      "type": "port",
+      "latitude": -34.599167,
+      "longitude": -58.36967
+    },
+    {
+      "id": "Buffalo",
+      "countryId": null,
+      "name": "Buffalo",
+      "type": "port",
+      "latitude": 42.88,
+      "longitude": -78.88
+    },
+    {
+      "id": "Buka",
+      "countryId": null,
+      "name": "Buka",
+      "type": "port",
+      "latitude": -5.431944,
+      "longitude": 154.671967
+    },
+    {
+      "id": "Bunbury",
+      "countryId": null,
+      "name": "Bunbury",
+      "type": "port",
+      "latitude": -33.315278,
+      "longitude": 115.651237
+    },
+    {
+      "id": "Bundaberg",
+      "countryId": null,
+      "name": "Bundaberg",
+      "type": "port",
+      "latitude": -24.767222,
+      "longitude": 152.388457
+    },
+    {
+      "id": "Burgas",
+      "countryId": null,
+      "name": "Burgas",
+      "type": "port",
+      "latitude": 42.47,
+      "longitude": 27.458304
+    },
+    {
+      "id": "Burketown",
+      "countryId": null,
+      "name": "Burketown",
+      "type": "port",
+      "latitude": -17.553611,
+      "longitude": 139.737927
+    },
+    {
+      "id": "Burnie",
+      "countryId": null,
+      "name": "Burnie",
+      "type": "port",
+      "latitude": -41.052778,
+      "longitude": 145.908127
+    },
+    {
+      "id": "Bushehr",
+      "countryId": null,
+      "name": "Bushehr",
+      "type": "port",
+      "latitude": 28.984722,
+      "longitude": 50.836867
+    },
+    {
+      "id": "Cabinda",
+      "countryId": null,
+      "name": "Cabinda",
+      "type": "port",
+      "latitude": -5.55,
+      "longitude": 12.190224
+    },
+    {
+      "id": "Cabo Rojo",
+      "countryId": null,
+      "name": "Cabo Rojo",
+      "type": "port",
+      "latitude": 17.925278,
+      "longitude": -71.654947
+    },
+    {
+      "id": "Cabo San Lucas",
+      "countryId": null,
+      "name": "Cabo San Lucas",
+      "type": "port",
+      "latitude": 22.883889,
+      "longitude": -109.900707
+    },
+    {
+      "id": "Cadiz",
+      "countryId": null,
+      "name": "Cadiz",
+      "type": "port",
+      "latitude": 36.52,
+      "longitude": -6.258834
+    },
+    {
+      "id": "Caen",
+      "countryId": null,
+      "name": "Caen",
+      "type": "port",
+      "latitude": 49.190556,
+      "longitude": -0.326384
+    },
+    {
+      "id": "Cagliari",
+      "countryId": null,
+      "name": "Cagliari",
+      "type": "port",
+      "latitude": 39.204167,
+      "longitude": 9.107597
+    },
+    {
+      "id": "Caibarien",
+      "countryId": null,
+      "name": "Caibarien",
+      "type": "port",
+      "latitude": 22.529167,
+      "longitude": -79.469317
+    },
+    {
+      "id": "Cairns",
+      "countryId": null,
+      "name": "Cairns",
+      "type": "port",
+      "latitude": -16.929722,
+      "longitude": 145.775501
+    },
+    {
+      "id": "Calabar",
+      "countryId": null,
+      "name": "Calabar",
+      "type": "port",
+      "latitude": 4.986389,
+      "longitude": 8.316843
+    },
+    {
+      "id": "Calais",
+      "countryId": null,
+      "name": "Calais",
+      "type": "port",
+      "latitude": 50.965833,
+      "longitude": 1.850177
+    },
+    {
+      "id": "Calcutta",
+      "countryId": null,
+      "name": "Calcutta",
+      "type": "port",
+      "latitude": 22.55,
+      "longitude": 88.31
+    },
+    {
+      "id": "Caleta Olivia",
+      "countryId": null,
+      "name": "Caleta Olivia",
+      "type": "port",
+      "latitude": -46.433056,
+      "longitude": -67.508481
+    },
+    {
+      "id": "Callao",
+      "countryId": null,
+      "name": "Callao",
+      "type": "port",
+      "latitude": -12.045278,
+      "longitude": -77.141814
+    },
+    {
+      "id": "Calvi",
+      "countryId": null,
+      "name": "Calvi",
+      "type": "port",
+      "latitude": 42.565833,
+      "longitude": 8.7553
+    },
+    {
+      "id": "Cambridge",
+      "countryId": null,
+      "name": "Cambridge",
+      "type": "port",
+      "latitude": 38.574167,
+      "longitude": -76.071084
+    },
+    {
+      "id": "Campana",
+      "countryId": null,
+      "name": "Campana",
+      "type": "port",
+      "latitude": -34.153333,
+      "longitude": -58.951413
+    },
+    {
+      "id": "Campbell River",
+      "countryId": null,
+      "name": "Campbell River",
+      "type": "port",
+      "latitude": 50.031944,
+      "longitude": -125.238634
+    },
+    {
+      "id": "Campeche",
+      "countryId": null,
+      "name": "Campeche",
+      "type": "port",
+      "latitude": 19.8125,
+      "longitude": -90.5904
+    },
+    {
+      "id": "Canakkale",
+      "countryId": null,
+      "name": "Canakkale",
+      "type": "port",
+      "latitude": 40.264722,
+      "longitude": 26.521967
+    },
+    {
+      "id": "Canea",
+      "countryId": null,
+      "name": "Canea",
+      "type": "port",
+      "latitude": 35.518056,
+      "longitude": 24.009717
+    },
+    {
+      "id": "Cannes",
+      "countryId": null,
+      "name": "Cannes",
+      "type": "port",
+      "latitude": 43.548056,
+      "longitude": 7.009187
+    },
+    {
+      "id": "Cape Town",
+      "countryId": null,
+      "name": "Cape Town",
+      "type": "port",
+      "latitude": -33.909167,
+      "longitude": 18.435277
+    },
+    {
+      "id": "Caraquet",
+      "countryId": null,
+      "name": "Caraquet",
+      "type": "port",
+      "latitude": 47.796389,
+      "longitude": -64.924617
+    },
+    {
+      "id": "Carnarvon",
+      "countryId": null,
+      "name": "Carnarvon",
+      "type": "port",
+      "latitude": -24.895,
+      "longitude": 113.642874
+    },
+    {
+      "id": "Cartagena",
+      "countryId": null,
+      "name": "Cartagena",
+      "type": "port",
+      "latitude": 10.403333,
+      "longitude": -75.525677
+    },
+    {
+      "id": "Cartagena",
+      "countryId": null,
+      "name": "Cartagena",
+      "type": "port",
+      "latitude": 37.589444,
+      "longitude": -0.985984
+    },
+    {
+      "id": "Casablanca",
+      "countryId": null,
+      "name": "Casablanca",
+      "type": "port",
+      "latitude": 33.608889,
+      "longitude": -7.600177
+    },
+    {
+      "id": "Castro",
+      "countryId": null,
+      "name": "Castro",
+      "type": "port",
+      "latitude": -42.482778,
+      "longitude": -73.766843
+    },
+    {
+      "id": "Catania",
+      "countryId": null,
+      "name": "Catania",
+      "type": "port",
+      "latitude": 37.495833,
+      "longitude": 15.090931
+    },
+    {
+      "id": "Cayenne",
+      "countryId": null,
+      "name": "Cayenne",
+      "type": "port",
+      "latitude": 4.853056,
+      "longitude": -52.271967
+    },
+    {
+      "id": "Cayenne",
+      "countryId": null,
+      "name": "Cayenne",
+      "type": "port",
+      "latitude": 4.935278,
+      "longitude": -52.33616
+    },
+    {
+      "id": "Cebu",
+      "countryId": null,
+      "name": "Cebu",
+      "type": "port",
+      "latitude": 10.306389,
+      "longitude": 123.922674
+    },
+    {
+      "id": "Ceuta",
+      "countryId": null,
+      "name": "Ceuta",
+      "type": "port",
+      "latitude": 35.890278,
+      "longitude": -5.310424
+    },
+    {
+      "id": "Chanaral",
+      "countryId": null,
+      "name": "Chanaral",
+      "type": "port",
+      "latitude": -26.350556,
+      "longitude": -70.634393
+    },
+    {
+      "id": "Chang Sha",
+      "countryId": null,
+      "name": "Chang Sha",
+      "type": "port",
+      "latitude": 28.2,
+      "longitude": 112.98
+    },
+    {
+      "id": "Charleston",
+      "countryId": null,
+      "name": "Charleston",
+      "type": "port",
+      "latitude": 32.822222,
+      "longitude": -79.923557
+    },
+    {
+      "id": "Charlottetown",
+      "countryId": null,
+      "name": "Charlottetown",
+      "type": "port",
+      "latitude": 46.231667,
+      "longitude": -63.118963
+    },
+    {
+      "id": "Chatham",
+      "countryId": null,
+      "name": "Chatham",
+      "type": "port",
+      "latitude": 47.034444,
+      "longitude": -65.467727
+    },
+    {
+      "id": "Cheboygan",
+      "countryId": null,
+      "name": "Cheboygan",
+      "type": "port",
+      "latitude": 45.65,
+      "longitude": -84.46
+    },
+    {
+      "id": "Cherbourg",
+      "countryId": null,
+      "name": "Cherbourg",
+      "type": "port",
+      "latitude": 49.646389,
+      "longitude": -1.620377
+    },
+    {
+      "id": "Cherbourg",
+      "countryId": null,
+      "name": "Cherbourg",
+      "type": "port",
+      "latitude": 49.652222,
+      "longitude": -1.61755
+    },
+    {
+      "id": "Chesapeake",
+      "countryId": null,
+      "name": "Chesapeake",
+      "type": "port",
+      "latitude": 36.7225,
+      "longitude": -76.239517
+    },
+    {
+      "id": "Chicago",
+      "countryId": null,
+      "name": "Chicago",
+      "type": "port",
+      "latitude": 41.88,
+      "longitude": -87.6
+    },
+    {
+      "id": "Chicoutimi",
+      "countryId": null,
+      "name": "Chicoutimi",
+      "type": "port",
+      "latitude": 48.43,
+      "longitude": -71.05265
+    },
+    {
+      "id": "Chimbote",
+      "countryId": null,
+      "name": "Chimbote",
+      "type": "port",
+      "latitude": -9.076667,
+      "longitude": -78.607774
+    },
+    {
+      "id": "Chios",
+      "countryId": null,
+      "name": "Chios",
+      "type": "port",
+      "latitude": 38.377222,
+      "longitude": 26.13775
+    },
+    {
+      "id": "Chittagong",
+      "countryId": null,
+      "name": "Chittagong",
+      "type": "port",
+      "latitude": 22.268889,
+      "longitude": 91.825854
+    },
+    {
+      "id": "Cienfuegos",
+      "countryId": null,
+      "name": "Cienfuegos",
+      "type": "port",
+      "latitude": 22.14,
+      "longitude": -80.45371
+    },
+    {
+      "id": "Civitavecchia",
+      "countryId": null,
+      "name": "Civitavecchia",
+      "type": "port",
+      "latitude": 42.098889,
+      "longitude": 11.775677
+    },
+    {
+      "id": "Clarenville",
+      "countryId": null,
+      "name": "Clarenville",
+      "type": "port",
+      "latitude": 48.163333,
+      "longitude": -53.95689
+    },
+    {
+      "id": "Cleveland",
+      "countryId": null,
+      "name": "Cleveland",
+      "type": "port",
+      "latitude": 41.5,
+      "longitude": -81.71
+    },
+    {
+      "id": "Coatzacoalcos",
+      "countryId": null,
+      "name": "Coatzacoalcos",
+      "type": "port",
+      "latitude": 18.129722,
+      "longitude": -94.418963
+    },
+    {
+      "id": "Cochin",
+      "countryId": null,
+      "name": "Cochin",
+      "type": "port",
+      "latitude": 9.96,
+      "longitude": 76.23
+    },
+    {
+      "id": "Coffs Harbour",
+      "countryId": null,
+      "name": "Coffs Harbour",
+      "type": "port",
+      "latitude": -30.3075,
+      "longitude": 153.14146
+    },
+    {
+      "id": "Colombo",
+      "countryId": null,
+      "name": "Colombo",
+      "type": "port",
+      "latitude": 6.951389,
+      "longitude": 79.850177
+    },
+    {
+      "id": "Colon",
+      "countryId": null,
+      "name": "Colon",
+      "type": "port",
+      "latitude": 9.373333,
+      "longitude": -79.8851
+    },
+    {
+      "id": "Colonia",
+      "countryId": null,
+      "name": "Colonia",
+      "type": "port",
+      "latitude": -34.471667,
+      "longitude": -57.842167
+    },
+    {
+      "id": "Comodoro Rivadavia",
+      "countryId": null,
+      "name": "Comodoro Rivadavia",
+      "type": "port",
+      "latitude": -45.855833,
+      "longitude": -67.459894
+    },
+    {
+      "id": "Comox",
+      "countryId": null,
+      "name": "Comox",
+      "type": "port",
+      "latitude": 49.670833,
+      "longitude": -124.924441
+    },
+    {
+      "id": "Conakry",
+      "countryId": null,
+      "name": "Conakry",
+      "type": "port",
+      "latitude": 9.516389,
+      "longitude": -13.709894
+    },
+    {
+      "id": "Cooktown",
+      "countryId": null,
+      "name": "Cooktown",
+      "type": "port",
+      "latitude": -15.459722,
+      "longitude": 145.243757
+    },
+    {
+      "id": "Coos Bay",
+      "countryId": null,
+      "name": "Coos Bay",
+      "type": "port",
+      "latitude": 43.36,
+      "longitude": -124.21
+    },
+    {
+      "id": "Cordova",
+      "countryId": null,
+      "name": "Cordova",
+      "type": "port",
+      "latitude": 60.55,
+      "longitude": -145.75636
+    },
+    {
+      "id": "Corfu",
+      "countryId": null,
+      "name": "Corfu",
+      "type": "port",
+      "latitude": 39.62195,
+      "longitude": 19.910572
+    },
+    {
+      "id": "Corinto",
+      "countryId": null,
+      "name": "Corinto",
+      "type": "port",
+      "latitude": 12.481944,
+      "longitude": -87.16914
+    },
+    {
+      "id": "Cork",
+      "countryId": null,
+      "name": "Cork",
+      "type": "port",
+      "latitude": 51.901111,
+      "longitude": -8.424441
+    },
+    {
+      "id": "Corner Brook",
+      "countryId": null,
+      "name": "Corner Brook",
+      "type": "port",
+      "latitude": 48.960556,
+      "longitude": -57.936337
+    },
+    {
+      "id": "Coronel",
+      "countryId": null,
+      "name": "Coronel",
+      "type": "port",
+      "latitude": -37.028333,
+      "longitude": -73.153357
+    },
+    {
+      "id": "Corpus Christi",
+      "countryId": null,
+      "name": "Corpus Christi",
+      "type": "port",
+      "latitude": 27.812778,
+      "longitude": -97.404594
+    },
+    {
+      "id": "Corralejo",
+      "countryId": null,
+      "name": "Corralejo",
+      "type": "port",
+      "latitude": 28.741389,
+      "longitude": -13.858834
+    },
+    {
+      "id": "Cotonou",
+      "countryId": null,
+      "name": "Cotonou",
+      "type": "port",
+      "latitude": 6.346667,
+      "longitude": 2.42232
+    },
+    {
+      "id": "Cozumel",
+      "countryId": null,
+      "name": "Cozumel",
+      "type": "port",
+      "latitude": 20.495,
+      "longitude": -86.95742
+    },
+    {
+      "id": "Cristobal",
+      "countryId": null,
+      "name": "Cristobal",
+      "type": "port",
+      "latitude": 9.350278,
+      "longitude": -79.90477
+    },
+    {
+      "id": "Crotone",
+      "countryId": null,
+      "name": "Crotone",
+      "type": "port",
+      "latitude": 39.086111,
+      "longitude": 17.12338
+    },
+    {
+      "id": "Cumana",
+      "countryId": null,
+      "name": "Cumana",
+      "type": "port",
+      "latitude": 10.474167,
+      "longitude": -64.18775
+    },
+    {
+      "id": "Curacao",
+      "countryId": null,
+      "name": "Curacao",
+      "type": "port",
+      "latitude": 12.119167,
+      "longitude": -68.918257
+    },
+    {
+      "id": "Cuxhaven",
+      "countryId": null,
+      "name": "Cuxhaven",
+      "type": "port",
+      "latitude": 53.864722,
+      "longitude": 8.707244
+    },
+    {
+      "id": "Da Nang",
+      "countryId": null,
+      "name": "Da Nang",
+      "type": "port",
+      "latitude": 16.082222,
+      "longitude": 108.223204
+    },
+    {
+      "id": "Dakar",
+      "countryId": null,
+      "name": "Dakar",
+      "type": "port",
+      "latitude": 14.682222,
+      "longitude": -17.425147
+    },
+    {
+      "id": "Dakhla",
+      "countryId": null,
+      "name": "Dakhla",
+      "type": "port",
+      "latitude": 23.682222,
+      "longitude": -15.933863
+    },
+    {
+      "id": "Dalian",
+      "countryId": null,
+      "name": "Dalian",
+      "type": "port",
+      "latitude": 38.933611,
+      "longitude": 121.650353
+    },
+    {
+      "id": "Damietta",
+      "countryId": null,
+      "name": "Damietta",
+      "type": "port",
+      "latitude": 31.466667,
+      "longitude": 31.759187
+    },
+    {
+      "id": "Dar es Salaam",
+      "countryId": null,
+      "name": "Dar es Salaam",
+      "type": "port",
+      "latitude": -6.834444,
+      "longitude": 39.293404
+    },
+    {
+      "id": "Daru",
+      "countryId": null,
+      "name": "Daru",
+      "type": "port",
+      "latitude": -9.068333,
+      "longitude": 143.206537
+    },
+    {
+      "id": "Darwin",
+      "countryId": null,
+      "name": "Darwin",
+      "type": "port",
+      "latitude": -12.470278,
+      "longitude": 130.854947
+    },
+    {
+      "id": "Davao",
+      "countryId": null,
+      "name": "Davao",
+      "type": "port",
+      "latitude": 7.06,
+      "longitude": 125.61
+    },
+    {
+      "id": "Deauville",
+      "countryId": null,
+      "name": "Deauville",
+      "type": "port",
+      "latitude": 49.365833,
+      "longitude": 0.07338
+    },
+    {
+      "id": "Delfzijl",
+      "countryId": null,
+      "name": "Delfzijl",
+      "type": "port",
+      "latitude": 53.320556,
+      "longitude": 6.955477
+    },
+    {
+      "id": "Den Helder",
+      "countryId": null,
+      "name": "Den Helder",
+      "type": "port",
+      "latitude": 52.958056,
+      "longitude": 4.783687
+    },
+    {
+      "id": "Derby",
+      "countryId": null,
+      "name": "Derby",
+      "type": "port",
+      "latitude": -17.292222,
+      "longitude": 123.605124
+    },
+    {
+      "id": "Detroit",
+      "countryId": null,
+      "name": "Detroit",
+      "type": "port",
+      "latitude": 42.33,
+      "longitude": -83.03
+    },
+    {
+      "id": "Devonport",
+      "countryId": null,
+      "name": "Devonport",
+      "type": "port",
+      "latitude": -41.167778,
+      "longitude": 146.36755
+    },
+    {
+      "id": "Dieppe",
+      "countryId": null,
+      "name": "Dieppe",
+      "type": "port",
+      "latitude": 49.926389,
+      "longitude": 1.085984
+    },
+    {
+      "id": "Digby",
+      "countryId": null,
+      "name": "Digby",
+      "type": "port",
+      "latitude": 44.625278,
+      "longitude": -65.752297
+    },
+    {
+      "id": "Djibouti",
+      "countryId": null,
+      "name": "Djibouti",
+      "type": "port",
+      "latitude": 11.601944,
+      "longitude": 43.13563
+    },
+    {
+      "id": "Djupivogur",
+      "countryId": null,
+      "name": "Djupivogur",
+      "type": "port",
+      "latitude": 64.660556,
+      "longitude": -14.286514
+    },
+    {
+      "id": "Doha",
+      "countryId": null,
+      "name": "Doha",
+      "type": "port",
+      "latitude": 25.298056,
+      "longitude": 51.555654
+    },
+    {
+      "id": "Dordrecht",
+      "countryId": null,
+      "name": "Dordrecht",
+      "type": "port",
+      "latitude": 51.805833,
+      "longitude": 4.651413
+    },
+    {
+      "id": "Douala",
+      "countryId": null,
+      "name": "Douala",
+      "type": "port",
+      "latitude": 4.055,
+      "longitude": 9.68563
+    },
+    {
+      "id": "Douglas",
+      "countryId": null,
+      "name": "Douglas",
+      "type": "port",
+      "latitude": 54.15,
+      "longitude": -4.46
+    },
+    {
+      "id": "Dover",
+      "countryId": null,
+      "name": "Dover",
+      "type": "port",
+      "latitude": 51.120833,
+      "longitude": 1.322144
+    },
+    {
+      "id": "Drammen",
+      "countryId": null,
+      "name": "Drammen",
+      "type": "port",
+      "latitude": 59.736667,
+      "longitude": 10.224971
+    },
+    {
+      "id": "Dubai",
+      "countryId": null,
+      "name": "Dubai",
+      "type": "port",
+      "latitude": 25.267222,
+      "longitude": 55.269317
+    },
+    {
+      "id": "Dublin",
+      "countryId": null,
+      "name": "Dublin",
+      "type": "port",
+      "latitude": 53.344444,
+      "longitude": -6.206007
+    },
+    {
+      "id": "Dubrovnik",
+      "countryId": null,
+      "name": "Dubrovnik",
+      "type": "port",
+      "latitude": 42.66,
+      "longitude": 18.076384
+    },
+    {
+      "id": "Duluth",
+      "countryId": null,
+      "name": "Duluth",
+      "type": "port",
+      "latitude": 46.76,
+      "longitude": -92.1
+    },
+    {
+      "id": "Dumaguete",
+      "countryId": null,
+      "name": "Dumaguete",
+      "type": "port",
+      "latitude": 9.311944,
+      "longitude": 123.308127
+    },
+    {
+      "id": "Dundee",
+      "countryId": null,
+      "name": "Dundee",
+      "type": "port",
+      "latitude": 56.46,
+      "longitude": -2.96
+    },
+    {
+      "id": "Dunedin",
+      "countryId": null,
+      "name": "Dunedin",
+      "type": "port",
+      "latitude": -45.875833,
+      "longitude": 170.519317
+    },
+    {
+      "id": "Dunkerque",
+      "countryId": null,
+      "name": "Dunkerque",
+      "type": "port",
+      "latitude": 51.021667,
+      "longitude": 2.170907
+    },
+    {
+      "id": "Durban",
+      "countryId": null,
+      "name": "Durban",
+      "type": "port",
+      "latitude": -29.881111,
+      "longitude": 31.02338
+    },
+    {
+      "id": "Durres",
+      "countryId": null,
+      "name": "Durres",
+      "type": "port",
+      "latitude": 41.307778,
+      "longitude": 19.453004
+    },
+    {
+      "id": "East London",
+      "countryId": null,
+      "name": "East London",
+      "type": "port",
+      "latitude": -33.025278,
+      "longitude": 27.90477
+    },
+    {
+      "id": "Eckernforde",
+      "countryId": null,
+      "name": "Eckernforde",
+      "type": "port",
+      "latitude": 54.473611,
+      "longitude": 9.835807
+    },
+    {
+      "id": "Eden",
+      "countryId": null,
+      "name": "Eden",
+      "type": "port",
+      "latitude": -37.071944,
+      "longitude": 149.9053
+    },
+    {
+      "id": "Elat",
+      "countryId": null,
+      "name": "Elat",
+      "type": "port",
+      "latitude": 29.55,
+      "longitude": 34.95
+    },
+    {
+      "id": "Emden",
+      "countryId": null,
+      "name": "Emden",
+      "type": "port",
+      "latitude": 53.346111,
+      "longitude": 7.192874
+    },
+    {
+      "id": "Ensenada",
+      "countryId": null,
+      "name": "Ensenada",
+      "type": "port",
+      "latitude": 31.850833,
+      "longitude": -116.62285
+    },
+    {
+      "id": "Erie",
+      "countryId": null,
+      "name": "Erie",
+      "type": "port",
+      "latitude": 42.15,
+      "longitude": -80.1
+    },
+    {
+      "id": "Esbjerg",
+      "countryId": null,
+      "name": "Esbjerg",
+      "type": "port",
+      "latitude": 55.465556,
+      "longitude": 8.433863
+    },
+    {
+      "id": "Escanaba",
+      "countryId": null,
+      "name": "Escanaba",
+      "type": "port",
+      "latitude": 45.76,
+      "longitude": -87.05
+    },
+    {
+      "id": "Esmeraldas",
+      "countryId": null,
+      "name": "Esmeraldas",
+      "type": "port",
+      "latitude": 0.989444,
+      "longitude": -79.642697
+    },
+    {
+      "id": "Esperance",
+      "countryId": null,
+      "name": "Esperance",
+      "type": "port",
+      "latitude": -33.871944,
+      "longitude": 121.893404
+    },
+    {
+      "id": "Esquimalt",
+      "countryId": null,
+      "name": "Esquimalt",
+      "type": "port",
+      "latitude": 48.436389,
+      "longitude": -123.434393
+    },
+    {
+      "id": "Eureka",
+      "countryId": null,
+      "name": "Eureka",
+      "type": "port",
+      "latitude": 40.8,
+      "longitude": -124.18
+    },
+    {
+      "id": "Europoort",
+      "countryId": null,
+      "name": "Europoort",
+      "type": "port",
+      "latitude": 51.95,
+      "longitude": 4.11
+    },
+    {
+      "id": "Falkenberg",
+      "countryId": null,
+      "name": "Falkenberg",
+      "type": "port",
+      "latitude": 56.889444,
+      "longitude": 12.476384
+    },
+    {
+      "id": "Falmouth",
+      "countryId": null,
+      "name": "Falmouth",
+      "type": "port",
+      "latitude": 50.152778,
+      "longitude": -5.053534
+    },
+    {
+      "id": "Famagusta",
+      "countryId": null,
+      "name": "Famagusta",
+      "type": "port",
+      "latitude": 35.127778,
+      "longitude": 33.940047
+    },
+    {
+      "id": "Faro",
+      "countryId": null,
+      "name": "Faro",
+      "type": "port",
+      "latitude": 37.010556,
+      "longitude": -7.926031
+    },
+    {
+      "id": "Farsund",
+      "countryId": null,
+      "name": "Farsund",
+      "type": "port",
+      "latitude": 58.088611,
+      "longitude": 6.78987
+    },
+    {
+      "id": "Faskrudsfjordur",
+      "countryId": null,
+      "name": "Faskrudsfjordur",
+      "type": "port",
+      "latitude": 64.929722,
+      "longitude": -14.008834
+    },
+    {
+      "id": "Fecamp",
+      "countryId": null,
+      "name": "Fecamp",
+      "type": "port",
+      "latitude": 49.761944,
+      "longitude": 0.369494
+    },
+    {
+      "id": "Ferrol",
+      "countryId": null,
+      "name": "Ferrol",
+      "type": "port",
+      "latitude": 43.479722,
+      "longitude": -8.250883
+    },
+    {
+      "id": "Fiumicino",
+      "countryId": null,
+      "name": "Fiumicino",
+      "type": "port",
+      "latitude": 41.755833,
+      "longitude": 12.235453
+    },
+    {
+      "id": "Flensburg",
+      "countryId": null,
+      "name": "Flensburg",
+      "type": "port",
+      "latitude": 54.803333,
+      "longitude": 9.436867
+    },
+    {
+      "id": "Floro",
+      "countryId": null,
+      "name": "Floro",
+      "type": "port",
+      "latitude": 61.597778,
+      "longitude": 5.002827
+    },
+    {
+      "id": "Fort-de-France",
+      "countryId": null,
+      "name": "Fort-de-France",
+      "type": "port",
+      "latitude": 14.599167,
+      "longitude": -61.05689
+    },
+    {
+      "id": "Fortaleza",
+      "countryId": null,
+      "name": "Fortaleza",
+      "type": "port",
+      "latitude": -3.7175,
+      "longitude": -38.521437
+    },
+    {
+      "id": "Fox Bay",
+      "countryId": null,
+      "name": "Fox Bay",
+      "type": "port",
+      "latitude": -51.955556,
+      "longitude": -60.07073
+    },
+    {
+      "id": "Fredericia",
+      "countryId": null,
+      "name": "Fredericia",
+      "type": "port",
+      "latitude": 55.558056,
+      "longitude": 9.740577
+    },
+    {
+      "id": "Frederikshavn",
+      "countryId": null,
+      "name": "Frederikshavn",
+      "type": "port",
+      "latitude": 57.437778,
+      "longitude": 10.541461
+    },
+    {
+      "id": "Freeport",
+      "countryId": null,
+      "name": "Freeport",
+      "type": "port",
+      "latitude": 26.538411,
+      "longitude": -78.727664
+    },
+    {
+      "id": "Freetown",
+      "countryId": null,
+      "name": "Freetown",
+      "type": "port",
+      "latitude": 8.494167,
+      "longitude": -13.207951
+    },
+    {
+      "id": "Fremantle",
+      "countryId": null,
+      "name": "Fremantle",
+      "type": "port",
+      "latitude": -32.0475,
+      "longitude": 115.738104
+    },
+    {
+      "id": "Frontera",
+      "countryId": null,
+      "name": "Frontera",
+      "type": "port",
+      "latitude": 18.530278,
+      "longitude": -92.65212
+    },
+    {
+      "id": "Fushiki",
+      "countryId": null,
+      "name": "Fushiki",
+      "type": "port",
+      "latitude": 36.775833,
+      "longitude": 137.108481
+    },
+    {
+      "id": "Fuzhou",
+      "countryId": null,
+      "name": "Fuzhou",
+      "type": "port",
+      "latitude": 26.0475,
+      "longitude": 119.30053
+    },
+    {
+      "id": "Galati",
+      "countryId": null,
+      "name": "Galati",
+      "type": "port",
+      "latitude": 45.441667,
+      "longitude": 28.083863
+    },
+    {
+      "id": "Galle",
+      "countryId": null,
+      "name": "Galle",
+      "type": "port",
+      "latitude": 6.033333,
+      "longitude": 80.224971
+    },
+    {
+      "id": "Gallipoli",
+      "countryId": null,
+      "name": "Gallipoli",
+      "type": "port",
+      "latitude": 40.055833,
+      "longitude": 17.975677
+    },
+    {
+      "id": "Galveston",
+      "countryId": null,
+      "name": "Galveston",
+      "type": "port",
+      "latitude": 29.304167,
+      "longitude": -94.817903
+    },
+    {
+      "id": "Galway",
+      "countryId": null,
+      "name": "Galway",
+      "type": "port",
+      "latitude": 53.27,
+      "longitude": -9.043757
+    },
+    {
+      "id": "Gary",
+      "countryId": null,
+      "name": "Gary",
+      "type": "port",
+      "latitude": 41.61,
+      "longitude": -87.33
+    },
+    {
+      "id": "Gaspe",
+      "countryId": null,
+      "name": "Gaspe",
+      "type": "port",
+      "latitude": 48.824444,
+      "longitude": -64.43722
+    },
+    {
+      "id": "Gavle",
+      "countryId": null,
+      "name": "Gavle",
+      "type": "port",
+      "latitude": 60.684444,
+      "longitude": 17.192697
+    },
+    {
+      "id": "Gdansk",
+      "countryId": null,
+      "name": "Gdansk",
+      "type": "port",
+      "latitude": 54.393333,
+      "longitude": 18.668787
+    },
+    {
+      "id": "Gdynia",
+      "countryId": null,
+      "name": "Gdynia",
+      "type": "port",
+      "latitude": 54.533333,
+      "longitude": 18.538457
+    },
+    {
+      "id": "Geelong",
+      "countryId": null,
+      "name": "Geelong",
+      "type": "port",
+      "latitude": -38.126667,
+      "longitude": 144.387397
+    },
+    {
+      "id": "General Santos",
+      "countryId": null,
+      "name": "General Santos",
+      "type": "port",
+      "latitude": 6.086111,
+      "longitude": 125.15424
+    },
+    {
+      "id": "Gent (Ghent)",
+      "countryId": null,
+      "name": "Gent (Ghent)",
+      "type": "port",
+      "latitude": 51.114444,
+      "longitude": 3.767373
+    },
+    {
+      "id": "George Town",
+      "countryId": null,
+      "name": "George Town",
+      "type": "port",
+      "latitude": -41.109722,
+      "longitude": 146.8202
+    },
+    {
+      "id": "Georgetown",
+      "countryId": null,
+      "name": "Georgetown",
+      "type": "port",
+      "latitude": 6.819444,
+      "longitude": -58.167197
+    },
+    {
+      "id": "Geraldton",
+      "countryId": null,
+      "name": "Geraldton",
+      "type": "port",
+      "latitude": -28.772778,
+      "longitude": 114.600707
+    },
+    {
+      "id": "Gibraltar",
+      "countryId": null,
+      "name": "Gibraltar",
+      "type": "port",
+      "latitude": 36.136944,
+      "longitude": -5.357244
+    },
+    {
+      "id": "Gijon",
+      "countryId": null,
+      "name": "Gijon",
+      "type": "port",
+      "latitude": 43.558611,
+      "longitude": -5.688634
+    },
+    {
+      "id": "Gisborne",
+      "countryId": null,
+      "name": "Gisborne",
+      "type": "port",
+      "latitude": -38.6725,
+      "longitude": 178.022497
+    },
+    {
+      "id": "Gizo",
+      "countryId": null,
+      "name": "Gizo",
+      "type": "port",
+      "latitude": -8.101389,
+      "longitude": 156.83881
+    },
+    {
+      "id": "Gladstone",
+      "countryId": null,
+      "name": "Gladstone",
+      "type": "port",
+      "latitude": -23.83,
+      "longitude": 151.251767
+    },
+    {
+      "id": "Glasgow",
+      "countryId": null,
+      "name": "Glasgow",
+      "type": "port",
+      "latitude": 55.863056,
+      "longitude": -4.30318
+    },
+    {
+      "id": "Gloucester City",
+      "countryId": null,
+      "name": "Gloucester City",
+      "type": "port",
+      "latitude": 39.903611,
+      "longitude": -75.122674
+    },
+    {
+      "id": "Goderich",
+      "countryId": null,
+      "name": "Goderich",
+      "type": "port",
+      "latitude": 43.75,
+      "longitude": -81.73
+    },
+    {
+      "id": "Golfito",
+      "countryId": null,
+      "name": "Golfito",
+      "type": "port",
+      "latitude": 8.637778,
+      "longitude": -83.166667
+    },
+    {
+      "id": "Gonaives",
+      "countryId": null,
+      "name": "Gonaives",
+      "type": "port",
+      "latitude": 19.448333,
+      "longitude": -72.70371
+    },
+    {
+      "id": "Goose Bay",
+      "countryId": null,
+      "name": "Goose Bay",
+      "type": "port",
+      "latitude": 53.384444,
+      "longitude": -60.342344
+    },
+    {
+      "id": "Goteborg",
+      "countryId": null,
+      "name": "Goteborg",
+      "type": "port",
+      "latitude": 57.689167,
+      "longitude": 11.870024
+    },
+    {
+      "id": "Grand Bank",
+      "countryId": null,
+      "name": "Grand Bank",
+      "type": "port",
+      "latitude": 47.100278,
+      "longitude": -55.75106
+    },
+    {
+      "id": "Granville",
+      "countryId": null,
+      "name": "Granville",
+      "type": "port",
+      "latitude": 48.834722,
+      "longitude": -1.60106
+    },
+    {
+      "id": "Great Yarmouth",
+      "countryId": null,
+      "name": "Great Yarmouth",
+      "type": "port",
+      "latitude": 52.61,
+      "longitude": 1.73
+    },
+    {
+      "id": "Green Bay",
+      "countryId": null,
+      "name": "Green Bay",
+      "type": "port",
+      "latitude": 44.51,
+      "longitude": -88.01
+    },
+    {
+      "id": "Greenock",
+      "countryId": null,
+      "name": "Greenock",
+      "type": "port",
+      "latitude": 55.954722,
+      "longitude": -4.756714
+    },
+    {
+      "id": "Greymouth",
+      "countryId": null,
+      "name": "Greymouth",
+      "type": "port",
+      "latitude": -42.444722,
+      "longitude": 171.20053
+    },
+    {
+      "id": "Groningen",
+      "countryId": null,
+      "name": "Groningen",
+      "type": "port",
+      "latitude": 53.218333,
+      "longitude": 6.586867
+    },
+    {
+      "id": "Guangzhou",
+      "countryId": null,
+      "name": "Guangzhou",
+      "type": "port",
+      "latitude": 22.640278,
+      "longitude": 113.671084
+    },
+    {
+      "id": "Guangzhou",
+      "countryId": null,
+      "name": "Guangzhou",
+      "type": "port",
+      "latitude": 23.094167,
+      "longitude": 113.409364
+    },
+    {
+      "id": "Guanta",
+      "countryId": null,
+      "name": "Guanta",
+      "type": "port",
+      "latitude": 10.249167,
+      "longitude": -64.5904
+    },
+    {
+      "id": "Guayaquil",
+      "countryId": null,
+      "name": "Guayaquil",
+      "type": "port",
+      "latitude": -2.284167,
+      "longitude": -79.902473
+    },
+    {
+      "id": "Guaymas",
+      "countryId": null,
+      "name": "Guaymas",
+      "type": "port",
+      "latitude": 27.919167,
+      "longitude": -110.868787
+    },
+    {
+      "id": "Gulfport",
+      "countryId": null,
+      "name": "Gulfport",
+      "type": "port",
+      "latitude": 30.358611,
+      "longitude": -89.088457
+    },
+    {
+      "id": "Gunsan",
+      "countryId": null,
+      "name": "Gunsan",
+      "type": "port",
+      "latitude": 35.959722,
+      "longitude": 126.588104
+    },
+    {
+      "id": "Gwadar",
+      "countryId": null,
+      "name": "Gwadar",
+      "type": "port",
+      "latitude": 25.112222,
+      "longitude": 62.338634
+    },
+    {
+      "id": "Gythion",
+      "countryId": null,
+      "name": "Gythion",
+      "type": "port",
+      "latitude": 36.76,
+      "longitude": 22.56755
+    },
+    {
+      "id": "Hachinohe",
+      "countryId": null,
+      "name": "Hachinohe",
+      "type": "port",
+      "latitude": 40.545833,
+      "longitude": 141.523557
+    },
+    {
+      "id": "Haderslev",
+      "countryId": null,
+      "name": "Haderslev",
+      "type": "port",
+      "latitude": 55.251111,
+      "longitude": 9.504417
+    },
+    {
+      "id": "Hai Phong",
+      "countryId": null,
+      "name": "Hai Phong",
+      "type": "port",
+      "latitude": 20.867222,
+      "longitude": 106.675147
+    },
+    {
+      "id": "Haifa",
+      "countryId": null,
+      "name": "Haifa",
+      "type": "port",
+      "latitude": 32.8225,
+      "longitude": 35.018257
+    },
+    {
+      "id": "Haikou",
+      "countryId": null,
+      "name": "Haikou",
+      "type": "port",
+      "latitude": 20.027778,
+      "longitude": 110.274971
+    },
+    {
+      "id": "Haimen",
+      "countryId": null,
+      "name": "Haimen",
+      "type": "port",
+      "latitude": 28.690278,
+      "longitude": 121.441814
+    },
+    {
+      "id": "Hakodate",
+      "countryId": null,
+      "name": "Hakodate",
+      "type": "port",
+      "latitude": 41.787778,
+      "longitude": 140.709011
+    },
+    {
+      "id": "Halden",
+      "countryId": null,
+      "name": "Halden",
+      "type": "port",
+      "latitude": 59.118056,
+      "longitude": 11.375324
+    },
+    {
+      "id": "Halifax",
+      "countryId": null,
+      "name": "Halifax",
+      "type": "port",
+      "latitude": 44.656944,
+      "longitude": -63.574441
+    },
+    {
+      "id": "Halmstad",
+      "countryId": null,
+      "name": "Halmstad",
+      "type": "port",
+      "latitude": 56.655,
+      "longitude": 12.85
+    },
+    {
+      "id": "Hamburg",
+      "countryId": null,
+      "name": "Hamburg",
+      "type": "port",
+      "latitude": 53.524722,
+      "longitude": 9.958481
+    },
+    {
+      "id": "Hamilton",
+      "countryId": null,
+      "name": "Hamilton",
+      "type": "port",
+      "latitude": 43.25,
+      "longitude": -79.85
+    },
+    {
+      "id": "Hamilton",
+      "countryId": null,
+      "name": "Hamilton",
+      "type": "port",
+      "latitude": 32.291111,
+      "longitude": -64.776384
+    },
+    {
+      "id": "Hammerfest",
+      "countryId": null,
+      "name": "Hammerfest",
+      "type": "port",
+      "latitude": 70.667222,
+      "longitude": 23.671084
+    },
+    {
+      "id": "Hankow",
+      "countryId": null,
+      "name": "Hankow",
+      "type": "port",
+      "latitude": 30.58,
+      "longitude": 114.28
+    },
+    {
+      "id": "Harbour Grace",
+      "countryId": null,
+      "name": "Harbour Grace",
+      "type": "port",
+      "latitude": 47.690278,
+      "longitude": -53.21702
+    },
+    {
+      "id": "Harnosand",
+      "countryId": null,
+      "name": "Harnosand",
+      "type": "port",
+      "latitude": 62.640833,
+      "longitude": 17.93881
+    },
+    {
+      "id": "Harstad",
+      "countryId": null,
+      "name": "Harstad",
+      "type": "port",
+      "latitude": 68.789167,
+      "longitude": 16.541637
+    },
+    {
+      "id": "Haugesund",
+      "countryId": null,
+      "name": "Haugesund",
+      "type": "port",
+      "latitude": 59.412222,
+      "longitude": 5.255654
+    },
+    {
+      "id": "Helgoland",
+      "countryId": null,
+      "name": "Helgoland",
+      "type": "port",
+      "latitude": 54.1775,
+      "longitude": 7.891284
+    },
+    {
+      "id": "Helsingborg",
+      "countryId": null,
+      "name": "Helsingborg",
+      "type": "port",
+      "latitude": 56.033333,
+      "longitude": 12.687574
+    },
+    {
+      "id": "Helsingor",
+      "countryId": null,
+      "name": "Helsingor",
+      "type": "port",
+      "latitude": 56.034444,
+      "longitude": 12.61702
+    },
+    {
+      "id": "Helsinki",
+      "countryId": null,
+      "name": "Helsinki",
+      "type": "port",
+      "latitude": 60.16,
+      "longitude": 24.96
+    },
+    {
+      "id": "Hilo",
+      "countryId": null,
+      "name": "Hilo",
+      "type": "port",
+      "latitude": 19.733333,
+      "longitude": -155.06861
+    },
+    {
+      "id": "Hiroshima",
+      "countryId": null,
+      "name": "Hiroshima",
+      "type": "port",
+      "latitude": 34.365278,
+      "longitude": 132.421437
+    },
+    {
+      "id": "Ho Chi Minh City",
+      "countryId": null,
+      "name": "Ho Chi Minh City",
+      "type": "port",
+      "latitude": 10.793889,
+      "longitude": 106.72179
+    },
+    {
+      "id": "Hobart",
+      "countryId": null,
+      "name": "Hobart",
+      "type": "port",
+      "latitude": -42.880278,
+      "longitude": 147.335807
+    },
+    {
+      "id": "Hodeidah",
+      "countryId": null,
+      "name": "Hodeidah",
+      "type": "port",
+      "latitude": 14.833611,
+      "longitude": 42.935277
+    },
+    {
+      "id": "Hoganas",
+      "countryId": null,
+      "name": "Hoganas",
+      "type": "port",
+      "latitude": 56.198611,
+      "longitude": 12.541461
+    },
+    {
+      "id": "Honfleur",
+      "countryId": null,
+      "name": "Honfleur",
+      "type": "port",
+      "latitude": 49.422222,
+      "longitude": 0.2351
+    },
+    {
+      "id": "Hong Kong",
+      "countryId": null,
+      "name": "Hong Kong",
+      "type": "port",
+      "latitude": 22.321111,
+      "longitude": 114.156184
+    },
+    {
+      "id": "Honolulu",
+      "countryId": null,
+      "name": "Honolulu",
+      "type": "port",
+      "latitude": 21.309444,
+      "longitude": -157.873734
+    },
+    {
+      "id": "Horsens",
+      "countryId": null,
+      "name": "Horsens",
+      "type": "port",
+      "latitude": 55.854167,
+      "longitude": 9.868433
+    },
+    {
+      "id": "Horta",
+      "countryId": null,
+      "name": "Horta",
+      "type": "port",
+      "latitude": 38.53,
+      "longitude": -28.621967
+    },
+    {
+      "id": "Houghton",
+      "countryId": null,
+      "name": "Houghton",
+      "type": "port",
+      "latitude": 47.11,
+      "longitude": -88.56
+    },
+    {
+      "id": "Houston",
+      "countryId": null,
+      "name": "Houston",
+      "type": "port",
+      "latitude": 29.739167,
+      "longitude": -95.20212
+    },
+    {
+      "id": "Hudiksvall",
+      "countryId": null,
+      "name": "Hudiksvall",
+      "type": "port",
+      "latitude": 61.721667,
+      "longitude": 17.11861
+    },
+    {
+      "id": "Huelva",
+      "countryId": null,
+      "name": "Huelva",
+      "type": "port",
+      "latitude": 37.192778,
+      "longitude": -6.935807
+    },
+    {
+      "id": "Hull",
+      "countryId": null,
+      "name": "Hull",
+      "type": "port",
+      "latitude": 53.743611,
+      "longitude": -0.2851
+    },
+    {
+      "id": "Ibiza",
+      "countryId": null,
+      "name": "Ibiza",
+      "type": "port",
+      "latitude": 38.9,
+      "longitude": 1.45
+    },
+    {
+      "id": "Ilheus",
+      "countryId": null,
+      "name": "Ilheus",
+      "type": "port",
+      "latitude": -14.780278,
+      "longitude": -39.025677
+    },
+    {
+      "id": "Ilo",
+      "countryId": null,
+      "name": "Ilo",
+      "type": "port",
+      "latitude": -17.646944,
+      "longitude": -71.343757
+    },
+    {
+      "id": "Imabari",
+      "countryId": null,
+      "name": "Imabari",
+      "type": "port",
+      "latitude": 34.068056,
+      "longitude": 133.006184
+    },
+    {
+      "id": "Imperia",
+      "countryId": null,
+      "name": "Imperia",
+      "type": "port",
+      "latitude": 43.882778,
+      "longitude": 8.026914
+    },
+    {
+      "id": "Ingeniero White/Bahia Blanca",
+      "countryId": null,
+      "name": "Ingeniero White/Bahia Blanca",
+      "type": "port",
+      "latitude": -38.791944,
+      "longitude": -62.259894
+    },
+    {
+      "id": "Inverness",
+      "countryId": null,
+      "name": "Inverness",
+      "type": "port",
+      "latitude": 57.486667,
+      "longitude": -4.234747
+    },
+    {
+      "id": "Iquique",
+      "countryId": null,
+      "name": "Iquique",
+      "type": "port",
+      "latitude": -20.202778,
+      "longitude": -70.151767
+    },
+    {
+      "id": "Iraklion",
+      "countryId": null,
+      "name": "Iraklion",
+      "type": "port",
+      "latitude": 35.345556,
+      "longitude": 25.141107
+    },
+    {
+      "id": "Isabela de Sagua",
+      "countryId": null,
+      "name": "Isabela de Sagua",
+      "type": "port",
+      "latitude": 22.940278,
+      "longitude": -80.007597
+    },
+    {
+      "id": "Ischia",
+      "countryId": null,
+      "name": "Ischia",
+      "type": "port",
+      "latitude": 40.745278,
+      "longitude": 13.938104
+    },
+    {
+      "id": "Ishigaki",
+      "countryId": null,
+      "name": "Ishigaki",
+      "type": "port",
+      "latitude": 24.335556,
+      "longitude": 124.151237
+    },
+    {
+      "id": "Istanbul",
+      "countryId": null,
+      "name": "Istanbul",
+      "type": "port",
+      "latitude": 41.012778,
+      "longitude": 28.993404
+    },
+    {
+      "id": "Iwakuni",
+      "countryId": null,
+      "name": "Iwakuni",
+      "type": "port",
+      "latitude": 34.176944,
+      "longitude": 132.235277
+    },
+    {
+      "id": "Izmir",
+      "countryId": null,
+      "name": "Izmir",
+      "type": "port",
+      "latitude": 38.443889,
+      "longitude": 27.153887
+    },
+    {
+      "id": "Jacksonville",
+      "countryId": null,
+      "name": "Jacksonville",
+      "type": "port",
+      "latitude": 30.380833,
+      "longitude": -81.559187
+    },
+    {
+      "id": "Jacksonville",
+      "countryId": null,
+      "name": "Jacksonville",
+      "type": "port",
+      "latitude": 30.380833,
+      "longitude": -81.559187
+    },
+    {
+      "id": "Jacmel",
+      "countryId": null,
+      "name": "Jacmel",
+      "type": "port",
+      "latitude": 18.231667,
+      "longitude": -72.535984
+    },
+    {
+      "id": "Jawaharlal Nehru Port",
+      "countryId": null,
+      "name": "Jawaharlal Nehru Port",
+      "type": "port",
+      "latitude": 18.95,
+      "longitude": 72.93
+    },
+    {
+      "id": "Jeddah",
+      "countryId": null,
+      "name": "Jeddah",
+      "type": "port",
+      "latitude": 21.458611,
+      "longitude": 39.159011
+    },
+    {
+      "id": "Jeremie",
+      "countryId": null,
+      "name": "Jeremie",
+      "type": "port",
+      "latitude": 18.643611,
+      "longitude": -74.107067
+    },
+    {
+      "id": "Jiangmen",
+      "countryId": null,
+      "name": "Jiangmen",
+      "type": "port",
+      "latitude": 22.5025,
+      "longitude": 113.001943
+    },
+    {
+      "id": "Jiangyin",
+      "countryId": null,
+      "name": "Jiangyin",
+      "type": "port",
+      "latitude": 31.931944,
+      "longitude": 120.22126
+    },
+    {
+      "id": "Jizan",
+      "countryId": null,
+      "name": "Jizan",
+      "type": "port",
+      "latitude": 16.890278,
+      "longitude": 42.535277
+    },
+    {
+      "id": "Joensuu",
+      "countryId": null,
+      "name": "Joensuu",
+      "type": "port",
+      "latitude": 62.604444,
+      "longitude": 29.777091
+    },
+    {
+      "id": "Jubail",
+      "countryId": null,
+      "name": "Jubail",
+      "type": "port",
+      "latitude": 27.028611,
+      "longitude": 49.670907
+    },
+    {
+      "id": "Jubail",
+      "countryId": null,
+      "name": "Jubail",
+      "type": "port",
+      "latitude": 27.087778,
+      "longitude": 49.673027
+    },
+    {
+      "id": "Juneau",
+      "countryId": null,
+      "name": "Juneau",
+      "type": "port",
+      "latitude": 58.379167,
+      "longitude": -134.670024
+    },
+    {
+      "id": "Kagoshima",
+      "countryId": null,
+      "name": "Kagoshima",
+      "type": "port",
+      "latitude": 31.5925,
+      "longitude": 130.568787
+    },
+    {
+      "id": "Kainan",
+      "countryId": null,
+      "name": "Kainan",
+      "type": "port",
+      "latitude": 34.153056,
+      "longitude": 135.188457
+    },
+    {
+      "id": "Kakinada",
+      "countryId": null,
+      "name": "Kakinada",
+      "type": "port",
+      "latitude": 16.977778,
+      "longitude": 82.274617
+    },
+    {
+      "id": "Kalamata",
+      "countryId": null,
+      "name": "Kalamata",
+      "type": "port",
+      "latitude": 37.022778,
+      "longitude": 22.108127
+    },
+    {
+      "id": "Kaliningrad",
+      "countryId": null,
+      "name": "Kaliningrad",
+      "type": "port",
+      "latitude": 54.7,
+      "longitude": 20.455477
+    },
+    {
+      "id": "Kalmar",
+      "countryId": null,
+      "name": "Kalmar",
+      "type": "port",
+      "latitude": 56.659167,
+      "longitude": 16.36914
+    },
+    {
+      "id": "Kalundborg",
+      "countryId": null,
+      "name": "Kalundborg",
+      "type": "port",
+      "latitude": 55.669444,
+      "longitude": 11.085984
+    },
+    {
+      "id": "Kanazawa",
+      "countryId": null,
+      "name": "Kanazawa",
+      "type": "port",
+      "latitude": 36.616944,
+      "longitude": 136.606537
+    },
+    {
+      "id": "Kandalaksha",
+      "countryId": null,
+      "name": "Kandalaksha",
+      "type": "port",
+      "latitude": 67.135,
+      "longitude": 32.404947
+    },
+    {
+      "id": "Kandla",
+      "countryId": null,
+      "name": "Kandla",
+      "type": "port",
+      "latitude": 23.013611,
+      "longitude": 70.22232
+    },
+    {
+      "id": "Kaohsiung",
+      "countryId": null,
+      "name": "Kaohsiung",
+      "type": "port",
+      "latitude": 22.565278,
+      "longitude": 120.307067
+    },
+    {
+      "id": "Kaolack",
+      "countryId": null,
+      "name": "Kaolack",
+      "type": "port",
+      "latitude": 14.129444,
+      "longitude": -16.071967
+    },
+    {
+      "id": "Karachi",
+      "countryId": null,
+      "name": "Karachi",
+      "type": "port",
+      "latitude": 24.835,
+      "longitude": 66.973734
+    },
+    {
+      "id": "Karlshamn",
+      "countryId": null,
+      "name": "Karlshamn",
+      "type": "port",
+      "latitude": 56.1625,
+      "longitude": 14.858304
+    },
+    {
+      "id": "Karlskrona",
+      "countryId": null,
+      "name": "Karlskrona",
+      "type": "port",
+      "latitude": 56.16,
+      "longitude": 15.585984
+    },
+    {
+      "id": "Karlstad",
+      "countryId": null,
+      "name": "Karlstad",
+      "type": "port",
+      "latitude": 59.375278,
+      "longitude": 13.5202
+    },
+    {
+      "id": "Karumba",
+      "countryId": null,
+      "name": "Karumba",
+      "type": "port",
+      "latitude": -17.489444,
+      "longitude": 140.833333
+    },
+    {
+      "id": "Katakolon",
+      "countryId": null,
+      "name": "Katakolon",
+      "type": "port",
+      "latitude": 37.646389,
+      "longitude": 21.31861
+    },
+    {
+      "id": "Kavala",
+      "countryId": null,
+      "name": "Kavala",
+      "type": "port",
+      "latitude": 40.931389,
+      "longitude": 24.401943
+    },
+    {
+      "id": "Kavieng",
+      "countryId": null,
+      "name": "Kavieng",
+      "type": "port",
+      "latitude": -2.584722,
+      "longitude": 150.78669
+    },
+    {
+      "id": "Kawasaki",
+      "countryId": null,
+      "name": "Kawasaki",
+      "type": "port",
+      "latitude": 35.506389,
+      "longitude": 139.743757
+    },
+    {
+      "id": "Keelung",
+      "countryId": null,
+      "name": "Keelung",
+      "type": "port",
+      "latitude": 25.22076,
+      "longitude": 121.725837
+    },
+    {
+      "id": "Kemaman",
+      "countryId": null,
+      "name": "Kemaman",
+      "type": "port",
+      "latitude": 4.249444,
+      "longitude": 103.459187
+    },
+    {
+      "id": "Kemi",
+      "countryId": null,
+      "name": "Kemi",
+      "type": "port",
+      "latitude": 65.73,
+      "longitude": 24.56
+    },
+    {
+      "id": "Kerch",
+      "countryId": null,
+      "name": "Kerch",
+      "type": "port",
+      "latitude": 45.355,
+      "longitude": 36.48563
+    },
+    {
+      "id": "Ketchikan",
+      "countryId": null,
+      "name": "Ketchikan",
+      "type": "port",
+      "latitude": 55.346944,
+      "longitude": -131.67126
+    },
+    {
+      "id": "Khabarovsk",
+      "countryId": null,
+      "name": "Khabarovsk",
+      "type": "port",
+      "latitude": 48.5,
+      "longitude": 135.16
+    },
+    {
+      "id": "Kherson",
+      "countryId": null,
+      "name": "Kherson",
+      "type": "port",
+      "latitude": 46.618611,
+      "longitude": 32.60742
+    },
+    {
+      "id": "Kholmsk",
+      "countryId": null,
+      "name": "Kholmsk",
+      "type": "port",
+      "latitude": 47.050556,
+      "longitude": 142.040047
+    },
+    {
+      "id": "Khorramshahr",
+      "countryId": null,
+      "name": "Khorramshahr",
+      "type": "port",
+      "latitude": 30.4325,
+      "longitude": 48.185453
+    },
+    {
+      "id": "Kiel",
+      "countryId": null,
+      "name": "Kiel",
+      "type": "port",
+      "latitude": 54.330833,
+      "longitude": 10.15689
+    },
+    {
+      "id": "Kieta",
+      "countryId": null,
+      "name": "Kieta",
+      "type": "port",
+      "latitude": -6.215278,
+      "longitude": 155.626914
+    },
+    {
+      "id": "Kingscote",
+      "countryId": null,
+      "name": "Kingscote",
+      "type": "port",
+      "latitude": -35.655,
+      "longitude": 137.639517
+    },
+    {
+      "id": "Kingston",
+      "countryId": null,
+      "name": "Kingston",
+      "type": "port",
+      "latitude": 17.981667,
+      "longitude": -76.824794
+    },
+    {
+      "id": "Kingstown",
+      "countryId": null,
+      "name": "Kingstown",
+      "type": "port",
+      "latitude": 13.169167,
+      "longitude": -61.242874
+    },
+    {
+      "id": "Kirkenes",
+      "countryId": null,
+      "name": "Kirkenes",
+      "type": "port",
+      "latitude": 69.728333,
+      "longitude": 30.055654
+    },
+    {
+      "id": "Kismayu",
+      "countryId": null,
+      "name": "Kismayu",
+      "type": "port",
+      "latitude": -0.374167,
+      "longitude": 42.541107
+    },
+    {
+      "id": "Kitakyushu",
+      "countryId": null,
+      "name": "Kitakyushu",
+      "type": "port",
+      "latitude": 33.9225,
+      "longitude": 130.85424
+    },
+    {
+      "id": "Klaipeda",
+      "countryId": null,
+      "name": "Klaipeda",
+      "type": "port",
+      "latitude": 55.687222,
+      "longitude": 21.134217
+    },
+    {
+      "id": "Kobe",
+      "countryId": null,
+      "name": "Kobe",
+      "type": "port",
+      "latitude": 34.684167,
+      "longitude": 135.238104
+    },
+    {
+      "id": "Kochi",
+      "countryId": null,
+      "name": "Kochi",
+      "type": "port",
+      "latitude": 33.524167,
+      "longitude": 133.557067
+    },
+    {
+      "id": "Kodiak",
+      "countryId": null,
+      "name": "Kodiak",
+      "type": "port",
+      "latitude": 57.78,
+      "longitude": -152.4
+    },
+    {
+      "id": "Kokura",
+      "countryId": null,
+      "name": "Kokura",
+      "type": "port",
+      "latitude": 33.908333,
+      "longitude": 130.873557
+    },
+    {
+      "id": "Kolding",
+      "countryId": null,
+      "name": "Kolding",
+      "type": "port",
+      "latitude": 55.492778,
+      "longitude": 9.493404
+    },
+    {
+      "id": "Korsakov",
+      "countryId": null,
+      "name": "Korsakov",
+      "type": "port",
+      "latitude": 46.626667,
+      "longitude": 142.758481
+    },
+    {
+      "id": "Kos",
+      "countryId": null,
+      "name": "Kos",
+      "type": "port",
+      "latitude": 36.894444,
+      "longitude": 27.28987
+    },
+    {
+      "id": "Kota Kinabalu",
+      "countryId": null,
+      "name": "Kota Kinabalu",
+      "type": "port",
+      "latitude": 5.98,
+      "longitude": 116.06
+    },
+    {
+      "id": "Kotka",
+      "countryId": null,
+      "name": "Kotka",
+      "type": "port",
+      "latitude": 60.461111,
+      "longitude": 26.941814
+    },
+    {
+      "id": "Kourou",
+      "countryId": null,
+      "name": "Kourou",
+      "type": "port",
+      "latitude": 5.158889,
+      "longitude": -52.624264
+    },
+    {
+      "id": "Kralendijk, Bonaire",
+      "countryId": null,
+      "name": "Kralendijk, Bonaire",
+      "type": "port",
+      "latitude": 12.148333,
+      "longitude": -68.273557
+    },
+    {
+      "id": "Kristiansand",
+      "countryId": null,
+      "name": "Kristiansand",
+      "type": "port",
+      "latitude": 58.141944,
+      "longitude": 7.986337
+    },
+    {
+      "id": "Kristiansund",
+      "countryId": null,
+      "name": "Kristiansund",
+      "type": "port",
+      "latitude": 63.115,
+      "longitude": 7.733333
+    },
+    {
+      "id": "Kronshtadt",
+      "countryId": null,
+      "name": "Kronshtadt",
+      "type": "port",
+      "latitude": 59.986944,
+      "longitude": 29.767373
+    },
+    {
+      "id": "Kuching",
+      "countryId": null,
+      "name": "Kuching",
+      "type": "port",
+      "latitude": 1.56,
+      "longitude": 110.35
+    },
+    {
+      "id": "Kuopio",
+      "countryId": null,
+      "name": "Kuopio",
+      "type": "port",
+      "latitude": 62.888333,
+      "longitude": 27.68987
+    },
+    {
+      "id": "Kupang",
+      "countryId": null,
+      "name": "Kupang",
+      "type": "port",
+      "latitude": -10.16,
+      "longitude": 123.58
+    },
+    {
+      "id": "Kushiro",
+      "countryId": null,
+      "name": "Kushiro",
+      "type": "port",
+      "latitude": 42.988611,
+      "longitude": 144.352297
+    },
+    {
+      "id": "La Ceiba",
+      "countryId": null,
+      "name": "La Ceiba",
+      "type": "port",
+      "latitude": 15.793889,
+      "longitude": -86.75689
+    },
+    {
+      "id": "La Guaira",
+      "countryId": null,
+      "name": "La Guaira",
+      "type": "port",
+      "latitude": 10.602778,
+      "longitude": -66.940224
+    },
+    {
+      "id": "La Maddalena",
+      "countryId": null,
+      "name": "La Maddalena",
+      "type": "port",
+      "latitude": 41.213333,
+      "longitude": 9.409364
+    },
+    {
+      "id": "La Pallice",
+      "countryId": null,
+      "name": "La Pallice",
+      "type": "port",
+      "latitude": 46.157222,
+      "longitude": -1.22391
+    },
+    {
+      "id": "La Palma",
+      "countryId": null,
+      "name": "La Palma",
+      "type": "port",
+      "latitude": 8.413611,
+      "longitude": -78.15106
+    },
+    {
+      "id": "La Paz",
+      "countryId": null,
+      "name": "La Paz",
+      "type": "port",
+      "latitude": 24.169444,
+      "longitude": -110.310424
+    },
+    {
+      "id": "La Plata",
+      "countryId": null,
+      "name": "La Plata",
+      "type": "port",
+      "latitude": -34.855278,
+      "longitude": -57.890224
+    },
+    {
+      "id": "La Rochelle",
+      "countryId": null,
+      "name": "La Rochelle",
+      "type": "port",
+      "latitude": 46.146667,
+      "longitude": -1.157774
+    },
+    {
+      "id": "La Spezia",
+      "countryId": null,
+      "name": "La Spezia",
+      "type": "port",
+      "latitude": 44.087222,
+      "longitude": 9.850353
+    },
+    {
+      "id": "Lae",
+      "countryId": null,
+      "name": "Lae",
+      "type": "port",
+      "latitude": -6.741111,
+      "longitude": 146.984747
+    },
+    {
+      "id": "Laem Chabang",
+      "countryId": null,
+      "name": "Laem Chabang",
+      "type": "port",
+      "latitude": 13.073889,
+      "longitude": 100.89093
+    },
+    {
+      "id": "Lampedusa",
+      "countryId": null,
+      "name": "Lampedusa",
+      "type": "port",
+      "latitude": 35.499167,
+      "longitude": 12.602474
+    },
+    {
+      "id": "Lamu",
+      "countryId": null,
+      "name": "Lamu",
+      "type": "port",
+      "latitude": -2.268056,
+      "longitude": 40.90159
+    },
+    {
+      "id": "Larnaca",
+      "countryId": null,
+      "name": "Larnaca",
+      "type": "port",
+      "latitude": 34.924167,
+      "longitude": 33.63934
+    },
+    {
+      "id": "Larvik",
+      "countryId": null,
+      "name": "Larvik",
+      "type": "port",
+      "latitude": 59.045278,
+      "longitude": 10.025501
+    },
+    {
+      "id": "Le Havre",
+      "countryId": null,
+      "name": "Le Havre",
+      "type": "port",
+      "latitude": 49.466944,
+      "longitude": 0.173734
+    },
+    {
+      "id": "Leith",
+      "countryId": null,
+      "name": "Leith",
+      "type": "port",
+      "latitude": 55.9825,
+      "longitude": -3.17179
+    },
+    {
+      "id": "Leixoes",
+      "countryId": null,
+      "name": "Leixoes",
+      "type": "port",
+      "latitude": 41.185,
+      "longitude": -8.692874
+    },
+    {
+      "id": "Lhokseumawe",
+      "countryId": null,
+      "name": "Lhokseumawe",
+      "type": "port",
+      "latitude": 5.166667,
+      "longitude": 97.142874
+    },
+    {
+      "id": "Lianyungang",
+      "countryId": null,
+      "name": "Lianyungang",
+      "type": "port",
+      "latitude": 34.745278,
+      "longitude": 119.408481
+    },
+    {
+      "id": "Libreville",
+      "countryId": null,
+      "name": "Libreville",
+      "type": "port",
+      "latitude": 0.400833,
+      "longitude": 9.433687
+    },
+    {
+      "id": "Licata",
+      "countryId": null,
+      "name": "Licata",
+      "type": "port",
+      "latitude": 37.090278,
+      "longitude": 13.93828
+    },
+    {
+      "id": "Lidkoping",
+      "countryId": null,
+      "name": "Lidkoping",
+      "type": "port",
+      "latitude": 58.509167,
+      "longitude": 13.159364
+    },
+    {
+      "id": "Liepaja",
+      "countryId": null,
+      "name": "Liepaja",
+      "type": "port",
+      "latitude": 56.51,
+      "longitude": 21.01
+    },
+    {
+      "id": "Limassol",
+      "countryId": null,
+      "name": "Limassol",
+      "type": "port",
+      "latitude": 34.65,
+      "longitude": 33.017727
+    },
+    {
+      "id": "Limerick",
+      "countryId": null,
+      "name": "Limerick",
+      "type": "port",
+      "latitude": 52.662778,
+      "longitude": -8.633333
+    },
+    {
+      "id": "Lisboa",
+      "countryId": null,
+      "name": "Lisboa",
+      "type": "port",
+      "latitude": 38.7,
+      "longitude": -9.16
+    },
+    {
+      "id": "Liverpool",
+      "countryId": null,
+      "name": "Liverpool",
+      "type": "port",
+      "latitude": 53.436389,
+      "longitude": -3.007244
+    },
+    {
+      "id": "Liverpool",
+      "countryId": null,
+      "name": "Liverpool",
+      "type": "port",
+      "latitude": 44.043333,
+      "longitude": -64.70371
+    },
+    {
+      "id": "Livorno",
+      "countryId": null,
+      "name": "Livorno",
+      "type": "port",
+      "latitude": 43.555833,
+      "longitude": 10.301943
+    },
+    {
+      "id": "Lobito",
+      "countryId": null,
+      "name": "Lobito",
+      "type": "port",
+      "latitude": -12.336944,
+      "longitude": 13.569317
+    },
+    {
+      "id": "Lome",
+      "countryId": null,
+      "name": "Lome",
+      "type": "port",
+      "latitude": 6.139167,
+      "longitude": 1.284923
+    },
+    {
+      "id": "London",
+      "countryId": null,
+      "name": "London",
+      "type": "port",
+      "latitude": 51.502778,
+      "longitude": -0.067197
+    },
+    {
+      "id": "Londonderry",
+      "countryId": null,
+      "name": "Londonderry",
+      "type": "port",
+      "latitude": 55,
+      "longitude": -7.31
+    },
+    {
+      "id": "Long Beach",
+      "countryId": null,
+      "name": "Long Beach",
+      "type": "port",
+      "latitude": 33.748889,
+      "longitude": -118.200707
+    },
+    {
+      "id": "Longview",
+      "countryId": null,
+      "name": "Longview",
+      "type": "port",
+      "latitude": 46.112778,
+      "longitude": -122.96702
+    },
+    {
+      "id": "Longyearbyen",
+      "countryId": null,
+      "name": "Longyearbyen",
+      "type": "port",
+      "latitude": 78.226111,
+      "longitude": 15.623734
+    },
+    {
+      "id": "Loreto",
+      "countryId": null,
+      "name": "Loreto",
+      "type": "port",
+      "latitude": 26.014722,
+      "longitude": -111.336867
+    },
+    {
+      "id": "Lorient",
+      "countryId": null,
+      "name": "Lorient",
+      "type": "port",
+      "latitude": 47.734167,
+      "longitude": -3.35212
+    },
+    {
+      "id": "Los Angeles",
+      "countryId": null,
+      "name": "Los Angeles",
+      "type": "port",
+      "latitude": 33.731944,
+      "longitude": -118.259717
+    },
+    {
+      "id": "Lota",
+      "countryId": null,
+      "name": "Lota",
+      "type": "port",
+      "latitude": -37.098056,
+      "longitude": -73.158481
+    },
+    {
+      "id": "Luanda",
+      "countryId": null,
+      "name": "Luanda",
+      "type": "port",
+      "latitude": -8.783889,
+      "longitude": 13.250883
+    },
+    {
+      "id": "Luderitz",
+      "countryId": null,
+      "name": "Luderitz",
+      "type": "port",
+      "latitude": -26.637778,
+      "longitude": 15.15371
+    },
+    {
+      "id": "Lulea",
+      "countryId": null,
+      "name": "Lulea",
+      "type": "port",
+      "latitude": 65.578889,
+      "longitude": 22.158304
+    },
+    {
+      "id": "Lyttelton",
+      "countryId": null,
+      "name": "Lyttelton",
+      "type": "port",
+      "latitude": -43.606111,
+      "longitude": 172.710247
+    },
+    {
+      "id": "Macapa",
+      "countryId": null,
+      "name": "Macapa",
+      "type": "port",
+      "latitude": 0.032222,
+      "longitude": -51.042697
+    },
+    {
+      "id": "Maceio",
+      "countryId": null,
+      "name": "Maceio",
+      "type": "port",
+      "latitude": -9.678889,
+      "longitude": -35.72232
+    },
+    {
+      "id": "Mackay",
+      "countryId": null,
+      "name": "Mackay",
+      "type": "port",
+      "latitude": -21.108333,
+      "longitude": 149.223734
+    },
+    {
+      "id": "Madang",
+      "countryId": null,
+      "name": "Madang",
+      "type": "port",
+      "latitude": -5.213333,
+      "longitude": 145.800353
+    },
+    {
+      "id": "Madras",
+      "countryId": null,
+      "name": "Madras",
+      "type": "port",
+      "latitude": 13.1,
+      "longitude": 80.3
+    },
+    {
+      "id": "Maizuru",
+      "countryId": null,
+      "name": "Maizuru",
+      "type": "port",
+      "latitude": 35.481667,
+      "longitude": 135.385277
+    },
+    {
+      "id": "Malacca",
+      "countryId": null,
+      "name": "Malacca",
+      "type": "port",
+      "latitude": 2.248889,
+      "longitude": 102.12338
+    },
+    {
+      "id": "Malaga",
+      "countryId": null,
+      "name": "Malaga",
+      "type": "port",
+      "latitude": 36.709444,
+      "longitude": -4.418257
+    },
+    {
+      "id": "Male",
+      "countryId": null,
+      "name": "Male",
+      "type": "port",
+      "latitude": 4.175,
+      "longitude": 73.507067
+    },
+    {
+      "id": "Mali Losinj",
+      "countryId": null,
+      "name": "Mali Losinj",
+      "type": "port",
+      "latitude": 44.538333,
+      "longitude": 14.457597
+    },
+    {
+      "id": "Malindi",
+      "countryId": null,
+      "name": "Malindi",
+      "type": "port",
+      "latitude": -3.213611,
+      "longitude": 40.123027
+    },
+    {
+      "id": "Malmo",
+      "countryId": null,
+      "name": "Malmo",
+      "type": "port",
+      "latitude": 55.625556,
+      "longitude": 13.00159
+    },
+    {
+      "id": "Manado",
+      "countryId": null,
+      "name": "Manado",
+      "type": "port",
+      "latitude": 1.481944,
+      "longitude": 124.825854
+    },
+    {
+      "id": "Manakara",
+      "countryId": null,
+      "name": "Manakara",
+      "type": "port",
+      "latitude": -22.1425,
+      "longitude": 48.018787
+    },
+    {
+      "id": "Mananjary",
+      "countryId": null,
+      "name": "Mananjary",
+      "type": "port",
+      "latitude": -21.249167,
+      "longitude": 48.326207
+    },
+    {
+      "id": "Manfredonia",
+      "countryId": null,
+      "name": "Manfredonia",
+      "type": "port",
+      "latitude": 41.624167,
+      "longitude": 15.925324
+    },
+    {
+      "id": "Mangalore",
+      "countryId": null,
+      "name": "Mangalore",
+      "type": "port",
+      "latitude": 12.926944,
+      "longitude": 74.80742
+    },
+    {
+      "id": "Manila",
+      "countryId": null,
+      "name": "Manila",
+      "type": "port",
+      "latitude": 14.524167,
+      "longitude": 120.943404
+    },
+    {
+      "id": "Manta",
+      "countryId": null,
+      "name": "Manta",
+      "type": "port",
+      "latitude": -0.935556,
+      "longitude": -80.720907
+    },
+    {
+      "id": "Manzanillo",
+      "countryId": null,
+      "name": "Manzanillo",
+      "type": "port",
+      "latitude": 20.3375,
+      "longitude": -77.13351
+    },
+    {
+      "id": "Manzanillo",
+      "countryId": null,
+      "name": "Manzanillo",
+      "type": "port",
+      "latitude": 19.070556,
+      "longitude": -104.300883
+    },
+    {
+      "id": "Maputo",
+      "countryId": null,
+      "name": "Maputo",
+      "type": "port",
+      "latitude": -25.972778,
+      "longitude": 32.557067
+    },
+    {
+      "id": "Mar del Plata",
+      "countryId": null,
+      "name": "Mar del Plata",
+      "type": "port",
+      "latitude": -38.042778,
+      "longitude": -57.533333
+    },
+    {
+      "id": "Maracaibo",
+      "countryId": null,
+      "name": "Maracaibo",
+      "type": "port",
+      "latitude": 10.683611,
+      "longitude": -71.58828
+    },
+    {
+      "id": "Marghera",
+      "countryId": null,
+      "name": "Marghera",
+      "type": "port",
+      "latitude": 45.453056,
+      "longitude": 12.240577
+    },
+    {
+      "id": "Mariel",
+      "countryId": null,
+      "name": "Mariel",
+      "type": "port",
+      "latitude": 23.006389,
+      "longitude": -82.756007
+    },
+    {
+      "id": "Marsala",
+      "countryId": null,
+      "name": "Marsala",
+      "type": "port",
+      "latitude": 37.789722,
+      "longitude": 12.435453
+    },
+    {
+      "id": "Marsaxlokk",
+      "countryId": null,
+      "name": "Marsaxlokk",
+      "type": "port",
+      "latitude": 35.826111,
+      "longitude": 14.541284
+    },
+    {
+      "id": "Marseille",
+      "countryId": null,
+      "name": "Marseille",
+      "type": "port",
+      "latitude": 43.329444,
+      "longitude": 5.341284
+    },
+    {
+      "id": "Maryborough",
+      "countryId": null,
+      "name": "Maryborough",
+      "type": "port",
+      "latitude": -25.295,
+      "longitude": 152.906007
+    },
+    {
+      "id": "Masbate",
+      "countryId": null,
+      "name": "Masbate",
+      "type": "port",
+      "latitude": 12.368056,
+      "longitude": 123.619847
+    },
+    {
+      "id": "Massawa",
+      "countryId": null,
+      "name": "Massawa",
+      "type": "port",
+      "latitude": 15.61,
+      "longitude": 39.46
+    },
+    {
+      "id": "Masset",
+      "countryId": null,
+      "name": "Masset",
+      "type": "port",
+      "latitude": 54.006667,
+      "longitude": -132.141107
+    },
+    {
+      "id": "Matane",
+      "countryId": null,
+      "name": "Matane",
+      "type": "port",
+      "latitude": 48.841944,
+      "longitude": -67.57126
+    },
+    {
+      "id": "Matanzas",
+      "countryId": null,
+      "name": "Matanzas",
+      "type": "port",
+      "latitude": 23.051389,
+      "longitude": -81.537044
+    },
+    {
+      "id": "Matarani",
+      "countryId": null,
+      "name": "Matarani",
+      "type": "port",
+      "latitude": -16.997778,
+      "longitude": -72.10424
+    },
+    {
+      "id": "Matsusaka",
+      "countryId": null,
+      "name": "Matsusaka",
+      "type": "port",
+      "latitude": 34.608056,
+      "longitude": 136.553357
+    },
+    {
+      "id": "Matsuyama",
+      "countryId": null,
+      "name": "Matsuyama",
+      "type": "port",
+      "latitude": 33.855278,
+      "longitude": 132.693404
+    },
+    {
+      "id": "Mayaguez",
+      "countryId": null,
+      "name": "Mayaguez",
+      "type": "port",
+      "latitude": 18.213889,
+      "longitude": -67.15689
+    },
+    {
+      "id": "Mazatlan",
+      "countryId": null,
+      "name": "Mazatlan",
+      "type": "port",
+      "latitude": 23.192222,
+      "longitude": -106.393404
+    },
+    {
+      "id": "Melbourne",
+      "countryId": null,
+      "name": "Melbourne",
+      "type": "port",
+      "latitude": -37.832778,
+      "longitude": 144.917197
+    },
+    {
+      "id": "Melilla",
+      "countryId": null,
+      "name": "Melilla",
+      "type": "port",
+      "latitude": 35.28,
+      "longitude": -2.92285
+    },
+    {
+      "id": "Menominee",
+      "countryId": null,
+      "name": "Menominee",
+      "type": "port",
+      "latitude": 45.1,
+      "longitude": -87.6
+    },
+    {
+      "id": "Mersin",
+      "countryId": null,
+      "name": "Mersin",
+      "type": "port",
+      "latitude": 36.796944,
+      "longitude": 34.640577
+    },
+    {
+      "id": "Messina",
+      "countryId": null,
+      "name": "Messina",
+      "type": "port",
+      "latitude": 38.200278,
+      "longitude": 15.559187
+    },
+    {
+      "id": "Miami",
+      "countryId": null,
+      "name": "Miami",
+      "type": "port",
+      "latitude": 25.775,
+      "longitude": -80.16702
+    },
+    {
+      "id": "Midland",
+      "countryId": null,
+      "name": "Midland",
+      "type": "port",
+      "latitude": 44.75,
+      "longitude": -79.91
+    },
+    {
+      "id": "Milwaukee",
+      "countryId": null,
+      "name": "Milwaukee",
+      "type": "port",
+      "latitude": 43.03,
+      "longitude": -87.88
+    },
+    {
+      "id": "Mina Sulman Port",
+      "countryId": null,
+      "name": "Mina Sulman Port",
+      "type": "port",
+      "latitude": 26.198611,
+      "longitude": 50.607597
+    },
+    {
+      "id": "Minatitlan",
+      "countryId": null,
+      "name": "Minatitlan",
+      "type": "port",
+      "latitude": 17.975833,
+      "longitude": -94.53457
+    },
+    {
+      "id": "Miri",
+      "countryId": null,
+      "name": "Miri",
+      "type": "port",
+      "latitude": 4.38,
+      "longitude": 113.96
+    },
+    {
+      "id": "Miyazu",
+      "countryId": null,
+      "name": "Miyazu",
+      "type": "port",
+      "latitude": 35.543333,
+      "longitude": 135.193404
+    },
+    {
+      "id": "Mo i Rana",
+      "countryId": null,
+      "name": "Mo i Rana",
+      "type": "port",
+      "latitude": 66.315,
+      "longitude": 14.123734
+    },
+    {
+      "id": "Mobile",
+      "countryId": null,
+      "name": "Mobile",
+      "type": "port",
+      "latitude": 30.711389,
+      "longitude": -88.03775
+    },
+    {
+      "id": "Mocambique",
+      "countryId": null,
+      "name": "Mocambique",
+      "type": "port",
+      "latitude": -15.03,
+      "longitude": 40.73
+    },
+    {
+      "id": "Mogadishu",
+      "countryId": null,
+      "name": "Mogadishu",
+      "type": "port",
+      "latitude": 2.028889,
+      "longitude": 45.340931
+    },
+    {
+      "id": "Moin",
+      "countryId": null,
+      "name": "Moin",
+      "type": "port",
+      "latitude": 10.005556,
+      "longitude": -83.074087
+    },
+    {
+      "id": "Molde",
+      "countryId": null,
+      "name": "Molde",
+      "type": "port",
+      "latitude": 62.736389,
+      "longitude": 7.15742
+    },
+    {
+      "id": "Molfetta",
+      "countryId": null,
+      "name": "Molfetta",
+      "type": "port",
+      "latitude": 41.208333,
+      "longitude": 16.58775
+    },
+    {
+      "id": "Mollendo",
+      "countryId": null,
+      "name": "Mollendo",
+      "type": "port",
+      "latitude": -17.031111,
+      "longitude": -72.010247
+    },
+    {
+      "id": "Mombasa",
+      "countryId": null,
+      "name": "Mombasa",
+      "type": "port",
+      "latitude": -4.053056,
+      "longitude": 39.622144
+    },
+    {
+      "id": "Monaco",
+      "countryId": null,
+      "name": "Monaco",
+      "type": "port",
+      "latitude": 43.731944,
+      "longitude": 7.420907
+    },
+    {
+      "id": "Monfalcone",
+      "countryId": null,
+      "name": "Monfalcone",
+      "type": "port",
+      "latitude": 45.788611,
+      "longitude": 13.55265
+    },
+    {
+      "id": "Mongla",
+      "countryId": null,
+      "name": "Mongla",
+      "type": "port",
+      "latitude": 22.486944,
+      "longitude": 89.585984
+    },
+    {
+      "id": "Monopoli",
+      "countryId": null,
+      "name": "Monopoli",
+      "type": "port",
+      "latitude": 40.956111,
+      "longitude": 17.300353
+    },
+    {
+      "id": "Monrovia",
+      "countryId": null,
+      "name": "Monrovia",
+      "type": "port",
+      "latitude": 6.345556,
+      "longitude": -10.793757
+    },
+    {
+      "id": "Montego Bay",
+      "countryId": null,
+      "name": "Montego Bay",
+      "type": "port",
+      "latitude": 18.4675,
+      "longitude": -77.935453
+    },
+    {
+      "id": "Monterey",
+      "countryId": null,
+      "name": "Monterey",
+      "type": "port",
+      "latitude": 36.605556,
+      "longitude": -121.888987
+    },
+    {
+      "id": "Montevideo",
+      "countryId": null,
+      "name": "Montevideo",
+      "type": "port",
+      "latitude": -34.900556,
+      "longitude": -56.20424
+    },
+    {
+      "id": "Montreal",
+      "countryId": null,
+      "name": "Montreal",
+      "type": "port",
+      "latitude": 45.543611,
+      "longitude": -73.524617
+    },
+    {
+      "id": "Montrose",
+      "countryId": null,
+      "name": "Montrose",
+      "type": "port",
+      "latitude": 56.704444,
+      "longitude": -2.467903
+    },
+    {
+      "id": "Morlaix",
+      "countryId": null,
+      "name": "Morlaix",
+      "type": "port",
+      "latitude": 48.585278,
+      "longitude": -3.834923
+    },
+    {
+      "id": "Morondava",
+      "countryId": null,
+      "name": "Morondava",
+      "type": "port",
+      "latitude": -20.288611,
+      "longitude": 44.271967
+    },
+    {
+      "id": "Moroni",
+      "countryId": null,
+      "name": "Moroni",
+      "type": "port",
+      "latitude": -11.701389,
+      "longitude": 43.243227
+    },
+    {
+      "id": "Mosjoen",
+      "countryId": null,
+      "name": "Mosjoen",
+      "type": "port",
+      "latitude": 65.851944,
+      "longitude": 13.186867
+    },
+    {
+      "id": "Moss",
+      "countryId": null,
+      "name": "Moss",
+      "type": "port",
+      "latitude": 59.432222,
+      "longitude": 10.652827
+    },
+    {
+      "id": "Mossel Bay",
+      "countryId": null,
+      "name": "Mossel Bay",
+      "type": "port",
+      "latitude": -34.375278,
+      "longitude": 21.418257
+    },
+    {
+      "id": "Mostaganem",
+      "countryId": null,
+      "name": "Mostaganem",
+      "type": "port",
+      "latitude": 35.934444,
+      "longitude": 0.07126
+    },
+    {
+      "id": "Mucuripe",
+      "countryId": null,
+      "name": "Mucuripe",
+      "type": "port",
+      "latitude": -3.7075,
+      "longitude": -38.473204
+    },
+    {
+      "id": "Mukalla",
+      "countryId": null,
+      "name": "Mukalla",
+      "type": "port",
+      "latitude": 14.522222,
+      "longitude": 49.143757
+    },
+    {
+      "id": "Murmansk",
+      "countryId": null,
+      "name": "Murmansk",
+      "type": "port",
+      "latitude": 68.9725,
+      "longitude": 33.041461
+    },
+    {
+      "id": "Muroran",
+      "countryId": null,
+      "name": "Muroran",
+      "type": "port",
+      "latitude": 42.335833,
+      "longitude": 140.954064
+    },
+    {
+      "id": "Muscat",
+      "countryId": null,
+      "name": "Muscat",
+      "type": "port",
+      "latitude": 23.606667,
+      "longitude": 58.409011
+    },
+    {
+      "id": "Muskegon",
+      "countryId": null,
+      "name": "Muskegon",
+      "type": "port",
+      "latitude": 43.23,
+      "longitude": -86.26
+    },
+    {
+      "id": "Nacala",
+      "countryId": null,
+      "name": "Nacala",
+      "type": "port",
+      "latitude": -14.541389,
+      "longitude": 40.667197
+    },
+    {
+      "id": "Nagasaki",
+      "countryId": null,
+      "name": "Nagasaki",
+      "type": "port",
+      "latitude": 32.740278,
+      "longitude": 129.859541
+    },
+    {
+      "id": "Nakhodka",
+      "countryId": null,
+      "name": "Nakhodka",
+      "type": "port",
+      "latitude": 42.804722,
+      "longitude": 132.907597
+    },
+    {
+      "id": "Nakhodka",
+      "countryId": null,
+      "name": "Nakhodka",
+      "type": "port",
+      "latitude": 42.8,
+      "longitude": 132.88616
+    },
+    {
+      "id": "Nakskov",
+      "countryId": null,
+      "name": "Nakskov",
+      "type": "port",
+      "latitude": 54.832222,
+      "longitude": 11.121084
+    },
+    {
+      "id": "Namibe",
+      "countryId": null,
+      "name": "Namibe",
+      "type": "port",
+      "latitude": -15.193611,
+      "longitude": 12.135453
+    },
+    {
+      "id": "Namsos",
+      "countryId": null,
+      "name": "Namsos",
+      "type": "port",
+      "latitude": 64.464167,
+      "longitude": 11.490047
+    },
+    {
+      "id": "Nanaimo",
+      "countryId": null,
+      "name": "Nanaimo",
+      "type": "port",
+      "latitude": 49.169444,
+      "longitude": -123.926384
+    },
+    {
+      "id": "Nanisivik",
+      "countryId": null,
+      "name": "Nanisivik",
+      "type": "port",
+      "latitude": 73.068611,
+      "longitude": -84.543051
+    },
+    {
+      "id": "Nanjing",
+      "countryId": null,
+      "name": "Nanjing",
+      "type": "port",
+      "latitude": 32.08,
+      "longitude": 118.75
+    },
+    {
+      "id": "Nanortalik",
+      "countryId": null,
+      "name": "Nanortalik",
+      "type": "port",
+      "latitude": 60.139722,
+      "longitude": -45.238104
+    },
+    {
+      "id": "Napier",
+      "countryId": null,
+      "name": "Napier",
+      "type": "port",
+      "latitude": -39.475,
+      "longitude": 176.91808
+    },
+    {
+      "id": "Narvik",
+      "countryId": null,
+      "name": "Narvik",
+      "type": "port",
+      "latitude": 68.438611,
+      "longitude": 17.41861
+    },
+    {
+      "id": "Nassau",
+      "countryId": null,
+      "name": "Nassau",
+      "type": "port",
+      "latitude": 25.076667,
+      "longitude": -77.32126
+    },
+    {
+      "id": "Natal",
+      "countryId": null,
+      "name": "Natal",
+      "type": "port",
+      "latitude": -5.783056,
+      "longitude": -35.2
+    },
+    {
+      "id": "Navegantes",
+      "countryId": null,
+      "name": "Navegantes",
+      "type": "port",
+      "latitude": -26.898889,
+      "longitude": -48.65424
+    },
+    {
+      "id": "Nawiliwili",
+      "countryId": null,
+      "name": "Nawiliwili",
+      "type": "port",
+      "latitude": 21.953889,
+      "longitude": -159.353003
+    },
+    {
+      "id": "Nelson",
+      "countryId": null,
+      "name": "Nelson",
+      "type": "port",
+      "latitude": -41.259722,
+      "longitude": 173.271967
+    },
+    {
+      "id": "New Amsterdam",
+      "countryId": null,
+      "name": "New Amsterdam",
+      "type": "port",
+      "latitude": 6.237778,
+      "longitude": -57.52179
+    },
+    {
+      "id": "New Haven",
+      "countryId": null,
+      "name": "New Haven",
+      "type": "port",
+      "latitude": 41.286389,
+      "longitude": -72.909541
+    },
+    {
+      "id": "New Orleans",
+      "countryId": null,
+      "name": "New Orleans",
+      "type": "port",
+      "latitude": 29.9342,
+      "longitude": -90.056371
+    },
+    {
+      "id": "New Plymouth",
+      "countryId": null,
+      "name": "New Plymouth",
+      "type": "port",
+      "latitude": -39.057222,
+      "longitude": 174.03775
+    },
+    {
+      "id": "New Richmond",
+      "countryId": null,
+      "name": "New Richmond",
+      "type": "port",
+      "latitude": 48.138611,
+      "longitude": -65.834923
+    },
+    {
+      "id": "New York",
+      "countryId": null,
+      "name": "New York",
+      "type": "port",
+      "latitude": 40.688333,
+      "longitude": -74.024264
+    },
+    {
+      "id": "Newark",
+      "countryId": null,
+      "name": "Newark",
+      "type": "port",
+      "latitude": 40.7,
+      "longitude": -74.13722
+    },
+    {
+      "id": "Newcastle",
+      "countryId": null,
+      "name": "Newcastle",
+      "type": "port",
+      "latitude": -32.9075,
+      "longitude": 151.76914
+    },
+    {
+      "id": "Newcastle upon Tyne",
+      "countryId": null,
+      "name": "Newcastle upon Tyne",
+      "type": "port",
+      "latitude": 54.965,
+      "longitude": -1.590931
+    },
+    {
+      "id": "Newport",
+      "countryId": null,
+      "name": "Newport",
+      "type": "port",
+      "latitude": 51.558889,
+      "longitude": -2.984747
+    },
+    {
+      "id": "Newport",
+      "countryId": null,
+      "name": "Newport",
+      "type": "port",
+      "latitude": 41.4825,
+      "longitude": -71.324441
+    },
+    {
+      "id": "Newport News",
+      "countryId": null,
+      "name": "Newport News",
+      "type": "port",
+      "latitude": 36.980556,
+      "longitude": -76.426207
+    },
+    {
+      "id": "Newport News",
+      "countryId": null,
+      "name": "Newport News",
+      "type": "port",
+      "latitude": 36.980556,
+      "longitude": -76.426207
+    },
+    {
+      "id": "Nicaro",
+      "countryId": null,
+      "name": "Nicaro",
+      "type": "port",
+      "latitude": 20.713333,
+      "longitude": -75.550883
+    },
+    {
+      "id": "Nice",
+      "countryId": null,
+      "name": "Nice",
+      "type": "port",
+      "latitude": 43.693889,
+      "longitude": 7.28563
+    },
+    {
+      "id": "Nieuw Nickerie",
+      "countryId": null,
+      "name": "Nieuw Nickerie",
+      "type": "port",
+      "latitude": 5.951667,
+      "longitude": -57.001767
+    },
+    {
+      "id": "Niigata",
+      "countryId": null,
+      "name": "Niigata",
+      "type": "port",
+      "latitude": 37.955,
+      "longitude": 139.124794
+    },
+    {
+      "id": "Niihama",
+      "countryId": null,
+      "name": "Niihama",
+      "type": "port",
+      "latitude": 33.970833,
+      "longitude": 133.259541
+    },
+    {
+      "id": "Ningbo",
+      "countryId": null,
+      "name": "Ningbo",
+      "type": "port",
+      "latitude": 29.866667,
+      "longitude": 121.553357
+    },
+    {
+      "id": "Nishinoomote",
+      "countryId": null,
+      "name": "Nishinoomote",
+      "type": "port",
+      "latitude": 30.731667,
+      "longitude": 130.98563
+    },
+    {
+      "id": "Niteroi",
+      "countryId": null,
+      "name": "Niteroi",
+      "type": "port",
+      "latitude": -22.879167,
+      "longitude": -43.124617
+    },
+    {
+      "id": "Nome",
+      "countryId": null,
+      "name": "Nome",
+      "type": "port",
+      "latitude": 64.498333,
+      "longitude": -165.425147
+    },
+    {
+      "id": "Nordenham",
+      "countryId": null,
+      "name": "Nordenham",
+      "type": "port",
+      "latitude": 53.4875,
+      "longitude": 8.489517
+    },
+    {
+      "id": "Norfolk",
+      "countryId": null,
+      "name": "Norfolk",
+      "type": "port",
+      "latitude": 36.901944,
+      "longitude": -76.292521
+    },
+    {
+      "id": "Norrkoping",
+      "countryId": null,
+      "name": "Norrkoping",
+      "type": "port",
+      "latitude": 58.610278,
+      "longitude": 16.225677
+    },
+    {
+      "id": "North Sydney",
+      "countryId": null,
+      "name": "North Sydney",
+      "type": "port",
+      "latitude": 46.208889,
+      "longitude": -60.23934
+    },
+    {
+      "id": "Nouadhibou",
+      "countryId": null,
+      "name": "Nouadhibou",
+      "type": "port",
+      "latitude": 20.9075,
+      "longitude": -17.041814
+    },
+    {
+      "id": "Nouakchott",
+      "countryId": null,
+      "name": "Nouakchott",
+      "type": "port",
+      "latitude": 18.035278,
+      "longitude": -16.021437
+    },
+    {
+      "id": "Noumea",
+      "countryId": null,
+      "name": "Noumea",
+      "type": "port",
+      "latitude": -22.259722,
+      "longitude": 166.425854
+    },
+    {
+      "id": "Novorossiysk",
+      "countryId": null,
+      "name": "Novorossiysk",
+      "type": "port",
+      "latitude": 44.715,
+      "longitude": 37.804417
+    },
+    {
+      "id": "Nueva Gerona",
+      "countryId": null,
+      "name": "Nueva Gerona",
+      "type": "port",
+      "latitude": 21.903333,
+      "longitude": -82.793227
+    },
+    {
+      "id": "Nuevitas",
+      "countryId": null,
+      "name": "Nuevitas",
+      "type": "port",
+      "latitude": 21.563056,
+      "longitude": -77.239517
+    },
+    {
+      "id": "Nunukan",
+      "countryId": null,
+      "name": "Nunukan",
+      "type": "port",
+      "latitude": 4.145556,
+      "longitude": 117.654947
+    },
+    {
+      "id": "Nyborg",
+      "countryId": null,
+      "name": "Nyborg",
+      "type": "port",
+      "latitude": 55.298889,
+      "longitude": 10.80689
+    },
+    {
+      "id": "Nyborg",
+      "countryId": null,
+      "name": "Nyborg",
+      "type": "port",
+      "latitude": 55.306944,
+      "longitude": 10.788104
+    },
+    {
+      "id": "Nykobing Falster",
+      "countryId": null,
+      "name": "Nykobing Falster",
+      "type": "port",
+      "latitude": 54.770833,
+      "longitude": 11.857067
+    },
+    {
+      "id": "Nynashamn",
+      "countryId": null,
+      "name": "Nynashamn",
+      "type": "port",
+      "latitude": 58.913333,
+      "longitude": 17.958127
+    },
+    {
+      "id": "Oakland",
+      "countryId": null,
+      "name": "Oakland",
+      "type": "port",
+      "latitude": 37.799444,
+      "longitude": -122.301237
+    },
+    {
+      "id": "Oban",
+      "countryId": null,
+      "name": "Oban",
+      "type": "port",
+      "latitude": 56.41,
+      "longitude": -5.46
+    },
+    {
+      "id": "Ocean Falls",
+      "countryId": null,
+      "name": "Ocean Falls",
+      "type": "port",
+      "latitude": 52.350833,
+      "longitude": -127.68881
+    },
+    {
+      "id": "Ocho Rios",
+      "countryId": null,
+      "name": "Ocho Rios",
+      "type": "port",
+      "latitude": 18.410278,
+      "longitude": -77.106714
+    },
+    {
+      "id": "Odense",
+      "countryId": null,
+      "name": "Odense",
+      "type": "port",
+      "latitude": 55.466389,
+      "longitude": 10.524971
+    },
+    {
+      "id": "Odense",
+      "countryId": null,
+      "name": "Odense",
+      "type": "port",
+      "latitude": 55.4175,
+      "longitude": 10.386867
+    },
+    {
+      "id": "Odessa",
+      "countryId": null,
+      "name": "Odessa",
+      "type": "port",
+      "latitude": 46.501111,
+      "longitude": 30.737044
+    },
+    {
+      "id": "Oita",
+      "countryId": null,
+      "name": "Oita",
+      "type": "port",
+      "latitude": 33.272222,
+      "longitude": 131.676031
+    },
+    {
+      "id": "Olbia",
+      "countryId": null,
+      "name": "Olbia",
+      "type": "port",
+      "latitude": 40.922778,
+      "longitude": 9.517903
+    },
+    {
+      "id": "Olympia",
+      "countryId": null,
+      "name": "Olympia",
+      "type": "port",
+      "latitude": 47.053333,
+      "longitude": -122.900707
+    },
+    {
+      "id": "Omura",
+      "countryId": null,
+      "name": "Omura",
+      "type": "port",
+      "latitude": 32.901667,
+      "longitude": 129.950353
+    },
+    {
+      "id": "Oostende (Ostend)",
+      "countryId": null,
+      "name": "Oostende (Ostend)",
+      "type": "port",
+      "latitude": 51.23,
+      "longitude": 2.933687
+    },
+    {
+      "id": "Oran",
+      "countryId": null,
+      "name": "Oran",
+      "type": "port",
+      "latitude": 35.7125,
+      "longitude": -0.63669
+    },
+    {
+      "id": "Oranjestad",
+      "countryId": null,
+      "name": "Oranjestad",
+      "type": "port",
+      "latitude": 12.52,
+      "longitude": -70.03881
+    },
+    {
+      "id": "Ornskoldsvik",
+      "countryId": null,
+      "name": "Ornskoldsvik",
+      "type": "port",
+      "latitude": 63.276111,
+      "longitude": 18.725854
+    },
+    {
+      "id": "Osaka",
+      "countryId": null,
+      "name": "Osaka",
+      "type": "port",
+      "latitude": 34.635833,
+      "longitude": 135.433863
+    },
+    {
+      "id": "Oskarshamn",
+      "countryId": null,
+      "name": "Oskarshamn",
+      "type": "port",
+      "latitude": 57.265,
+      "longitude": 16.47073
+    },
+    {
+      "id": "Oslo",
+      "countryId": null,
+      "name": "Oslo",
+      "type": "port",
+      "latitude": 59.897222,
+      "longitude": 10.73457
+    },
+    {
+      "id": "Otaru",
+      "countryId": null,
+      "name": "Otaru",
+      "type": "port",
+      "latitude": 43.196944,
+      "longitude": 141.016667
+    },
+    {
+      "id": "Ottawa",
+      "countryId": null,
+      "name": "Ottawa",
+      "type": "port",
+      "latitude": 45.43,
+      "longitude": -75.7
+    },
+    {
+      "id": "Oulu",
+      "countryId": null,
+      "name": "Oulu",
+      "type": "port",
+      "latitude": 65.015833,
+      "longitude": 25.454594
+    },
+    {
+      "id": "Owen Sound",
+      "countryId": null,
+      "name": "Owen Sound",
+      "type": "port",
+      "latitude": 44.58,
+      "longitude": -80.93
+    },
+    {
+      "id": "Owendo",
+      "countryId": null,
+      "name": "Owendo",
+      "type": "port",
+      "latitude": 0.288333,
+      "longitude": 9.500883
+    },
+    {
+      "id": "Oxelosund",
+      "countryId": null,
+      "name": "Oxelosund",
+      "type": "port",
+      "latitude": 58.661667,
+      "longitude": 17.107951
+    },
+    {
+      "id": "Pago Pago",
+      "countryId": null,
+      "name": "Pago Pago",
+      "type": "port",
+      "latitude": -14.274167,
+      "longitude": -170.687927
+    },
+    {
+      "id": "Pajaritos",
+      "countryId": null,
+      "name": "Pajaritos",
+      "type": "port",
+      "latitude": 18.1275,
+      "longitude": -94.40053
+    },
+    {
+      "id": "Palermo",
+      "countryId": null,
+      "name": "Palermo",
+      "type": "port",
+      "latitude": 38.130833,
+      "longitude": 13.369847
+    },
+    {
+      "id": "Palma de Mallorca",
+      "countryId": null,
+      "name": "Palma de Mallorca",
+      "type": "port",
+      "latitude": 39.551111,
+      "longitude": 2.625324
+    },
+    {
+      "id": "Panjang",
+      "countryId": null,
+      "name": "Panjang",
+      "type": "port",
+      "latitude": -5.460278,
+      "longitude": 105.307067
+    },
+    {
+      "id": "Pantelleria",
+      "countryId": null,
+      "name": "Pantelleria",
+      "type": "port",
+      "latitude": 36.833333,
+      "longitude": 11.937927
+    },
+    {
+      "id": "Papeete",
+      "countryId": null,
+      "name": "Papeete",
+      "type": "port",
+      "latitude": -17.531111,
+      "longitude": -149.56967
+    },
+    {
+      "id": "Papenburg",
+      "countryId": null,
+      "name": "Papenburg",
+      "type": "port",
+      "latitude": 53.096389,
+      "longitude": 7.368963
+    },
+    {
+      "id": "Paramaribo",
+      "countryId": null,
+      "name": "Paramaribo",
+      "type": "port",
+      "latitude": 5.82,
+      "longitude": -55.138987
+    },
+    {
+      "id": "Paranagua",
+      "countryId": null,
+      "name": "Paranagua",
+      "type": "port",
+      "latitude": -25.500833,
+      "longitude": -48.51914
+    },
+    {
+      "id": "Parnu",
+      "countryId": null,
+      "name": "Parnu",
+      "type": "port",
+      "latitude": 58.381111,
+      "longitude": 24.474617
+    },
+    {
+      "id": "Paros",
+      "countryId": null,
+      "name": "Paros",
+      "type": "port",
+      "latitude": 37.087778,
+      "longitude": 25.150707
+    },
+    {
+      "id": "Pasajes",
+      "countryId": null,
+      "name": "Pasajes",
+      "type": "port",
+      "latitude": 43.323333,
+      "longitude": -1.918787
+    },
+    {
+      "id": "Pascagoula",
+      "countryId": null,
+      "name": "Pascagoula",
+      "type": "port",
+      "latitude": 30.351389,
+      "longitude": -88.53722
+    },
+    {
+      "id": "Patras",
+      "countryId": null,
+      "name": "Patras",
+      "type": "port",
+      "latitude": 38.254444,
+      "longitude": 21.734923
+    },
+    {
+      "id": "Pedregal",
+      "countryId": null,
+      "name": "Pedregal",
+      "type": "port",
+      "latitude": 8.365,
+      "longitude": -82.43457
+    },
+    {
+      "id": "Pelabuhan Sandakan",
+      "countryId": null,
+      "name": "Pelabuhan Sandakan",
+      "type": "port",
+      "latitude": 5.83,
+      "longitude": 118.11
+    },
+    {
+      "id": "Pelotas",
+      "countryId": null,
+      "name": "Pelotas",
+      "type": "port",
+      "latitude": -31.781944,
+      "longitude": -52.323734
+    },
+    {
+      "id": "Pemba",
+      "countryId": null,
+      "name": "Pemba",
+      "type": "port",
+      "latitude": -12.966667,
+      "longitude": 40.484923
+    },
+    {
+      "id": "Perth",
+      "countryId": null,
+      "name": "Perth",
+      "type": "port",
+      "latitude": -31.965278,
+      "longitude": 115.855477
+    },
+    {
+      "id": "Pesaro",
+      "countryId": null,
+      "name": "Pesaro",
+      "type": "port",
+      "latitude": 43.920833,
+      "longitude": 12.902473
+    },
+    {
+      "id": "Pescara",
+      "countryId": null,
+      "name": "Pescara",
+      "type": "port",
+      "latitude": 42.467778,
+      "longitude": 14.223734
+    },
+    {
+      "id": "Petersburg",
+      "countryId": null,
+      "name": "Petersburg",
+      "type": "port",
+      "latitude": 56.81,
+      "longitude": -132.95
+    },
+    {
+      "id": "Petropavlovsk",
+      "countryId": null,
+      "name": "Petropavlovsk",
+      "type": "port",
+      "latitude": 53.05,
+      "longitude": 158.65
+    },
+    {
+      "id": "Pevek",
+      "countryId": null,
+      "name": "Pevek",
+      "type": "port",
+      "latitude": 69.701667,
+      "longitude": 170.277091
+    },
+    {
+      "id": "Philadelphia",
+      "countryId": null,
+      "name": "Philadelphia",
+      "type": "port",
+      "latitude": 39.895278,
+      "longitude": -75.13457
+    },
+    {
+      "id": "Philipsburg",
+      "countryId": null,
+      "name": "Philipsburg",
+      "type": "port",
+      "latitude": 18.014444,
+      "longitude": -63.043757
+    },
+    {
+      "id": "Phnom Penh",
+      "countryId": null,
+      "name": "Phnom Penh",
+      "type": "port",
+      "latitude": 11.583056,
+      "longitude": 104.920907
+    },
+    {
+      "id": "Phuket",
+      "countryId": null,
+      "name": "Phuket",
+      "type": "port",
+      "latitude": 7.83,
+      "longitude": 98.4
+    },
+    {
+      "id": "Picton",
+      "countryId": null,
+      "name": "Picton",
+      "type": "port",
+      "latitude": -41.285556,
+      "longitude": 174.004417
+    },
+    {
+      "id": "Pictou",
+      "countryId": null,
+      "name": "Pictou",
+      "type": "port",
+      "latitude": 45.674722,
+      "longitude": -62.704417
+    },
+    {
+      "id": "Piraeus",
+      "countryId": null,
+      "name": "Piraeus",
+      "type": "port",
+      "latitude": 37.937222,
+      "longitude": 23.656537
+    },
+    {
+      "id": "Piraeus",
+      "countryId": null,
+      "name": "Piraeus",
+      "type": "port",
+      "latitude": 37.941111,
+      "longitude": 23.633687
+    },
+    {
+      "id": "Piraeus",
+      "countryId": null,
+      "name": "Piraeus",
+      "type": "port",
+      "latitude": 37.934444,
+      "longitude": 23.643051
+    },
+    {
+      "id": "Pisco",
+      "countryId": null,
+      "name": "Pisco",
+      "type": "port",
+      "latitude": -13.733056,
+      "longitude": -76.221967
+    },
+    {
+      "id": "Pitea",
+      "countryId": null,
+      "name": "Pitea",
+      "type": "port",
+      "latitude": 65.308889,
+      "longitude": 21.470377
+    },
+    {
+      "id": "Playa del Carmen",
+      "countryId": null,
+      "name": "Playa del Carmen",
+      "type": "port",
+      "latitude": 20.624444,
+      "longitude": -87.067727
+    },
+    {
+      "id": "Plymouth",
+      "countryId": null,
+      "name": "Plymouth",
+      "type": "port",
+      "latitude": 50.364722,
+      "longitude": -4.154064
+    },
+    {
+      "id": "Plymouth",
+      "countryId": null,
+      "name": "Plymouth",
+      "type": "port",
+      "latitude": 16.703333,
+      "longitude": -62.219847
+    },
+    {
+      "id": "Pohang",
+      "countryId": null,
+      "name": "Pohang",
+      "type": "port",
+      "latitude": 36.019722,
+      "longitude": 129.402827
+    },
+    {
+      "id": "Point Lisas",
+      "countryId": null,
+      "name": "Point Lisas",
+      "type": "port",
+      "latitude": 10.388333,
+      "longitude": -61.489517
+    },
+    {
+      "id": "Pointe Noire",
+      "countryId": null,
+      "name": "Pointe Noire",
+      "type": "port",
+      "latitude": -4.784444,
+      "longitude": 11.826914
+    },
+    {
+      "id": "Pointe-a-Pitre",
+      "countryId": null,
+      "name": "Pointe-a-Pitre",
+      "type": "port",
+      "latitude": 16.233889,
+      "longitude": -61.538457
+    },
+    {
+      "id": "Ponce",
+      "countryId": null,
+      "name": "Ponce",
+      "type": "port",
+      "latitude": 17.968056,
+      "longitude": -66.610247
+    },
+    {
+      "id": "Pondicherry",
+      "countryId": null,
+      "name": "Pondicherry",
+      "type": "port",
+      "latitude": 11.914167,
+      "longitude": 79.82232
+    },
+    {
+      "id": "Ponta Delgada",
+      "countryId": null,
+      "name": "Ponta Delgada",
+      "type": "port",
+      "latitude": 37.736944,
+      "longitude": -25.658834
+    },
+    {
+      "id": "Poole",
+      "countryId": null,
+      "name": "Poole",
+      "type": "port",
+      "latitude": 50.714444,
+      "longitude": -1.986514
+    },
+    {
+      "id": "Porbandar",
+      "countryId": null,
+      "name": "Porbandar",
+      "type": "port",
+      "latitude": 21.639444,
+      "longitude": 69.587397
+    },
+    {
+      "id": "Port Alberni",
+      "countryId": null,
+      "name": "Port Alberni",
+      "type": "port",
+      "latitude": 49.23,
+      "longitude": -124.819317
+    },
+    {
+      "id": "Port Angeles",
+      "countryId": null,
+      "name": "Port Angeles",
+      "type": "port",
+      "latitude": 48.130833,
+      "longitude": -123.4351
+    },
+    {
+      "id": "Port Antonio",
+      "countryId": null,
+      "name": "Port Antonio",
+      "type": "port",
+      "latitude": 18.181111,
+      "longitude": -76.451767
+    },
+    {
+      "id": "Port Arthur",
+      "countryId": null,
+      "name": "Port Arthur",
+      "type": "port",
+      "latitude": 29.843056,
+      "longitude": -93.957067
+    },
+    {
+      "id": "Port Arthur",
+      "countryId": null,
+      "name": "Port Arthur",
+      "type": "port",
+      "latitude": 29.843056,
+      "longitude": -93.957067
+    },
+    {
+      "id": "Port Augusta",
+      "countryId": null,
+      "name": "Port Augusta",
+      "type": "port",
+      "latitude": -32.488611,
+      "longitude": 137.756714
+    },
+    {
+      "id": "Port Blair",
+      "countryId": null,
+      "name": "Port Blair",
+      "type": "port",
+      "latitude": 11.672222,
+      "longitude": 92.72391
+    },
+    {
+      "id": "Port Dickson",
+      "countryId": null,
+      "name": "Port Dickson",
+      "type": "port",
+      "latitude": 2.536111,
+      "longitude": 101.788634
+    },
+    {
+      "id": "Port Elizabeth",
+      "countryId": null,
+      "name": "Port Elizabeth",
+      "type": "port",
+      "latitude": -33.961389,
+      "longitude": 25.635277
+    },
+    {
+      "id": "Port Elizabeth",
+      "countryId": null,
+      "name": "Port Elizabeth",
+      "type": "port",
+      "latitude": -33.961389,
+      "longitude": 25.635277
+    },
+    {
+      "id": "Port Everglades",
+      "countryId": null,
+      "name": "Port Everglades",
+      "type": "port",
+      "latitude": 26.084444,
+      "longitude": -80.108657
+    },
+    {
+      "id": "Port Everglades",
+      "countryId": null,
+      "name": "Port Everglades",
+      "type": "port",
+      "latitude": 26.084444,
+      "longitude": -80.108657
+    },
+    {
+      "id": "Port Gentil",
+      "countryId": null,
+      "name": "Port Gentil",
+      "type": "port",
+      "latitude": -0.711944,
+      "longitude": 8.785277
+    },
+    {
+      "id": "Port Harcourt",
+      "countryId": null,
+      "name": "Port Harcourt",
+      "type": "port",
+      "latitude": 4.769167,
+      "longitude": 7.00318
+    },
+    {
+      "id": "Port Hardy",
+      "countryId": null,
+      "name": "Port Hardy",
+      "type": "port",
+      "latitude": 50.721111,
+      "longitude": -127.483687
+    },
+    {
+      "id": "Port Hawkesbury",
+      "countryId": null,
+      "name": "Port Hawkesbury",
+      "type": "port",
+      "latitude": 45.61,
+      "longitude": -61.355654
+    },
+    {
+      "id": "Port Hedland",
+      "countryId": null,
+      "name": "Port Hedland",
+      "type": "port",
+      "latitude": -20.3175,
+      "longitude": 118.573204
+    },
+    {
+      "id": "Port Kembla",
+      "countryId": null,
+      "name": "Port Kembla",
+      "type": "port",
+      "latitude": -34.4625,
+      "longitude": 150.893581
+    },
+    {
+      "id": "Port Lincoln",
+      "countryId": null,
+      "name": "Port Lincoln",
+      "type": "port",
+      "latitude": -34.718333,
+      "longitude": 135.869494
+    },
+    {
+      "id": "Port Louis",
+      "countryId": null,
+      "name": "Port Louis",
+      "type": "port",
+      "latitude": -20.148056,
+      "longitude": 57.48987
+    },
+    {
+      "id": "Port Moresby",
+      "countryId": null,
+      "name": "Port Moresby",
+      "type": "port",
+      "latitude": -9.467222,
+      "longitude": 147.15106
+    },
+    {
+      "id": "Port Of Memphis",
+      "countryId": null,
+      "name": "Port Of Memphis",
+      "type": "port",
+      "latitude": 35.06,
+      "longitude": -90.16
+    },
+    {
+      "id": "Port Pirie",
+      "countryId": null,
+      "name": "Port Pirie",
+      "type": "port",
+      "latitude": -33.176944,
+      "longitude": 138.007244
+    },
+    {
+      "id": "Port Said",
+      "countryId": null,
+      "name": "Port Said",
+      "type": "port",
+      "latitude": 31.253333,
+      "longitude": 32.306007
+    },
+    {
+      "id": "Port Sudan",
+      "countryId": null,
+      "name": "Port Sudan",
+      "type": "port",
+      "latitude": 19.615833,
+      "longitude": 37.221614
+    },
+    {
+      "id": "Port Townsend",
+      "countryId": null,
+      "name": "Port Townsend",
+      "type": "port",
+      "latitude": 48.114444,
+      "longitude": -122.75318
+    },
+    {
+      "id": "Port Vila",
+      "countryId": null,
+      "name": "Port Vila",
+      "type": "port",
+      "latitude": -17.747222,
+      "longitude": 168.30583
+    },
+    {
+      "id": "Port-au-Prince",
+      "countryId": null,
+      "name": "Port-au-Prince",
+      "type": "port",
+      "latitude": 18.565833,
+      "longitude": -72.339694
+    },
+    {
+      "id": "Portland",
+      "countryId": null,
+      "name": "Portland",
+      "type": "port",
+      "latitude": 45.605833,
+      "longitude": -122.783687
+    },
+    {
+      "id": "Portland",
+      "countryId": null,
+      "name": "Portland",
+      "type": "port",
+      "latitude": -38.349167,
+      "longitude": 141.609364
+    },
+    {
+      "id": "Portland",
+      "countryId": null,
+      "name": "Portland",
+      "type": "port",
+      "latitude": 43.653333,
+      "longitude": -70.239517
+    },
+    {
+      "id": "Portmahomack Harbor",
+      "countryId": null,
+      "name": "Portmahomack Harbor",
+      "type": "port",
+      "latitude": 57.83,
+      "longitude": -3.83
+    },
+    {
+      "id": "Porto",
+      "countryId": null,
+      "name": "Porto",
+      "type": "port",
+      "latitude": 41.141111,
+      "longitude": -8.61861
+    },
+    {
+      "id": "Porto Alegre",
+      "countryId": null,
+      "name": "Porto Alegre",
+      "type": "port",
+      "latitude": -30.0175,
+      "longitude": -51.224087
+    },
+    {
+      "id": "Porto Torres",
+      "countryId": null,
+      "name": "Porto Torres",
+      "type": "port",
+      "latitude": 40.843611,
+      "longitude": 8.392167
+    },
+    {
+      "id": "Portsmouth",
+      "countryId": null,
+      "name": "Portsmouth",
+      "type": "port",
+      "latitude": 36.816667,
+      "longitude": -76.28828
+    },
+    {
+      "id": "Portsmouth",
+      "countryId": null,
+      "name": "Portsmouth",
+      "type": "port",
+      "latitude": 50.8075,
+      "longitude": -1.1
+    },
+    {
+      "id": "Portsmouth",
+      "countryId": null,
+      "name": "Portsmouth",
+      "type": "port",
+      "latitude": 43.0875,
+      "longitude": -70.76861
+    },
+    {
+      "id": "Poti",
+      "countryId": null,
+      "name": "Poti",
+      "type": "port",
+      "latitude": 42.155,
+      "longitude": 41.652827
+    },
+    {
+      "id": "Powell River",
+      "countryId": null,
+      "name": "Powell River",
+      "type": "port",
+      "latitude": 49.835,
+      "longitude": -124.524794
+    },
+    {
+      "id": "Praia",
+      "countryId": null,
+      "name": "Praia",
+      "type": "port",
+      "latitude": 14.944722,
+      "longitude": -23.50318
+    },
+    {
+      "id": "Prince Rupert",
+      "countryId": null,
+      "name": "Prince Rupert",
+      "type": "port",
+      "latitude": 54.309722,
+      "longitude": -130.337044
+    },
+    {
+      "id": "Progreso",
+      "countryId": null,
+      "name": "Progreso",
+      "type": "port",
+      "latitude": 21.313611,
+      "longitude": -89.670554
+    },
+    {
+      "id": "Propriano",
+      "countryId": null,
+      "name": "Propriano",
+      "type": "port",
+      "latitude": 41.676944,
+      "longitude": 8.900353
+    },
+    {
+      "id": "Providenciales",
+      "countryId": null,
+      "name": "Providenciales",
+      "type": "port",
+      "latitude": 21.762778,
+      "longitude": -72.256007
+    },
+    {
+      "id": "Puerto Barrios",
+      "countryId": null,
+      "name": "Puerto Barrios",
+      "type": "port",
+      "latitude": 15.728333,
+      "longitude": -88.604064
+    },
+    {
+      "id": "Puerto Belgrano/Bahia Blanca",
+      "countryId": null,
+      "name": "Puerto Belgrano/Bahia Blanca",
+      "type": "port",
+      "latitude": -38.894444,
+      "longitude": -62.100883
+    },
+    {
+      "id": "Puerto Cabello",
+      "countryId": null,
+      "name": "Puerto Cabello",
+      "type": "port",
+      "latitude": 10.477222,
+      "longitude": -67.993051
+    },
+    {
+      "id": "Puerto Cortes",
+      "countryId": null,
+      "name": "Puerto Cortes",
+      "type": "port",
+      "latitude": 15.833333,
+      "longitude": -87.940224
+    },
+    {
+      "id": "Puerto Deseado",
+      "countryId": null,
+      "name": "Puerto Deseado",
+      "type": "port",
+      "latitude": -47.755556,
+      "longitude": -65.904064
+    },
+    {
+      "id": "Puerto Galvan/Bahia Blanca",
+      "countryId": null,
+      "name": "Puerto Galvan/Bahia Blanca",
+      "type": "port",
+      "latitude": -38.783056,
+      "longitude": -62.30053
+    },
+    {
+      "id": "Puerto Madryn",
+      "countryId": null,
+      "name": "Puerto Madryn",
+      "type": "port",
+      "latitude": -42.736111,
+      "longitude": -65.033333
+    },
+    {
+      "id": "Puerto Montt",
+      "countryId": null,
+      "name": "Puerto Montt",
+      "type": "port",
+      "latitude": -41.483611,
+      "longitude": -72.954417
+    },
+    {
+      "id": "Puerto Natales",
+      "countryId": null,
+      "name": "Puerto Natales",
+      "type": "port",
+      "latitude": -51.731111,
+      "longitude": -72.509364
+    },
+    {
+      "id": "Puerto Penasco",
+      "countryId": null,
+      "name": "Puerto Penasco",
+      "type": "port",
+      "latitude": 31.306111,
+      "longitude": -113.542344
+    },
+    {
+      "id": "Puerto Plata",
+      "countryId": null,
+      "name": "Puerto Plata",
+      "type": "port",
+      "latitude": 19.803611,
+      "longitude": -70.70053
+    },
+    {
+      "id": "Puerto Vallarta",
+      "countryId": null,
+      "name": "Puerto Vallarta",
+      "type": "port",
+      "latitude": 20.659167,
+      "longitude": -105.240931
+    },
+    {
+      "id": "Pula",
+      "countryId": null,
+      "name": "Pula",
+      "type": "port",
+      "latitude": 44.871667,
+      "longitude": 13.834747
+    },
+    {
+      "id": "Pulau Pinang",
+      "countryId": null,
+      "name": "Pulau Pinang",
+      "type": "port",
+      "latitude": 5.41,
+      "longitude": 100.35
+    },
+    {
+      "id": "Punta Arenas",
+      "countryId": null,
+      "name": "Punta Arenas",
+      "type": "port",
+      "latitude": -53.168333,
+      "longitude": -70.90477
+    },
+    {
+      "id": "Puntarenas",
+      "countryId": null,
+      "name": "Puntarenas",
+      "type": "port",
+      "latitude": 9.981667,
+      "longitude": -84.80424
+    },
+    {
+      "id": "Qaanaaq",
+      "countryId": null,
+      "name": "Qaanaaq",
+      "type": "port",
+      "latitude": 77.466944,
+      "longitude": -69.2351
+    },
+    {
+      "id": "Qalhat",
+      "countryId": null,
+      "name": "Qalhat",
+      "type": "port",
+      "latitude": 22.656667,
+      "longitude": 59.420554
+    },
+    {
+      "id": "Qingdao",
+      "countryId": null,
+      "name": "Qingdao",
+      "type": "port",
+      "latitude": 36.095833,
+      "longitude": 120.31702
+    },
+    {
+      "id": "Qinhuangdao",
+      "countryId": null,
+      "name": "Qinhuangdao",
+      "type": "port",
+      "latitude": 39.906667,
+      "longitude": 119.585983
+    },
+    {
+      "id": "Quebec",
+      "countryId": null,
+      "name": "Quebec",
+      "type": "port",
+      "latitude": 46.805833,
+      "longitude": -71.209011
+    },
+    {
+      "id": "Quelimane",
+      "countryId": null,
+      "name": "Quelimane",
+      "type": "port",
+      "latitude": -17.881667,
+      "longitude": 36.877091
+    },
+    {
+      "id": "Quimper",
+      "countryId": null,
+      "name": "Quimper",
+      "type": "port",
+      "latitude": 47.989444,
+      "longitude": -4.108127
+    },
+    {
+      "id": "Quincy",
+      "countryId": null,
+      "name": "Quincy",
+      "type": "port",
+      "latitude": 42.241389,
+      "longitude": -70.968963
+    },
+    {
+      "id": "Rabaul",
+      "countryId": null,
+      "name": "Rabaul",
+      "type": "port",
+      "latitude": -4.241111,
+      "longitude": 152.1851
+    },
+    {
+      "id": "Racine",
+      "countryId": null,
+      "name": "Racine",
+      "type": "port",
+      "latitude": 42.73,
+      "longitude": -87.78
+    },
+    {
+      "id": "Randers",
+      "countryId": null,
+      "name": "Randers",
+      "type": "port",
+      "latitude": 56.460278,
+      "longitude": 10.05265
+    },
+    {
+      "id": "Ras al Khafji",
+      "countryId": null,
+      "name": "Ras al Khafji",
+      "type": "port",
+      "latitude": 28.415,
+      "longitude": 48.522497
+    },
+    {
+      "id": "Ratnagiri",
+      "countryId": null,
+      "name": "Ratnagiri",
+      "type": "port",
+      "latitude": 17.001944,
+      "longitude": 73.27179
+    },
+    {
+      "id": "Raufarhofn",
+      "countryId": null,
+      "name": "Raufarhofn",
+      "type": "port",
+      "latitude": 66.456389,
+      "longitude": -15.941461
+    },
+    {
+      "id": "Ravenna",
+      "countryId": null,
+      "name": "Ravenna",
+      "type": "port",
+      "latitude": 44.462222,
+      "longitude": 12.250353
+    },
+    {
+      "id": "Recife",
+      "countryId": null,
+      "name": "Recife",
+      "type": "port",
+      "latitude": -8.053611,
+      "longitude": -34.868963
+    },
+    {
+      "id": "Reggio Calabria",
+      "countryId": null,
+      "name": "Reggio Calabria",
+      "type": "port",
+      "latitude": 38.124444,
+      "longitude": 15.643757
+    },
+    {
+      "id": "Reykjavik",
+      "countryId": null,
+      "name": "Reykjavik",
+      "type": "port",
+      "latitude": 64.148333,
+      "longitude": -21.837927
+    },
+    {
+      "id": "Rhodes",
+      "countryId": null,
+      "name": "Rhodes",
+      "type": "port",
+      "latitude": 36.443611,
+      "longitude": 28.23351
+    },
+    {
+      "id": "Richards Bay",
+      "countryId": null,
+      "name": "Richards Bay",
+      "type": "port",
+      "latitude": -28.804722,
+      "longitude": 32.056184
+    },
+    {
+      "id": "Richmond",
+      "countryId": null,
+      "name": "Richmond",
+      "type": "port",
+      "latitude": 37.913889,
+      "longitude": -122.359011
+    },
+    {
+      "id": "Riga",
+      "countryId": null,
+      "name": "Riga",
+      "type": "port",
+      "latitude": 57.007778,
+      "longitude": 24.088104
+    },
+    {
+      "id": "Rijeka",
+      "countryId": null,
+      "name": "Rijeka",
+      "type": "port",
+      "latitude": 45.3275,
+      "longitude": 14.42232
+    },
+    {
+      "id": "Rimouski",
+      "countryId": null,
+      "name": "Rimouski",
+      "type": "port",
+      "latitude": 48.477778,
+      "longitude": -68.508127
+    },
+    {
+      "id": "Rio de Janeiro",
+      "countryId": null,
+      "name": "Rio de Janeiro",
+      "type": "port",
+      "latitude": -22.883056,
+      "longitude": -43.191814
+    },
+    {
+      "id": "Rio Gallegos",
+      "countryId": null,
+      "name": "Rio Gallegos",
+      "type": "port",
+      "latitude": -51.611667,
+      "longitude": -69.218257
+    },
+    {
+      "id": "Rio Grande",
+      "countryId": null,
+      "name": "Rio Grande",
+      "type": "port",
+      "latitude": -53.794444,
+      "longitude": -67.702473
+    },
+    {
+      "id": "Rio Grande",
+      "countryId": null,
+      "name": "Rio Grande",
+      "type": "port",
+      "latitude": -32.056111,
+      "longitude": -52.076207
+    },
+    {
+      "id": "Rio Haina",
+      "countryId": null,
+      "name": "Rio Haina",
+      "type": "port",
+      "latitude": 18.420278,
+      "longitude": -70.01808
+    },
+    {
+      "id": "Riviere-du-Loup",
+      "countryId": null,
+      "name": "Riviere-du-Loup",
+      "type": "port",
+      "latitude": 47.846667,
+      "longitude": -69.56808
+    },
+    {
+      "id": "Rochefort",
+      "countryId": null,
+      "name": "Rochefort",
+      "type": "port",
+      "latitude": 45.949167,
+      "longitude": -0.953004
+    },
+    {
+      "id": "Rochester",
+      "countryId": null,
+      "name": "Rochester",
+      "type": "port",
+      "latitude": 51.434722,
+      "longitude": 0.685807
+    },
+    {
+      "id": "Rockhampton",
+      "countryId": null,
+      "name": "Rockhampton",
+      "type": "port",
+      "latitude": -23.851111,
+      "longitude": 151.284217
+    },
+    {
+      "id": "Rockland",
+      "countryId": null,
+      "name": "Rockland",
+      "type": "port",
+      "latitude": 44.103056,
+      "longitude": -69.10212
+    },
+    {
+      "id": "Ronne",
+      "countryId": null,
+      "name": "Ronne",
+      "type": "port",
+      "latitude": 55.096111,
+      "longitude": 14.68775
+    },
+    {
+      "id": "Ronneby",
+      "countryId": null,
+      "name": "Ronneby",
+      "type": "port",
+      "latitude": 56.174722,
+      "longitude": 15.3
+    },
+    {
+      "id": "Rorvik",
+      "countryId": null,
+      "name": "Rorvik",
+      "type": "port",
+      "latitude": 64.860556,
+      "longitude": 11.226914
+    },
+    {
+      "id": "Roseau",
+      "countryId": null,
+      "name": "Roseau",
+      "type": "port",
+      "latitude": 15.296389,
+      "longitude": -61.385984
+    },
+    {
+      "id": "Rostock",
+      "countryId": null,
+      "name": "Rostock",
+      "type": "port",
+      "latitude": 54.1525,
+      "longitude": 12.117903
+    },
+    {
+      "id": "Rostov-Na-Donu",
+      "countryId": null,
+      "name": "Rostov-Na-Donu",
+      "type": "port",
+      "latitude": 47.16,
+      "longitude": 39.71
+    },
+    {
+      "id": "Rota",
+      "countryId": null,
+      "name": "Rota",
+      "type": "port",
+      "latitude": 36.619444,
+      "longitude": -6.33457
+    },
+    {
+      "id": "Rotterdam",
+      "countryId": null,
+      "name": "Rotterdam",
+      "type": "port",
+      "latitude": 51.927222,
+      "longitude": 4.292874
+    },
+    {
+      "id": "Rouge River",
+      "countryId": null,
+      "name": "Rouge River",
+      "type": "port",
+      "latitude": 42.28,
+      "longitude": -83.11
+    },
+    {
+      "id": "Rovinj",
+      "countryId": null,
+      "name": "Rovinj",
+      "type": "port",
+      "latitude": 45.080556,
+      "longitude": 13.634923
+    },
+    {
+      "id": "Rudkobing",
+      "countryId": null,
+      "name": "Rudkobing",
+      "type": "port",
+      "latitude": 54.939722,
+      "longitude": 10.704947
+    },
+    {
+      "id": "Sacramento",
+      "countryId": null,
+      "name": "Sacramento",
+      "type": "port",
+      "latitude": 38.58,
+      "longitude": -121.5
+    },
+    {
+      "id": "Safaga",
+      "countryId": null,
+      "name": "Safaga",
+      "type": "port",
+      "latitude": 26.742222,
+      "longitude": 33.941284
+    },
+    {
+      "id": "Safi",
+      "countryId": null,
+      "name": "Safi",
+      "type": "port",
+      "latitude": 32.3075,
+      "longitude": -9.242697
+    },
+    {
+      "id": "Saganoseki",
+      "countryId": null,
+      "name": "Saganoseki",
+      "type": "port",
+      "latitude": 33.251389,
+      "longitude": 131.869317
+    },
+    {
+      "id": "Saginaw",
+      "countryId": null,
+      "name": "Saginaw",
+      "type": "port",
+      "latitude": 43.43,
+      "longitude": -83.93
+    },
+    {
+      "id": "Saint George",
+      "countryId": null,
+      "name": "Saint George",
+      "type": "port",
+      "latitude": 32.379444,
+      "longitude": -64.673027
+    },
+    {
+      "id": "Saint George's",
+      "countryId": null,
+      "name": "Saint George's",
+      "type": "port",
+      "latitude": 12.047222,
+      "longitude": -61.75053
+    },
+    {
+      "id": "Saint John's",
+      "countryId": null,
+      "name": "Saint John's",
+      "type": "port",
+      "latitude": 17.122778,
+      "longitude": -61.852297
+    },
+    {
+      "id": "Saint-Anthony",
+      "countryId": null,
+      "name": "Saint-Anthony",
+      "type": "port",
+      "latitude": 51.366667,
+      "longitude": -55.577091
+    },
+    {
+      "id": "Saint-John",
+      "countryId": null,
+      "name": "Saint-John",
+      "type": "port",
+      "latitude": 45.267778,
+      "longitude": -66.059894
+    },
+    {
+      "id": "Saint-John's",
+      "countryId": null,
+      "name": "Saint-John's",
+      "type": "port",
+      "latitude": 47.5625,
+      "longitude": -52.692344
+    },
+    {
+      "id": "Saint-Malo",
+      "countryId": null,
+      "name": "Saint-Malo",
+      "type": "port",
+      "latitude": 48.644444,
+      "longitude": -2.02285
+    },
+    {
+      "id": "Saint-Tropez",
+      "countryId": null,
+      "name": "Saint-Tropez",
+      "type": "port",
+      "latitude": 43.270556,
+      "longitude": 6.633333
+    },
+    {
+      "id": "Saipan",
+      "countryId": null,
+      "name": "Saipan",
+      "type": "port",
+      "latitude": 15.225833,
+      "longitude": 145.734923
+    },
+    {
+      "id": "Sakata",
+      "countryId": null,
+      "name": "Sakata",
+      "type": "port",
+      "latitude": 38.939444,
+      "longitude": 139.803534
+    },
+    {
+      "id": "Salalah",
+      "countryId": null,
+      "name": "Salalah",
+      "type": "port",
+      "latitude": 16.941667,
+      "longitude": 54.00318
+    },
+    {
+      "id": "Salina Cruz",
+      "countryId": null,
+      "name": "Salina Cruz",
+      "type": "port",
+      "latitude": 16.157222,
+      "longitude": -95.201943
+    },
+    {
+      "id": "Salvador",
+      "countryId": null,
+      "name": "Salvador",
+      "type": "port",
+      "latitude": -12.958611,
+      "longitude": -38.50477
+    },
+    {
+      "id": "Samcheok",
+      "countryId": null,
+      "name": "Samcheok",
+      "type": "port",
+      "latitude": 37.433611,
+      "longitude": 129.18828
+    },
+    {
+      "id": "Samos",
+      "countryId": null,
+      "name": "Samos",
+      "type": "port",
+      "latitude": 37.754444,
+      "longitude": 26.966667
+    },
+    {
+      "id": "Samsun",
+      "countryId": null,
+      "name": "Samsun",
+      "type": "port",
+      "latitude": 41.299722,
+      "longitude": 36.3404
+    },
+    {
+      "id": "San Antonio",
+      "countryId": null,
+      "name": "San Antonio",
+      "type": "port",
+      "latitude": -33.5875,
+      "longitude": -71.61808
+    },
+    {
+      "id": "San Diego",
+      "countryId": null,
+      "name": "San Diego",
+      "type": "port",
+      "latitude": 32.684444,
+      "longitude": -117.157244
+    },
+    {
+      "id": "San Francisco",
+      "countryId": null,
+      "name": "San Francisco",
+      "type": "port",
+      "latitude": 37.788611,
+      "longitude": -122.400883
+    },
+    {
+      "id": "San Jose",
+      "countryId": null,
+      "name": "San Jose",
+      "type": "port",
+      "latitude": 13.915556,
+      "longitude": -90.841284
+    },
+    {
+      "id": "San Juan",
+      "countryId": null,
+      "name": "San Juan",
+      "type": "port",
+      "latitude": 18.436111,
+      "longitude": -66.091284
+    },
+    {
+      "id": "San Julian",
+      "countryId": null,
+      "name": "San Julian",
+      "type": "port",
+      "latitude": -49.299722,
+      "longitude": -67.718963
+    },
+    {
+      "id": "San Sebastian",
+      "countryId": null,
+      "name": "San Sebastian",
+      "type": "port",
+      "latitude": 43.322778,
+      "longitude": -1.986867
+    },
+    {
+      "id": "San Sebastian de la Gomera",
+      "countryId": null,
+      "name": "San Sebastian de la Gomera",
+      "type": "port",
+      "latitude": 28.088056,
+      "longitude": -17.105124
+    },
+    {
+      "id": "San-Pedro",
+      "countryId": null,
+      "name": "San-Pedro",
+      "type": "port",
+      "latitude": 4.743056,
+      "longitude": -6.61702
+    },
+    {
+      "id": "Sandefjord",
+      "countryId": null,
+      "name": "Sandefjord",
+      "type": "port",
+      "latitude": 59.123611,
+      "longitude": 10.224971
+    },
+    {
+      "id": "Sandnessjoen",
+      "countryId": null,
+      "name": "Sandnessjoen",
+      "type": "port",
+      "latitude": 66.021667,
+      "longitude": 12.618787
+    },
+    {
+      "id": "Sandspit",
+      "countryId": null,
+      "name": "Sandspit",
+      "type": "port",
+      "latitude": 53.255278,
+      "longitude": -131.81967
+    },
+    {
+      "id": "Sankt-Peterburg",
+      "countryId": null,
+      "name": "Sankt-Peterburg",
+      "type": "port",
+      "latitude": 59.93,
+      "longitude": 30.3
+    },
+    {
+      "id": "Santa Cruz",
+      "countryId": null,
+      "name": "Santa Cruz",
+      "type": "port",
+      "latitude": 36.966389,
+      "longitude": -122.001413
+    },
+    {
+      "id": "Santa Cruz de La Palma",
+      "countryId": null,
+      "name": "Santa Cruz de La Palma",
+      "type": "port",
+      "latitude": 28.675833,
+      "longitude": -17.766667
+    },
+    {
+      "id": "Santa Cruz de Tenerife",
+      "countryId": null,
+      "name": "Santa Cruz de Tenerife",
+      "type": "port",
+      "latitude": 28.474722,
+      "longitude": -16.226561
+    },
+    {
+      "id": "Santa Marta",
+      "countryId": null,
+      "name": "Santa Marta",
+      "type": "port",
+      "latitude": 11.251944,
+      "longitude": -74.21702
+    },
+    {
+      "id": "Santa Rosalia",
+      "countryId": null,
+      "name": "Santa Rosalia",
+      "type": "port",
+      "latitude": 27.339167,
+      "longitude": -112.258481
+    },
+    {
+      "id": "Santander",
+      "countryId": null,
+      "name": "Santander",
+      "type": "port",
+      "latitude": 43.442222,
+      "longitude": -3.804947
+    },
+    {
+      "id": "Santiago de Cuba",
+      "countryId": null,
+      "name": "Santiago de Cuba",
+      "type": "port",
+      "latitude": 20.001667,
+      "longitude": -75.856714
+    },
+    {
+      "id": "Santo Domingo",
+      "countryId": null,
+      "name": "Santo Domingo",
+      "type": "port",
+      "latitude": 18.475278,
+      "longitude": -69.875854
+    },
+    {
+      "id": "Santos",
+      "countryId": null,
+      "name": "Santos",
+      "type": "port",
+      "latitude": -23.968889,
+      "longitude": -46.30053
+    },
+    {
+      "id": "Sanya",
+      "countryId": null,
+      "name": "Sanya",
+      "type": "port",
+      "latitude": 18.239722,
+      "longitude": 109.50053
+    },
+    {
+      "id": "Sao Francisco do Sul",
+      "countryId": null,
+      "name": "Sao Francisco do Sul",
+      "type": "port",
+      "latitude": -26.238056,
+      "longitude": -48.635453
+    },
+    {
+      "id": "Sasebo",
+      "countryId": null,
+      "name": "Sasebo",
+      "type": "port",
+      "latitude": 33.156944,
+      "longitude": 129.707774
+    },
+    {
+      "id": "Sault Ste Marie",
+      "countryId": null,
+      "name": "Sault Ste Marie",
+      "type": "port",
+      "latitude": 46.51,
+      "longitude": -84.35
+    },
+    {
+      "id": "Sault Ste Marie",
+      "countryId": null,
+      "name": "Sault Ste Marie",
+      "type": "port",
+      "latitude": 46.5,
+      "longitude": -84.35
+    },
+    {
+      "id": "Savannah",
+      "countryId": null,
+      "name": "Savannah",
+      "type": "port",
+      "latitude": 32.110833,
+      "longitude": -81.122497
+    },
+    {
+      "id": "Savona",
+      "countryId": null,
+      "name": "Savona",
+      "type": "port",
+      "latitude": 44.311667,
+      "longitude": 8.489517
+    },
+    {
+      "id": "Savusavu",
+      "countryId": null,
+      "name": "Savusavu",
+      "type": "port",
+      "latitude": -16.817778,
+      "longitude": 179.309364
+    },
+    {
+      "id": "Seattle",
+      "countryId": null,
+      "name": "Seattle",
+      "type": "port",
+      "latitude": 47.602222,
+      "longitude": -122.359717
+    },
+    {
+      "id": "Semarang",
+      "countryId": null,
+      "name": "Semarang",
+      "type": "port",
+      "latitude": -6.95,
+      "longitude": 110.41
+    },
+    {
+      "id": "Senipah",
+      "countryId": null,
+      "name": "Senipah",
+      "type": "port",
+      "latitude": -1.05,
+      "longitude": 117.216667
+    },
+    {
+      "id": "Sept-Iles",
+      "countryId": null,
+      "name": "Sept-Iles",
+      "type": "port",
+      "latitude": 50.206389,
+      "longitude": -66.383863
+    },
+    {
+      "id": "Sete",
+      "countryId": null,
+      "name": "Sete",
+      "type": "port",
+      "latitude": 43.404722,
+      "longitude": 3.710247
+    },
+    {
+      "id": "Setubal",
+      "countryId": null,
+      "name": "Setubal",
+      "type": "port",
+      "latitude": 38.489722,
+      "longitude": -8.821437
+    },
+    {
+      "id": "Sevastopol",
+      "countryId": null,
+      "name": "Sevastopol",
+      "type": "port",
+      "latitude": 44.618889,
+      "longitude": 33.541461
+    },
+    {
+      "id": "Seydisfjordur",
+      "countryId": null,
+      "name": "Seydisfjordur",
+      "type": "port",
+      "latitude": 65.262778,
+      "longitude": -14.00424
+    },
+    {
+      "id": "Shanghai",
+      "countryId": null,
+      "name": "Shanghai",
+      "type": "port",
+      "latitude": 31.221944,
+      "longitude": 121.48722
+    },
+    {
+      "id": "Shantou",
+      "countryId": null,
+      "name": "Shantou",
+      "type": "port",
+      "latitude": 23.354722,
+      "longitude": 116.704064
+    },
+    {
+      "id": "Shelburne",
+      "countryId": null,
+      "name": "Shelburne",
+      "type": "port",
+      "latitude": 43.749722,
+      "longitude": -65.317727
+    },
+    {
+      "id": "Shimizu",
+      "countryId": null,
+      "name": "Shimizu",
+      "type": "port",
+      "latitude": 35.014444,
+      "longitude": 138.509894
+    },
+    {
+      "id": "Shimonoseki",
+      "countryId": null,
+      "name": "Shimonoseki",
+      "type": "port",
+      "latitude": 33.934444,
+      "longitude": 130.90106
+    },
+    {
+      "id": "Shimotsu",
+      "countryId": null,
+      "name": "Shimotsu",
+      "type": "port",
+      "latitude": 34.116389,
+      "longitude": 135.133333
+    },
+    {
+      "id": "Sibenik",
+      "countryId": null,
+      "name": "Sibenik",
+      "type": "port",
+      "latitude": 43.726389,
+      "longitude": 15.891637
+    },
+    {
+      "id": "Silloth",
+      "countryId": null,
+      "name": "Silloth",
+      "type": "port",
+      "latitude": 54.86,
+      "longitude": -3.4
+    },
+    {
+      "id": "Sines",
+      "countryId": null,
+      "name": "Sines",
+      "type": "port",
+      "latitude": 37.942778,
+      "longitude": -8.86702
+    },
+    {
+      "id": "Singapore",
+      "countryId": null,
+      "name": "Singapore",
+      "type": "port",
+      "latitude": 1.292778,
+      "longitude": 103.722144
+    },
+    {
+      "id": "Sinop",
+      "countryId": null,
+      "name": "Sinop",
+      "type": "port",
+      "latitude": 42.023333,
+      "longitude": 35.142874
+    },
+    {
+      "id": "Sint Nicolaas",
+      "countryId": null,
+      "name": "Sint Nicolaas",
+      "type": "port",
+      "latitude": 12.4375,
+      "longitude": -69.923557
+    },
+    {
+      "id": "Siracusa",
+      "countryId": null,
+      "name": "Siracusa",
+      "type": "port",
+      "latitude": 37.066111,
+      "longitude": 15.287574
+    },
+    {
+      "id": "Sitka",
+      "countryId": null,
+      "name": "Sitka",
+      "type": "port",
+      "latitude": 57.05,
+      "longitude": -135.33
+    },
+    {
+      "id": "Sitrah",
+      "countryId": null,
+      "name": "Sitrah",
+      "type": "port",
+      "latitude": 26.158611,
+      "longitude": 50.658834
+    },
+    {
+      "id": "Skagen",
+      "countryId": null,
+      "name": "Skagen",
+      "type": "port",
+      "latitude": 57.718611,
+      "longitude": 10.58881
+    },
+    {
+      "id": "Skagway",
+      "countryId": null,
+      "name": "Skagway",
+      "type": "port",
+      "latitude": 59.450833,
+      "longitude": -135.32232
+    },
+    {
+      "id": "Skelleftea",
+      "countryId": null,
+      "name": "Skelleftea",
+      "type": "port",
+      "latitude": 64.678333,
+      "longitude": 21.251767
+    },
+    {
+      "id": "Sligo",
+      "countryId": null,
+      "name": "Sligo",
+      "type": "port",
+      "latitude": 54.271667,
+      "longitude": -8.47126
+    },
+    {
+      "id": "Soderhamn",
+      "countryId": null,
+      "name": "Soderhamn",
+      "type": "port",
+      "latitude": 61.308333,
+      "longitude": 17.08934
+    },
+    {
+      "id": "Sodertalje",
+      "countryId": null,
+      "name": "Sodertalje",
+      "type": "port",
+      "latitude": 59.169722,
+      "longitude": 17.659187
+    },
+    {
+      "id": "Sohar",
+      "countryId": null,
+      "name": "Sohar",
+      "type": "port",
+      "latitude": 24.378333,
+      "longitude": 56.737927
+    },
+    {
+      "id": "Sokcho",
+      "countryId": null,
+      "name": "Sokcho",
+      "type": "port",
+      "latitude": 38.206944,
+      "longitude": 128.592344
+    },
+    {
+      "id": "Sonderborg",
+      "countryId": null,
+      "name": "Sonderborg",
+      "type": "port",
+      "latitude": 54.906944,
+      "longitude": 9.776737
+    },
+    {
+      "id": "Songkhla",
+      "countryId": null,
+      "name": "Songkhla",
+      "type": "port",
+      "latitude": 7.228611,
+      "longitude": 100.56967
+    },
+    {
+      "id": "Sorel",
+      "countryId": null,
+      "name": "Sorel",
+      "type": "port",
+      "latitude": 46.041111,
+      "longitude": -73.11808
+    },
+    {
+      "id": "Sorong",
+      "countryId": null,
+      "name": "Sorong",
+      "type": "port",
+      "latitude": -0.876944,
+      "longitude": 131.242521
+    },
+    {
+      "id": "Sorong",
+      "countryId": null,
+      "name": "Sorong",
+      "type": "port",
+      "latitude": -1.3075,
+      "longitude": 131.020377
+    },
+    {
+      "id": "Southampton",
+      "countryId": null,
+      "name": "Southampton",
+      "type": "port",
+      "latitude": 50.9025,
+      "longitude": -1.424441
+    },
+    {
+      "id": "Soyo",
+      "countryId": null,
+      "name": "Soyo",
+      "type": "port",
+      "latitude": -6.121389,
+      "longitude": 12.320377
+    },
+    {
+      "id": "Split",
+      "countryId": null,
+      "name": "Split",
+      "type": "port",
+      "latitude": 43.515,
+      "longitude": 16.425501
+    },
+    {
+      "id": "Springdale",
+      "countryId": null,
+      "name": "Springdale",
+      "type": "port",
+      "latitude": 49.499722,
+      "longitude": -56.059894
+    },
+    {
+      "id": "Squamish",
+      "countryId": null,
+      "name": "Squamish",
+      "type": "port",
+      "latitude": 49.683056,
+      "longitude": -123.166667
+    },
+    {
+      "id": "Sriracha",
+      "countryId": null,
+      "name": "Sriracha",
+      "type": "port",
+      "latitude": 13.171389,
+      "longitude": 100.91861
+    },
+    {
+      "id": "St Joseph",
+      "countryId": null,
+      "name": "St Joseph",
+      "type": "port",
+      "latitude": 42.11,
+      "longitude": -86.48
+    },
+    {
+      "id": "St Louis",
+      "countryId": null,
+      "name": "St Louis",
+      "type": "port",
+      "latitude": 16.01,
+      "longitude": -16.51
+    },
+    {
+      "id": "St Thomas",
+      "countryId": null,
+      "name": "St Thomas",
+      "type": "port",
+      "latitude": 18.332123,
+      "longitude": -64.928415
+    },
+    {
+      "id": "Stavanger",
+      "countryId": null,
+      "name": "Stavanger",
+      "type": "port",
+      "latitude": 58.978889,
+      "longitude": 5.73722
+    },
+    {
+      "id": "Stephenville",
+      "countryId": null,
+      "name": "Stephenville",
+      "type": "port",
+      "latitude": 48.535278,
+      "longitude": -58.540754
+    },
+    {
+      "id": "Stewart",
+      "countryId": null,
+      "name": "Stewart",
+      "type": "port",
+      "latitude": 55.928611,
+      "longitude": -129.989517
+    },
+    {
+      "id": "Stockholm",
+      "countryId": null,
+      "name": "Stockholm",
+      "type": "port",
+      "latitude": 59.335,
+      "longitude": 18.109364
+    },
+    {
+      "id": "Stockton",
+      "countryId": null,
+      "name": "Stockton",
+      "type": "port",
+      "latitude": 37.950556,
+      "longitude": -121.323027
+    },
+    {
+      "id": "Stokmarknes",
+      "countryId": null,
+      "name": "Stokmarknes",
+      "type": "port",
+      "latitude": 68.568333,
+      "longitude": 14.909894
+    },
+    {
+      "id": "Stord",
+      "countryId": null,
+      "name": "Stord",
+      "type": "port",
+      "latitude": 59.78,
+      "longitude": 5.501413
+    },
+    {
+      "id": "Stornoway Harbor",
+      "countryId": null,
+      "name": "Stornoway Harbor",
+      "type": "port",
+      "latitude": 58.18,
+      "longitude": -6.36
+    },
+    {
+      "id": "Strahan",
+      "countryId": null,
+      "name": "Strahan",
+      "type": "port",
+      "latitude": -42.158333,
+      "longitude": 145.320554
+    },
+    {
+      "id": "Subic Bay",
+      "countryId": null,
+      "name": "Subic Bay",
+      "type": "port",
+      "latitude": 14.808333,
+      "longitude": 120.274794
+    },
+    {
+      "id": "Summerside",
+      "countryId": null,
+      "name": "Summerside",
+      "type": "port",
+      "latitude": 46.388611,
+      "longitude": -63.787044
+    },
+    {
+      "id": "Sunderland",
+      "countryId": null,
+      "name": "Sunderland",
+      "type": "port",
+      "latitude": 54.906944,
+      "longitude": -1.356184
+    },
+    {
+      "id": "Surabaya",
+      "countryId": null,
+      "name": "Surabaya",
+      "type": "port",
+      "latitude": -7.616667,
+      "longitude": 113.916667
+    },
+    {
+      "id": "Surabaya",
+      "countryId": null,
+      "name": "Surabaya",
+      "type": "port",
+      "latitude": -7.206389,
+      "longitude": 112.723911
+    },
+    {
+      "id": "Suva",
+      "countryId": null,
+      "name": "Suva",
+      "type": "port",
+      "latitude": -18.1325,
+      "longitude": 178.421084
+    },
+    {
+      "id": "Svendborg",
+      "countryId": null,
+      "name": "Svendborg",
+      "type": "port",
+      "latitude": 55.058611,
+      "longitude": 10.61702
+    },
+    {
+      "id": "Swinoujscie",
+      "countryId": null,
+      "name": "Swinoujscie",
+      "type": "port",
+      "latitude": 53.905,
+      "longitude": 14.26861
+    },
+    {
+      "id": "Sydney",
+      "countryId": null,
+      "name": "Sydney",
+      "type": "port",
+      "latitude": 46.141944,
+      "longitude": -60.203004
+    },
+    {
+      "id": "Sydney",
+      "countryId": null,
+      "name": "Sydney",
+      "type": "port",
+      "latitude": -33.862222,
+      "longitude": 151.189164
+    },
+    {
+      "id": "Szczecin",
+      "countryId": null,
+      "name": "Szczecin",
+      "type": "port",
+      "latitude": 53.430556,
+      "longitude": 14.585807
+    },
+    {
+      "id": "Tacoma",
+      "countryId": null,
+      "name": "Tacoma",
+      "type": "port",
+      "latitude": 47.267222,
+      "longitude": -122.40424
+    },
+    {
+      "id": "Tahsis",
+      "countryId": null,
+      "name": "Tahsis",
+      "type": "port",
+      "latitude": 49.9175,
+      "longitude": -126.654064
+    },
+    {
+      "id": "Taichung",
+      "countryId": null,
+      "name": "Taichung",
+      "type": "port",
+      "latitude": 24.258333,
+      "longitude": 120.503887
+    },
+    {
+      "id": "Taipei",
+      "countryId": null,
+      "name": "Taipei",
+      "type": "port",
+      "latitude": 25.151944,
+      "longitude": 121.374617
+    },
+    {
+      "id": "Takamatsu",
+      "countryId": null,
+      "name": "Takamatsu",
+      "type": "port",
+      "latitude": 34.355278,
+      "longitude": 134.053357
+    },
+    {
+      "id": "Takoradi",
+      "countryId": null,
+      "name": "Takoradi",
+      "type": "port",
+      "latitude": 4.884167,
+      "longitude": -1.738457
+    },
+    {
+      "id": "Talara",
+      "countryId": null,
+      "name": "Talara",
+      "type": "port",
+      "latitude": -4.573056,
+      "longitude": -81.274617
+    },
+    {
+      "id": "Talcahuano",
+      "countryId": null,
+      "name": "Talcahuano",
+      "type": "port",
+      "latitude": -36.705278,
+      "longitude": -73.102297
+    },
+    {
+      "id": "Tallinn",
+      "countryId": null,
+      "name": "Tallinn",
+      "type": "port",
+      "latitude": 59.46,
+      "longitude": 24.690754
+    },
+    {
+      "id": "Taltal",
+      "countryId": null,
+      "name": "Taltal",
+      "type": "port",
+      "latitude": -25.397222,
+      "longitude": -70.48457
+    },
+    {
+      "id": "Tampa",
+      "countryId": null,
+      "name": "Tampa",
+      "type": "port",
+      "latitude": 27.93,
+      "longitude": -82.43616
+    },
+    {
+      "id": "Tampico",
+      "countryId": null,
+      "name": "Tampico",
+      "type": "port",
+      "latitude": 22.236944,
+      "longitude": -97.833687
+    },
+    {
+      "id": "Tanga",
+      "countryId": null,
+      "name": "Tanga",
+      "type": "port",
+      "latitude": -5.065556,
+      "longitude": 39.10318
+    },
+    {
+      "id": "Tangier",
+      "countryId": null,
+      "name": "Tangier",
+      "type": "port",
+      "latitude": 35.796114,
+      "longitude": -5.824954
+    },
+    {
+      "id": "Tanjung Pandan",
+      "countryId": null,
+      "name": "Tanjung Pandan",
+      "type": "port",
+      "latitude": -2.75,
+      "longitude": 107.627091
+    },
+    {
+      "id": "Tanjung Priok",
+      "countryId": null,
+      "name": "Tanjung Priok",
+      "type": "port",
+      "latitude": -6.101389,
+      "longitude": 106.8904
+    },
+    {
+      "id": "Taranto",
+      "countryId": null,
+      "name": "Taranto",
+      "type": "port",
+      "latitude": 40.488056,
+      "longitude": 17.188987
+    },
+    {
+      "id": "Tarragona",
+      "countryId": null,
+      "name": "Tarragona",
+      "type": "port",
+      "latitude": 41.096111,
+      "longitude": 1.2202
+    },
+    {
+      "id": "Tauranga",
+      "countryId": null,
+      "name": "Tauranga",
+      "type": "port",
+      "latitude": -37.659444,
+      "longitude": 176.174087
+    },
+    {
+      "id": "Teesport",
+      "countryId": null,
+      "name": "Teesport",
+      "type": "port",
+      "latitude": 54.608056,
+      "longitude": -1.157067
+    },
+    {
+      "id": "Tekirdag",
+      "countryId": null,
+      "name": "Tekirdag",
+      "type": "port",
+      "latitude": 40.9675,
+      "longitude": 27.507951
+    },
+    {
+      "id": "Tel Aviv Yafo",
+      "countryId": null,
+      "name": "Tel Aviv Yafo",
+      "type": "port",
+      "latitude": 32.06,
+      "longitude": 34.76
+    },
+    {
+      "id": "Tela",
+      "countryId": null,
+      "name": "Tela",
+      "type": "port",
+      "latitude": 15.783889,
+      "longitude": -87.45583
+    },
+    {
+      "id": "Tema",
+      "countryId": null,
+      "name": "Tema",
+      "type": "port",
+      "latitude": 5.631944,
+      "longitude": 0.00742
+    },
+    {
+      "id": "Thessaloniki",
+      "countryId": null,
+      "name": "Thessaloniki",
+      "type": "port",
+      "latitude": 40.635,
+      "longitude": 22.917727
+    },
+    {
+      "id": "Thisted",
+      "countryId": null,
+      "name": "Thisted",
+      "type": "port",
+      "latitude": 56.952778,
+      "longitude": 8.692167
+    },
+    {
+      "id": "Thursday Island",
+      "countryId": null,
+      "name": "Thursday Island",
+      "type": "port",
+      "latitude": -10.585556,
+      "longitude": 142.218964
+    },
+    {
+      "id": "Tianjin",
+      "countryId": null,
+      "name": "Tianjin",
+      "type": "port",
+      "latitude": 39.009444,
+      "longitude": 117.456537
+    },
+    {
+      "id": "Tiksi",
+      "countryId": null,
+      "name": "Tiksi",
+      "type": "port",
+      "latitude": 71.643056,
+      "longitude": 128.87285
+    },
+    {
+      "id": "Timaru",
+      "countryId": null,
+      "name": "Timaru",
+      "type": "port",
+      "latitude": -44.389167,
+      "longitude": 171.25424
+    },
+    {
+      "id": "Tin Can Island",
+      "countryId": null,
+      "name": "Tin Can Island",
+      "type": "port",
+      "latitude": 6.41,
+      "longitude": 3.3
+    },
+    {
+      "id": "Toamasina",
+      "countryId": null,
+      "name": "Toamasina",
+      "type": "port",
+      "latitude": -18.157222,
+      "longitude": 49.421967
+    },
+    {
+      "id": "Tocopilla",
+      "countryId": null,
+      "name": "Tocopilla",
+      "type": "port",
+      "latitude": -22.086111,
+      "longitude": -70.205654
+    },
+    {
+      "id": "Tokyo",
+      "countryId": null,
+      "name": "Tokyo",
+      "type": "port",
+      "latitude": 35.624722,
+      "longitude": 139.788457
+    },
+    {
+      "id": "Tolu",
+      "countryId": null,
+      "name": "Tolu",
+      "type": "port",
+      "latitude": 9.520278,
+      "longitude": -75.585277
+    },
+    {
+      "id": "Tomakomai",
+      "countryId": null,
+      "name": "Tomakomai",
+      "type": "port",
+      "latitude": 42.6375,
+      "longitude": 141.653357
+    },
+    {
+      "id": "Tonsberg",
+      "countryId": null,
+      "name": "Tonsberg",
+      "type": "port",
+      "latitude": 59.265,
+      "longitude": 10.404947
+    },
+    {
+      "id": "Toronto",
+      "countryId": null,
+      "name": "Toronto",
+      "type": "port",
+      "latitude": 43.61,
+      "longitude": -79.38
+    },
+    {
+      "id": "Torre Annunziata",
+      "countryId": null,
+      "name": "Torre Annunziata",
+      "type": "port",
+      "latitude": 40.75,
+      "longitude": 14.442874
+    },
+    {
+      "id": "Tottori",
+      "countryId": null,
+      "name": "Tottori",
+      "type": "port",
+      "latitude": 35.540278,
+      "longitude": 134.187927
+    },
+    {
+      "id": "Toulon",
+      "countryId": null,
+      "name": "Toulon",
+      "type": "port",
+      "latitude": 43.110556,
+      "longitude": 5.90477
+    },
+    {
+      "id": "Townsville",
+      "countryId": null,
+      "name": "Townsville",
+      "type": "port",
+      "latitude": -19.250833,
+      "longitude": 146.824794
+    },
+    {
+      "id": "Toyama",
+      "countryId": null,
+      "name": "Toyama",
+      "type": "port",
+      "latitude": 36.757222,
+      "longitude": 137.222674
+    },
+    {
+      "id": "Trabzon",
+      "countryId": null,
+      "name": "Trabzon",
+      "type": "port",
+      "latitude": 41.005556,
+      "longitude": 39.736514
+    },
+    {
+      "id": "Trapani",
+      "countryId": null,
+      "name": "Trapani",
+      "type": "port",
+      "latitude": 38.013611,
+      "longitude": 12.503887
+    },
+    {
+      "id": "Travemunde",
+      "countryId": null,
+      "name": "Travemunde",
+      "type": "port",
+      "latitude": 53.952222,
+      "longitude": 10.868257
+    },
+    {
+      "id": "Trelleborg",
+      "countryId": null,
+      "name": "Trelleborg",
+      "type": "port",
+      "latitude": 55.368056,
+      "longitude": 13.15159
+    },
+    {
+      "id": "Trenton",
+      "countryId": null,
+      "name": "Trenton",
+      "type": "port",
+      "latitude": 44.1,
+      "longitude": -77.56
+    },
+    {
+      "id": "Tri-City Port",
+      "countryId": null,
+      "name": "Tri-City Port",
+      "type": "port",
+      "latitude": 38.71,
+      "longitude": -90.2
+    },
+    {
+      "id": "Trieste",
+      "countryId": null,
+      "name": "Trieste",
+      "type": "port",
+      "latitude": 45.645,
+      "longitude": 13.75424
+    },
+    {
+      "id": "Trincomalee",
+      "countryId": null,
+      "name": "Trincomalee",
+      "type": "port",
+      "latitude": 8.558333,
+      "longitude": 81.203887
+    },
+    {
+      "id": "Tripoli",
+      "countryId": null,
+      "name": "Tripoli",
+      "type": "port",
+      "latitude": 34.455278,
+      "longitude": 35.81914
+    },
+    {
+      "id": "Tripoli",
+      "countryId": null,
+      "name": "Tripoli",
+      "type": "port",
+      "latitude": 32.9075,
+      "longitude": 13.193581
+    },
+    {
+      "id": "Trois-Rivieres (Three Rivers)",
+      "countryId": null,
+      "name": "Trois-Rivieres (Three Rivers)",
+      "type": "port",
+      "latitude": 46.335833,
+      "longitude": -72.538987
+    },
+    {
+      "id": "Tromso",
+      "countryId": null,
+      "name": "Tromso",
+      "type": "port",
+      "latitude": 69.655833,
+      "longitude": 18.968787
+    },
+    {
+      "id": "Trondheim",
+      "countryId": null,
+      "name": "Trondheim",
+      "type": "port",
+      "latitude": 63.437778,
+      "longitude": 10.388987
+    },
+    {
+      "id": "Tuapse",
+      "countryId": null,
+      "name": "Tuapse",
+      "type": "port",
+      "latitude": 44.091944,
+      "longitude": 39.066667
+    },
+    {
+      "id": "Tuborg",
+      "countryId": null,
+      "name": "Tuborg",
+      "type": "port",
+      "latitude": 55.726111,
+      "longitude": 12.58404
+    },
+    {
+      "id": "Tuktoyaktuk",
+      "countryId": null,
+      "name": "Tuktoyaktuk",
+      "type": "port",
+      "latitude": 69.431389,
+      "longitude": -132.985807
+    },
+    {
+      "id": "Tulcea",
+      "countryId": null,
+      "name": "Tulcea",
+      "type": "port",
+      "latitude": 45.191111,
+      "longitude": 28.816843
+    },
+    {
+      "id": "Tumaco",
+      "countryId": null,
+      "name": "Tumaco",
+      "type": "port",
+      "latitude": 1.813056,
+      "longitude": -78.759541
+    },
+    {
+      "id": "Tunis",
+      "countryId": null,
+      "name": "Tunis",
+      "type": "port",
+      "latitude": 36.8,
+      "longitude": 10.25
+    },
+    {
+      "id": "Turbo",
+      "countryId": null,
+      "name": "Turbo",
+      "type": "port",
+      "latitude": 8.087778,
+      "longitude": -76.733863
+    },
+    {
+      "id": "Turku",
+      "countryId": null,
+      "name": "Turku",
+      "type": "port",
+      "latitude": 60.45,
+      "longitude": 22.23
+    },
+    {
+      "id": "Tuticorin",
+      "countryId": null,
+      "name": "Tuticorin",
+      "type": "port",
+      "latitude": 8.758333,
+      "longitude": 78.187044
+    },
+    {
+      "id": "Tuxpan",
+      "countryId": null,
+      "name": "Tuxpan",
+      "type": "port",
+      "latitude": 20.940556,
+      "longitude": -97.370554
+    },
+    {
+      "id": "Tyne",
+      "countryId": null,
+      "name": "Tyne",
+      "type": "port",
+      "latitude": 54.994444,
+      "longitude": -1.440931
+    },
+    {
+      "id": "Ube",
+      "countryId": null,
+      "name": "Ube",
+      "type": "port",
+      "latitude": 33.938333,
+      "longitude": 131.23775
+    },
+    {
+      "id": "Uddevalla",
+      "countryId": null,
+      "name": "Uddevalla",
+      "type": "port",
+      "latitude": 58.348056,
+      "longitude": 11.90477
+    },
+    {
+      "id": "Ujungpandang",
+      "countryId": null,
+      "name": "Ujungpandang",
+      "type": "port",
+      "latitude": -5.13,
+      "longitude": 119.4
+    },
+    {
+      "id": "Ulsan",
+      "countryId": null,
+      "name": "Ulsan",
+      "type": "port",
+      "latitude": 35.487778,
+      "longitude": 129.38563
+    },
+    {
+      "id": "Umea",
+      "countryId": null,
+      "name": "Umea",
+      "type": "port",
+      "latitude": 63.816667,
+      "longitude": 20.267727
+    },
+    {
+      "id": "Ushuaia",
+      "countryId": null,
+      "name": "Ushuaia",
+      "type": "port",
+      "latitude": -54.809444,
+      "longitude": -68.300883
+    },
+    {
+      "id": "Uummannaq",
+      "countryId": null,
+      "name": "Uummannaq",
+      "type": "port",
+      "latitude": 70.674722,
+      "longitude": -52.11914
+    },
+    {
+      "id": "Vaasa",
+      "countryId": null,
+      "name": "Vaasa",
+      "type": "port",
+      "latitude": 63.1,
+      "longitude": 21.58
+    },
+    {
+      "id": "Vadso",
+      "countryId": null,
+      "name": "Vadso",
+      "type": "port",
+      "latitude": 70.071111,
+      "longitude": 29.737574
+    },
+    {
+      "id": "Valdez",
+      "countryId": null,
+      "name": "Valdez",
+      "type": "port",
+      "latitude": 61.103611,
+      "longitude": -146.357067
+    },
+    {
+      "id": "Valdivia",
+      "countryId": null,
+      "name": "Valdivia",
+      "type": "port",
+      "latitude": -39.816667,
+      "longitude": -73.226561
+    },
+    {
+      "id": "Valencia",
+      "countryId": null,
+      "name": "Valencia",
+      "type": "port",
+      "latitude": 39.444167,
+      "longitude": -0.318433
+    },
+    {
+      "id": "Valparaiso",
+      "countryId": null,
+      "name": "Valparaiso",
+      "type": "port",
+      "latitude": -33.035278,
+      "longitude": -71.61914
+    },
+    {
+      "id": "Vancouver",
+      "countryId": null,
+      "name": "Vancouver",
+      "type": "port",
+      "latitude": 45.634722,
+      "longitude": -122.703887
+    },
+    {
+      "id": "Vancouver",
+      "countryId": null,
+      "name": "Vancouver",
+      "type": "port",
+      "latitude": 49.297778,
+      "longitude": -123.071437
+    },
+    {
+      "id": "Vanimo",
+      "countryId": null,
+      "name": "Vanimo",
+      "type": "port",
+      "latitude": -2.683611,
+      "longitude": 141.292344
+    },
+    {
+      "id": "Vannes",
+      "countryId": null,
+      "name": "Vannes",
+      "type": "port",
+      "latitude": 47.643889,
+      "longitude": -2.75636
+    },
+    {
+      "id": "Vardo",
+      "countryId": null,
+      "name": "Vardo",
+      "type": "port",
+      "latitude": 70.373333,
+      "longitude": 31.103887
+    },
+    {
+      "id": "Varkaus",
+      "countryId": null,
+      "name": "Varkaus",
+      "type": "port",
+      "latitude": 62.3125,
+      "longitude": 27.874794
+    },
+    {
+      "id": "Varna",
+      "countryId": null,
+      "name": "Varna",
+      "type": "port",
+      "latitude": 43.194444,
+      "longitude": 27.888634
+    },
+    {
+      "id": "Vastervik",
+      "countryId": null,
+      "name": "Vastervik",
+      "type": "port",
+      "latitude": 57.755833,
+      "longitude": 16.651943
+    },
+    {
+      "id": "Veitsiluoto",
+      "countryId": null,
+      "name": "Veitsiluoto",
+      "type": "port",
+      "latitude": 65.683056,
+      "longitude": 24.616667
+    },
+    {
+      "id": "Vejle",
+      "countryId": null,
+      "name": "Vejle",
+      "type": "port",
+      "latitude": 55.705556,
+      "longitude": 9.551943
+    },
+    {
+      "id": "Ventspils",
+      "countryId": null,
+      "name": "Ventspils",
+      "type": "port",
+      "latitude": 57.403056,
+      "longitude": 21.537044
+    },
+    {
+      "id": "Veracruz",
+      "countryId": null,
+      "name": "Veracruz",
+      "type": "port",
+      "latitude": 19.208333,
+      "longitude": -96.133687
+    },
+    {
+      "id": "Viana do Castelo",
+      "countryId": null,
+      "name": "Viana do Castelo",
+      "type": "port",
+      "latitude": 41.686389,
+      "longitude": -8.823027
+    },
+    {
+      "id": "Victoria",
+      "countryId": null,
+      "name": "Victoria",
+      "type": "port",
+      "latitude": 48.431111,
+      "longitude": -123.406537
+    },
+    {
+      "id": "Vigo",
+      "countryId": null,
+      "name": "Vigo",
+      "type": "port",
+      "latitude": 42.2425,
+      "longitude": -8.726207
+    },
+    {
+      "id": "Viru Harbour",
+      "countryId": null,
+      "name": "Viru Harbour",
+      "type": "port",
+      "latitude": -8.499722,
+      "longitude": 157.726031
+    },
+    {
+      "id": "Visakhapatnam",
+      "countryId": null,
+      "name": "Visakhapatnam",
+      "type": "port",
+      "latitude": 17.693333,
+      "longitude": 83.28722
+    },
+    {
+      "id": "Visby",
+      "countryId": null,
+      "name": "Visby",
+      "type": "port",
+      "latitude": 57.635556,
+      "longitude": 18.274617
+    },
+    {
+      "id": "Vitoria",
+      "countryId": null,
+      "name": "Vitoria",
+      "type": "port",
+      "latitude": -20.323333,
+      "longitude": -40.3351
+    },
+    {
+      "id": "Vladivostok",
+      "countryId": null,
+      "name": "Vladivostok",
+      "type": "port",
+      "latitude": 43.094444,
+      "longitude": 131.88775
+    },
+    {
+      "id": "Volos",
+      "countryId": null,
+      "name": "Volos",
+      "type": "port",
+      "latitude": 39.352778,
+      "longitude": 22.93669
+    },
+    {
+      "id": "Vyborg",
+      "countryId": null,
+      "name": "Vyborg",
+      "type": "port",
+      "latitude": 60.705,
+      "longitude": 28.726384
+    },
+    {
+      "id": "Wakayama",
+      "countryId": null,
+      "name": "Wakayama",
+      "type": "port",
+      "latitude": 34.223056,
+      "longitude": 135.127091
+    },
+    {
+      "id": "Wakkanai",
+      "countryId": null,
+      "name": "Wakkanai",
+      "type": "port",
+      "latitude": 45.410556,
+      "longitude": 141.689164
+    },
+    {
+      "id": "Walvis Bay",
+      "countryId": null,
+      "name": "Walvis Bay",
+      "type": "port",
+      "latitude": -22.940556,
+      "longitude": 14.50053
+    },
+    {
+      "id": "Wanganui",
+      "countryId": null,
+      "name": "Wanganui",
+      "type": "port",
+      "latitude": -39.944167,
+      "longitude": 174.989517
+    },
+    {
+      "id": "Waterford",
+      "countryId": null,
+      "name": "Waterford",
+      "type": "port",
+      "latitude": 52.266389,
+      "longitude": -7.118787
+    },
+    {
+      "id": "Waukegan",
+      "countryId": null,
+      "name": "Waukegan",
+      "type": "port",
+      "latitude": 42.36,
+      "longitude": -87.81
+    },
+    {
+      "id": "Weipa",
+      "countryId": null,
+      "name": "Weipa",
+      "type": "port",
+      "latitude": -12.67,
+      "longitude": 141.866667
+    },
+    {
+      "id": "Wellington",
+      "countryId": null,
+      "name": "Wellington",
+      "type": "port",
+      "latitude": -41.2775,
+      "longitude": 174.78987
+    },
+    {
+      "id": "Wenzhou",
+      "countryId": null,
+      "name": "Wenzhou",
+      "type": "port",
+      "latitude": 27.998333,
+      "longitude": 120.884747
+    },
+    {
+      "id": "Westport",
+      "countryId": null,
+      "name": "Westport",
+      "type": "port",
+      "latitude": -41.750278,
+      "longitude": 171.591284
+    },
+    {
+      "id": "Wewak",
+      "countryId": null,
+      "name": "Wewak",
+      "type": "port",
+      "latitude": -3.57,
+      "longitude": 143.65053
+    },
+    {
+      "id": "Wexford",
+      "countryId": null,
+      "name": "Wexford",
+      "type": "port",
+      "latitude": 52.341111,
+      "longitude": -6.456184
+    },
+    {
+      "id": "Whangarei",
+      "countryId": null,
+      "name": "Whangarei",
+      "type": "port",
+      "latitude": -35.751111,
+      "longitude": 174.342697
+    },
+    {
+      "id": "Whyalla",
+      "countryId": null,
+      "name": "Whyalla",
+      "type": "port",
+      "latitude": -33.038333,
+      "longitude": 137.590754
+    },
+    {
+      "id": "Wick",
+      "countryId": null,
+      "name": "Wick",
+      "type": "port",
+      "latitude": 58.43,
+      "longitude": -3.08
+    },
+    {
+      "id": "Wilhelmshaven",
+      "countryId": null,
+      "name": "Wilhelmshaven",
+      "type": "port",
+      "latitude": 53.53,
+      "longitude": 8.122144
+    },
+    {
+      "id": "Wilmington",
+      "countryId": null,
+      "name": "Wilmington",
+      "type": "port",
+      "latitude": 39.716667,
+      "longitude": -75.519847
+    },
+    {
+      "id": "Wilmington",
+      "countryId": null,
+      "name": "Wilmington",
+      "type": "port",
+      "latitude": 34.191944,
+      "longitude": -77.95265
+    },
+    {
+      "id": "Wilmington",
+      "countryId": null,
+      "name": "Wilmington",
+      "type": "port",
+      "latitude": 34.191944,
+      "longitude": -77.95265
+    },
+    {
+      "id": "Windsor",
+      "countryId": null,
+      "name": "Windsor",
+      "type": "port",
+      "latitude": 42.31,
+      "longitude": -83.03
+    },
+    {
+      "id": "Wismar",
+      "countryId": null,
+      "name": "Wismar",
+      "type": "port",
+      "latitude": 53.906389,
+      "longitude": 11.439164
+    },
+    {
+      "id": "Wrangell",
+      "countryId": null,
+      "name": "Wrangell",
+      "type": "port",
+      "latitude": 56.46,
+      "longitude": -132.38
+    },
+    {
+      "id": "Wyndham",
+      "countryId": null,
+      "name": "Wyndham",
+      "type": "port",
+      "latitude": -15.451389,
+      "longitude": 128.100883
+    },
+    {
+      "id": "Xiamen",
+      "countryId": null,
+      "name": "Xiamen",
+      "type": "port",
+      "latitude": 24.45,
+      "longitude": 118.020024
+    },
+    {
+      "id": "Yangon",
+      "countryId": null,
+      "name": "Yangon",
+      "type": "port",
+      "latitude": 16.765833,
+      "longitude": 96.168787
+    },
+    {
+      "id": "Yantai",
+      "countryId": null,
+      "name": "Yantai",
+      "type": "port",
+      "latitude": 37.571111,
+      "longitude": 121.388987
+    },
+    {
+      "id": "Yantian",
+      "countryId": null,
+      "name": "Yantian",
+      "type": "port",
+      "latitude": 22.574167,
+      "longitude": 114.26702
+    },
+    {
+      "id": "Yap",
+      "countryId": null,
+      "name": "Yap",
+      "type": "port",
+      "latitude": 9.513333,
+      "longitude": 138.119494
+    },
+    {
+      "id": "Yarmouth",
+      "countryId": null,
+      "name": "Yarmouth",
+      "type": "port",
+      "latitude": 43.835556,
+      "longitude": -66.120907
+    },
+    {
+      "id": "Yingkou",
+      "countryId": null,
+      "name": "Yingkou",
+      "type": "port",
+      "latitude": 40.695833,
+      "longitude": 122.2351
+    },
+    {
+      "id": "Yokohama",
+      "countryId": null,
+      "name": "Yokohama",
+      "type": "port",
+      "latitude": 35.436389,
+      "longitude": 139.667373
+    },
+    {
+      "id": "Yokosuka",
+      "countryId": null,
+      "name": "Yokosuka",
+      "type": "port",
+      "latitude": 35.304444,
+      "longitude": 139.654417
+    },
+    {
+      "id": "Ystad",
+      "countryId": null,
+      "name": "Ystad",
+      "type": "port",
+      "latitude": 55.421389,
+      "longitude": 13.82073
+    },
+    {
+      "id": "Zadar",
+      "countryId": null,
+      "name": "Zadar",
+      "type": "port",
+      "latitude": 44.1175,
+      "longitude": 15.219317
+    },
+    {
+      "id": "Zamboanga",
+      "countryId": null,
+      "name": "Zamboanga",
+      "type": "port",
+      "latitude": 6.902778,
+      "longitude": 122.071437
+    },
+    {
+      "id": "Zarate",
+      "countryId": null,
+      "name": "Zarate",
+      "type": "port",
+      "latitude": -34.098889,
+      "longitude": -59.004947
+    },
+    {
+      "id": "Zeebrugge",
+      "countryId": null,
+      "name": "Zeebrugge",
+      "type": "port",
+      "latitude": 51.336389,
+      "longitude": 3.204594
+    },
+    {
+      "id": "Zhanjiang",
+      "countryId": null,
+      "name": "Zhanjiang",
+      "type": "port",
+      "latitude": 21.169722,
+      "longitude": 110.40636
+    },
+    {
+      "id": "Zhoushan",
+      "countryId": null,
+      "name": "Zhoushan",
+      "type": "port",
+      "latitude": 30.003333,
+      "longitude": 122.10265
+    },
+    {
+      "id": "Zhuhai",
+      "countryId": null,
+      "name": "Zhuhai",
+      "type": "port",
+      "latitude": 22.239722,
+      "longitude": 113.584217
+    },
+    {
+      "id": "Ziguinchor",
+      "countryId": null,
+      "name": "Ziguinchor",
+      "type": "port",
+      "latitude": 12.589722,
+      "longitude": -16.26808
+    }
+  ]
+}
