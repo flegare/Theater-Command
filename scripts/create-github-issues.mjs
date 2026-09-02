@@ -41,7 +41,10 @@ for (const label of labelsToEnsure) {
       `gh label create "${label.name}" --repo ${repo} --color "${label.color}" --description "${label.description}" --force`,
       { stdio: "ignore" },
     );
-  } catch (e) {}
+    // Ignored if label already exists
+  } catch {
+    // Label already exists
+  }
 }
 
 const issues = [

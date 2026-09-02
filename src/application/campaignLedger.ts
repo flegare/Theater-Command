@@ -8,6 +8,7 @@ import {
   getCampaignHexState,
   processTurnMovementOrders,
   processTurnDailyFormationsUpdate,
+  processTurnStrategicHexesUpdate,
 } from "./hexStrategicSystem.js";
 
 export type WorldEntityStatus =
@@ -827,6 +828,20 @@ export function advanceCampaignDay(
           moveSummary,
           now,
         );
+    }
+
+    // Process strategic hex updates (5-turn capture, contested state, market deliveries, treaties)
+    const strategicEvents = processTurnStrategicHexesUpdate(
+      database,
+      campaignId,
+    );
+    for (const ev of strategicEvents) {
+      database
+        .prepare(
+          `INSERT INTO events (id, campaign_id, campaign_time, kind, summary, created_at)
+           VALUES (?, ?, ?, ?, ?, ?)`,
+        )
+        .run(randomUUID(), campaignId, nextTime, ev.kind, ev.summary, now);
     }
 
     database

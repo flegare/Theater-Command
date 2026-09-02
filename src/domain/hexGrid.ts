@@ -54,6 +54,30 @@ export type HexPotentialInfrastructure = {
   effect: string;
 };
 
+export type HexCellDepots = {
+  fuelBarrels: number;
+  munitionsMissiles: number;
+  munitionsTorpedoes: number;
+  munitionsShells: number;
+  strategicOreTitanium: number;
+  strategicOreIron: number;
+  strategicOreUranium: number;
+};
+
+export type GovernorPolicy =
+  | "wealth"
+  | "industry"
+  | "extraction"
+  | "tech"
+  | "warmonger"
+  | "balanced"
+  | "manual";
+
+export type HexGovernorState = {
+  policy: GovernorPolicy;
+  automated: boolean;
+};
+
 export type StrategicHexCell = {
   id: string;
   axial: { q: number; r: number };
@@ -66,6 +90,13 @@ export type StrategicHexCell = {
   facilities: HexStrategicFacility[];
   neighbors: string[];
   isCoreTheater: boolean;
+  status?: "controlled" | "contested" | "disrupted" | "unoccupied" | undefined;
+  captureTurnsCounter?: number | undefined; // 0 to 5
+  occupyingSide?: "blufor" | "opfor" | "neutral" | undefined;
+  occupyingCountryId?: string | undefined;
+  depots?: HexCellDepots | undefined;
+  governor?: HexGovernorState | undefined;
+  investmentTier?: number | undefined; // 0, 1, 2, 3
   coldWarContext?: string;
   population?: number;
   economicActivities?: string[];

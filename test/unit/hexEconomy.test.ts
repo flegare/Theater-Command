@@ -27,6 +27,15 @@ import {
   advanceCampaignDay,
   seedCampaignLedger,
 } from "../../src/application/campaignLedger.js";
+import {
+  purchaseMarketUnit,
+  getPendingMarketOrders,
+} from "../../src/domain/militaryMarket.js";
+import {
+  establishDiplomaticTreaty,
+  getActiveDiplomaticTreaties,
+} from "../../src/domain/diplomacy.js";
+import { upgradeHexInvestment } from "../../src/domain/hexInvestments.js";
 
 describe("hex strategic economy and tactical bridge", () => {
   let directory: string;
@@ -572,5 +581,198 @@ describe("hex strategic economy and tactical bridge", () => {
       (f) => f.id === norwaySag.id,
     )!;
     expect(dismissedSag.activeRoute).toBeUndefined();
+  });
+
+  it("physical depots, 5-turn capture, and contested state dynamics work accurately", () => {
+    // 1. Check initial depot and status values
+    const initialState = getCampaignHexState(database, "camp-1");
+    const osloHex = initialState.hexCells.find((c) => c.id === "hex-nor-oslo")!;
+    expect(osloHex.status).toBe("controlled");
+    expect(osloHex.captureTurnsCounter).toBe(0);
+    expect(osloHex.depots).toBeDefined();
+    expect(osloHex.depots?.fuelBarrels).toBe(100);
+
+    // 2. Spawn an OPFOR formation in hex-nor-bergen (no BLUFOR defenders present)
+    const now = new Date().toISOString();
+    database
+      .prepare(
+        `INSERT INTO campaign_formations (
+          id, campaign_id, name, unit_type, side, country_id, hex_id, strength, action_points, max_action_points, status, metadata_json, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      )
+      .run(
+        "opfor-invader-1",
+        "camp-1",
+        "Soviet Red Banner Strike Division",
+        "mechanized_infantry_division",
+        "opfor",
+        "soviet-union",
+        "hex-nor-bergen",
+        100,
+        1,
+        1,
+        "ready",
+        JSON.stringify({ morale: 90, experience: 60 }),
+        now,
+        now,
+      );
+
+    // Remove any BLUFOR units from Bergen to simulate uncontested occupation
+    database
+      .prepare(
+        `UPDATE campaign_formations SET hex_id = 'hex-nor-oslo' WHERE campaign_id = 'camp-1' AND side = 'blufor'`,
+      )
+      .run();
+
+    // Advance 1 turn: captureTurnsCounter should be 1
+    advanceCampaignDay(database, "camp-1");
+    let state = getCampaignHexState(database, "camp-1");
+    let bergen = state.hexCells.find((c) => c.id === "hex-nor-bergen")!;
+    expect(bergen.captureTurnsCounter).toBe(1);
+    expect(bergen.occupyingSide).toBe("opfor");
+    expect(bergen.ownership.countryId).toBe("norway"); // Not yet transferred
+
+    // Advance turns 2, 3, 4
+    advanceCampaignDay(database, "camp-1");
+    advanceCampaignDay(database, "camp-1");
+    advanceCampaignDay(database, "camp-1");
+    state = getCampaignHexState(database, "camp-1");
+    bergen = state.hexCells.find((c) => c.id === "hex-nor-bergen")!;
+    expect(bergen.captureTurnsCounter).toBe(4);
+
+    // Advance 5th turn: Sector is captured and ownership transfers to soviet-union
+    advanceCampaignDay(database, "camp-1");
+    state = getCampaignHexState(database, "camp-1");
+    bergen = state.hexCells.find((c) => c.id === "hex-nor-bergen")!;
+    expect(bergen.ownership.countryId).toBe("soviet-union");
+    expect(bergen.ownership.side).toBe("opfor");
+    expect(bergen.captureTurnsCounter).toBe(0);
+
+    // 3. Test Contested State: Spawn BLUFOR unit into Soviet-owned Bergen
+    database
+      .prepare(
+        `INSERT INTO campaign_formations (
+          id, campaign_id, name, unit_type, side, country_id, hex_id, strength, action_points, max_action_points, status, metadata_json, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      )
+      .run(
+        "blufor-recapture-1",
+        "camp-1",
+        "Norwegian Home Guard",
+        "mechanized_infantry_division",
+        "blufor",
+        "norway",
+        "hex-nor-bergen",
+        90,
+        1,
+        1,
+        "ready",
+        JSON.stringify({ morale: 80, experience: 50 }),
+        now,
+        now,
+      );
+
+    advanceCampaignDay(database, "camp-1");
+    state = getCampaignHexState(database, "camp-1");
+    bergen = state.hexCells.find((c) => c.id === "hex-nor-bergen")!;
+    expect(bergen.status).toBe("contested");
+    expect(bergen.yields.fundsRevenue).toBe(0); // Yields frozen while contested
+  });
+
+  it("national military market allows purchasing surplus vessels with turn delay delivery", () => {
+    // Initial treasury for Norway is 1800
+    const startEco = database
+      .prepare(
+        "SELECT funds FROM campaign_economy WHERE campaign_id = 'camp-1'",
+      )
+      .get() as { funds: number };
+    expect(startEco.funds).toBe(1800);
+
+    // Purchase Hauk-class missile boat ($600, 1 turn delivery)
+    const purchase = purchaseMarketUnit(
+      database,
+      "camp-1",
+      "norway",
+      "surplus-hauk-fast-patrol",
+      "hex-nor-oslo",
+      "1st Rapid Coastal Strike",
+    );
+    expect(purchase.turnsRemaining).toBe(1);
+
+    const pending = getPendingMarketOrders(database, "camp-1");
+    expect(pending.length).toBe(1);
+    expect(pending[0].unitName).toBe("1st Rapid Coastal Strike");
+    expect(pending[0].costFunds).toBe(600);
+
+    // Treasury deducted immediately ($1800 - $600 = $1200)
+    const midEco = database
+      .prepare(
+        "SELECT funds FROM campaign_economy WHERE campaign_id = 'camp-1'",
+      )
+      .get() as { funds: number };
+    expect(midEco.funds).toBe(1200);
+
+    // Advance 1 turn: order delivers and unit spawns in Oslo
+    advanceCampaignDay(database, "camp-1");
+    const state = getCampaignHexState(database, "camp-1");
+    const spawned = state.formations.find(
+      (f) => f.name === "1st Rapid Coastal Strike",
+    );
+    expect(spawned).toBeDefined();
+    expect(spawned?.hexId).toBe("hex-nor-oslo");
+    expect(spawned?.countryId).toBe("norway");
+
+    const pendingAfter = getPendingMarketOrders(database, "camp-1");
+    expect(pendingAfter.length).toBe(0);
+  });
+
+  it("diplomatic treaties track expiration and stance changes over turns", () => {
+    // Establish a 2-turn ceasefire between Norway and Soviet Union
+    const treaty = establishDiplomaticTreaty(
+      database,
+      "camp-1",
+      "ceasefire",
+      "norway",
+      "soviet-union",
+      2,
+    );
+    expect(treaty.durationTurns).toBe(2);
+    expect(treaty.turnsRemaining).toBe(2);
+
+    const active = getActiveDiplomaticTreaties(database, "camp-1");
+    expect(active.length).toBe(1);
+    expect(active[0].treatyType).toBe("ceasefire");
+
+    // Advance 1 turn
+    advanceCampaignDay(database, "camp-1");
+    const day1Treaties = getActiveDiplomaticTreaties(database, "camp-1");
+    expect(day1Treaties.length).toBe(1);
+    expect(day1Treaties[0].turnsRemaining).toBe(1);
+
+    // Advance 2nd turn: Treaty expires
+    advanceCampaignDay(database, "camp-1");
+    const day2Treaties = getActiveDiplomaticTreaties(database, "camp-1");
+    expect(day2Treaties.length).toBe(0);
+  });
+
+  it("regional investments boost hex revenue, production, and fuel multipliers", () => {
+    // Initial Oslo hex is Tier 0
+    const state0 = getCampaignHexState(database, "camp-1");
+    const oslo0 = state0.hexCells.find((c) => c.id === "hex-nor-oslo")!;
+    expect(oslo0.investmentTier).toBe(0);
+    const baseRevenue = oslo0.yields.fundsRevenue;
+
+    // Upgrade Oslo to Tier 1 ($500 cost)
+    const upg1 = upgradeHexInvestment(database, "camp-1", "hex-nor-oslo");
+    expect(upg1.newTier).toBe(1);
+    expect(upg1.tierInfo.fundsMultiplier).toBe(1.15);
+
+    const state1 = getCampaignHexState(database, "camp-1");
+    const oslo1 = state1.hexCells.find((c) => c.id === "hex-nor-oslo")!;
+    expect(oslo1.investmentTier).toBe(1);
+    expect(oslo1.yields.fundsRevenue).toBe(Math.round(baseRevenue * 1.15));
+    expect(oslo1.yields.productionPoints).toBeGreaterThan(
+      oslo0.yields.productionPoints,
+    );
   });
 });

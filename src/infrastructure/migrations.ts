@@ -171,6 +171,54 @@ const migrations: Migration[] = [
       CREATE INDEX campaign_formations_side_idx ON campaign_formations(campaign_id, side);
     `,
   },
+  {
+    id: "004_persistent_depots_and_turn_engine",
+    sql: `
+      ALTER TABLE campaign_hex_cells ADD COLUMN capture_turns_counter INTEGER NOT NULL DEFAULT 0;
+      ALTER TABLE campaign_hex_cells ADD COLUMN occupying_side TEXT;
+      ALTER TABLE campaign_hex_cells ADD COLUMN occupying_country_id TEXT;
+      ALTER TABLE campaign_hex_cells ADD COLUMN depot_fuel INTEGER NOT NULL DEFAULT 100;
+      ALTER TABLE campaign_hex_cells ADD COLUMN depot_missiles INTEGER NOT NULL DEFAULT 20;
+      ALTER TABLE campaign_hex_cells ADD COLUMN depot_torpedoes INTEGER NOT NULL DEFAULT 10;
+      ALTER TABLE campaign_hex_cells ADD COLUMN depot_shells INTEGER NOT NULL DEFAULT 200;
+      ALTER TABLE campaign_hex_cells ADD COLUMN depot_titanium INTEGER NOT NULL DEFAULT 0;
+      ALTER TABLE campaign_hex_cells ADD COLUMN depot_iron INTEGER NOT NULL DEFAULT 0;
+      ALTER TABLE campaign_hex_cells ADD COLUMN depot_uranium INTEGER NOT NULL DEFAULT 0;
+      ALTER TABLE campaign_hex_cells ADD COLUMN governor_policy TEXT NOT NULL DEFAULT 'balanced';
+      ALTER TABLE campaign_hex_cells ADD COLUMN governor_automated INTEGER NOT NULL DEFAULT 0;
+      ALTER TABLE campaign_hex_cells ADD COLUMN investment_tier INTEGER NOT NULL DEFAULT 0;
+
+      CREATE TABLE military_market_orders (
+        id TEXT PRIMARY KEY,
+        campaign_id TEXT NOT NULL REFERENCES campaigns(id) ON DELETE CASCADE,
+        unit_name TEXT NOT NULL,
+        unit_type TEXT NOT NULL,
+        country_id TEXT NOT NULL,
+        target_hex_id TEXT NOT NULL,
+        cost_funds INTEGER NOT NULL,
+        delivery_turn INTEGER NOT NULL,
+        turns_remaining INTEGER NOT NULL,
+        status TEXT NOT NULL DEFAULT 'pending',
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+      );
+      CREATE INDEX military_market_campaign_idx ON military_market_orders(campaign_id);
+
+      CREATE TABLE diplomatic_treaties (
+        id TEXT PRIMARY KEY,
+        campaign_id TEXT NOT NULL REFERENCES campaigns(id) ON DELETE CASCADE,
+        treaty_type TEXT NOT NULL,
+        party_a_country_id TEXT NOT NULL,
+        party_b_country_id TEXT NOT NULL,
+        duration_turns INTEGER NOT NULL,
+        turns_remaining INTEGER NOT NULL,
+        terms_json TEXT NOT NULL DEFAULT '{}',
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+      );
+      CREATE INDEX diplomatic_treaties_campaign_idx ON diplomatic_treaties(campaign_id);
+    `,
+  },
 ];
 
 function checksum(sql: string): string {

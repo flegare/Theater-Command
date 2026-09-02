@@ -6,6 +6,7 @@ import {
   getAllBalticCoreHexCells,
   getHexCellDefinition,
   type StrategicHexCell,
+  type GovernorPolicy,
 } from "../domain/hexGrid.js";
 import {
   FORMATION_ARCHETYPES,
@@ -26,6 +27,7 @@ import {
   findFormationHexPath,
   type HexPathNode,
 } from "../domain/hexPathfinding.js";
+import { INVESTMENT_TIERS } from "../domain/hexInvestments.js";
 
 export type HexTurnEconomySummary = {
   grossFunds: number;
@@ -418,7 +420,11 @@ export function getCampaignHexState(
   // 2. Get modified hex cells from database
   const hexOverrides = database
     .prepare(
-      `SELECT hex_id, side, country_id, contested, damaged_base, improvements_json
+      `SELECT hex_id, side, country_id, contested, damaged_base, improvements_json,
+              capture_turns_counter, occupying_side, occupying_country_id,
+              depot_fuel, depot_missiles, depot_torpedoes, depot_shells,
+              depot_titanium, depot_iron, depot_uranium,
+              governor_policy, governor_automated, investment_tier
        FROM campaign_hex_cells WHERE campaign_id = ?`,
     )
     .all(campaignId) as Array<{
@@ -428,6 +434,19 @@ export function getCampaignHexState(
     contested: number;
     damaged_base: number;
     improvements_json: string;
+    capture_turns_counter?: number;
+    occupying_side?: "blufor" | "opfor" | "neutral";
+    occupying_country_id?: string;
+    depot_fuel?: number;
+    depot_missiles?: number;
+    depot_torpedoes?: number;
+    depot_shells?: number;
+    depot_titanium?: number;
+    depot_iron?: number;
+    depot_uranium?: number;
+    governor_policy?: string;
+    governor_automated?: number;
+    investment_tier?: number;
   }>;
 
   const overrideMap = new Map(hexOverrides.map((row) => [row.hex_id, row]));
@@ -435,13 +454,49 @@ export function getCampaignHexState(
   // Build full Baltic + World cells
   const coreCells = getAllBalticCoreHexCells().map((cell) => {
     const override = overrideMap.get(cell.id);
-    if (!override) return cell;
+
+    const investmentTier = override?.investment_tier ?? 0;
+    const tierBonus = (INVESTMENT_TIERS[investmentTier] ??
+      INVESTMENT_TIERS[0])!;
+    const isContested = override?.contested === 1;
+
+    // Adjusted yields based on investment tier (or 0 if contested)
+    const yields = isContested
+      ? { fundsRevenue: 0, productionPoints: 0, energyFuel: 0 }
+      : {
+          fundsRevenue: Math.round(
+            cell.yields.fundsRevenue * tierBonus.fundsMultiplier,
+          ),
+          productionPoints:
+            cell.yields.productionPoints + tierBonus.bonusProduction,
+          energyFuel: cell.yields.energyFuel + tierBonus.bonusFuel,
+        };
+
     return {
       ...cell,
       ownership: {
-        side: override.side,
-        countryId: override.country_id,
+        side: override?.side ?? cell.ownership.side,
+        countryId: override?.country_id ?? cell.ownership.countryId,
       },
+      yields,
+      status: isContested ? ("contested" as const) : ("controlled" as const),
+      captureTurnsCounter: override?.capture_turns_counter ?? 0,
+      occupyingSide: override?.occupying_side,
+      occupyingCountryId: override?.occupying_country_id,
+      depots: {
+        fuelBarrels: override?.depot_fuel ?? 100,
+        munitionsMissiles: override?.depot_missiles ?? 20,
+        munitionsTorpedoes: override?.depot_torpedoes ?? 10,
+        munitionsShells: override?.depot_shells ?? 200,
+        strategicOreTitanium: override?.depot_titanium ?? 0,
+        strategicOreIron: override?.depot_iron ?? 0,
+        strategicOreUranium: override?.depot_uranium ?? 0,
+      },
+      governor: {
+        policy: (override?.governor_policy ?? "balanced") as GovernorPolicy,
+        automated: Boolean(override?.governor_automated),
+      },
+      investmentTier,
     };
   });
 
@@ -478,8 +533,11 @@ export function getCampaignHexState(
   let controlledHexCount = 0;
 
   for (const cell of coreCells) {
-    // Only tally tiles sovereignly owned or liberated by the player's country
-    if (cell.ownership.countryId === playerCountryId) {
+    // Only tally tiles sovereignly owned or liberated by the player's country and not contested
+    if (
+      cell.ownership.countryId === playerCountryId &&
+      cell.status !== "contested"
+    ) {
       grossFunds += cell.yields.fundsRevenue;
       grossProduction += cell.yields.productionPoints;
       grossFuel += cell.yields.energyFuel;
@@ -2177,6 +2235,273 @@ export function updateFormationComposition(
   );
 
   return { ok: true, formation: updatedFormation, fundsRemaining, deltaFunds };
+}
+
+export type StrategicHexTurnEvent = {
+  kind:
+    | "hex_captured"
+    | "hex_contested"
+    | "hex_liberated"
+    | "market_delivered"
+    | "treaty_expired";
+  summary: string;
+};
+
+export function processTurnStrategicHexesUpdate(
+  database: CampaignDatabase,
+  campaignId: string,
+): StrategicHexTurnEvent[] {
+  const events: StrategicHexTurnEvent[] = [];
+  const now = new Date().toISOString();
+
+  // 1. Process Hex Capture & Contested Mechanics
+  const hexState = getCampaignHexState(database, campaignId);
+  const formationsByHex = new Map<string, CampaignFormation[]>();
+  for (const form of hexState.formations) {
+    if (form.status === "depleted") continue;
+    const list = formationsByHex.get(form.hexId) ?? [];
+    list.push(form);
+    formationsByHex.set(form.hexId, list);
+  }
+
+  for (const cell of hexState.hexCells) {
+    const presentFormations = formationsByHex.get(cell.id) ?? [];
+    const nonAirFormations = presentFormations.filter(
+      (f) =>
+        f.unitType !== "tactical_fighter_wing" &&
+        f.unitType !== "maritime_strike_squadron" &&
+        f.unitType !== "airlift_transport_wing",
+    );
+
+    const bluforUnits = nonAirFormations.filter((f) => f.side === "blufor");
+    const opforUnits = nonAirFormations.filter((f) => f.side === "opfor");
+
+    const currentOwnerSide = cell.ownership.side;
+    const currentCountryId = cell.ownership.countryId;
+    let newContested = cell.status === "contested" ? 1 : 0;
+    let newCaptureCounter = cell.captureTurnsCounter ?? 0;
+    let newOccupyingSide = cell.occupyingSide;
+    let newOccupyingCountry = cell.occupyingCountryId;
+    let newOwnerSide = currentOwnerSide;
+    let newOwnerCountry = currentCountryId;
+
+    // Both sides present -> Contested
+    if (bluforUnits.length > 0 && opforUnits.length > 0) {
+      newContested = 1;
+      newCaptureCounter = 0;
+      if (cell.status !== "contested") {
+        events.push({
+          kind: "hex_contested",
+          summary: `Sector ${cell.name} (${cell.id}) has become contested between BLUFOR and OPFOR forces!`,
+        });
+      }
+    }
+    // Only enemy ground/naval units present in territory owned by opponent
+    else if (
+      (currentOwnerSide === "blufor" &&
+        opforUnits.length > 0 &&
+        bluforUnits.length === 0) ||
+      (currentOwnerSide === "opfor" &&
+        bluforUnits.length > 0 &&
+        opforUnits.length === 0)
+    ) {
+      const occupierSide = opforUnits.length > 0 ? "opfor" : "blufor";
+      const occupierCountry =
+        opforUnits.length > 0
+          ? (opforUnits[0]?.countryId ?? "soviet-union")
+          : (bluforUnits[0]?.countryId ?? "norway");
+
+      newOccupyingSide = occupierSide;
+      newOccupyingCountry = occupierCountry;
+      newCaptureCounter = (cell.captureTurnsCounter ?? 0) + 1;
+
+      if (newCaptureCounter >= 5) {
+        newOwnerSide = occupierSide;
+        newOwnerCountry = occupierCountry;
+        newContested = 0;
+        newCaptureCounter = 0;
+        events.push({
+          kind: "hex_captured",
+          summary: `Sector ${cell.name} (${cell.id}) was captured by ${occupierCountry} after 5 turns of occupation!`,
+        });
+      }
+    }
+    // Only friendly units present in previously contested territory -> Liberated
+    else if (
+      (currentOwnerSide === "blufor" &&
+        bluforUnits.length > 0 &&
+        opforUnits.length === 0 &&
+        cell.status === "contested") ||
+      (currentOwnerSide === "opfor" &&
+        opforUnits.length > 0 &&
+        bluforUnits.length === 0 &&
+        cell.status === "contested")
+    ) {
+      newContested = 0;
+      newCaptureCounter = 0;
+      events.push({
+        kind: "hex_liberated",
+        summary: `Sector ${cell.name} (${cell.id}) has been liberated from contested status.`,
+      });
+    }
+
+    // Save changes to campaign_hex_cells
+    database
+      .prepare(
+        `INSERT INTO campaign_hex_cells (
+          campaign_id, hex_id, side, country_id, contested, capture_turns_counter, occupying_side, occupying_country_id, updated_at, created_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(campaign_id, hex_id) DO UPDATE SET
+          side = excluded.side,
+          country_id = excluded.country_id,
+          contested = excluded.contested,
+          capture_turns_counter = excluded.capture_turns_counter,
+          occupying_side = excluded.occupying_side,
+          occupying_country_id = excluded.occupying_country_id,
+          updated_at = excluded.updated_at`,
+      )
+      .run(
+        campaignId,
+        cell.id,
+        newOwnerSide,
+        newOwnerCountry,
+        newContested,
+        newCaptureCounter,
+        newOccupyingSide ?? null,
+        newOccupyingCountry ?? null,
+        now,
+        now,
+      );
+  }
+
+  // 2. Process Pending Military Market Orders
+  const pendingOrders = database
+    .prepare(
+      `SELECT id, unit_name, unit_type, country_id, target_hex_id, cost_funds, delivery_turn, turns_remaining
+       FROM military_market_orders
+       WHERE campaign_id = ? AND status = 'pending'`,
+    )
+    .all(campaignId) as Array<{
+    id: string;
+    unit_name: string;
+    unit_type: FormationUnitType;
+    country_id: string;
+    target_hex_id: string;
+    cost_funds: number;
+    delivery_turn: number;
+    turns_remaining: number;
+  }>;
+
+  for (const order of pendingOrders) {
+    const nextTurns = order.turns_remaining - 1;
+    if (nextTurns <= 0) {
+      database
+        .prepare(
+          `UPDATE military_market_orders SET status = 'delivered', turns_remaining = 0, updated_at = ? WHERE id = ?`,
+        )
+        .run(now, order.id);
+
+      // Spawn the purchased unit formation
+      const formationId = randomUUID();
+      const side =
+        order.country_id === "soviet-union" ||
+        order.country_id === "east-germany" ||
+        order.country_id === "poland"
+          ? "opfor"
+          : "blufor";
+
+      const archetype =
+        FORMATION_ARCHETYPES[order.unit_type] ??
+        FORMATION_ARCHETYPES.surface_action_group;
+      const initialMetadata = {
+        morale: 80,
+        experience: 50,
+        fuelLevel: 90,
+        ammoLevel: 90,
+        veterancyRank: "regular",
+        composition: {
+          totalVessels: 1,
+          totalSubmarines: order.unit_type === "submarine_squadron" ? 1 : 0,
+          totalAircraft:
+            order.unit_type === "tactical_fighter_wing" ||
+            order.unit_type === "maritime_strike_squadron"
+              ? 2
+              : 0,
+          totalVehicles: 0,
+          units: [
+            { className: order.unit_name, role: "Surplus Asset", count: 1 },
+          ],
+        },
+      };
+
+      database
+        .prepare(
+          `INSERT INTO campaign_formations (
+            id, campaign_id, name, unit_type, side, country_id, hex_id, strength, action_points, max_action_points, status, metadata_json, created_at, updated_at
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        )
+        .run(
+          formationId,
+          campaignId,
+          order.unit_name,
+          order.unit_type,
+          side,
+          order.country_id,
+          order.target_hex_id,
+          80,
+          archetype.maxActionPoints,
+          archetype.maxActionPoints,
+          "ready",
+          JSON.stringify(initialMetadata),
+          now,
+          now,
+        );
+
+      events.push({
+        kind: "market_delivered",
+        summary: `Delivered military surplus unit: ${order.unit_name} to sector ${order.target_hex_id}.`,
+      });
+    } else {
+      database
+        .prepare(
+          `UPDATE military_market_orders SET turns_remaining = ?, updated_at = ? WHERE id = ?`,
+        )
+        .run(nextTurns, now, order.id);
+    }
+  }
+
+  // 3. Process Diplomatic Treaties Expiration
+  const treaties = database
+    .prepare(
+      `SELECT id, treaty_type, party_a_country_id, party_b_country_id, turns_remaining
+       FROM diplomatic_treaties
+       WHERE campaign_id = ? AND turns_remaining > 0`,
+    )
+    .all(campaignId) as Array<{
+    id: string;
+    treaty_type: string;
+    party_a_country_id: string;
+    party_b_country_id: string;
+    turns_remaining: number;
+  }>;
+
+  for (const treaty of treaties) {
+    const nextTurns = treaty.turns_remaining - 1;
+    database
+      .prepare(
+        `UPDATE diplomatic_treaties SET turns_remaining = ?, updated_at = ? WHERE id = ?`,
+      )
+      .run(nextTurns, now, treaty.id);
+
+    if (nextTurns <= 0) {
+      events.push({
+        kind: "treaty_expired",
+        summary: `Diplomatic treaty (${treaty.treaty_type}) between ${treaty.party_a_country_id} and ${treaty.party_b_country_id} has expired.`,
+      });
+    }
+  }
+
+  return events;
 }
 
 function jsonParse<T>(val: string): T {
