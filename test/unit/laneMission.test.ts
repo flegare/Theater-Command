@@ -4,6 +4,7 @@ import { renderNativeMissionIni } from "../../src/domain/nativeMission.js";
 import {
   geoToTemplateLocal,
   loadMissionTemplateMetadata,
+  resolveMissionTemplatePath,
   sampleTemplateZone,
   templateZoneContainsLocal,
 } from "../../src/domain/missionTemplate.js";
@@ -68,29 +69,13 @@ const airLane: TheaterLane = {
   commodity: "passengers",
 };
 
-const templatePath = resolve(
-  process.cwd(),
-  "..",
-  "Sea Power_Data",
-  "StreamingAssets",
-  "user",
-  "missions",
-  "_bergen_region_template.ini",
+const templatePath = resolveMissionTemplatePath(
+  resolve(process.cwd(), "data", "templates", "_bergen_region_template.ini"),
 );
 
 describe("lane mission generation", () => {
   it("extracts Bergen zones and samples inside the template coordinate frame", () => {
-    const template = loadMissionTemplateMetadata(
-      resolve(
-        process.cwd(),
-        "..",
-        "Sea Power_Data",
-        "StreamingAssets",
-        "user",
-        "missions",
-        "_bergen_region_template.ini",
-      ),
-    );
+    const template = loadMissionTemplateMetadata(templatePath);
     expect(template.mapCenter).toEqual([54.27, -26.28]);
     expect(template.mapSymbols).toHaveLength(2);
     expect(template.mapSymbols[0]).toMatchObject({
@@ -431,17 +416,7 @@ describe("lane mission generation", () => {
   });
 
   it("spawns 10-30 varied fishing contacts with independent patrols", () => {
-    const template = loadMissionTemplateMetadata(
-      resolve(
-        process.cwd(),
-        "..",
-        "Sea Power_Data",
-        "StreamingAssets",
-        "user",
-        "missions",
-        "_bergen_region_template.ini",
-      ),
-    );
+    const template = loadMissionTemplateMetadata(templatePath);
     const mission = generateLaneMission(
       lane,
       traffic,

@@ -1,4 +1,30 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
+import { basename, resolve } from "node:path";
+
+export function resolveMissionTemplatePath(path: string): string {
+  if (existsSync(path)) return path;
+  const fileName = basename(path);
+  const localTemplatePath = resolve(
+    process.cwd(),
+    "data",
+    "templates",
+    fileName,
+  );
+  if (existsSync(localTemplatePath)) return localTemplatePath;
+  const fixturePath = resolve(process.cwd(), "test", "fixtures", fileName);
+  if (existsSync(fixturePath)) return fixturePath;
+  const parentTemplatePath = resolve(
+    process.cwd(),
+    "..",
+    "Sea Power_Data",
+    "StreamingAssets",
+    "user",
+    "missions",
+    fileName,
+  );
+  if (existsSync(parentTemplatePath)) return parentTemplatePath;
+  return path;
+}
 
 export type TemplateZone = {
   id: string;
@@ -74,7 +100,8 @@ function parseTemplate(path: string): {
   sections: Map<string, Record<string, string>>;
   language: Record<string, string>;
 } {
-  const lines = readFileSync(path, "utf8").split(/\r?\n/);
+  const resolvedPath = resolveMissionTemplatePath(path);
+  const lines = readFileSync(resolvedPath, "utf8").split(/\r?\n/);
   const sections = new Map<string, Record<string, string>>();
   let section = "";
   for (const line of lines) {
