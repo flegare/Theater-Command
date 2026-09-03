@@ -15,7 +15,11 @@ export type ScenarioCountry = {
     | "united-states"
     | "soviet-union"
     | "china"
-    | "sweden";
+    | "sweden"
+    | "finland"
+    | "denmark"
+    | "west-germany"
+    | "iceland";
   name: string;
   coalitionId: "nato" | "warsaw-pact" | "non-aligned";
   commandScope: string;
@@ -160,6 +164,58 @@ export const northernFlank = {
         "Preserve territorial integrity",
         "Monitor Baltic approaches",
         "Keep the conflict away from Swedish waters",
+      ],
+      playable: false,
+    },
+    {
+      id: "finland",
+      name: "Republic of Finland",
+      coalitionId: "non-aligned",
+      commandScope:
+        "Nordic armed neutrality, Paasikivi-Kekkonen line defense, and territorial surveillance.",
+      objectives: [
+        "Preserve neutral sovereignty",
+        "Deter border escalation",
+        "Maintain regional stability",
+      ],
+      playable: false,
+    },
+    {
+      id: "denmark",
+      name: "Kingdom of Denmark",
+      coalitionId: "nato",
+      commandScope:
+        "Danish Straits defense, Baltic approach monitoring, and NATO allied coordination.",
+      objectives: [
+        "Control Danish Straits",
+        "Deny Baltic exits to adversary",
+        "Support allied reinforcements",
+      ],
+      playable: false,
+    },
+    {
+      id: "west-germany",
+      name: "Federal Republic of Germany",
+      coalitionId: "nato",
+      commandScope:
+        "Bundesmarine Baltic operations, North Sea escort, and naval air patrol.",
+      objectives: [
+        "Secure southern Baltic flank",
+        "Protect North Sea approaches",
+        "Coordinate allied naval defense",
+      ],
+      playable: false,
+    },
+    {
+      id: "iceland",
+      name: "Republic of Iceland",
+      coalitionId: "nato",
+      commandScope:
+        "GIUK Gap surveillance, Keflavík radar network, and allied maritime tracking.",
+      objectives: [
+        "Monitor GIUK Gap chokepoint",
+        "Facilitate allied maritime patrol aircraft",
+        "Preserve island sovereignty",
       ],
       playable: false,
     },

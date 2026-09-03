@@ -52,6 +52,7 @@ import {
   type MarketOrderRecord,
 } from "../../src/domain/militaryMarket.js";
 import { type DiplomaticTreatyRecord } from "../../src/domain/diplomacy.js";
+import { COVERT_OPS_CATALOG } from "../../src/domain/covertOperations.js";
 
 type Catalog = {
   theaters: Array<{ id: string; name: string; summary: string }>;
@@ -922,6 +923,9 @@ function CommandCenter({
       campaignState.refetch();
       sectors.refetch();
       hexGrid.refetch();
+      queryClient.invalidateQueries({ queryKey: ["diplomacyCables"] });
+      queryClient.invalidateQueries({ queryKey: ["diplomacyWorldNews"] });
+      queryClient.invalidateQueries({ queryKey: ["diplomacyTreaties"] });
     },
   });
   const sectorPurchase = useMutation({
@@ -1002,6 +1006,61 @@ function CommandCenter({
 
   const [isMarketOpen, setIsMarketOpen] = useState(false);
   const [isTreatiesOpen, setIsTreatiesOpen] = useState(false);
+  const [isInboxOpen, setIsInboxOpen] = useState(false);
+  const [isCovertOpsOpen, setIsCovertOpsOpen] = useState(false);
+  const [latestNegotiation, setLatestNegotiation] =
+    useState<DiplomaticNegotiationResponse | null>(null);
+  const [diplomacyError, setDiplomacyError] = useState<string | null>(null);
+
+  const ollamaStatus = useQuery({
+    queryKey: ["ollamaStatus"],
+    queryFn: () =>
+      api<{ ok: boolean; status: OllamaStatus }>(
+        "/api/v1/campaigns/current/ai/ollama/status",
+      ),
+    refetchInterval: 10000,
+  });
+
+  const campaignTension = useQuery({
+    queryKey: ["campaignTension"],
+    queryFn: () =>
+      api<{ ok: boolean; tension: CampaignTensionState }>(
+        "/api/v1/campaigns/current/tensions",
+      ),
+  });
+
+  const covertOps = useQuery({
+    queryKey: ["covertOps"],
+    queryFn: () =>
+      api<{
+        ok: boolean;
+        catalog: CovertOpCatalogListing[];
+        operations: CovertOperationRecord[];
+      }>("/api/v1/campaigns/current/covert-ops"),
+    enabled: isCovertOpsOpen,
+  });
+
+  const launchCovertOpMutation = useMutation({
+    mutationFn: (input: {
+      targetCountryId: string;
+      targetHexId: string;
+      opType: CovertOpType;
+    }) =>
+      api<{ ok: boolean; message: string }>(
+        "/api/v1/campaigns/current/covert-ops/launch",
+        {
+          method: "POST",
+          body: JSON.stringify(input),
+        },
+      ),
+    onSuccess: (data) => {
+      hexGrid.refetch();
+      campaignState.refetch();
+      campaignTension.refetch();
+      covertOps.refetch();
+      alert(`[CLANDESTINE OPERATION EXECUTED]\n${data.message}`);
+    },
+  });
 
   const marketCatalog = useQuery({
     queryKey: ["marketCatalog"],
@@ -1044,21 +1103,144 @@ function CommandCenter({
     enabled: isTreatiesOpen,
   });
 
-  const establishTreatyMutation = useMutation({
+  const negotiateTreatyMutation = useMutation({
     mutationFn: (input: {
       treatyType: string;
       targetCountryId: string;
       durationTurns: number;
+      offeredTributeFunds?: number | undefined;
+      tribute?: TributePackage | undefined;
     }) =>
-      api<{ ok: boolean; treaty: unknown }>(
-        "/api/v1/campaigns/current/diplomacy/treaties",
+      api<{ ok: boolean; negotiation: DiplomaticNegotiationResponse }>(
+        "/api/v1/campaigns/current/diplomacy/negotiate",
         {
           method: "POST",
           body: JSON.stringify(input),
         },
       ),
-    onSuccess: () => {
+    onError: (err: unknown) => {
+      setDiplomacyError(
+        err instanceof Error ? err.message : "Diplomatic negotiation failed.",
+      );
+    },
+    onSuccess: (data) => {
+      setDiplomacyError(null);
       diplomacyTreaties.refetch();
+      campaignTension.refetch();
+      hexGrid.refetch();
+      campaignState.refetch();
+      setLatestNegotiation(data.negotiation);
+    },
+  });
+
+  const diplomacyCables = useQuery({
+    queryKey: ["diplomacyCables"],
+    queryFn: () =>
+      api<{
+        ok: boolean;
+        cables: DiplomaticCable[];
+        unreadCount?: number;
+      }>("/api/v1/campaigns/current/diplomacy/cables"),
+    refetchInterval: 15000,
+  });
+
+  const diplomacyWorldNews = useQuery({
+    queryKey: ["diplomacyWorldNews"],
+    queryFn: () =>
+      api<{ ok: boolean; dispatches: WorldNewsDispatch[] }>(
+        "/api/v1/campaigns/current/diplomacy/world-news",
+      ),
+    refetchInterval: 15000,
+  });
+
+  const markCablesReadMutation = useMutation({
+    mutationFn: (cableIds?: string[]) =>
+      api<{ ok: boolean; updatedCount: number }>(
+        "/api/v1/campaigns/current/diplomacy/cables/mark-read",
+        {
+          method: "POST",
+          body: JSON.stringify({ cableIds }),
+        },
+      ),
+    onSuccess: () => {
+      diplomacyCables.refetch();
+    },
+  });
+
+  const acceptCounterOfferMutation = useMutation({
+    mutationFn: (input: {
+      targetCountryId: string;
+      treatyType: string;
+      durationTurns: number;
+      demandedFunds?: number | undefined;
+      demandedFuel?: number | undefined;
+      demandedProduction?: number | undefined;
+      conditionSummary?: string | undefined;
+    }) =>
+      api<{
+        ok: boolean;
+        ratifiedTreaty?: DiplomaticTreatyRecord;
+        falloutCables?: DiplomaticCable[];
+      }>("/api/v1/campaigns/current/diplomacy/counter-offer/accept", {
+        method: "POST",
+        body: JSON.stringify(input),
+      }),
+    onError: (err: unknown) => {
+      setDiplomacyError(
+        err instanceof Error ? err.message : "Failed to accept counter-offer.",
+      );
+    },
+    onSuccess: (data) => {
+      setDiplomacyError(null);
+      diplomacyTreaties.refetch();
+      diplomacyCables.refetch();
+      campaignTension.refetch();
+      hexGrid.refetch();
+      campaignState.refetch();
+      if (latestNegotiation) {
+        setLatestNegotiation({
+          ...latestNegotiation,
+          decision: "accept",
+          reasoning: "Counter-offer terms accepted and funds/fuel delivered.",
+          diplomaticDialogue:
+            "Counter-terms ratified. Bilateral treaty is now in effect.",
+          counterTerms: undefined,
+          ratifiedTreaty: data.ratifiedTreaty,
+          thirdPartyFalloutCables: data.falloutCables,
+        });
+      }
+    },
+  });
+
+  const declineCounterOfferMutation = useMutation({
+    mutationFn: (input: {
+      targetCountryId: string;
+      treatyType: string;
+      reason?: string;
+    }) =>
+      api<{
+        ok: boolean;
+        cableRecorded?: DiplomaticCable;
+        updatedRelations?: BilateralRelationshipDetails;
+      }>("/api/v1/campaigns/current/diplomacy/counter-offer/decline", {
+        method: "POST",
+        body: JSON.stringify(input),
+      }),
+    onSuccess: () => {
+      diplomacyCables.refetch();
+      diplomacyTreaties.refetch();
+      campaignState.refetch();
+      if (latestNegotiation) {
+        setLatestNegotiation({
+          ...latestNegotiation,
+          decision: "reject",
+          reasoning:
+            "Foreign compensatory indemnity demands formally declined by leadership.",
+          diplomaticDialogue:
+            "Plenipotentiary talks suspended. Indemnity demands refused.",
+          counterTerms: undefined,
+        });
+      }
     },
   });
 
@@ -1076,6 +1258,39 @@ function CommandCenter({
     },
   });
 
+  const currentDefcon = campaignTension.data?.tension.defconLevel ?? 5;
+  const currentTensionIndex = campaignTension.data?.tension.tensionIndex ?? 20;
+
+  const defconColors = {
+    5: {
+      bg: "#166534",
+      border: "#22c55e",
+      text: "DEFCON 5: NORMAL PEACETIME WATCH",
+    },
+    4: {
+      bg: "#155e75",
+      border: "#06b6d4",
+      text: "DEFCON 4: INCREASED INTELLIGENCE WATCH",
+    },
+    3: {
+      bg: "#854d0e",
+      border: "#eab308",
+      text: "DEFCON 3: AIR FORCE READY IN 15 MIN",
+    },
+    2: {
+      bg: "#9a3412",
+      border: "#f97316",
+      text: "DEFCON 2: FORCES READY TO DEPLOY IN 6 HOURS",
+    },
+    1: {
+      bg: "#991b1b",
+      border: "#ef4444",
+      text: "DEFCON 1: MAXIMUM ALERT / IMMINENT WAR",
+    },
+  };
+
+  const activeDefconConfig = defconColors[currentDefcon] || defconColors[5];
+
   return (
     <main className="app-shell">
       <header className="app-header">
@@ -1083,11 +1298,106 @@ function CommandCenter({
           <p className="eyebrow">THEATER COMMAND / ACTIVE CAMPAIGN</p>
           <h1>{session.countryName}</h1>
         </div>
-        <div className="header-status">
-          <span className="status-dot" />
-          {session.status}
+        <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+          {ollamaStatus.data?.status.online ? (
+            <div
+              style={{
+                fontSize: "12px",
+                padding: "4px 10px",
+                borderRadius: "4px",
+                background: "rgba(34, 197, 94, 0.2)",
+                border: "1px solid #22c55e",
+                color: "#4ade80",
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+              }}
+            >
+              <span className="status-dot" style={{ background: "#22c55e" }} />
+              <strong>LLM: {ollamaStatus.data.status.activeModel}</strong>{" "}
+              (Online)
+            </div>
+          ) : (
+            <div
+              style={{
+                fontSize: "12px",
+                padding: "4px 10px",
+                borderRadius: "4px",
+                background: "rgba(234, 179, 8, 0.2)",
+                border: "1px solid #eab308",
+                color: "#fde047",
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+              }}
+            >
+              <span className="status-dot" style={{ background: "#eab308" }} />
+              <strong>Strategic AI: Heuristic Fallback</strong>
+            </div>
+          )}
+          <div className="header-status">
+            <span className="status-dot" />
+            {session.status}
+          </div>
         </div>
       </header>
+
+      {/* DEFCON Brinkmanship & Escalation Meter */}
+      <section
+        style={{
+          background: activeDefconConfig.bg,
+          border: `1px solid ${activeDefconConfig.border}`,
+          borderRadius: "6px",
+          padding: "8px 14px",
+          margin: "8px 16px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          color: "#fff",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <strong
+            style={{
+              fontSize: "14px",
+              letterSpacing: "1px",
+              background: "rgba(0,0,0,0.4)",
+              padding: "4px 8px",
+              borderRadius: "4px",
+              border: `1px solid ${activeDefconConfig.border}`,
+            }}
+          >
+            {activeDefconConfig.text}
+          </strong>
+          <span style={{ fontSize: "12px", opacity: 0.9 }}>
+            {campaignTension.data?.tension.lastIncidentSummary ??
+              "Cold War baseline deterrence."}
+          </span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <span style={{ fontSize: "12px", fontWeight: "bold" }}>
+            Tension Index: {currentTensionIndex}/100
+          </span>
+          <div
+            style={{
+              width: "120px",
+              height: "10px",
+              background: "rgba(0,0,0,0.5)",
+              borderRadius: "5px",
+              overflow: "hidden",
+            }}
+          >
+            <div
+              style={{
+                width: `${currentTensionIndex}%`,
+                height: "100%",
+                background: activeDefconConfig.border,
+                transition: "width 0.4s ease",
+              }}
+            />
+          </div>
+        </div>
+      </section>
 
       {/* Civilization-Style Multi-Resource National Economy Bar */}
       <section
@@ -1173,7 +1483,7 @@ function CommandCenter({
             className="recruitment-catalog-button"
             onClick={() => setIsRecruiting(true)}
           >
-            📋 Recruit Forces (Catalog)
+            📋 Recruit Forces
           </button>
           <button
             type="button"
@@ -1190,6 +1500,32 @@ function CommandCenter({
             onClick={() => setIsTreatiesOpen(true)}
           >
             📜 Treaties
+          </button>
+          <button
+            type="button"
+            className="recruitment-catalog-button"
+            style={{
+              background:
+                (diplomacyCables.data?.unreadCount ?? 0) > 0
+                  ? "#991b1b"
+                  : "#1e293b",
+              border:
+                (diplomacyCables.data?.unreadCount ?? 0) > 0
+                  ? "1px solid #ef4444"
+                  : "1px solid #475569",
+              position: "relative",
+            }}
+            onClick={() => setIsInboxOpen(true)}
+          >
+            📨 Cables ({diplomacyCables.data?.unreadCount ?? 0})
+          </button>
+          <button
+            type="button"
+            className="recruitment-catalog-button"
+            style={{ background: "#dc2626" }}
+            onClick={() => setIsCovertOpsOpen(true)}
+          >
+            🗡️ Black Ops
           </button>
           <button
             type="button"
@@ -1237,8 +1573,58 @@ function CommandCenter({
         isOpen={isTreatiesOpen}
         onClose={() => setIsTreatiesOpen(false)}
         treaties={diplomacyTreaties.data?.treaties ?? []}
-        onEstablish={(input) => establishTreatyMutation.mutate(input)}
-        isEstablishing={establishTreatyMutation.isPending}
+        cables={diplomacyCables.data?.cables ?? []}
+        onNegotiate={(input) => negotiateTreatyMutation.mutate(input)}
+        isNegotiating={negotiateTreatyMutation.isPending}
+        latestNegotiation={latestNegotiation}
+        onAcceptCounterOffer={(input) =>
+          acceptCounterOfferMutation.mutate(input)
+        }
+        isAcceptingCounter={acceptCounterOfferMutation.isPending}
+        onDeclineCounterOffer={(input) =>
+          declineCounterOfferMutation.mutate(input)
+        }
+        isDecliningCounter={declineCounterOfferMutation.isPending}
+        onClearNegotiation={() => setLatestNegotiation(null)}
+        diplomacyError={diplomacyError}
+        onClearDiplomacyError={() => setDiplomacyError(null)}
+        playerFunds={
+          campaignState.data?.economy.funds ?? hexGrid.data?.economy.funds ?? 0
+        }
+        playerFuel={
+          campaignState.data?.economy.fuelStockpile ??
+          hexGrid.data?.economy.fuelStockpile ??
+          0
+        }
+        playerProduction={
+          campaignState.data?.economy.productionPoints ??
+          hexGrid.data?.economy.productionPoints ??
+          0
+        }
+        playerFormations={hexGrid.data?.formations ?? []}
+        playerHexes={hexGrid.data?.hexCells ?? []}
+      />
+
+      <DiplomaticInboxModal
+        isOpen={isInboxOpen}
+        onClose={() => setIsInboxOpen(false)}
+        cables={diplomacyCables.data?.cables ?? []}
+        worldNews={diplomacyWorldNews.data?.dispatches ?? []}
+        onMarkRead={(cableIds) => markCablesReadMutation.mutate(cableIds)}
+        isMarkingRead={markCablesReadMutation.isPending}
+      />
+
+      <CovertOperationsModal
+        isOpen={isCovertOpsOpen}
+        onClose={() => setIsCovertOpsOpen(false)}
+        hexGrid={hexGrid.data}
+        funds={
+          campaignState.data?.economy.funds ?? hexGrid.data?.economy.funds ?? 0
+        }
+        catalog={covertOps.data?.catalog ?? COVERT_OPS_CATALOG}
+        operations={covertOps.data?.operations ?? []}
+        onLaunch={(input) => launchCovertOpMutation.mutate(input)}
+        isLaunching={launchCovertOpMutation.isPending}
       />
 
       <FormationCompositionEditorModal
@@ -2946,35 +3332,212 @@ function MilitarySurplusMarketModal({
   );
 }
 
-function DiplomaticTreatiesModal({
+export type OllamaStatus = {
+  online: boolean;
+  activeModel: string;
+  availableModels: string[];
+  latencyMs: number;
+  error?: string;
+};
+
+export type CampaignTensionState = {
+  campaignId: string;
+  tensionIndex: number;
+  defconLevel: 1 | 2 | 3 | 4 | 5;
+  peaceTurnsCounter: number;
+  lastIncidentSummary: string | null;
+  updatedAt: string;
+};
+
+export type CovertOpType =
+  | "SABOTAGE_STOCKPILE_DEPOT"
+  | "DISABLE_RADAR_AND_AIR_DEFENSE"
+  | "CLANDESTINE_SEA_MINING"
+  | "INDUSTRIAL_DISRUPTION"
+  | "PROXY_SUBMARINE_INCURSION"
+  | "SPECIAL_FORCES_RAID";
+
+export type CovertOpCatalogListing = {
+  opType: CovertOpType;
+  title: string;
+  summary: string;
+  fundsCost: number;
+  baseSuccessRate: number;
+  baseAttributionRisk: number;
+  tensionImpact: number;
+};
+
+export type CovertOperationRecord = {
+  id: string;
+  campaignId: string;
+  sourceCountryId: string;
+  targetCountryId: string;
+  targetHexId: string;
+  opType: CovertOpType;
+  status: "planned" | "success" | "failed" | "compromised";
+  fundsCost: number;
+  successChance: number;
+  attributionRisk: number;
+  detected: boolean;
+  resultSummary: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type DiplomaticCable = {
+  id: string;
+  senderCountryId: string;
+  recipientCountryId: string;
+  classification: string;
+  header: string;
+  content: string;
+  stanceChange?: string | undefined;
+  isRead: boolean;
+  createdAt: string;
+};
+
+export type WorldNewsDispatch = {
+  id: string;
+  campaignId: string;
+  agency: string;
+  headline: string;
+  body: string;
+  category: string;
+  createdAt: string;
+};
+
+export type DiplomaticNegotiationResponse = {
+  decision:
+    "accept" | "reject" | "counter_offer" | "demand_tribute" | "threaten_war";
+  reasoning: string;
+  diplomaticDialogue: string;
+  source: "ollama_llm" | "heuristic_ai";
+  modelUsed?: string | undefined;
+  counterTerms?:
+    | {
+        durationTurns?: number | undefined;
+        demandedFunds?: number | undefined;
+        demandedFuel?: number | undefined;
+        demandedProduction?: number | undefined;
+        conditionSummary?: string | undefined;
+      }
+    | undefined;
+  ratifiedTreaty?: DiplomaticTreatyRecord | undefined;
+  thirdPartyFalloutCables?: DiplomaticCable[] | undefined;
+  triggeredCovertOpSummary?: string | undefined;
+  updatedRelations?: BilateralRelationshipDetails | undefined;
+};
+
+export type CasusBelliPretext = {
+  name: string;
+  pretextSummary: string;
+  historicalAnalog: string;
+  legitimacyOdds: number;
+  triggerThreshold: number;
+  casusBelliType: string;
+};
+
+export type DiplomaticRelationEvent = {
+  id: string;
+  campaignId: string;
+  countryId: string;
+  relatedCountryId: string;
+  deltaScore: number;
+  reason: string;
+  createdAt: string;
+};
+
+export type TributePackage = {
+  mode: "offer" | "demand";
+  funds?: number | undefined;
+  fuel?: number | undefined;
+  production?: number | undefined;
+  techSharing?: boolean | undefined;
+  transferredFormationId?: string | undefined;
+  cededHexId?: string | undefined;
+};
+
+export type BilateralRelationshipDetails = {
+  score: number;
+  stance: "allied" | "friendly" | "neutral" | "strained" | "hostile" | "war";
+  sentimentLabel: string;
+  baselineReason?: string | undefined;
+  events?: DiplomaticRelationEvent[] | undefined;
+  activeCasusBelli?: CasusBelliPretext | undefined;
+};
+
+export type DiplomaticOddsCalculation = {
+  oddsPercent: number;
+  baseOdds: number;
+  breakdown: Array<{ factor: string; delta: number }>;
+  isHardRedline: boolean;
+  redlineReason?: string | undefined;
+  relationshipDetails?: BilateralRelationshipDetails | undefined;
+  counterBountyRecommendation?:
+    | {
+        demandedFunds?: number | undefined;
+        demandedFuel?: number | undefined;
+        demandedProduction?: number | undefined;
+        durationTurns?: number | undefined;
+        conditionSummary: string;
+      }
+    | undefined;
+};
+
+function CovertOperationsModal({
   isOpen,
   onClose,
-  treaties,
-  onEstablish,
-  isEstablishing,
+  hexGrid,
+  funds,
+  catalog,
+  operations,
+  onLaunch,
+  isLaunching,
 }: {
   isOpen: boolean;
   onClose: () => void;
-  treaties: DiplomaticTreatyRecord[];
-  onEstablish: (input: {
-    treatyType: string;
+  hexGrid: HexGridStateSnapshot | undefined;
+  funds: number;
+  catalog: CovertOpCatalogListing[];
+  operations: CovertOperationRecord[];
+  onLaunch: (input: {
     targetCountryId: string;
-    durationTurns: number;
+    targetHexId: string;
+    opType: CovertOpType;
   }) => void;
-  isEstablishing: boolean;
+  isLaunching: boolean;
 }): ReactElement | null {
-  const [treatyType, setTreatyType] = useState<string>("ceasefire");
+  const [selectedOpType, setSelectedOpType] = useState<CovertOpType>(
+    "SABOTAGE_STOCKPILE_DEPOT",
+  );
+  const [targetHexId, setTargetHexId] = useState<string>("hex-sov-murmansk");
   const [targetCountryId, setTargetCountryId] =
     useState<string>("soviet-union");
-  const [durationTurns, setDurationTurns] = useState<number>(5);
 
   if (!isOpen) return null;
 
+  const effectiveCatalog =
+    catalog && catalog.length > 0 ? catalog : COVERT_OPS_CATALOG;
+  const currentOp =
+    effectiveCatalog.find((c) => c.opType === selectedOpType) ??
+    effectiveCatalog[0]!;
+  const targetHexes =
+    hexGrid?.hexCells.filter((h) => h.ownership.side !== "blufor") ?? [];
+
   return (
     <div className="recruitment-modal-backdrop" onClick={onClose}>
-      <div className="recruitment-modal" onClick={(e) => e.stopPropagation()}>
-        <div className="recruitment-modal-header">
-          <h3>📜 Diplomatic Treaties & Ceasefires</h3>
+      <div
+        className="recruitment-modal"
+        style={{ maxWidth: "800px" }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div
+          className="recruitment-modal-header"
+          style={{ borderBottomColor: "#dc2626" }}
+        >
+          <h3 style={{ color: "#f87171" }}>
+            🗡️ Clandestine Black Operations & Sabotage
+          </h3>
           <button
             type="button"
             className="recruitment-modal-close"
@@ -2985,6 +3548,427 @@ function DiplomaticTreatiesModal({
         </div>
 
         <div className="recruitment-modal-body">
+          {/* Operation Cards Selection */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "8px",
+              marginBottom: "16px",
+            }}
+          >
+            {catalog.map((op) => {
+              const isSelected = op.opType === selectedOpType;
+              return (
+                <div
+                  key={op.opType}
+                  onClick={() => setSelectedOpType(op.opType)}
+                  style={{
+                    background: isSelected
+                      ? "rgba(220, 38, 38, 0.2)"
+                      : "rgba(30, 41, 59, 0.6)",
+                    border: `1px solid ${
+                      isSelected ? "#ef4444" : "rgba(148, 163, 184, 0.2)"
+                    }`,
+                    borderRadius: "6px",
+                    padding: "10px",
+                    cursor: "pointer",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: "13px",
+                      color: isSelected ? "#fca5a5" : "#f1f5f9",
+                      marginBottom: "4px",
+                    }}
+                  >
+                    {op.title}
+                  </div>
+                  <p
+                    style={{
+                      margin: "0 0 6px 0",
+                      fontSize: "11px",
+                      color: "#94a3b8",
+                    }}
+                  >
+                    {op.summary}
+                  </p>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      fontSize: "11px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    <span style={{ color: "#38bdf8" }}>
+                      Cost: ${op.fundsCost}
+                    </span>
+                    <span style={{ color: "#4ade80" }}>
+                      Success: {Math.round(op.baseSuccessRate * 100)}%
+                    </span>
+                    <span style={{ color: "#fb923c" }}>
+                      Risk: {Math.round(op.baseAttributionRisk * 100)}%
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Operation Target Selector */}
+          <div className="recruitment-controls-row">
+            <div className="recruitment-control-group">
+              <label>Target Nation</label>
+              <select
+                value={targetCountryId}
+                onChange={(e) => setTargetCountryId(e.target.value)}
+              >
+                <option value="soviet-union">Soviet Union (OPFOR)</option>
+                <option value="east-germany">East Germany (OPFOR)</option>
+                <option value="poland">Poland (OPFOR)</option>
+                <option value="sweden">Sweden (Neutral)</option>
+                <option value="finland">Finland (Neutral)</option>
+              </select>
+            </div>
+
+            <div className="recruitment-control-group">
+              <label>Target Strategic Sector</label>
+              <select
+                value={targetHexId}
+                onChange={(e) => setTargetHexId(e.target.value)}
+              >
+                {targetHexes.map((h) => (
+                  <option key={h.id} value={h.id}>
+                    {h.name} ({h.ownership.countryId})
+                  </option>
+                ))}
+                {targetHexes.length === 0 && (
+                  <option value="hex-sov-murmansk">
+                    Murmansk Naval Bastion (soviet-union)
+                  </option>
+                )}
+              </select>
+            </div>
+          </div>
+
+          {/* History of Covert Actions */}
+          <div
+            style={{
+              marginTop: "16px",
+              background: "rgba(15, 23, 42, 0.8)",
+              padding: "10px",
+              borderRadius: "6px",
+              maxHeight: "140px",
+              overflowY: "auto",
+            }}
+          >
+            <div
+              style={{
+                fontSize: "11px",
+                fontWeight: 700,
+                color: "#94a3b8",
+                marginBottom: "6px",
+                textTransform: "uppercase",
+              }}
+            >
+              Clandestine Intelligence Log ({operations.length})
+            </div>
+            {operations.length === 0 ? (
+              <p style={{ margin: 0, fontSize: "12px", color: "#64748b" }}>
+                No covert operations launched yet.
+              </p>
+            ) : (
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "6px" }}
+              >
+                {operations.map((op) => (
+                  <div
+                    key={op.id}
+                    style={{
+                      fontSize: "11px",
+                      padding: "6px 8px",
+                      borderRadius: "4px",
+                      background: op.detected
+                        ? "rgba(239, 68, 68, 0.15)"
+                        : "rgba(34, 197, 94, 0.15)",
+                      border: `1px solid ${
+                        op.detected
+                          ? "rgba(239, 68, 68, 0.4)"
+                          : "rgba(34, 197, 94, 0.4)"
+                      }`,
+                    }}
+                  >
+                    <strong>{op.opType}</strong> against{" "}
+                    <em>{op.targetHexId}</em> ({op.targetCountryId}):{" "}
+                    <span>{op.resultSummary}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="recruitment-modal-footer">
+          <button
+            type="button"
+            className="action-button secondary-action"
+            onClick={onClose}
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            className="recruitment-submit-btn"
+            style={{ background: "#dc2626" }}
+            disabled={isLaunching || funds < currentOp.fundsCost}
+            onClick={() => {
+              onLaunch({
+                targetCountryId,
+                targetHexId,
+                opType: currentOp.opType,
+              });
+            }}
+          >
+            {isLaunching
+              ? "Executing Infiltration..."
+              : funds < currentOp.fundsCost
+                ? `Insufficient Funds ($${currentOp.fundsCost})`
+                : `Authorize Black Op ($${currentOp.fundsCost})`}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DiplomaticTreatiesModal({
+  isOpen,
+  onClose,
+  treaties,
+  cables,
+  onNegotiate,
+  isNegotiating,
+  latestNegotiation,
+  onAcceptCounterOffer,
+  isAcceptingCounter,
+  onDeclineCounterOffer,
+  isDecliningCounter,
+  onClearNegotiation,
+  diplomacyError,
+  onClearDiplomacyError,
+  playerFunds,
+  playerFuel,
+  playerProduction,
+  playerFormations = [],
+  playerHexes = [],
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  treaties: DiplomaticTreatyRecord[];
+  cables: DiplomaticCable[];
+  onNegotiate: (input: {
+    treatyType: string;
+    targetCountryId: string;
+    durationTurns: number;
+    offeredTributeFunds?: number | undefined;
+    tribute?: TributePackage | undefined;
+  }) => void;
+  isNegotiating: boolean;
+  latestNegotiation: DiplomaticNegotiationResponse | null;
+  onAcceptCounterOffer: (input: {
+    targetCountryId: string;
+    treatyType: string;
+    durationTurns: number;
+    demandedFunds?: number | undefined;
+    demandedFuel?: number | undefined;
+    demandedProduction?: number | undefined;
+    conditionSummary?: string | undefined;
+  }) => void;
+  isAcceptingCounter: boolean;
+  onDeclineCounterOffer: (input: {
+    targetCountryId: string;
+    treatyType: string;
+    reason?: string;
+  }) => void;
+  isDecliningCounter: boolean;
+  onClearNegotiation: () => void;
+  diplomacyError?: string | null | undefined;
+  onClearDiplomacyError?: (() => void) | undefined;
+  playerFunds: number;
+  playerFuel: number;
+  playerProduction: number;
+  playerFormations?: CampaignFormation[] | undefined;
+  playerHexes?: StrategicHexCell[] | undefined;
+}): ReactElement | null {
+  const [targetCountryId, setTargetCountryId] =
+    useState<string>("soviet-union");
+  const [treatyType, setTreatyType] = useState<string>("ceasefire");
+  const [durationTurns, setDurationTurns] = useState<number>(30);
+  const [tributeMode, setTributeMode] = useState<"offer" | "demand">("offer");
+  const [tributeFunds, setTributeFunds] = useState<number>(0);
+  const [tributeFuel, setTributeFuel] = useState<number>(0);
+  const [tributeProduction, setTributeProduction] = useState<number>(0);
+  const [tributeTech, setTributeTech] = useState<boolean>(false);
+  const [tributeFormationId, setTributeFormationId] = useState<string>("");
+  const [tributeHexId, setTributeHexId] = useState<string>("");
+  const [isLedgerExpanded, setIsLedgerExpanded] = useState<boolean>(true);
+  const [counterAdjustment, setCounterAdjustment] = useState<{
+    funds?: number;
+    fuel?: number;
+    production?: number;
+    duration?: number;
+  } | null>(null);
+  const [isJustArrived, setIsJustArrived] = useState<boolean>(false);
+  const [formGuidanceNotice, setFormGuidanceNotice] = useState<string | null>(
+    null,
+  );
+
+  const modalBodyRef = useRef<HTMLDivElement>(null);
+  const answerCardRef = useRef<HTMLDivElement>(null);
+  const proposalSectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (latestNegotiation) {
+      setIsJustArrived(true);
+      if (modalBodyRef.current) {
+        modalBodyRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      answerCardRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+      const timer = setTimeout(() => setIsJustArrived(false), 2200);
+      return () => clearTimeout(timer);
+    }
+  }, [latestNegotiation]);
+
+  // Dynamic duration bounds based on treaty type
+  const durationBounds = useMemo(() => {
+    switch (treatyType) {
+      case "ceasefire":
+        return { min: 7, max: 60, def: 30, unit: "Days (Armistice)" };
+      case "military_transit_rights":
+        return { min: 14, max: 180, def: 90, unit: "Days (Transit Rights)" };
+      case "basing_rights":
+        return { min: 30, max: 180, def: 90, unit: "Days (Basing Rights)" };
+      case "trade_agreement":
+        return { min: 30, max: 365, def: 180, unit: "Days (Trade Agreement)" };
+      case "joint_production_pact":
+        return { min: 60, max: 365, def: 180, unit: "Days (Joint Production)" };
+      case "science_tech_sharing":
+        return {
+          min: 60,
+          max: 365,
+          def: 180,
+          unit: "Days (Defense Science & Tech)",
+        };
+      case "non_aggression":
+        return { min: 30, max: 365, def: 180, unit: "Days (Non-Aggression)" };
+      case "alliance":
+      case "mutual_defense":
+      default:
+        return { min: 60, max: 365, def: 365, unit: "Days (Alliance)" };
+    }
+  }, [treatyType]);
+
+  const handleTreatyTypeChange = (newType: string) => {
+    setTreatyType(newType);
+    let def = 30;
+    if (newType === "military_transit_rights" || newType === "basing_rights")
+      def = 90;
+    else if (
+      newType === "non_aggression" ||
+      newType === "trade_agreement" ||
+      newType === "joint_production_pact" ||
+      newType === "science_tech_sharing"
+    )
+      def = 180;
+    else if (newType === "alliance" || newType === "mutual_defense") def = 365;
+    setDurationTurns(def);
+  };
+
+  const treatyOdds = useQuery({
+    queryKey: [
+      "treatyOdds",
+      targetCountryId,
+      treatyType,
+      durationTurns,
+      tributeMode,
+      tributeFunds,
+      tributeFuel,
+      tributeProduction,
+      tributeTech,
+      tributeFormationId,
+      tributeHexId,
+    ],
+    queryFn: () => {
+      const q = new URLSearchParams({
+        targetCountryId,
+        treatyType,
+        durationTurns: String(durationTurns),
+        tributeMode,
+        offeredTributeFunds: String(tributeFunds),
+        offeredTributeFuel: String(tributeFuel),
+        offeredTributeProduction: String(tributeProduction),
+        techSharing: String(tributeTech),
+      });
+      if (tributeFormationId)
+        q.set("transferredFormationId", tributeFormationId);
+      if (tributeHexId) q.set("cededHexId", tributeHexId);
+      return api<{
+        ok: boolean;
+        odds: DiplomaticOddsCalculation;
+        eligible: boolean;
+        reason?: string;
+      }>(`/api/v1/campaigns/current/diplomacy/odds?${q.toString()}`);
+    },
+    enabled: isOpen,
+  });
+
+  const bilateralRelations = useQuery({
+    queryKey: ["bilateralRelations", targetCountryId],
+    queryFn: () =>
+      api<{
+        ok: boolean;
+        relations: BilateralRelationshipDetails;
+      }>(
+        `/api/v1/campaigns/current/diplomacy/relations?targetCountryId=${encodeURIComponent(targetCountryId)}`,
+      ),
+    enabled: isOpen,
+  });
+
+  const rel =
+    bilateralRelations.data?.relations ??
+    treatyOdds.data?.odds?.relationshipDetails;
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="recruitment-modal-backdrop" onClick={onClose}>
+      <div
+        className="recruitment-modal"
+        style={{ maxWidth: "780px" }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="recruitment-modal-header">
+          <h3>📜 Autonomous Diplomatic Cables & Treaties</h3>
+          <button
+            type="button"
+            className="recruitment-modal-close"
+            onClick={onClose}
+          >
+            ✕
+          </button>
+        </div>
+
+        <div
+          className="recruitment-modal-body"
+          ref={modalBodyRef}
+          style={{ maxHeight: "75vh", overflowY: "auto" }}
+        >
+          {/* Active Treaties Banner */}
           <div
             style={{
               background: "rgba(30, 41, 59, 0.8)",
@@ -3003,7 +3987,7 @@ function DiplomaticTreatiesModal({
                 textTransform: "uppercase",
               }}
             >
-              Active Treaties ({treaties.length})
+              Active Ratified Treaties ({treaties.length})
             </div>
             {treaties.length === 0 ? (
               <p style={{ margin: 0, color: "#64748b", fontSize: "12px" }}>
@@ -3013,75 +3997,2289 @@ function DiplomaticTreatiesModal({
               <div
                 style={{ display: "flex", flexDirection: "column", gap: "6px" }}
               >
-                {treaties.map((t) => (
-                  <div
-                    key={t.id}
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      fontSize: "12px",
-                      background: "rgba(15, 23, 42, 0.6)",
-                      padding: "6px 10px",
-                      borderRadius: "4px",
-                    }}
-                  >
-                    <span>
-                      🤝 <strong>{t.treatyType.toUpperCase()}</strong> (
-                      {t.partyACountryId} & {t.partyBCountryId})
-                    </span>
-                    <span style={{ color: "#4ade80", fontWeight: "bold" }}>
-                      {t.turnsRemaining} Turns Remaining
-                    </span>
-                  </div>
-                ))}
+                {treaties.map((t) => {
+                  let badge = "🤝";
+                  if (t.treatyType === "military_transit_rights") badge = "✈️";
+                  if (t.treatyType === "basing_rights") badge = "⚓";
+                  return (
+                    <div
+                      key={t.id}
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        fontSize: "12px",
+                        background: "rgba(15, 23, 42, 0.6)",
+                        padding: "6px 10px",
+                        borderRadius: "4px",
+                      }}
+                    >
+                      <span>
+                        {badge} <strong>{t.treatyType.toUpperCase()}</strong> (
+                        {t.partyACountryId} & {t.partyBCountryId})
+                      </span>
+                      <span style={{ color: "#4ade80", fontWeight: "bold" }}>
+                        {t.turnsRemaining} Days Remaining
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
 
-          <div className="recruitment-controls-row">
-            <div className="recruitment-control-group">
-              <label>Treaty Type</label>
-              <select
-                value={treatyType}
-                onChange={(e) => setTreatyType(e.target.value)}
-              >
-                <option value="ceasefire">
-                  Ceasefire (Hostilities Paused)
-                </option>
-                <option value="non_aggression">Non-Aggression Pact</option>
-                <option value="alliance">Defensive Coalition Alliance</option>
-                <option value="mutual_defense">Mutual Defense Pact</option>
-              </select>
+          {diplomacyError && (
+            <div
+              style={{
+                background: "rgba(220, 38, 38, 0.25)",
+                border: "1px solid #ef4444",
+                borderRadius: "6px",
+                padding: "10px 14px",
+                marginBottom: "14px",
+                fontSize: "12px",
+                color: "#fca5a5",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <span>⚠️ {diplomacyError}</span>
+              {onClearDiplomacyError && (
+                <button
+                  type="button"
+                  onClick={onClearDiplomacyError}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    color: "#fca5a5",
+                    cursor: "pointer",
+                    fontWeight: "bold",
+                    fontSize: "14px",
+                  }}
+                >
+                  ✕
+                </button>
+              )}
             </div>
+          )}
 
-            <div className="recruitment-control-group">
-              <label>Target Nation</label>
-              <select
-                value={targetCountryId}
-                onChange={(e) => setTargetCountryId(e.target.value)}
+          {/* Diplomatic Telegram Cable Received */}
+          {latestNegotiation && (
+            <div
+              ref={answerCardRef}
+              className={isJustArrived ? "diplomatic-arrival-card" : undefined}
+              style={{
+                background: "rgba(15, 23, 42, 0.95)",
+                border: isJustArrived
+                  ? "2px solid #38bdf8"
+                  : "2px solid rgba(56, 189, 248, 0.6)",
+                borderRadius: "8px",
+                padding: "14px",
+                marginBottom: "16px",
+                boxShadow: isJustArrived
+                  ? "0 0 24px rgba(56, 189, 248, 0.5)"
+                  : "0 4px 12px rgba(0,0,0,0.4)",
+                transition: "all 0.4s ease",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  borderBottom: "1px solid #1e293b",
+                  paddingBottom: "8px",
+                  marginBottom: "10px",
+                }}
               >
-                <option value="soviet-union">Soviet Union (OPFOR)</option>
-                <option value="east-germany">East Germany (OPFOR)</option>
-                <option value="poland">Poland (OPFOR)</option>
-                <option value="sweden">Sweden (Neutral)</option>
-                <option value="finland">Finland (Neutral)</option>
-              </select>
-            </div>
-          </div>
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                >
+                  <span
+                    style={{
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                      color: "#38bdf8",
+                      letterSpacing: "1px",
+                    }}
+                  >
+                    📠 DIPLOMATIC TELEGRAM / AMBASSADORIAL CABLE
+                  </span>
+                  {isJustArrived && (
+                    <span
+                      style={{
+                        background: "#0284c7",
+                        color: "#ffffff",
+                        padding: "2px 8px",
+                        borderRadius: "4px",
+                        fontSize: "10px",
+                        fontWeight: "bold",
+                        letterSpacing: "0.5px",
+                        animation: "diplomaticPulse 1.2s infinite",
+                      }}
+                    >
+                      ✨ NEW COMMUNIQUE RECEIVED
+                    </span>
+                  )}
+                </div>
+                <span
+                  style={{
+                    fontSize: "11px",
+                    padding: "2px 8px",
+                    borderRadius: "4px",
+                    background:
+                      latestNegotiation.decision === "accept"
+                        ? "#15803d"
+                        : latestNegotiation.decision === "threaten_war"
+                          ? "#b91c1c"
+                          : latestNegotiation.decision === "counter_offer"
+                            ? "#d97706"
+                            : "#64748b",
+                    color: "#fff",
+                    fontWeight: "bold",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  DECISION: {latestNegotiation.decision.replace(/_/g, " ")}
+                </span>
+              </div>
 
+              <div
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "13px",
+                  lineHeight: "1.5",
+                  color: "#f8fafc",
+                  background: "rgba(0, 0, 0, 0.4)",
+                  border: "1px solid #334155",
+                  borderRadius: "6px",
+                  padding: "12px",
+                  marginBottom: "10px",
+                  fontStyle: "italic",
+                }}
+              >
+                "{latestNegotiation.diplomaticDialogue}"
+              </div>
+
+              <div
+                style={{
+                  fontSize: "11px",
+                  color: "#94a3b8",
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <span>
+                  <strong>Assessment:</strong> {latestNegotiation.reasoning}
+                </span>
+                <span style={{ color: "#38bdf8" }}>
+                  {latestNegotiation.source === "ollama_llm"
+                    ? `🟢 Model: ${latestNegotiation.modelUsed || "Ollama"}`
+                    : "🟡 Heuristic Strategic AI"}
+                </span>
+              </div>
+
+              {/* Counter-Offer Interactive Card */}
+              {latestNegotiation.counterTerms && (() => {
+                const origFunds =
+                  latestNegotiation.counterTerms.demandedFunds ?? 0;
+                const origFuel =
+                  latestNegotiation.counterTerms.demandedFuel ?? 0;
+                const origProd =
+                  latestNegotiation.counterTerms.demandedProduction ?? 0;
+
+                const effFunds =
+                  counterAdjustment?.funds !== undefined
+                    ? counterAdjustment.funds
+                    : origFunds;
+                const effFuel =
+                  counterAdjustment?.fuel !== undefined
+                    ? counterAdjustment.fuel
+                    : origFuel;
+                const effProduction =
+                  counterAdjustment?.production !== undefined
+                    ? counterAdjustment.production
+                    : origProd;
+                const effDuration =
+                  counterAdjustment?.duration ??
+                  latestNegotiation.counterTerms.durationTurns ??
+                  durationTurns;
+
+                const fundsExceeded = effFunds > playerFunds;
+                const fuelExceeded = effFuel > playerFuel;
+                const prodExceeded = effProduction > playerProduction;
+                const hasExceededReserves =
+                  fundsExceeded || fuelExceeded || prodExceeded;
+
+                return (
+                  <div
+                    style={{
+                      marginTop: "12px",
+                      background: "rgba(180, 83, 9, 0.2)",
+                      border: "1px solid #f59e0b",
+                      borderRadius: "6px",
+                      padding: "12px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginBottom: "6px",
+                      }}
+                    >
+                      <strong style={{ color: "#f59e0b", fontSize: "12px" }}>
+                        ⚖️ DIPLOMATIC COUNTER-PROPOSAL: COMPENSATORY SECURITY
+                        INDEMNITY
+                      </strong>
+                      <span style={{ fontSize: "11px", color: "#fde68a" }}>
+                        CONCESSIONS REQUIRED
+                      </span>
+                    </div>
+                    <p
+                      style={{
+                        margin: "0 0 10px 0",
+                        fontSize: "12px",
+                        color: "#fef3c7",
+                      }}
+                    >
+                      {latestNegotiation.counterTerms.conditionSummary ||
+                        "The foreign government has countered with compensatory security demands."}
+                    </p>
+
+                    {/* Interactive 3-Asset Adjustment Sliders */}
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr 1fr",
+                        gap: "10px",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      {/* Funds Slider */}
+                      <div
+                        style={{
+                          background: "rgba(0,0,0,0.35)",
+                          padding: "8px 10px",
+                          borderRadius: "4px",
+                          border: `1px solid ${fundsExceeded ? "#ef4444" : "rgba(148, 163, 184, 0.2)"}`,
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            fontSize: "11px",
+                            marginBottom: "4px",
+                          }}
+                        >
+                          <strong>Treasury Funds:</strong>
+                          <span
+                            style={{
+                              color: fundsExceeded ? "#f87171" : "#fef08a",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            ${effFunds}
+                          </span>
+                        </div>
+                        <input
+                          type="range"
+                          min={0}
+                          max={Math.max(origFunds, 1000)}
+                          step={25}
+                          value={effFunds}
+                          onChange={(e) =>
+                            setCounterAdjustment({
+                              funds: Number(e.target.value),
+                              fuel: effFuel,
+                              production: effProduction,
+                              duration: effDuration,
+                            })
+                          }
+                          style={{ width: "100%" }}
+                        />
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            fontSize: "10px",
+                            marginTop: "4px",
+                          }}
+                        >
+                          <span
+                            style={{
+                              color: fundsExceeded ? "#f87171" : "#94a3b8",
+                            }}
+                          >
+                            {fundsExceeded
+                              ? `⚠️ Short by $${effFunds - playerFunds}`
+                              : `Stock: $${playerFunds}`}
+                          </span>
+                          <button
+                            type="button"
+                            style={{
+                              background: "none",
+                              border: "none",
+                              color: "#38bdf8",
+                              cursor: "pointer",
+                              fontSize: "10px",
+                              textDecoration: "underline",
+                            }}
+                            onClick={() =>
+                              setCounterAdjustment({
+                                funds: effFunds === 0 ? origFunds : 0,
+                                fuel: effFuel,
+                                production: effProduction,
+                                duration: effDuration,
+                              })
+                            }
+                          >
+                            {effFunds === 0
+                              ? `Reset ($${origFunds})`
+                              : "Waive ($0)"}
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Fuel Slider */}
+                      <div
+                        style={{
+                          background: "rgba(0,0,0,0.35)",
+                          padding: "8px 10px",
+                          borderRadius: "4px",
+                          border: `1px solid ${fuelExceeded ? "#ef4444" : "rgba(148, 163, 184, 0.2)"}`,
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            fontSize: "11px",
+                            marginBottom: "4px",
+                          }}
+                        >
+                          <strong>Naval Fuel:</strong>
+                          <span
+                            style={{
+                              color: fuelExceeded ? "#f87171" : "#fef08a",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {effFuel} bbl
+                          </span>
+                        </div>
+                        <input
+                          type="range"
+                          min={0}
+                          max={Math.max(origFuel, 500)}
+                          step={20}
+                          value={effFuel}
+                          onChange={(e) =>
+                            setCounterAdjustment({
+                              funds: effFunds,
+                              fuel: Number(e.target.value),
+                              production: effProduction,
+                              duration: effDuration,
+                            })
+                          }
+                          style={{ width: "100%" }}
+                        />
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            fontSize: "10px",
+                            marginTop: "4px",
+                          }}
+                        >
+                          <span
+                            style={{
+                              color: fuelExceeded ? "#f87171" : "#94a3b8",
+                            }}
+                          >
+                            {fuelExceeded
+                              ? `⚠️ Short by ${effFuel - playerFuel} bbl`
+                              : `Stock: ${playerFuel} bbl`}
+                          </span>
+                          <button
+                            type="button"
+                            style={{
+                              background: "none",
+                              border: "none",
+                              color: "#38bdf8",
+                              cursor: "pointer",
+                              fontSize: "10px",
+                              textDecoration: "underline",
+                            }}
+                            onClick={() =>
+                              setCounterAdjustment({
+                                funds: effFunds,
+                                fuel: effFuel === 0 ? origFuel : 0,
+                                production: effProduction,
+                                duration: effDuration,
+                              })
+                            }
+                          >
+                            {effFuel === 0
+                              ? `Reset (${origFuel} bbl)`
+                              : "Waive (0 bbl)"}
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Production Slider */}
+                      <div
+                        style={{
+                          background: "rgba(0,0,0,0.35)",
+                          padding: "8px 10px",
+                          borderRadius: "4px",
+                          border: `1px solid ${prodExceeded ? "#ef4444" : "rgba(148, 163, 184, 0.2)"}`,
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            fontSize: "11px",
+                            marginBottom: "4px",
+                          }}
+                        >
+                          <strong>Production Quota:</strong>
+                          <span
+                            style={{
+                              color: prodExceeded
+                                ? "#f87171"
+                                : effProduction === 0
+                                  ? "#4ade80"
+                                  : "#fef08a",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {effProduction > 0
+                              ? `${effProduction} PP`
+                              : "0 PP (Waived)"}
+                          </span>
+                        </div>
+                        <input
+                          type="range"
+                          min={0}
+                          max={Math.max(origProd, 200)}
+                          step={10}
+                          value={effProduction}
+                          onChange={(e) =>
+                            setCounterAdjustment({
+                              funds: effFunds,
+                              fuel: effFuel,
+                              production: Number(e.target.value),
+                              duration: effDuration,
+                            })
+                          }
+                          style={{ width: "100%" }}
+                        />
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            fontSize: "10px",
+                            marginTop: "4px",
+                          }}
+                        >
+                          <span
+                            style={{
+                              color: prodExceeded ? "#f87171" : "#94a3b8",
+                            }}
+                          >
+                            {prodExceeded
+                              ? `⚠️ Short by ${effProduction - playerProduction} PP`
+                              : `Stock: ${playerProduction} PP`}
+                          </span>
+                          <button
+                            type="button"
+                            style={{
+                              background: "none",
+                              border: "none",
+                              color: "#38bdf8",
+                              cursor: "pointer",
+                              fontSize: "10px",
+                              textDecoration: "underline",
+                            }}
+                            onClick={() =>
+                              setCounterAdjustment({
+                                funds: effFunds,
+                                fuel: effFuel,
+                                production: effProduction === 0 ? origProd : 0,
+                                duration: effDuration,
+                              })
+                            }
+                          >
+                            {effProduction === 0
+                              ? `Reset (${origProd} PP)`
+                              : "Waive (0 PP)"}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Sufficiency Status Banner */}
+                    <div
+                      style={{
+                        fontSize: "11px",
+                        marginBottom: "10px",
+                        padding: "6px 10px",
+                        borderRadius: "4px",
+                        background: hasExceededReserves
+                          ? "rgba(220, 38, 38, 0.2)"
+                          : "rgba(22, 163, 74, 0.2)",
+                        border: `1px solid ${hasExceededReserves ? "#ef4444" : "#22c55e"}`,
+                        color: hasExceededReserves ? "#fca5a5" : "#86efac",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <span>
+                        {hasExceededReserves
+                          ? "⚠️ Demanded concessions exceed current national reserves. Use sliders or 'Waive' buttons to adjust downward."
+                          : "✓ Counter-concessions within national strategic reserves. Ready for ratification."}
+                      </span>
+                      <button
+                        type="button"
+                        style={{
+                          background: "none",
+                          border: "1px solid currentColor",
+                          color: "inherit",
+                          padding: "2px 6px",
+                          borderRadius: "3px",
+                          fontSize: "10px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() =>
+                          setCounterAdjustment({
+                            funds: 0,
+                            fuel: 0,
+                            production: 0,
+                            duration: effDuration,
+                          })
+                        }
+                      >
+                        ⚡ Waive All to Zero
+                      </button>
+                    </div>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        gap: "8px",
+                      }}
+                    >
+                      <button
+                        type="button"
+                        className="recruitment-cancel-btn"
+                        style={{
+                          background: "rgba(239, 68, 68, 0.2)",
+                          borderColor: "#ef4444",
+                          color: "#fca5a5",
+                          fontSize: "12px",
+                          padding: "6px 14px",
+                        }}
+                        disabled={isDecliningCounter || isAcceptingCounter}
+                        onClick={() => {
+                          onDeclineCounterOffer({
+                            targetCountryId,
+                            treatyType,
+                            reason:
+                              "Leadership rejected foreign compensatory indemnity demands",
+                          });
+                        }}
+                      >
+                        {isDecliningCounter ? "Declining..." : "Decline Demands"}
+                      </button>
+                      <button
+                        type="button"
+                        className="recruitment-cancel-btn"
+                        style={{
+                          background: "rgba(245, 158, 11, 0.2)",
+                          borderColor: "#f59e0b",
+                          color: "#fcd34d",
+                          fontSize: "12px",
+                          padding: "6px 14px",
+                        }}
+                        disabled={isDecliningCounter || isAcceptingCounter}
+                        onClick={() => {
+                          if (latestNegotiation.counterTerms) {
+                            if (
+                              latestNegotiation.counterTerms.durationTurns !==
+                              undefined
+                            ) {
+                              setDurationTurns(
+                                latestNegotiation.counterTerms.durationTurns,
+                              );
+                            }
+                            setTributeMode("offer");
+                            setTributeFunds(Math.min(1000, effFunds));
+                            setTributeFuel(Math.min(500, effFuel));
+                            setTributeProduction(Math.min(200, effProduction));
+                            setFormGuidanceNotice(
+                              "💡 Counter-demands transferred to proposal builder below. Adjust concessions and transmit.",
+                            );
+                            proposalSectionRef.current?.scrollIntoView({
+                              behavior: "smooth",
+                            });
+                          }
+                        }}
+                      >
+                        Adjust & Counter-Offer
+                      </button>
+                      <button
+                        type="button"
+                        className="recruitment-submit-btn"
+                        style={{
+                          background: hasExceededReserves
+                            ? "#334155"
+                            : "#16a34a",
+                          borderColor: hasExceededReserves
+                            ? "#475569"
+                            : "#22c55e",
+                          fontSize: "12px",
+                          padding: "6px 14px",
+                          cursor: hasExceededReserves
+                            ? "not-allowed"
+                            : "pointer",
+                        }}
+                        disabled={
+                          isAcceptingCounter ||
+                          isDecliningCounter ||
+                          hasExceededReserves
+                        }
+                        onClick={() => {
+                          onAcceptCounterOffer({
+                            targetCountryId,
+                            treatyType,
+                            durationTurns: effDuration,
+                            demandedFunds: effFunds,
+                            demandedFuel: effFuel,
+                            demandedProduction: effProduction,
+                            conditionSummary: `Bilateral counter-terms ratified ($${effFunds} funds, ${effFuel} bbl fuel, ${effProduction} PP).`,
+                          });
+                        }}
+                      >
+                        {isAcceptingCounter
+                          ? "Ratifying Accord..."
+                          : `Accept & Ratify ($${effFunds}, ${effFuel} bbl, ${effProduction} PP)`}
+                      </button>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Third-Party Diplomatic Fallout Alert Cables */}
+              {latestNegotiation.thirdPartyFalloutCables &&
+                latestNegotiation.thirdPartyFalloutCables.length > 0 && (
+                  <div
+                    style={{
+                      marginTop: "12px",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "8px",
+                    }}
+                  >
+                    {latestNegotiation.thirdPartyFalloutCables.map((cable) => (
+                      <div
+                        key={cable.id}
+                        style={{
+                          background: "rgba(127, 29, 29, 0.4)",
+                          border: "1px solid #ef4444",
+                          borderRadius: "6px",
+                          padding: "10px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            fontSize: "11px",
+                            fontWeight: "bold",
+                            color: "#fca5a5",
+                            marginBottom: "4px",
+                          }}
+                        >
+                          <span>
+                            ⚡ {cable.classification} — {cable.header}
+                          </span>
+                          {cable.stanceChange && (
+                            <span
+                              style={{
+                                background: "#7f1d1d",
+                                padding: "1px 6px",
+                                borderRadius: "3px",
+                                color: "#fecaca",
+                              }}
+                            >
+                              STATUS: {cable.stanceChange.toUpperCase()}
+                            </span>
+                          )}
+                        </div>
+                        <div
+                          style={{
+                            fontFamily: "monospace",
+                            fontSize: "12px",
+                            color: "#fee2e2",
+                            fontStyle: "italic",
+                          }}
+                        >
+                          "{cable.content}"
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+            </div>
+          )}
+
+          {/* STEP 1: TARGET FOREIGN GOVERNMENT */}
           <div
-            className="recruitment-control-group"
-            style={{ marginTop: "12px" }}
+            style={{
+              background: "rgba(30, 41, 59, 0.6)",
+              border: "1px solid rgba(56, 189, 248, 0.4)",
+              borderRadius: "8px",
+              padding: "12px 14px",
+              marginBottom: "14px",
+            }}
           >
-            <label>Duration: {durationTurns} Turns</label>
-            <input
-              type="range"
-              min={1}
-              max={15}
-              value={durationTurns}
-              onChange={(e) => setDurationTurns(Number(e.target.value))}
-            />
+            <label
+              style={{
+                display: "block",
+                fontSize: "11px",
+                fontWeight: "bold",
+                color: "#38bdf8",
+                letterSpacing: "0.5px",
+                textTransform: "uppercase",
+                marginBottom: "6px",
+              }}
+            >
+              Step 1: Select Target Foreign Government
+            </label>
+            <select
+              value={targetCountryId}
+              onChange={(e) => setTargetCountryId(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "8px 12px",
+                background: "#0f172a",
+                border: "1px solid #475569",
+                borderRadius: "6px",
+                color: "#f8fafc",
+                fontSize: "13px",
+                fontWeight: 600,
+              }}
+            >
+              <option value="soviet-union">
+                🇷🇺 Soviet Union (STAVKA / Andropov)
+              </option>
+              <option value="sweden">
+                🇸🇪 Sweden (Palme / Armed Neutrality)
+              </option>
+              <option value="finland">
+                🇫🇮 Finland (Koivisto / FCMA Treaty)
+              </option>
+              <option value="united-states">
+                🇺🇸 United States (Reagan / SACEUR)
+              </option>
+              <option value="united-kingdom">
+                🇬🇧 United Kingdom (Thatcher / NATO)
+              </option>
+              <option value="east-germany">
+                🇩🇩 East Germany (SED / Honecker)
+              </option>
+              <option value="poland">🇵🇱 Poland (Warsaw Pact)</option>
+            </select>
           </div>
+
+          {/* STEP 2: BILATERAL DIPLOMATIC STANCE & EVENT LEDGER */}
+          {rel && (
+            <div
+              style={{
+                marginBottom: "14px",
+                background: "rgba(15, 23, 42, 0.8)",
+                border: "1px solid #334155",
+                borderRadius: "8px",
+                padding: "12px 14px",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: "8px",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: "bold",
+                    color: "#f8fafc",
+                  }}
+                >
+                  🌐 Step 2: Bilateral Diplomatic Stance:{" "}
+                  <span
+                    style={{
+                      color:
+                        rel.score >= 50
+                          ? "#4ade80"
+                          : rel.score >= 0
+                            ? "#38bdf8"
+                            : rel.score >= -50
+                              ? "#fbbf24"
+                              : "#f87171",
+                    }}
+                  >
+                    {rel.score > 0 ? "+" : ""}
+                    {rel.score} / 100 [{rel.sentimentLabel}]
+                  </span>
+                </div>
+                <div
+                  style={{
+                    fontSize: "11px",
+                    padding: "3px 10px",
+                    borderRadius: "4px",
+                    fontWeight: "bold",
+                    textTransform: "uppercase",
+                    background:
+                      rel.stance === "allied"
+                        ? "#166534"
+                        : rel.stance === "friendly"
+                          ? "#0369a1"
+                          : rel.stance === "neutral"
+                            ? "#334155"
+                            : rel.stance === "strained"
+                              ? "#854d0e"
+                              : "#991b1b",
+                    color: "#fff",
+                  }}
+                >
+                  {rel.stance}
+                </div>
+              </div>
+
+              {/* Relationship Slider Gauge */}
+              <div
+                style={{
+                  height: "6px",
+                  background:
+                    "linear-gradient(to right, #ef4444 0%, #f59e0b 35%, #64748b 50%, #38bdf8 65%, #22c55e 100%)",
+                  borderRadius: "3px",
+                  position: "relative",
+                  marginBottom: "12px",
+                }}
+              >
+                {/* Needle */}
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "-3px",
+                    left: `${Math.max(
+                      0,
+                      Math.min(100, (rel.score + 100) / 2),
+                    )}%`,
+                    transform: "translateX(-50%)",
+                    width: "12px",
+                    height: "12px",
+                    background: "#fff",
+                    border: "2px solid #0f172a",
+                    borderRadius: "50%",
+                    boxShadow: "0 0 4px rgba(0,0,0,0.8)",
+                  }}
+                />
+              </div>
+
+              {/* Bilateral Relations Ledger & Grievances */}
+              <div
+                style={{
+                  background: "rgba(30, 41, 59, 0.5)",
+                  border: "1px solid rgba(148, 163, 184, 0.2)",
+                  borderRadius: "6px",
+                  padding: "8px 12px",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: isLedgerExpanded ? "8px" : 0,
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: "11px",
+                      fontWeight: 700,
+                      color: "#94a3b8",
+                      letterSpacing: "0.5px",
+                    }}
+                  >
+                    📜 BILATERAL RELATIONS & GRIEVANCE LEDGER
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setIsLedgerExpanded(!isLedgerExpanded)}
+                    style={{
+                      background: "transparent",
+                      border: "none",
+                      color: "#38bdf8",
+                      fontSize: "11px",
+                      cursor: "pointer",
+                      padding: 0,
+                      fontWeight: 600,
+                    }}
+                  >
+                    {isLedgerExpanded ? "Hide Ledger ▲" : "Show Ledger ▼"}
+                  </button>
+                </div>
+
+                {isLedgerExpanded && (
+                  <div
+                    style={{
+                      maxHeight: "140px",
+                      overflowY: "auto",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "6px",
+                    }}
+                  >
+                    {rel.baselineReason && (
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "flex-start",
+                          gap: "8px",
+                          fontSize: "11px",
+                          background: "rgba(15, 23, 42, 0.5)",
+                          padding: "6px 8px",
+                          borderRadius: "4px",
+                          borderLeft: `3px solid ${
+                            rel.score >= 0 ? "#22c55e" : "#ef4444"
+                          }`,
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontWeight: 700,
+                            color: rel.score >= 0 ? "#4ade80" : "#f87171",
+                            minWidth: "38px",
+                          }}
+                        >
+                          {rel.score >= 0 ? `+${rel.score}` : `${rel.score}`}
+                        </span>
+                        <span style={{ color: "#cbd5e1", flex: 1 }}>
+                          {rel.baselineReason}
+                        </span>
+                        <span
+                          style={{
+                            color: "#64748b",
+                            fontSize: "10px",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          Doctrine Baseline
+                        </span>
+                      </div>
+                    )}
+
+                    {rel.events &&
+                      rel.events.map((evt) => (
+                        <div
+                          key={evt.id}
+                          style={{
+                            display: "flex",
+                            alignItems: "flex-start",
+                            gap: "8px",
+                            fontSize: "11px",
+                            background: "rgba(15, 23, 42, 0.4)",
+                            padding: "6px 8px",
+                            borderRadius: "4px",
+                            borderLeft: `3px solid ${
+                              evt.deltaScore > 0 ? "#22c55e" : "#ef4444"
+                            }`,
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontWeight: 700,
+                              color:
+                                evt.deltaScore > 0 ? "#4ade80" : "#f87171",
+                              minWidth: "38px",
+                            }}
+                          >
+                            {evt.deltaScore > 0
+                              ? `+${evt.deltaScore}`
+                              : `${evt.deltaScore}`}
+                          </span>
+                          <span style={{ color: "#e2e8f0", flex: 1 }}>
+                            {evt.reason}
+                          </span>
+                          <span
+                            style={{
+                              color: "#64748b",
+                              fontSize: "10px",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {new Date(evt.createdAt).toLocaleDateString()}
+                          </span>
+                        </div>
+                      ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* STEP 3: TREATY ACCORD & MULTI-ASSET TRIBUTE PROPOSAL */}
+          <div
+            ref={proposalSectionRef}
+            style={{
+              background: "rgba(15, 23, 42, 0.7)",
+              border: formGuidanceNotice
+                ? "1px solid #38bdf8"
+                : "1px solid #334155",
+              borderRadius: "8px",
+              padding: "12px 14px",
+              marginBottom: "14px",
+              transition: "border 0.3s ease",
+            }}
+          >
+            {formGuidanceNotice && (
+              <div
+                style={{
+                  background: "rgba(14, 165, 233, 0.2)",
+                  border: "1px solid #0284c7",
+                  borderRadius: "6px",
+                  padding: "8px 12px",
+                  marginBottom: "10px",
+                  fontSize: "12px",
+                  color: "#bae6fd",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <span>{formGuidanceNotice}</span>
+                <button
+                  type="button"
+                  style={{
+                    background: "none",
+                    border: "none",
+                    color: "#bae6fd",
+                    cursor: "pointer",
+                    fontWeight: "bold",
+                    fontSize: "14px",
+                  }}
+                  onClick={() => setFormGuidanceNotice(null)}
+                >
+                  ✕
+                </button>
+              </div>
+            )}
+
+            <div
+              style={{
+                fontSize: "11px",
+                fontWeight: "bold",
+                color: "#38bdf8",
+                letterSpacing: "0.5px",
+                textTransform: "uppercase",
+                marginBottom: "10px",
+              }}
+            >
+              Step 3: Treaty Terms & Multi-Asset Tribute Proposal
+            </div>
+
+            <div className="recruitment-controls-row">
+              <div className="recruitment-control-group">
+                <label>Proposed Treaty Type</label>
+                <select
+                  value={treatyType}
+                  onChange={(e) => handleTreatyTypeChange(e.target.value)}
+                >
+                  <option value="ceasefire">
+                    Ceasefire (Hostilities Paused: 7–60 Days)
+                  </option>
+                  <option value="trade_agreement">
+                    🚢 Maritime Trade Agreement (+$40 Funds/Turn: 30–365 Days)
+                  </option>
+                  <option value="joint_production_pact">
+                    🏭 Joint Production Pact (+25 Production/Turn: 60–365 Days)
+                  </option>
+                  <option value="science_tech_sharing">
+                    🔬 Defense Science & Tech Sharing (-15% Upkeep: 60–365 Days)
+                  </option>
+                  <option value="military_transit_rights">
+                    ✈️ Military Transit Rights (Airspace & Waters: 14–180 Days)
+                  </option>
+                  <option value="basing_rights">
+                    ⚓ Basing & Port Access Rights (Naval Facilities: 30–180 Days)
+                  </option>
+                  <option value="non_aggression">
+                    Non-Aggression Pact (30–365 Days)
+                  </option>
+                  <option value="alliance">
+                    Defensive Coalition Alliance (60–365 Days)
+                  </option>
+                  <option value="mutual_defense">
+                    Mutual Defense Pact (60–365 Days)
+                  </option>
+                </select>
+              </div>
+
+              <div className="recruitment-control-group">
+                <label>
+                  Duration: {durationTurns} {durationBounds.unit}
+                </label>
+                <input
+                  type="range"
+                  min={durationBounds.min}
+                  max={durationBounds.max}
+                  value={durationTurns}
+                  onChange={(e) => setDurationTurns(Number(e.target.value))}
+                />
+              </div>
+            </div>
+
+            {/* Tribute Direction Toggle Switch */}
+            <div style={{ marginTop: "12px", marginBottom: "10px" }}>
+              <label
+                style={{
+                  display: "block",
+                  fontSize: "11px",
+                  fontWeight: 600,
+                  color: "#94a3b8",
+                  marginBottom: "6px",
+                  textTransform: "uppercase",
+                }}
+              >
+                Diplomatic Posture / Tribute Direction
+              </label>
+              <div style={{ display: "flex", gap: "8px" }}>
+                <button
+                  type="button"
+                  onClick={() => setTributeMode("offer")}
+                  style={{
+                    flex: 1,
+                    padding: "8px 12px",
+                    borderRadius: "6px",
+                    fontSize: "12px",
+                    fontWeight: "bold",
+                    cursor: "pointer",
+                    background:
+                      tributeMode === "offer"
+                        ? "rgba(34, 197, 94, 0.25)"
+                        : "rgba(30, 41, 59, 0.6)",
+                    border: `1px solid ${
+                      tributeMode === "offer" ? "#22c55e" : "#475569"
+                    }`,
+                    color: tributeMode === "offer" ? "#86efac" : "#94a3b8",
+                  }}
+                >
+                  🤝 Offer Concession (Sweetener)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setTributeMode("demand")}
+                  style={{
+                    flex: 1,
+                    padding: "8px 12px",
+                    borderRadius: "6px",
+                    fontSize: "12px",
+                    fontWeight: "bold",
+                    cursor: "pointer",
+                    background:
+                      tributeMode === "demand"
+                        ? "rgba(239, 68, 68, 0.25)"
+                        : "rgba(30, 41, 59, 0.6)",
+                    border: `1px solid ${
+                      tributeMode === "demand" ? "#ef4444" : "#475569"
+                    }`,
+                    color: tributeMode === "demand" ? "#fca5a5" : "#94a3b8",
+                  }}
+                >
+                  🛑 Demand Sovereign Tribute / Ultimatum
+                </button>
+              </div>
+            </div>
+
+            {/* Multi-Asset Tribute Controls */}
+            <div
+              style={{
+                background: "rgba(15, 23, 42, 0.9)",
+                border: `1px solid ${
+                  tributeMode === "offer"
+                    ? "rgba(34, 197, 94, 0.3)"
+                    : "rgba(239, 68, 68, 0.3)"
+                }`,
+                borderRadius: "6px",
+                padding: "10px 12px",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: "11px",
+                  fontWeight: "bold",
+                  color: tributeMode === "offer" ? "#86efac" : "#fca5a5",
+                  marginBottom: "8px",
+                  textTransform: "uppercase",
+                }}
+              >
+                {tributeMode === "offer"
+                  ? "Concession Package Offered by National Treasury"
+                  : "State Indemnities & Tributes Demanded from Foreign Power"}
+              </div>
+
+              {/* Funds, Fuel, Production */}
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr 1fr",
+                  gap: "10px",
+                  marginBottom: "10px",
+                }}
+              >
+                <div>
+                  <label
+                    style={{
+                      display: "block",
+                      fontSize: "11px",
+                      color: "#cbd5e1",
+                    }}
+                  >
+                    Treasury Funds: <strong>${tributeFunds}</strong>
+                  </label>
+                  <input
+                    type="range"
+                    min={0}
+                    max={1000}
+                    step={25}
+                    value={tributeFunds}
+                    onChange={(e) => setTributeFunds(Number(e.target.value))}
+                    style={{ width: "100%" }}
+                  />
+                  <div style={{ fontSize: "10px", color: "#64748b" }}>
+                    Stock: ${playerFunds}
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    style={{
+                      display: "block",
+                      fontSize: "11px",
+                      color: "#cbd5e1",
+                    }}
+                  >
+                    Naval Fuel: <strong>{tributeFuel} bbl</strong>
+                  </label>
+                  <input
+                    type="range"
+                    min={0}
+                    max={500}
+                    step={20}
+                    value={tributeFuel}
+                    onChange={(e) => setTributeFuel(Number(e.target.value))}
+                    style={{ width: "100%" }}
+                  />
+                  <div style={{ fontSize: "10px", color: "#64748b" }}>
+                    Stock: {playerFuel} bbl
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    style={{
+                      display: "block",
+                      fontSize: "11px",
+                      color: "#cbd5e1",
+                    }}
+                  >
+                    Production: <strong>{tributeProduction} PP</strong>
+                  </label>
+                  <input
+                    type="range"
+                    min={0}
+                    max={200}
+                    step={10}
+                    value={tributeProduction}
+                    onChange={(e) =>
+                      setTributeProduction(Number(e.target.value))
+                    }
+                    style={{ width: "100%" }}
+                  />
+                  <div style={{ fontSize: "10px", color: "#64748b" }}>
+                    Stock: {playerProduction} PP
+                  </div>
+                </div>
+              </div>
+
+              {/* Tech Sharing Checkbox */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  marginBottom: "10px",
+                  fontSize: "12px",
+                  color: "#e2e8f0",
+                }}
+              >
+                <input
+                  type="checkbox"
+                  id="tech-sharing-toggle"
+                  checked={tributeTech}
+                  onChange={(e) => setTributeTech(e.target.checked)}
+                />
+                <label
+                  htmlFor="tech-sharing-toggle"
+                  style={{ cursor: "pointer" }}
+                >
+                  🔬 {tributeMode === "offer" ? "Transfer" : "Demand"} Defense
+                  Science & Acoustic Sensor Tech License (+12% Odds Sweetener)
+                </label>
+              </div>
+
+              {/* Formation & Hex Transfers */}
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "10px",
+                }}
+              >
+                <div>
+                  <label
+                    style={{
+                      display: "block",
+                      fontSize: "11px",
+                      color: "#cbd5e1",
+                      marginBottom: "4px",
+                    }}
+                  >
+                    ⚔️{" "}
+                    {tributeMode === "offer"
+                      ? "Transfer Military Unit"
+                      : "Demand Enemy Formation Surrender"}
+                  </label>
+                  <select
+                    value={tributeFormationId}
+                    onChange={(e) => setTributeFormationId(e.target.value)}
+                    style={{
+                      width: "100%",
+                      padding: "6px 8px",
+                      background: "#0f172a",
+                      border: "1px solid #475569",
+                      borderRadius: "4px",
+                      color: "#f8fafc",
+                      fontSize: "11px",
+                    }}
+                  >
+                    <option value="">
+                      -- None (
+                      {tributeMode === "offer"
+                        ? "No unit transfer"
+                        : "No surrender demand"}
+                      ) --
+                    </option>
+                    {tributeMode === "offer" ? (
+                      playerFormations.map((f) => (
+                        <option key={f.id} value={f.id}>
+                          {f.name} ({f.unitType.toUpperCase()})
+                        </option>
+                      ))
+                    ) : (
+                      <option value="demand_frontline_dissolution">
+                        Frontline Border Patrol Task Group
+                      </option>
+                    )}
+                  </select>
+                </div>
+
+                <div>
+                  <label
+                    style={{
+                      display: "block",
+                      fontSize: "11px",
+                      color: "#cbd5e1",
+                      marginBottom: "4px",
+                    }}
+                  >
+                    🗺️{" "}
+                    {tributeMode === "offer"
+                      ? "Cede Sovereign Border Hex"
+                      : "Demand Hex Sector Cession"}
+                  </label>
+                  <select
+                    value={tributeHexId}
+                    onChange={(e) => setTributeHexId(e.target.value)}
+                    style={{
+                      width: "100%",
+                      padding: "6px 8px",
+                      background: "#0f172a",
+                      border: "1px solid #475569",
+                      borderRadius: "4px",
+                      color: "#f8fafc",
+                      fontSize: "11px",
+                    }}
+                  >
+                    <option value="">
+                      -- None (
+                      {tributeMode === "offer"
+                        ? "No territory ceded"
+                        : "No border demanded"}
+                      ) --
+                    </option>
+                    {tributeMode === "offer" ? (
+                      playerHexes
+                        .filter(
+                          (h) =>
+                            h.ownership.side === "blufor" ||
+                            h.ownership.countryId === "norway",
+                        )
+                        .slice(0, 15)
+                        .map((h) => (
+                          <option key={h.id} value={h.id}>
+                            Sector {h.name || h.id} ({h.terrain.toUpperCase()})
+                          </option>
+                        ))
+                    ) : (
+                      <option value="demand_demilitarized_buffer">
+                        Demilitarized Border Hex Zone
+                      </option>
+                    )}
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Diplomatic Approval Odds Meter */}
+          {treatyOdds.data?.odds && (
+            <div
+              style={{
+                marginTop: "14px",
+                padding: "12px 14px",
+                background: treatyOdds.data.odds.isHardRedline
+                  ? "rgba(180, 83, 9, 0.25)"
+                  : tributeMode === "demand"
+                    ? "rgba(127, 29, 29, 0.35)"
+                    : "rgba(15, 23, 42, 0.85)",
+                border: `1px solid ${
+                  treatyOdds.data.odds.isHardRedline
+                    ? "#f59e0b"
+                    : tributeMode === "demand"
+                      ? "#ef4444"
+                      : treatyOdds.data.odds.oddsPercent >= 60
+                        ? "#22c55e"
+                        : treatyOdds.data.odds.oddsPercent >= 30
+                          ? "#f59e0b"
+                          : "#ef4444"
+                }`,
+                borderRadius: "6px",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: "8px",
+                }}
+              >
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                >
+                  <span style={{ fontSize: "16px" }}>
+                    {treatyOdds.data.odds.isHardRedline
+                      ? "⛔"
+                      : tributeMode === "demand"
+                        ? "🛑"
+                        : treatyOdds.data.odds.oddsPercent >= 60
+                          ? "📈"
+                          : "⚖️"}
+                  </span>
+                  <strong
+                    style={{
+                      fontSize: "12px",
+                      letterSpacing: "0.5px",
+                      color: treatyOdds.data.odds.isHardRedline
+                        ? "#f59e0b"
+                        : tributeMode === "demand"
+                          ? "#fca5a5"
+                          : treatyOdds.data.odds.oddsPercent >= 60
+                            ? "#4ade80"
+                            : treatyOdds.data.odds.oddsPercent >= 30
+                              ? "#fbbf24"
+                              : "#f87171",
+                    }}
+                  >
+                    {treatyOdds.data.odds.isHardRedline
+                      ? "EXISTENTIAL REDLINE / INAPPLICABLE"
+                      : tributeMode === "demand"
+                        ? `AGGRESSIVE SOVEREIGN ULTIMATUM — RATIFICATION ODDS: ${treatyOdds.data.odds.oddsPercent}%`
+                        : `DIPLOMATIC APPROVAL PROBABILITY: ${treatyOdds.data.odds.oddsPercent}%`}
+                  </strong>
+                </div>
+                {!treatyOdds.data.odds.isHardRedline && (
+                  <span
+                    style={{
+                      fontSize: "11px",
+                      fontWeight: "bold",
+                      color:
+                        tributeMode === "demand"
+                          ? "#f87171"
+                          : treatyOdds.data.odds.oddsPercent >= 60
+                            ? "#86efac"
+                            : treatyOdds.data.odds.oddsPercent >= 30
+                              ? "#fde68a"
+                              : "#fca5a5",
+                    }}
+                  >
+                    {tributeMode === "demand"
+                      ? "High Probability of Indignant Rejection & Crisis"
+                      : treatyOdds.data.odds.oddsPercent >= 60
+                        ? "Favorable Direct Ratification"
+                        : "Compensatory State Indemnities Demanded"}
+                  </span>
+                )}
+              </div>
+
+              {/* Progress Gauge */}
+              {!treatyOdds.data.odds.isHardRedline && (
+                <div
+                  style={{
+                    width: "100%",
+                    height: "8px",
+                    background: "rgba(0,0,0,0.5)",
+                    borderRadius: "4px",
+                    overflow: "hidden",
+                    marginBottom: "8px",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: `${treatyOdds.data.odds.oddsPercent}%`,
+                      height: "100%",
+                      background:
+                        tributeMode === "demand"
+                          ? "linear-gradient(90deg, #7f1d1d, #ef4444)"
+                          : treatyOdds.data.odds.oddsPercent >= 60
+                            ? "linear-gradient(90deg, #16a34a, #22c55e)"
+                            : treatyOdds.data.odds.oddsPercent >= 30
+                              ? "linear-gradient(90deg, #d97706, #f59e0b)"
+                              : "linear-gradient(90deg, #dc2626, #ef4444)",
+                      transition: "width 0.3s ease",
+                    }}
+                  />
+                </div>
+              )}
+
+              {/* Redline Reason or Odds Factors Breakdown */}
+              {treatyOdds.data.odds.isHardRedline ? (
+                <div style={{ fontSize: "12px", color: "#fef3c7" }}>
+                  <strong>Policy Doctrine:</strong>{" "}
+                  {treatyOdds.data.odds.redlineReason}
+                </div>
+              ) : (
+                <div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: "6px",
+                      marginBottom: "6px",
+                    }}
+                  >
+                    {treatyOdds.data.odds.breakdown.map((item, idx) => (
+                      <span
+                        key={idx}
+                        style={{
+                          fontSize: "10px",
+                          padding: "2px 6px",
+                          borderRadius: "3px",
+                          background:
+                            item.delta > 0
+                              ? "rgba(34, 197, 94, 0.2)"
+                              : item.delta < 0
+                                ? "rgba(239, 68, 68, 0.2)"
+                                : "rgba(148, 163, 184, 0.2)",
+                          color:
+                            item.delta > 0
+                              ? "#86efac"
+                              : item.delta < 0
+                                ? "#fca5a5"
+                                : "#cbd5e1",
+                          border: `1px solid ${
+                            item.delta > 0
+                              ? "rgba(34, 197, 94, 0.4)"
+                              : item.delta < 0
+                                ? "rgba(239, 68, 68, 0.4)"
+                                : "rgba(148, 163, 184, 0.4)"
+                          }`,
+                        }}
+                      >
+                        {item.delta > 0 ? `+${item.delta}%` : `${item.delta}%`}{" "}
+                        {item.factor}
+                      </span>
+                    ))}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "11px",
+                      color: tributeMode === "demand" ? "#fca5a5" : "#94a3b8",
+                      fontStyle: "italic",
+                    }}
+                  >
+                    {tributeMode === "demand"
+                      ? "⚠️ The target foreign power will consider this ultimatum a sovereign extortion attempt. Unless facing catastrophic military defeat, their Politburo/Cabinet will aggressively reject and sever relations."
+                      : treatyOdds.data.odds.oddsPercent >= 60
+                        ? "Foreign command projects positive strategic yield from this accord."
+                        : "Unfavorable strategic yield; foreign political leadership will demand compensatory state indemnities (funds, fuel, production quotas) before considering ratification."}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Diplomatic Cables Ledger Feed */}
+          {cables && cables.length > 0 && (
+            <div
+              style={{
+                marginTop: "18px",
+                borderTop: "1px solid #334155",
+                paddingTop: "12px",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: "11px",
+                  fontWeight: "bold",
+                  color: "#94a3b8",
+                  textTransform: "uppercase",
+                  marginBottom: "8px",
+                }}
+              >
+                Intercepted Ambassadorial Telegram Cables ({cables.length})
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "6px",
+                  maxHeight: "150px",
+                  overflowY: "auto",
+                }}
+              >
+                {cables.slice(0, 10).map((cable) => (
+                  <div
+                    key={cable.id}
+                    style={{
+                      background: "rgba(15, 23, 42, 0.7)",
+                      border: "1px solid #334155",
+                      borderRadius: "4px",
+                      padding: "6px 10px",
+                      fontSize: "11px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        color: "#93c5fd",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      <span>
+                        [{cable.senderCountryId.toUpperCase()} ➔{" "}
+                        {cable.recipientCountryId.toUpperCase()}] {cable.header}
+                      </span>
+                      {cable.stanceChange && (
+                        <span style={{ color: "#f87171" }}>
+                          {cable.stanceChange}
+                        </span>
+                      )}
+                    </div>
+                    <div
+                      style={{
+                        color: "#cbd5e1",
+                        marginTop: "2px",
+                        fontStyle: "italic",
+                      }}
+                    >
+                      "{cable.content}"
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="recruitment-modal-footer">
+          {isNegotiating && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                fontSize: "11px",
+                color: "#38bdf8",
+                marginRight: "auto",
+              }}
+            >
+              <span className="diplomatic-pulse-icon">📡</span>
+              <span>Encrypted diplomatic cable in transit...</span>
+            </div>
+          )}
+          <button
+            type="button"
+            className="action-button secondary-action"
+            onClick={onClose}
+            disabled={isNegotiating}
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            className={`recruitment-submit-btn ${
+              isNegotiating ? "diplomatic-transmitting-btn" : ""
+            }`}
+            disabled={
+              isNegotiating ||
+              (treatyOdds.data?.odds !== undefined &&
+                treatyOdds.data.odds.isHardRedline)
+            }
+            style={{
+              opacity: isNegotiating
+                ? 0.75
+                : treatyOdds.data?.odds && treatyOdds.data.odds.isHardRedline
+                  ? 0.5
+                  : 1,
+              cursor: isNegotiating
+                ? "not-allowed"
+                : treatyOdds.data?.odds && treatyOdds.data.odds.isHardRedline
+                  ? "not-allowed"
+                  : "pointer",
+              background: isNegotiating
+                ? "#1e293b"
+                : tributeMode === "demand"
+                  ? "linear-gradient(135deg, #b91c1c, #dc2626)"
+                  : undefined,
+              borderColor: isNegotiating
+                ? "#475569"
+                : tributeMode === "demand"
+                  ? "#ef4444"
+                  : undefined,
+              boxShadow: isNegotiating ? "none" : undefined,
+            }}
+            onClick={() => {
+              onNegotiate({
+                treatyType,
+                targetCountryId,
+                durationTurns,
+                offeredTributeFunds:
+                  tributeFunds > 0 ? tributeFunds : undefined,
+                tribute: {
+                  mode: tributeMode,
+                  funds: tributeFunds,
+                  fuel: tributeFuel,
+                  production: tributeProduction,
+                  techSharing: tributeTech || undefined,
+                  transferredFormationId: tributeFormationId || undefined,
+                  cededHexId: tributeHexId || undefined,
+                },
+              });
+            }}
+          >
+            {isNegotiating ? (
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
+                }}
+              >
+                <span className="diplomatic-pulse-icon">📡</span>
+                <span>Transmitting Telegram to Foreign Ministry...</span>
+              </div>
+            ) : treatyOdds.data?.odds?.isHardRedline ? (
+              "Proposal Inapplicable"
+            ) : tributeMode === "demand" ? (
+              "Transmit Sovereign Ultimatum"
+            ) : (
+              `Transmit Proposal (${treatyOdds.data?.odds?.oddsPercent ?? 50}% Odds)`
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DiplomaticInboxModal({
+  isOpen,
+  onClose,
+  cables,
+  worldNews,
+  onMarkRead,
+  isMarkingRead,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  cables: DiplomaticCable[];
+  worldNews: WorldNewsDispatch[];
+  onMarkRead: (cableIds?: string[]) => void;
+  isMarkingRead: boolean;
+}): ReactElement | null {
+  const [activeTab, setActiveTab] = useState<"cables" | "news">("cables");
+  const [cableFilter, setCableFilter] = useState<"all" | "unread" | "protests">(
+    "all",
+  );
+
+  if (!isOpen) return null;
+
+  const unreadCount = cables.filter((c) => !c.isRead).length;
+  const filteredCables = cables.filter((c) => {
+    if (cableFilter === "unread") return !c.isRead;
+    if (cableFilter === "protests")
+      return (
+        c.header.toUpperCase().includes("PROTEST") ||
+        c.header.toUpperCase().includes("BORDER") ||
+        c.header.toUpperCase().includes("DEMARCHE") ||
+        c.header.toUpperCase().includes("FLASH")
+      );
+    return true;
+  });
+
+  return (
+    <div className="recruitment-modal-backdrop" onClick={onClose}>
+      <div
+        className="recruitment-modal"
+        style={{ maxWidth: "840px" }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="recruitment-modal-header">
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <h3>📨 Embassy Diplomatic Cables & World Press Wire</h3>
+            {unreadCount > 0 && (
+              <span
+                style={{
+                  background: "#dc2626",
+                  color: "#fff",
+                  padding: "2px 8px",
+                  borderRadius: "12px",
+                  fontSize: "11px",
+                  fontWeight: "bold",
+                }}
+              >
+                {unreadCount} UNREAD
+              </span>
+            )}
+          </div>
+          <button
+            type="button"
+            className="recruitment-modal-close"
+            onClick={onClose}
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Tab Navigation */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: "10px 16px",
+            borderBottom: "1px solid rgba(148, 163, 184, 0.2)",
+            background: "rgba(15, 23, 42, 0.7)",
+          }}
+        >
+          <div style={{ display: "flex", gap: "8px" }}>
+            <button
+              type="button"
+              style={{
+                padding: "6px 14px",
+                borderRadius: "4px",
+                border: "none",
+                fontSize: "12px",
+                fontWeight: 600,
+                cursor: "pointer",
+                background:
+                  activeTab === "cables" ? "#0284c7" : "rgba(51, 65, 85, 0.6)",
+                color: "#fff",
+              }}
+              onClick={() => setActiveTab("cables")}
+            >
+              📠 Diplomatic Cables ({cables.length})
+            </button>
+            <button
+              type="button"
+              style={{
+                padding: "6px 14px",
+                borderRadius: "4px",
+                border: "none",
+                fontSize: "12px",
+                fontWeight: 600,
+                cursor: "pointer",
+                background:
+                  activeTab === "news" ? "#0284c7" : "rgba(51, 65, 85, 0.6)",
+                color: "#fff",
+              }}
+              onClick={() => setActiveTab("news")}
+            >
+              📡 World Press Wire ({worldNews.length})
+            </button>
+          </div>
+
+          {activeTab === "cables" && unreadCount > 0 && (
+            <button
+              type="button"
+              style={{
+                padding: "4px 10px",
+                background: "#334155",
+                color: "#e2e8f0",
+                border: "1px solid #64748b",
+                borderRadius: "4px",
+                fontSize: "11px",
+                cursor: "pointer",
+              }}
+              disabled={isMarkingRead}
+              onClick={() => onMarkRead()}
+            >
+              ✓ Mark All As Read
+            </button>
+          )}
+        </div>
+
+        <div
+          className="recruitment-modal-body"
+          style={{ maxHeight: "70vh", overflowY: "auto", padding: "16px" }}
+        >
+          {activeTab === "cables" ? (
+            <div>
+              {/* Cable Sub-filters */}
+              <div
+                style={{
+                  display: "flex",
+                  gap: "6px",
+                  marginBottom: "12px",
+                }}
+              >
+                <button
+                  type="button"
+                  style={{
+                    padding: "4px 10px",
+                    borderRadius: "4px",
+                    fontSize: "11px",
+                    border: "none",
+                    cursor: "pointer",
+                    background: cableFilter === "all" ? "#38bdf8" : "#1e293b",
+                    color: cableFilter === "all" ? "#0f172a" : "#94a3b8",
+                    fontWeight: "bold",
+                  }}
+                  onClick={() => setCableFilter("all")}
+                >
+                  All Cables ({cables.length})
+                </button>
+                <button
+                  type="button"
+                  style={{
+                    padding: "4px 10px",
+                    borderRadius: "4px",
+                    fontSize: "11px",
+                    border: "none",
+                    cursor: "pointer",
+                    background:
+                      cableFilter === "unread" ? "#ef4444" : "#1e293b",
+                    color: cableFilter === "unread" ? "#fff" : "#94a3b8",
+                    fontWeight: "bold",
+                  }}
+                  onClick={() => setCableFilter("unread")}
+                >
+                  Unread ({unreadCount})
+                </button>
+                <button
+                  type="button"
+                  style={{
+                    padding: "4px 10px",
+                    borderRadius: "4px",
+                    fontSize: "11px",
+                    border: "none",
+                    cursor: "pointer",
+                    background:
+                      cableFilter === "protests" ? "#f59e0b" : "#1e293b",
+                    color: cableFilter === "protests" ? "#0f172a" : "#94a3b8",
+                    fontWeight: "bold",
+                  }}
+                  onClick={() => setCableFilter("protests")}
+                >
+                  ⚠️ Border Protests & Warnings
+                </button>
+              </div>
+
+              {filteredCables.length === 0 ? (
+                <div
+                  style={{
+                    padding: "30px",
+                    textAlign: "center",
+                    color: "#64748b",
+                    fontSize: "13px",
+                  }}
+                >
+                  No diplomatic telegrams found for this filter.
+                </div>
+              ) : (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                  }}
+                >
+                  {filteredCables.map((cable) => {
+                    const isAlert =
+                      cable.header.toUpperCase().includes("PROTEST") ||
+                      cable.header.toUpperCase().includes("DEMARCHE") ||
+                      cable.header.toUpperCase().includes("FLASH");
+                    return (
+                      <div
+                        key={cable.id}
+                        style={{
+                          background: isAlert
+                            ? "rgba(127, 29, 29, 0.25)"
+                            : !cable.isRead
+                              ? "rgba(14, 116, 144, 0.2)"
+                              : "rgba(15, 23, 42, 0.8)",
+                          border: isAlert
+                            ? "1px solid #ef4444"
+                            : !cable.isRead
+                              ? "1px solid #06b6d4"
+                              : "1px solid rgba(148, 163, 184, 0.2)",
+                          borderRadius: "6px",
+                          padding: "12px 14px",
+                          position: "relative",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            marginBottom: "6px",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "8px",
+                            }}
+                          >
+                            <span
+                              style={{
+                                fontSize: "11px",
+                                fontWeight: "bold",
+                                padding: "2px 6px",
+                                borderRadius: "3px",
+                                background: isAlert ? "#7f1d1d" : "#0369a1",
+                                color: "#fff",
+                                letterSpacing: "0.5px",
+                              }}
+                            >
+                              {cable.classification}
+                            </span>
+                            <span
+                              style={{
+                                fontSize: "12px",
+                                fontWeight: "bold",
+                                color: isAlert ? "#fca5a5" : "#38bdf8",
+                              }}
+                            >
+                              {cable.header}
+                            </span>
+                          </div>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "8px",
+                            }}
+                          >
+                            {!cable.isRead && (
+                              <span
+                                style={{
+                                  background: "#06b6d4",
+                                  color: "#0f172a",
+                                  fontSize: "10px",
+                                  fontWeight: "bold",
+                                  padding: "1px 5px",
+                                  borderRadius: "3px",
+                                }}
+                              >
+                                NEW
+                              </span>
+                            )}
+                            <span
+                              style={{ fontSize: "11px", color: "#94a3b8" }}
+                            >
+                              {new Date(cable.createdAt).toLocaleTimeString()}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div
+                          style={{
+                            fontFamily: "monospace",
+                            fontSize: "12px",
+                            color: isAlert ? "#fee2e2" : "#e2e8f0",
+                            lineHeight: "1.5",
+                            marginTop: "6px",
+                          }}
+                        >
+                          "{cable.content}"
+                        </div>
+
+                        {cable.stanceChange && (
+                          <div
+                            style={{
+                              marginTop: "8px",
+                              fontSize: "11px",
+                              color: "#f87171",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            DIPLOMATIC STANCE SHIFT:{" "}
+                            {cable.stanceChange.toUpperCase()}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          ) : (
+            <div>
+              {worldNews.length === 0 ? (
+                <div
+                  style={{
+                    padding: "30px",
+                    textAlign: "center",
+                    color: "#64748b",
+                    fontSize: "13px",
+                  }}
+                >
+                  No international news wire dispatches broadcast yet.
+                </div>
+              ) : (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "12px",
+                  }}
+                >
+                  {worldNews.map((item) => (
+                    <div
+                      key={item.id}
+                      style={{
+                        background: "rgba(15, 23, 42, 0.9)",
+                        border: "1px solid #334155",
+                        borderRadius: "6px",
+                        padding: "14px",
+                        fontFamily: "Courier New, monospace",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          marginBottom: "6px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px",
+                          }}
+                        >
+                          <span
+                            style={{
+                              background:
+                                item.agency === "TASS"
+                                  ? "#991b1b"
+                                  : item.agency === "REUTERS"
+                                    ? "#d97706"
+                                    : "#2563eb",
+                              color: "#fff",
+                              padding: "2px 6px",
+                              borderRadius: "3px",
+                              fontWeight: "bold",
+                              fontSize: "10px",
+                            }}
+                          >
+                            {item.agency} WIRE
+                          </span>
+                          <span
+                            style={{
+                              color: "#e2e8f0",
+                              fontSize: "13px",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {item.headline}
+                          </span>
+                        </div>
+                        <span
+                          style={{
+                            fontSize: "10px",
+                            color: "#94a3b8",
+                            background: "rgba(51, 65, 85, 0.5)",
+                            padding: "2px 6px",
+                            borderRadius: "3px",
+                          }}
+                        >
+                          {item.category}
+                        </span>
+                      </div>
+                      <p
+                        style={{
+                          margin: "6px 0 0 0",
+                          fontSize: "12px",
+                          color: "#cbd5e1",
+                          lineHeight: "1.4",
+                        }}
+                      >
+                        {item.body}
+                      </p>
+                      <div
+                        style={{
+                          marginTop: "8px",
+                          fontSize: "10px",
+                          color: "#64748b",
+                          textAlign: "right",
+                        }}
+                      >
+                        FILED AT {new Date(item.createdAt).toLocaleTimeString()}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         <div className="recruitment-modal-footer">
@@ -3090,21 +6288,7 @@ function DiplomaticTreatiesModal({
             className="action-button secondary-action"
             onClick={onClose}
           >
-            Cancel
-          </button>
-          <button
-            type="button"
-            className="recruitment-submit-btn"
-            disabled={isEstablishing}
-            onClick={() => {
-              onEstablish({
-                treatyType,
-                targetCountryId,
-                durationTurns,
-              });
-            }}
-          >
-            {isEstablishing ? "Ratifying..." : "Ratify Diplomatic Treaty"}
+            Close
           </button>
         </div>
       </div>

@@ -219,6 +219,109 @@ const migrations: Migration[] = [
       CREATE INDEX diplomatic_treaties_campaign_idx ON diplomatic_treaties(campaign_id);
     `,
   },
+  {
+    id: "005_covert_ops_and_tension_ledger",
+    sql: `
+      CREATE TABLE campaign_tensions (
+        campaign_id TEXT PRIMARY KEY REFERENCES campaigns(id) ON DELETE CASCADE,
+        tension_index INTEGER NOT NULL DEFAULT 20,
+        defcon_level INTEGER NOT NULL DEFAULT 5,
+        peace_turns_counter INTEGER NOT NULL DEFAULT 0,
+        last_incident_summary TEXT,
+        updated_at TEXT NOT NULL
+      );
+
+      CREATE TABLE covert_operations (
+        id TEXT PRIMARY KEY,
+        campaign_id TEXT NOT NULL REFERENCES campaigns(id) ON DELETE CASCADE,
+        source_country_id TEXT NOT NULL,
+        target_country_id TEXT NOT NULL,
+        target_hex_id TEXT NOT NULL,
+        op_type TEXT NOT NULL,
+        status TEXT NOT NULL DEFAULT 'planned',
+        funds_cost INTEGER NOT NULL,
+        success_chance REAL NOT NULL,
+        attribution_risk REAL NOT NULL,
+        detected INTEGER NOT NULL DEFAULT 0,
+        result_summary TEXT,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+      );
+      CREATE INDEX covert_ops_campaign_idx ON covert_operations(campaign_id);
+      CREATE INDEX covert_ops_campaign_status_idx ON covert_operations(campaign_id, status);
+
+      CREATE TABLE clandestine_flashpoints (
+        id TEXT PRIMARY KEY,
+        campaign_id TEXT NOT NULL REFERENCES campaigns(id) ON DELETE CASCADE,
+        flashpoint_type TEXT NOT NULL,
+        sector_hex_id TEXT NOT NULL,
+        title TEXT NOT NULL,
+        narrative TEXT NOT NULL,
+        involved_countries_json TEXT NOT NULL DEFAULT '[]',
+        turns_active INTEGER NOT NULL DEFAULT 3,
+        resolved INTEGER NOT NULL DEFAULT 0,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+      );
+      CREATE INDEX clandestine_flashpoints_campaign_idx ON clandestine_flashpoints(campaign_id);
+    `,
+  },
+  {
+    id: "006_diplomatic_reactions_and_transit_rights",
+    sql: `
+      CREATE TABLE diplomatic_cables (
+        id TEXT PRIMARY KEY,
+        campaign_id TEXT NOT NULL REFERENCES campaigns(id) ON DELETE CASCADE,
+        sender_country_id TEXT NOT NULL,
+        recipient_country_id TEXT NOT NULL,
+        classification TEXT NOT NULL DEFAULT 'TOP SECRET',
+        header TEXT NOT NULL,
+        content TEXT NOT NULL,
+        stance_change TEXT,
+        created_at TEXT NOT NULL
+      );
+      CREATE INDEX diplomatic_cables_campaign_idx ON diplomatic_cables(campaign_id);
+    `,
+  },
+  {
+    id: "007_diplomatic_inbox_and_world_news",
+    sql: `
+      ALTER TABLE diplomatic_cables ADD COLUMN is_read INTEGER NOT NULL DEFAULT 0;
+
+      CREATE TABLE world_news_dispatches (
+        id TEXT PRIMARY KEY,
+        campaign_id TEXT NOT NULL REFERENCES campaigns(id) ON DELETE CASCADE,
+        agency TEXT NOT NULL,
+        headline TEXT NOT NULL,
+        body TEXT NOT NULL,
+        category TEXT NOT NULL,
+        created_at TEXT NOT NULL
+      );
+      CREATE INDEX world_news_campaign_idx ON world_news_dispatches(campaign_id);
+    `,
+  },
+  {
+    id: "008_country_relations_score_and_casus_belli",
+    sql: `
+      ALTER TABLE country_relations ADD COLUMN relation_score INTEGER NOT NULL DEFAULT 0;
+      ALTER TABLE country_relations ADD COLUMN casus_belli_json TEXT;
+    `,
+  },
+  {
+    id: "009_diplomatic_relation_events",
+    sql: `
+      CREATE TABLE country_relation_events (
+        id TEXT PRIMARY KEY,
+        campaign_id TEXT NOT NULL REFERENCES campaigns(id) ON DELETE CASCADE,
+        country_id TEXT NOT NULL,
+        related_country_id TEXT NOT NULL,
+        delta_score INTEGER NOT NULL,
+        reason TEXT NOT NULL,
+        created_at TEXT NOT NULL
+      );
+      CREATE INDEX country_relation_events_idx ON country_relation_events(campaign_id, country_id, related_country_id);
+    `,
+  },
 ];
 
 function checksum(sql: string): string {

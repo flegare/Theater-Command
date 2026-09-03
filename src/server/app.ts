@@ -62,8 +62,27 @@ import { upgradeHexInvestment } from "../domain/hexInvestments.js";
 import {
   establishDiplomaticTreaty,
   getActiveDiplomaticTreaties,
+  getDiplomaticCables,
+  markDiplomaticCablesAsRead,
+  getWorldNewsDispatches,
+  calculateTreatyOdds,
+  getBilateralRelationshipDetails,
   type TreatyType,
+  type TributePackage,
 } from "../domain/diplomacy.js";
+import { checkOllamaStatus } from "../infrastructure/ollamaClient.js";
+import {
+  negotiateDiplomaticProposal,
+  acceptDiplomaticCounterOffer,
+  declineDiplomaticCounterOffer,
+} from "../domain/diplomaticNegotiator.js";
+import {
+  COVERT_OPS_CATALOG,
+  executeCovertOperation,
+  getCovertOperations,
+  getCampaignTension,
+  type CovertOpType,
+} from "../domain/covertOperations.js";
 import type { AppConfig } from "../infrastructure/config.js";
 import type { CampaignDatabase } from "../infrastructure/database.js";
 import {
@@ -2445,6 +2464,606 @@ export function createApp(
           },
         });
       }
+    },
+  );
+
+  app.get(
+    "/api/v1/campaigns/current/ai/ollama/status",
+    requireCampaignSession,
+    async (_request, response) => {
+      const status = await checkOllamaStatus();
+      response.json({
+        ok: true,
+        status,
+        requestId: response.locals.requestId,
+      });
+    },
+  );
+
+  app.post(
+    "/api/v1/campaigns/current/diplomacy/negotiate",
+    requireCampaignSession,
+    async (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      const body = request.body as {
+        targetCountryId?: string;
+        treatyType?: string;
+        durationTurns?: number;
+        offeredTributeFunds?: number;
+        tribute?: TributePackage;
+      };
+
+      if (!body.targetCountryId || !body.treatyType || !body.durationTurns) {
+        response.status(400).json({
+          error: {
+            code: "INVALID_NEGOTIATION_INPUT",
+            message: "Missing targetCountryId, treatyType, or durationTurns.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      try {
+        const negotiation = await negotiateDiplomaticProposal(
+          dependencies.database,
+          request.perspective!.campaignId,
+          {
+            proposingCountryId: request.perspective!.playerCountryId,
+            targetCountryId: body.targetCountryId,
+            treatyType: body.treatyType as TreatyType,
+            durationTurns: Number(body.durationTurns),
+            offeredTributeFunds:
+              typeof body.offeredTributeFunds === "number"
+                ? body.offeredTributeFunds
+                : undefined,
+            tribute: body.tribute,
+          },
+        );
+
+        response.json({
+          ok: true,
+          negotiation,
+          requestId: response.locals.requestId,
+        });
+      } catch (err: unknown) {
+        const message =
+          err instanceof Error ? err.message : "Diplomatic negotiation failed.";
+        response.status(400).json({
+          error: {
+            code: "DIPLOMACY_NEGOTIATION_FAILED",
+            message,
+            requestId: response.locals.requestId,
+          },
+        });
+      }
+    },
+  );
+
+  app.get(
+    "/api/v1/campaigns/current/diplomacy/cables",
+    requireCampaignSession,
+    (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+      const cables = getDiplomaticCables(
+        dependencies.database,
+        request.perspective!.campaignId,
+      );
+      const unreadCount = cables.filter((c) => !c.isRead).length;
+      response.json({
+        ok: true,
+        cables,
+        unreadCount,
+        requestId: response.locals.requestId,
+      });
+    },
+  );
+
+  app.post(
+    "/api/v1/campaigns/current/diplomacy/cables/mark-read",
+    requireCampaignSession,
+    (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+      const body = request.body as { cableIds?: string[] };
+      const updatedCount = markDiplomaticCablesAsRead(
+        dependencies.database,
+        request.perspective!.campaignId,
+        body.cableIds,
+      );
+      response.json({
+        ok: true,
+        updatedCount,
+        requestId: response.locals.requestId,
+      });
+    },
+  );
+
+  app.get(
+    "/api/v1/campaigns/current/diplomacy/world-news",
+    requireCampaignSession,
+    (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+      const dispatches = getWorldNewsDispatches(
+        dependencies.database,
+        request.perspective!.campaignId,
+        30,
+      );
+      response.json({
+        ok: true,
+        dispatches,
+        requestId: response.locals.requestId,
+      });
+    },
+  );
+
+  app.get(
+    "/api/v1/campaigns/current/diplomacy/eligibility",
+    requireCampaignSession,
+    (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+      const targetCountryId = request.query.targetCountryId as string;
+      const treatyType = request.query.treatyType as TreatyType;
+
+      if (!targetCountryId || !treatyType) {
+        response.status(400).json({
+          error: {
+            code: "MISSING_QUERY_PARAMS",
+            message:
+              "targetCountryId and treatyType query params are required.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      const durationTurns = request.query.durationTurns
+        ? Number(request.query.durationTurns)
+        : 90;
+      const offeredTributeFunds = request.query.offeredTributeFunds
+        ? Number(request.query.offeredTributeFunds)
+        : 0;
+
+      const odds = calculateTreatyOdds(
+        dependencies.database,
+        request.perspective!.campaignId,
+        request.perspective!.playerCountryId,
+        targetCountryId,
+        treatyType,
+        durationTurns,
+        offeredTributeFunds,
+      );
+
+      response.json({
+        ok: true,
+        eligible: !odds.isHardRedline,
+        reason: odds.redlineReason,
+        odds,
+        requestId: response.locals.requestId,
+      });
+    },
+  );
+
+  app.get(
+    "/api/v1/campaigns/current/diplomacy/relations",
+    requireCampaignSession,
+    (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      const targetCountryId = request.query.targetCountryId as
+        string | undefined;
+      if (!targetCountryId) {
+        response.status(400).json({
+          error: {
+            code: "MISSING_TARGET_COUNTRY",
+            message: "targetCountryId query param is required.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      const relations = getBilateralRelationshipDetails(
+        dependencies.database,
+        request.perspective!.campaignId,
+        request.perspective!.playerCountryId,
+        targetCountryId,
+      );
+
+      response.json({
+        ok: true,
+        relations,
+        requestId: response.locals.requestId,
+      });
+    },
+  );
+
+  app.get(
+    "/api/v1/campaigns/current/diplomacy/odds",
+    requireCampaignSession,
+    (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      const targetCountryId = request.query.targetCountryId as
+        string | undefined;
+      const treatyType = request.query.treatyType as TreatyType | undefined;
+      const durationTurns = request.query.durationTurns
+        ? Number(request.query.durationTurns)
+        : 90;
+
+      if (!targetCountryId || !treatyType) {
+        response.status(400).json({
+          error: {
+            code: "MISSING_QUERY_PARAMS",
+            message:
+              "targetCountryId and treatyType query params are required.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      let tributePackage: TributePackage = {
+        mode: (request.query.tributeMode as "offer" | "demand") || "offer",
+        funds: request.query.offeredTributeFunds
+          ? Number(request.query.offeredTributeFunds)
+          : 0,
+        fuel: request.query.offeredTributeFuel
+          ? Number(request.query.offeredTributeFuel)
+          : 0,
+        production: request.query.offeredTributeProduction
+          ? Number(request.query.offeredTributeProduction)
+          : 0,
+        techSharing: request.query.techSharing === "true",
+        transferredFormationId: request.query.transferredFormationId as
+          | string
+          | undefined,
+        cededHexId: request.query.cededHexId as string | undefined,
+      };
+
+      if (request.query.tributeJson) {
+        try {
+          tributePackage = JSON.parse(request.query.tributeJson as string);
+        } catch {
+          // ignore
+        }
+      }
+
+      const odds = calculateTreatyOdds(
+        dependencies.database,
+        request.perspective!.campaignId,
+        request.perspective!.playerCountryId,
+        targetCountryId,
+        treatyType,
+        durationTurns,
+        tributePackage,
+      );
+
+      response.json({
+        ok: true,
+        odds,
+        eligible: !odds.isHardRedline,
+        reason: odds.redlineReason,
+        requestId: response.locals.requestId,
+      });
+    },
+  );
+
+  app.post(
+    "/api/v1/campaigns/current/diplomacy/counter-offer/accept",
+    requireCampaignSession,
+    (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      const body = request.body as {
+        targetCountryId?: string;
+        treatyType?: string;
+        durationTurns?: number;
+        demandedFunds?: number;
+        demandedFuel?: number;
+        demandedProduction?: number;
+        conditionSummary?: string;
+      };
+
+      if (!body.targetCountryId || !body.treatyType) {
+        response.status(400).json({
+          error: {
+            code: "INVALID_COUNTER_OFFER_INPUT",
+            message: "Missing targetCountryId or treatyType.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      const durationTurns =
+        Number(body.durationTurns) > 0 ? Number(body.durationTurns) : 30;
+
+      const result = acceptDiplomaticCounterOffer(
+        dependencies.database,
+        request.perspective!.campaignId,
+        {
+          proposingCountryId: request.perspective!.playerCountryId,
+          targetCountryId: body.targetCountryId,
+          treatyType: body.treatyType as TreatyType,
+          durationTurns,
+          demandedFunds:
+            typeof body.demandedFunds === "number"
+              ? Math.max(0, body.demandedFunds)
+              : undefined,
+          demandedFuel:
+            typeof body.demandedFuel === "number"
+              ? Math.max(0, body.demandedFuel)
+              : undefined,
+          demandedProduction:
+            typeof body.demandedProduction === "number"
+              ? Math.max(0, body.demandedProduction)
+              : undefined,
+          conditionSummary: body.conditionSummary,
+        },
+      );
+
+      if (!result.ok) {
+        response.status(400).json({
+          error: {
+            code: "COUNTER_OFFER_ACCEPTANCE_FAILED",
+            message: result.error ?? "Failed to accept counter-offer.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      response.json({
+        ok: true,
+        ratifiedTreaty: result.ratifiedTreaty,
+        falloutCables: result.falloutCables,
+        updatedRelations: result.updatedRelations,
+        requestId: response.locals.requestId,
+      });
+    },
+  );
+
+  app.post(
+    "/api/v1/campaigns/current/diplomacy/counter-offer/decline",
+    requireCampaignSession,
+    (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      const body = request.body as {
+        targetCountryId?: string;
+        treatyType?: string;
+        reason?: string;
+      };
+
+      if (!body.targetCountryId || !body.treatyType) {
+        response.status(400).json({
+          error: {
+            code: "INVALID_DECLINE_INPUT",
+            message: "Missing targetCountryId or treatyType.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      const result = declineDiplomaticCounterOffer(
+        dependencies.database,
+        request.perspective!.campaignId,
+        {
+          decliningCountryId: request.perspective!.playerCountryId,
+          targetCountryId: body.targetCountryId,
+          treatyType: body.treatyType as TreatyType,
+          reason: body.reason,
+        },
+      );
+
+      response.json({
+        ok: true,
+        cableRecorded: result.cableRecorded,
+        updatedRelations: result.updatedRelations,
+        requestId: response.locals.requestId,
+      });
+    },
+  );
+
+  app.get(
+    "/api/v1/campaigns/current/covert-ops",
+    requireCampaignSession,
+    (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      const operations = getCovertOperations(
+        dependencies.database,
+        request.perspective!.campaignId,
+      );
+      response.json({
+        ok: true,
+        catalog: COVERT_OPS_CATALOG,
+        operations,
+        requestId: response.locals.requestId,
+      });
+    },
+  );
+
+  app.post(
+    "/api/v1/campaigns/current/covert-ops/launch",
+    requireCampaignSession,
+    (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      const body = request.body as {
+        targetCountryId?: string;
+        targetHexId?: string;
+        opType?: CovertOpType;
+      };
+
+      if (!body.targetCountryId || !body.targetHexId || !body.opType) {
+        response.status(400).json({
+          error: {
+            code: "INVALID_COVERT_OP_INPUT",
+            message: "Missing targetCountryId, targetHexId, or opType.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      try {
+        const result = executeCovertOperation(
+          dependencies.database,
+          request.perspective!.campaignId,
+          {
+            sourceCountryId: request.perspective!.playerCountryId,
+            targetCountryId: body.targetCountryId,
+            targetHexId: body.targetHexId,
+            opType: body.opType,
+          },
+        );
+
+        response.json({
+          ...result,
+          requestId: response.locals.requestId,
+        });
+      } catch (err: unknown) {
+        const message =
+          err instanceof Error
+            ? err.message
+            : "Failed to launch covert operation.";
+        response.status(400).json({
+          error: {
+            code: "COVERT_OP_LAUNCH_FAILED",
+            message,
+            requestId: response.locals.requestId,
+          },
+        });
+      }
+    },
+  );
+
+  app.get(
+    "/api/v1/campaigns/current/tensions",
+    requireCampaignSession,
+    (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      const tension = getCampaignTension(
+        dependencies.database,
+        request.perspective!.campaignId,
+      );
+      response.json({
+        ok: true,
+        tension,
+        requestId: response.locals.requestId,
+      });
     },
   );
 

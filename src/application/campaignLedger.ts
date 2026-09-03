@@ -10,6 +10,10 @@ import {
   processTurnDailyFormationsUpdate,
   processTurnStrategicHexesUpdate,
 } from "./hexStrategicSystem.js";
+import {
+  processAutonomousAiDiplomacy,
+  recordDiplomaticCable,
+} from "../domain/diplomacy.js";
 
 export type WorldEntityStatus =
   "active" | "damaged" | "destroyed" | "repairing" | "sunk";
@@ -307,6 +311,26 @@ export function seedCampaignLedger(
     now,
     now,
   );
+
+  // Seed initial diplomatic liaison cable
+  try {
+    recordDiplomaticCable(database, input.campaignId, {
+      senderCountryId: "united-states",
+      recipientCountryId: input.playerCountryId,
+      classification: "SECRET // DEFENSE ATTACHÉ",
+      header: "SACEUR EMBASSY LIAISON — NORTHERN FLANK THEATER DISPOSITION",
+      content: `Supreme Allied Commander Europe (SACEUR) confirms operational readiness under NATO Article 5. Allied surveillance patrols report elevated Soviet Northern Fleet movements exiting the Kola Peninsula. Maintain highest alert status.`,
+    });
+  } catch {
+    // Initial cable fallback
+  }
+
+  // Seed initial autonomous AI diplomacy accords and world press dispatches
+  try {
+    processAutonomousAiDiplomacy(database, input.campaignId);
+  } catch {
+    // Autonomous diplomacy fallback
+  }
 }
 
 export function getCampaignStateSnapshot(

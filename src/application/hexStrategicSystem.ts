@@ -5,9 +5,11 @@ import type { CampaignDatabase } from "../infrastructure/database.js";
 import {
   getAllBalticCoreHexCells,
   getHexCellDefinition,
+  getHexNeighbors,
   type StrategicHexCell,
   type GovernorPolicy,
 } from "../domain/hexGrid.js";
+import { getCountryPersona } from "../domain/countryPersonas.js";
 import {
   FORMATION_ARCHETYPES,
   canFormationTraverseTerrain,
@@ -28,6 +30,18 @@ import {
   type HexPathNode,
 } from "../domain/hexPathfinding.js";
 import { INVESTMENT_TIERS } from "../domain/hexInvestments.js";
+import {
+  getCampaignTension,
+  adjustCampaignTension,
+  calculateDefcon,
+} from "../domain/covertOperations.js";
+import { processAiStrategicTurns } from "../domain/aiStrategicCommander.js";
+import {
+  hasMilitaryTransitRights,
+  hasBasingRights,
+  recordDiplomaticCable,
+  processAutonomousAiDiplomacy,
+} from "../domain/diplomacy.js";
 
 export type HexTurnEconomySummary = {
   grossFunds: number;
@@ -641,6 +655,77 @@ export function moveFormation(
     };
   }
 
+  // Validate territorial sovereignty & Military Transit Rights
+  const hexOverride = database
+    .prepare(
+      `SELECT side, country_id FROM campaign_hex_cells WHERE campaign_id = ? AND hex_id = ?`,
+    )
+    .get(input.campaignId, input.targetHexId) as
+    { side: string; country_id: string } | undefined;
+
+  const targetSide = hexOverride?.side ?? targetCell.ownership.side;
+  const targetCountryId =
+    hexOverride?.country_id ?? targetCell.ownership.countryId;
+
+  if (targetCountryId && targetCountryId !== formation.country_id) {
+    // Neutral or third-party nation: check military transit rights
+    if (targetSide === "neutral" || formation.side === "neutral") {
+      const hasTransit = hasMilitaryTransitRights(
+        database,
+        input.campaignId,
+        formation.country_id,
+        targetCountryId,
+      );
+      if (!hasTransit) {
+        return {
+          ok: false,
+          reason: `Cannot traverse sovereign territory of ${targetCountryId.toUpperCase()} without Military Transit Rights or Coalition Alliance.`,
+        };
+      }
+    } else if (targetSide !== formation.side) {
+      // Enemy territory: check if an active armistice (ceasefire or non-aggression) exists
+      const activeArmistice = database
+        .prepare(
+          `SELECT id FROM diplomatic_treaties
+           WHERE campaign_id = ?
+             AND ((party_a_country_id = ? AND party_b_country_id = ?) OR (party_a_country_id = ? AND party_b_country_id = ?))
+             AND turns_remaining > 0
+             AND treaty_type IN ('ceasefire', 'non_aggression')
+           LIMIT 1`,
+        )
+        .get(
+          input.campaignId,
+          formation.country_id,
+          targetCountryId,
+          targetCountryId,
+          formation.country_id,
+        ) as { id: string } | undefined;
+
+      if (activeArmistice) {
+        // Void ceasefire and escalate tension for border violation
+        database
+          .prepare(
+            "UPDATE diplomatic_treaties SET turns_remaining = 0, updated_at = ? WHERE id = ?",
+          )
+          .run(new Date().toISOString(), activeArmistice.id);
+
+        database
+          .prepare(
+            `UPDATE campaign_tensions
+             SET tension_index = MIN(100, tension_index + 30),
+                 last_incident_summary = ?,
+                 updated_at = ?
+             WHERE campaign_id = ?`,
+          )
+          .run(
+            `Armistice breached: ${formation.name} crossed the frontier into ${targetCell.name}!`,
+            new Date().toISOString(),
+            input.campaignId,
+          );
+      }
+    }
+  }
+
   // Check if target has hostile formations
   const hostileFormations = database
     .prepare(
@@ -697,6 +782,84 @@ export function moveFormation(
         );
     }
   })();
+
+  // Border Proximity Perception & Diplomatic Protests
+  try {
+    const neighborHexes = getHexNeighbors(targetCell);
+    const movingPersona = getCountryPersona(formation.country_id);
+
+    const neighborIds = neighborHexes.map((n) => n.id);
+    const dbHexes =
+      neighborIds.length > 0
+        ? (database
+            .prepare(
+              `SELECT hex_id, country_id FROM campaign_hex_cells WHERE campaign_id = ? AND hex_id IN (${neighborIds.map(() => "?").join(",")})`,
+            )
+            .all(input.campaignId, ...neighborIds) as Array<{
+            hex_id: string;
+            country_id: string;
+          }>)
+        : [];
+    const dbOwnerMap = new Map(dbHexes.map((h) => [h.hex_id, h.country_id]));
+
+    const foreignBorderHex = neighborHexes.find((n) => {
+      const owner = dbOwnerMap.get(n.id) ?? n.ownership?.countryId;
+      if (
+        !owner ||
+        owner === formation.country_id ||
+        owner === "international-waters"
+      ) {
+        return false;
+      }
+      const foreignPersona = getCountryPersona(owner);
+      return foreignPersona.bloc !== movingPersona.bloc;
+    });
+
+    const foreignCountryId = foreignBorderHex
+      ? (dbOwnerMap.get(foreignBorderHex.id) ??
+        foreignBorderHex.ownership?.countryId)
+      : undefined;
+
+    if (foreignBorderHex && foreignCountryId) {
+      const foreignPersona = getCountryPersona(foreignCountryId);
+
+      const existingProtest = database
+        .prepare(
+          `SELECT id FROM diplomatic_cables
+           WHERE campaign_id = ?
+             AND sender_country_id = ?
+             AND recipient_country_id = ?
+             AND header LIKE '%BORDER%'
+           LIMIT 1`,
+        )
+        .get(input.campaignId, foreignCountryId, formation.country_id);
+
+      if (!existingProtest) {
+        if (foreignCountryId === "soviet-union") {
+          recordDiplomaticCable(database, input.campaignId, {
+            senderCountryId: foreignCountryId,
+            recipientCountryId: formation.country_id,
+            classification: "URGENT // DIPLOMATIC DEMARCHE",
+            header: "MINISTRY OF FOREIGN AFFAIRS OF THE USSR — BORDER PROTEST",
+            content: `STAVKA radar surveillance registers foreign combat formation '${formation.name}' maneuvering in international waters immediately adjacent to our Kola Defense Bastion [Sector: ${targetCell.name}]. Cease these provocative naval incursions along the Soviet sovereign perimeter immediately.`,
+          });
+        } else if (
+          foreignCountryId === "sweden" ||
+          foreignCountryId === "finland"
+        ) {
+          recordDiplomaticCable(database, input.campaignId, {
+            senderCountryId: foreignCountryId,
+            recipientCountryId: formation.country_id,
+            classification: "PRIORITY // NOTE VERBALE",
+            header: `${foreignPersona.governingBody.toUpperCase()} — BORDER INQUIRY`,
+            content: `Coastal surveillance radar detects combat formation '${formation.name}' operating 15 nautical miles off our sovereign maritime frontier [Sector: ${targetCell.name}]. We remind foreign commands that strict non-belligerent neutrality applies to these waters.`,
+          });
+        }
+      }
+    }
+  } catch {
+    // Border perception telemetry fallback
+  }
 
   return { ok: true, contested: isContested };
 }
@@ -1576,6 +1739,24 @@ export function refuelAndRearmFormation(
     };
   }
 
+  if (
+    cell.ownership.countryId &&
+    cell.ownership.countryId !== formation.country_id
+  ) {
+    const hasBasing = hasBasingRights(
+      database,
+      input.campaignId,
+      formation.country_id,
+      cell.ownership.countryId,
+    );
+    if (!hasBasing) {
+      return {
+        ok: false,
+        reason: `Cannot conduct port operations in foreign territory (${cell.ownership.countryId.toUpperCase()}) without Basing Rights or Coalition Alliance.`,
+      };
+    }
+  }
+
   const fundsCost = 25;
   const fuelCost = 15;
 
@@ -2243,7 +2424,9 @@ export type StrategicHexTurnEvent = {
     | "hex_contested"
     | "hex_liberated"
     | "market_delivered"
-    | "treaty_expired";
+    | "treaty_expired"
+    | "tension_escalated"
+    | "ai_command_executed";
   summary: string;
 };
 
@@ -2253,6 +2436,13 @@ export function processTurnStrategicHexesUpdate(
 ): StrategicHexTurnEvent[] {
   const events: StrategicHexTurnEvent[] = [];
   const now = new Date().toISOString();
+
+  const playerRow = database
+    .prepare(
+      "SELECT country_id FROM campaign_players WHERE campaign_id = ? LIMIT 1",
+    )
+    .get(campaignId) as { country_id: string } | undefined;
+  const playerCountryId = playerRow?.country_id || "norway";
 
   // 1. Process Hex Capture & Contested Mechanics
   const hexState = getCampaignHexState(database, campaignId);
@@ -2493,12 +2683,76 @@ export function processTurnStrategicHexesUpdate(
       )
       .run(nextTurns, now, treaty.id);
 
+    // Apply economic and industrial dividends if treaty involves player
+    if (
+      treaty.party_a_country_id === playerCountryId ||
+      treaty.party_b_country_id === playerCountryId
+    ) {
+      if (treaty.treaty_type === "trade_agreement") {
+        database
+          .prepare(
+            `UPDATE campaign_economy SET funds = funds + 40, updated_at = ? WHERE campaign_id = ?`,
+          )
+          .run(now, campaignId);
+      } else if (treaty.treaty_type === "joint_production_pact") {
+        database
+          .prepare(
+            `UPDATE campaign_economy SET production_points = production_points + 25, updated_at = ? WHERE campaign_id = ?`,
+          )
+          .run(now, campaignId);
+      }
+    }
+
     if (nextTurns <= 0) {
       events.push({
         kind: "treaty_expired",
         summary: `Diplomatic treaty (${treaty.treaty_type}) between ${treaty.party_a_country_id} and ${treaty.party_b_country_id} has expired.`,
       });
     }
+  }
+
+  // 3b. Autonomous AI Diplomacy & World Press Dispatches
+  try {
+    processAutonomousAiDiplomacy(database, campaignId);
+  } catch {
+    // Autonomous diplomacy fallback
+  }
+
+  // 4. Escalation & Anti-Stalemate Tension Step
+  const tension = getCampaignTension(database, campaignId);
+  const nextPeace = tension.peaceTurnsCounter + 1;
+  if (nextPeace >= 3) {
+    const tensionDelta = 10;
+    const nextTension = Math.min(100, tension.tensionIndex + tensionDelta);
+    adjustCampaignTension(
+      database,
+      campaignId,
+      tensionDelta,
+      `Protracted diplomatic standoff: global military tension escalated to DEFCON ${calculateDefcon(nextTension)}.`,
+    );
+    events.push({
+      kind: "tension_escalated",
+      summary: `Global Cold War tension climbed to DEFCON ${calculateDefcon(nextTension)} due to ongoing military standoff.`,
+    });
+  } else {
+    database
+      .prepare(
+        `UPDATE campaign_tensions SET peace_turns_counter = ?, updated_at = ? WHERE campaign_id = ?`,
+      )
+      .run(nextPeace, now, campaignId);
+  }
+
+  // 5. Process AI Strategic Commander Decisions
+  const aiOrders = processAiStrategicTurns(
+    database,
+    campaignId,
+    playerCountryId,
+  );
+  for (const order of aiOrders) {
+    events.push({
+      kind: "ai_command_executed",
+      summary: order.summary,
+    });
   }
 
   return events;
