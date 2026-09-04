@@ -78,8 +78,10 @@ flowchart LR
   - Generate Sea Power [Zone] objects along boundary vectors (SW, NE) and create safe egress zones for land-based planes.
 - [x] **Story 4.3: Real Estate Static Asset Placement in Missions** (#18)
   - Place factories, fuel tanks, and radar masts from the hex as targetable 3D entities in generated Sea Power .ini missions.
-- [ ] **Story 4.4: Deterministic Auto-Resolve Engine** (#19)
-  - Provide Lanchester-based auto-resolution for minor skirmishes without launching Sea Power.
+- [x] **Story 4.4: Deterministic Auto-Resolve Engine & Air Interception** (#19)
+  - Lanchester Square Law auto-combat engine with veterancy, ammunition expenditure (-25%), casualty retreat, and hex ownership transfer.
+  - Quick-scramble air defense engine (`⚡ Scramble Intercept`) allowing fighter wings to reactively intercept hostile intruders within 3 hexes (~900 km).
+  - Tactical Engagement Modal featuring authentic Sea Power `.ini` mission generator with direct file download, debrief reconciler, and instant auto-resolve simulation.
 
 ---
 

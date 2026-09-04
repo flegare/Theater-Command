@@ -6,6 +6,7 @@ import {
   getAllBalticCoreHexCells,
   getHexCellDefinition,
   getHexNeighbors,
+  getAxialDistance,
   type StrategicHexCell,
   type GovernorPolicy,
 } from "../domain/hexGrid.js";
@@ -2142,14 +2143,31 @@ export function orderCombatTraining(
   return { ok: true };
 }
 
+export type GeneratedHexUnitSummary = {
+  name: string;
+  type: string;
+  domain: string;
+  count: number;
+};
+
+export type GenerateSeaPowerHexBattleResult = {
+  ok: boolean;
+  missionText: string;
+  filePath?: string | undefined;
+  fileName: string;
+  unitsCount: number;
+  bluforUnits: GeneratedHexUnitSummary[];
+  opforUnits: GeneratedHexUnitSummary[];
+};
+
 export function generateSeaPowerHexBattle(
   database: CampaignDatabase,
   input: { campaignId: string; hexId: string; missionTitle?: string },
-): { ok: boolean; missionText: string; filePath?: string; unitsCount: number } {
+): GenerateSeaPowerHexBattleResult {
   const hex = getHexCellDefinition(input.hexId);
   const formations = database
     .prepare(
-      `SELECT id, name, unit_type, side, country_id FROM campaign_formations
+      `SELECT id, name, unit_type, side, country_id, strength, metadata_json FROM campaign_formations
        WHERE campaign_id = ? AND hex_id = ? AND status != 'depleted'`,
     )
     .all(input.campaignId, input.hexId) as Array<{
@@ -2158,6 +2176,8 @@ export function generateSeaPowerHexBattle(
     unit_type: FormationUnitType;
     side: "blufor" | "opfor" | "neutral";
     country_id: string;
+    strength: number;
+    metadata_json: string | null;
   }>;
 
   const campaign = database
@@ -2167,7 +2187,7 @@ export function generateSeaPowerHexBattle(
 
   const missionDate = campaign?.campaign_time
     ? new Date(campaign.campaign_time)
-    : new Date("1983-11-05T06:00:00Z");
+    : new Date("1983-11-05T12:00:00Z");
 
   const title =
     input.missionTitle ??
@@ -2175,121 +2195,342 @@ export function generateSeaPowerHexBattle(
 
   const lat = hex.centroid[0];
   const lon = hex.centroid[1];
-  let theaterName = "NorthAtlantic";
-  if (lat >= 25 && lat <= 46 && lon >= -6 && lon <= 40) {
-    theaterName = "Mediterranean";
-  } else if ((lon <= -110 || lon >= 120) && lat >= 0 && lat <= 65) {
-    theaterName = "NorthPacific";
-  } else if (lon >= 35 && lon <= 110 && lat >= -40 && lat <= 30) {
-    theaterName = "IndianOcean";
+
+  const bluforUnits: GeneratedHexUnitSummary[] = [];
+  const opforUnits: GeneratedHexUnitSummary[] = [];
+
+  type MissionUnitEntry = {
+    name: string;
+    type: string;
+    variant: string;
+    nation: string;
+    domain: "aircraft" | "vessel" | "land";
+    relPosNm: string;
+    heading: number;
+    speed: number;
+    altitude: number;
+  };
+
+  const tf1Units: MissionUnitEntry[] = [];
+  const tf2Units: MissionUnitEntry[] = [];
+
+  let tf1AirCount = 0;
+  let tf1VesselCount = 0;
+  let tf1LandCount = 0;
+  let tf2AirCount = 0;
+  let tf2VesselCount = 0;
+  let tf2LandCount = 0;
+
+  for (const form of formations) {
+    const isBlue = form.side === "blufor";
+    let compUnits: Array<{ name: string; classIniRef: string; count: number }> =
+      [];
+    if (form.metadata_json) {
+      try {
+        const parsed = JSON.parse(form.metadata_json);
+        if (
+          Array.isArray(parsed?.composition?.units) &&
+          parsed.composition.units.length > 0
+        ) {
+          compUnits = parsed.composition.units;
+        }
+      } catch {
+        // ignore
+      }
+    }
+
+    if (compUnits.length === 0) {
+      let defaultClass = isBlue ? "usaf_f-16a" : "wp_mig-25pd";
+      if (form.unit_type === "surface_action_group") {
+        defaultClass = isBlue ? "knm_oslo" : "wp_cor_grisha3";
+      } else if (form.unit_type === "submarine_squadron") {
+        defaultClass = isBlue ? "no_ss_kobben" : "wp_ssn_victor3";
+      } else if (
+        form.unit_type === "nato_armored_division" ||
+        form.unit_type === "pact_tank_division" ||
+        form.unit_type === "mechanized_infantry_division" ||
+        form.unit_type === "marine_amphibious_brigade"
+      ) {
+        defaultClass = isBlue ? "land_m1_abrams" : "land_t80";
+      }
+      compUnits = [{ name: form.name, classIniRef: defaultClass, count: 4 }];
+    }
+
+    for (const unit of compUnits) {
+      const cls = unit.classIniRef.toLowerCase();
+      let domain: "aircraft" | "vessel" | "land" = "aircraft";
+      if (
+        cls.includes("mbt") ||
+        cls.includes("t-72") ||
+        cls.includes("t-55") ||
+        cls.includes("t80") ||
+        cls.includes("abrams") ||
+        cls.includes("mlrs") ||
+        cls.includes("launcher") ||
+        cls.includes("zsu") ||
+        cls.includes("land_")
+      ) {
+        domain = "land";
+      } else if (
+        cls.includes("cor_") ||
+        cls.includes("ffg") ||
+        cls.includes("ddg") ||
+        cls.includes("cg_") ||
+        cls.includes("oslo") ||
+        cls.includes("grisha") ||
+        cls.includes("sub") ||
+        cls.includes("ssn") ||
+        cls.includes("ss_") ||
+        cls.includes("vessel")
+      ) {
+        domain = "vessel";
+      } else {
+        domain = "aircraft";
+      }
+
+      const summaryList = isBlue ? bluforUnits : opforUnits;
+      summaryList.push({
+        name: unit.name,
+        type: unit.classIniRef,
+        domain,
+        count: unit.count,
+      });
+
+      if (isBlue) {
+        const offsetIndex = tf1Units.length;
+        const relPosNm = `${(-8 + (offsetIndex % 3) * 2).toFixed(2)},0,${(-8 + Math.floor(offsetIndex / 3) * 2).toFixed(2)}`;
+        tf1Units.push({
+          name: unit.name,
+          type: unit.classIniRef,
+          variant: "Default",
+          nation: form.country_id === "norway" ? "Norway" : "UnitedStates",
+          domain,
+          relPosNm,
+          heading: 45,
+          speed: domain === "aircraft" ? 420 : domain === "vessel" ? 18 : 15,
+          altitude: domain === "aircraft" ? 18000 : 0,
+        });
+        if (domain === "aircraft") tf1AirCount++;
+        else if (domain === "vessel") tf1VesselCount++;
+        else tf1LandCount++;
+      } else {
+        const offsetIndex = tf2Units.length;
+        const relPosNm = `${(8 - (offsetIndex % 3) * 2).toFixed(2)},0,${(8 - Math.floor(offsetIndex / 3) * 2).toFixed(2)}`;
+        tf2Units.push({
+          name: unit.name,
+          type: unit.classIniRef,
+          variant: "Default",
+          nation:
+            form.country_id === "soviet-union" ? "SovietUnion" : "SovietUnion",
+          domain,
+          relPosNm,
+          heading: 225,
+          speed: domain === "aircraft" ? 450 : domain === "vessel" ? 18 : 15,
+          altitude: domain === "aircraft" ? 20000 : 0,
+        });
+        if (domain === "aircraft") tf2AirCount++;
+        else if (domain === "vessel") tf2VesselCount++;
+        else tf2LandCount++;
+      }
+    }
+  }
+
+  // If one side has no units, add representative skirmish combatants
+  if (tf1Units.length === 0) {
+    tf1Units.push({
+      name: "331 Skvadron F-16 Lead Flight",
+      type: "usaf_f-16a",
+      variant: "Default",
+      nation: "Norway",
+      domain: "aircraft",
+      relPosNm: "-6.0,0,-6.0",
+      heading: 45,
+      speed: 420,
+      altitude: 18000,
+    });
+    tf1AirCount = 1;
+    bluforUnits.push({
+      name: "F-16A Fighting Falcon",
+      type: "usaf_f-16a",
+      domain: "aircraft",
+      count: 2,
+    });
+  }
+  if (tf2Units.length === 0) {
+    tf2Units.push({
+      name: "174th Guards GvIAP MiG-25 Flight",
+      type: "wp_mig-25pd",
+      variant: "Default",
+      nation: "SovietUnion",
+      domain: "aircraft",
+      relPosNm: "8.0,0,8.0",
+      heading: 225,
+      speed: 550,
+      altitude: 24000,
+    });
+    tf2AirCount = 1;
+    opforUnits.push({
+      name: "MiG-25PD Foxbat Interceptor",
+      type: "wp_mig-25pd",
+      domain: "aircraft",
+      count: 2,
+    });
   }
 
   const lines: string[] = [
-    "[Mission]",
-    `Title=${title}`,
-    `Description=Civilization-to-Sea Power Strategic Handoff: Decisive tactical engagement for control of ${hex.name}. Neutralize hostile forces to claim sovereign control of the hex.`,
-    `Date=${missionDate.getUTCFullYear()}.${missionDate.getUTCMonth() + 1}.${missionDate.getUTCDate()}`,
-    `Time=${String(missionDate.getUTCHours()).padStart(2, "0")}:${String(missionDate.getUTCMinutes()).padStart(2, "0")}:00`,
-    `Latitude=${hex.centroid[0].toFixed(4)}`,
-    `Longitude=${hex.centroid[1].toFixed(4)}`,
-    `Theater=${theaterName}`,
+    "; Sea Power: Naval Combat in the Missile Age",
+    `; Tactical Hex Battle Scenario: ${title}`,
+    "; Generated by Sea Power Theater Command",
+    "",
+    "[Language_en]",
+    `Name=${title}`,
+    `Description=Strategic Battle for ${hex.name}. Neutralize all opposing hostile forces in this sector to secure operational control.`,
+    "Objective_NeutralizeHostiles=Neutralize all hostile combatants in the sector",
     "",
     "[Environment]",
-    "WeatherPreset=Clear",
-    "WindDirection=240",
-    "WindSpeedKnots=12",
+    `Date=${missionDate.getUTCFullYear()},${missionDate.getUTCMonth() + 1},${missionDate.getUTCDate()}`,
+    `Time=${missionDate.getUTCHours()},${missionDate.getUTCMinutes()}`,
+    "ConvertTimeToLocal=False",
     "SeaState=3",
-    "VisibilityStatuteMiles=15",
+    "Clouds=Scattered",
+    "WindDirection=W",
+    `MapCenterLatitude=${lat.toFixed(4)}`,
+    `MapCenterLongitude=${lon.toFixed(4)}`,
+    "LoadBackgroundData=False",
     "",
-    "[Player]",
-    "Side=Blue",
-    "Nation=Norway",
+    "[Mission]",
+    `Title=${title}`,
+    "Difficulty=1",
+    "AllowMoraleToAffectAI=True",
+    "PlayerTaskforce=Taskforce1",
+    "EnemyTaskforce=Taskforce2",
+    `NumberOfTaskforce1Vessels=${tf1VesselCount}`,
+    `NumberOfTaskforce1Aircraft=${tf1AirCount}`,
+    `NumberOfTaskforce1LandUnits=${tf1LandCount}`,
+    `NumberOfTaskforce2Vessels=${tf2VesselCount}`,
+    `NumberOfTaskforce2Aircraft=${tf2AirCount}`,
+    `NumberOfTaskforce2LandUnits=${tf2LandCount}`,
+    "NumberOfTriggers=1",
+    "",
+    "[Taskforce1]",
+    "Side=Allied",
+    "TaskforceName=BLUFOR Combined Defense Force",
     "",
   ];
 
-  let unitIndex = 1;
-  if (formations.length === 0) {
-    // Generate standard combatants for contested hex claim
-    lines.push(
-      `[Unit1]`,
-      `Name=Blue Forward Task Force`,
-      `Type=knm_oslo`,
-      `Variant=Default`,
-      `Side=Blue`,
-      `Nation=Norway`,
-      `Latitude=${(hex.centroid[0] - 0.15).toFixed(4)}`,
-      `Longitude=${hex.centroid[1].toFixed(4)}`,
-      `Heading=45`,
-      `SpeedKnots=15`,
-      `AltitudeFeet=0`,
-      "",
-      `[Unit2]`,
-      `Name=Red Regional Defense Squadron`,
-      `Type=sov_sovremenny`,
-      `Variant=Default`,
-      `Side=Red`,
-      `Nation=SovietUnion`,
-      `Latitude=${(hex.centroid[0] + 0.15).toFixed(4)}`,
-      `Longitude=${hex.centroid[1].toFixed(4)}`,
-      `Heading=225`,
-      `SpeedKnots=15`,
-      `AltitudeFeet=0`,
-      "",
-    );
-    unitIndex = 3;
-  }
-  for (const form of formations) {
-    const isPlayer = form.side === "blufor";
-    const baseLat = hex.centroid[0] + (isPlayer ? -0.15 : 0.15);
-    const baseLon = hex.centroid[1] + (unitIndex * 0.08 - 0.2);
-
-    let nativeType = "knm_oslo";
-    const nativeVariant = "Default";
-    let nativeNation = "Norway";
-
-    if (form.unit_type === "surface_action_group") {
-      nativeType = isPlayer ? "knm_oslo" : "sov_sovremenny";
-      nativeNation = isPlayer ? "Norway" : "SovietUnion";
-    } else if (form.unit_type === "submarine_squadron") {
-      nativeType = isPlayer ? "usn_los_angeles" : "sov_victor3";
-      nativeNation = isPlayer ? "UnitedStates" : "SovietUnion";
-    } else if (form.unit_type === "carrier_strike_group") {
-      nativeType = "usn_nimitz";
-      nativeNation = "UnitedStates";
-    } else if (form.unit_type === "sealift_transport_flotilla") {
-      nativeType = "civ_cargo_c3";
-      nativeNation = isPlayer ? "Norway" : "SovietUnion";
-    } else if (
-      form.unit_type === "nato_armored_division" ||
-      form.unit_type === "pact_tank_division"
-    ) {
-      nativeType = isPlayer ? "land_m1_abrams" : "land_t80";
-      nativeNation = isPlayer ? "UnitedStates" : "SovietUnion";
+  let tf1A = 1;
+  let tf1V = 1;
+  let tf1L = 1;
+  for (const u of tf1Units) {
+    if (u.domain === "aircraft") {
+      lines.push(
+        `[Taskforce1Aircraft${tf1A}]`,
+        `Name=${u.name}`,
+        `Type=${u.type}`,
+        `VariantReference=${u.variant}`,
+        "SetSelected=True",
+        `RelativePositionInNM=${u.relPosNm}`,
+        `Heading=${u.heading}`,
+        `Speed=${u.speed}`,
+        `Altitude=${u.altitude}`,
+        `Nation=${u.nation}`,
+        "",
+      );
+      tf1A++;
+    } else if (u.domain === "vessel") {
+      lines.push(
+        `[Taskforce1Vessel${tf1V}]`,
+        `Name=${u.name}`,
+        `Type=${u.type}`,
+        `VariantReference=${u.variant}`,
+        "SetSelected=True",
+        `RelativePositionInNM=${u.relPosNm}`,
+        `Heading=${u.heading}`,
+        `Speed=${u.speed}`,
+        `Nation=${u.nation}`,
+        "",
+      );
+      tf1V++;
     } else {
-      nativeType = isPlayer ? "air_f16a" : "air_tu22m3";
-      nativeNation = isPlayer ? "Norway" : "SovietUnion";
+      lines.push(
+        `[Taskforce1LandUnit${tf1L}]`,
+        `Name=${u.name}`,
+        `Type=${u.type}`,
+        `VariantReference=${u.variant}`,
+        "SetSelected=True",
+        `RelativePositionInNM=${u.relPosNm}`,
+        `Heading=${u.heading}`,
+        `Nation=${u.nation}`,
+        "",
+      );
+      tf1L++;
     }
-
-    lines.push(
-      `[Unit${unitIndex}]`,
-      `Name=${form.name}`,
-      `Type=${nativeType}`,
-      `Variant=${nativeVariant}`,
-      `Side=${isPlayer ? "Blue" : "Red"}`,
-      `Nation=${nativeNation}`,
-      `Latitude=${baseLat.toFixed(4)}`,
-      `Longitude=${baseLon.toFixed(4)}`,
-      `Heading=${isPlayer ? 45 : 225}`,
-      `SpeedKnots=${form.unit_type.includes("air") ? 350 : 15}`,
-      `AltitudeFeet=${form.unit_type.includes("air") ? 15000 : 0}`,
-      "",
-    );
-    unitIndex++;
   }
+
+  lines.push(
+    "[Taskforce2]",
+    "Side=Soviet",
+    "TaskforceName=OPFOR Strike Group",
+    "",
+  );
+
+  let tf2A = 1;
+  let tf2V = 1;
+  let tf2L = 1;
+  for (const u of tf2Units) {
+    if (u.domain === "aircraft") {
+      lines.push(
+        `[Taskforce2Aircraft${tf2A}]`,
+        `Name=${u.name}`,
+        `Type=${u.type}`,
+        `VariantReference=${u.variant}`,
+        `RelativePositionInNM=${u.relPosNm}`,
+        `Heading=${u.heading}`,
+        `Speed=${u.speed}`,
+        `Altitude=${u.altitude}`,
+        `Nation=${u.nation}`,
+        "",
+      );
+      tf2A++;
+    } else if (u.domain === "vessel") {
+      lines.push(
+        `[Taskforce2Vessel${tf2V}]`,
+        `Name=${u.name}`,
+        `Type=${u.type}`,
+        `VariantReference=${u.variant}`,
+        `RelativePositionInNM=${u.relPosNm}`,
+        `Heading=${u.heading}`,
+        `Speed=${u.speed}`,
+        `Nation=${u.nation}`,
+        "",
+      );
+      tf2V++;
+    } else {
+      lines.push(
+        `[Taskforce2LandUnit${tf2L}]`,
+        `Name=${u.name}`,
+        `Type=${u.type}`,
+        `VariantReference=${u.variant}`,
+        `RelativePositionInNM=${u.relPosNm}`,
+        `Heading=${u.heading}`,
+        `Nation=${u.nation}`,
+        "",
+      );
+      tf2L++;
+    }
+  }
+
+  lines.push(
+    "[Trigger1]",
+    "Name=NeutralizeHostiles",
+    "Description=Sector Clear",
+    "Condition=TaskforceDestroyed(Taskforce2)",
+    "Action=CompleteMission()",
+    "",
+  );
 
   const missionText = lines.join("\r\n");
 
-  // Attempt to write directly to Sea Power StreamingAssets if directory exists
   const targetDir =
     "s:\\SteamLibrary\\steamapps\\common\\Sea Power\\Sea Power_Data\\StreamingAssets\\user\\missions";
   const slugName = hex.id.replace(/[^a-z0-9]+/g, "-");
@@ -2300,14 +2541,807 @@ export function generateSeaPowerHexBattle(
     mkdirSync(targetDir, { recursive: true });
     writeFileSync(filePath, missionText, "utf-8");
   } catch {
-    // If external path not writable, return text directly
+    // If external path not writable, continue
   }
 
   return {
     ok: true,
     missionText,
     filePath,
+    fileName,
     unitsCount: formations.length,
+    bluforUnits,
+    opforUnits,
+  };
+}
+
+export type ScrambleAirInterceptionInput = {
+  campaignId: string;
+  interceptorFormationId?: string;
+  formationId?: string;
+  targetHexId: string;
+};
+
+export type ScrambleAirInterceptionResult = {
+  ok: boolean;
+  message: string;
+  interceptorName?: string | undefined;
+  sourceHexId?: string | undefined;
+  targetHexId?: string | undefined;
+  distance?: number | undefined;
+  actionPointsRemaining?: number | undefined;
+  reason?: string | undefined;
+  formation?:
+    | {
+        id: string;
+        name: string;
+        hexId: string;
+        status: CampaignFormationStatus;
+        actionPoints: number;
+      }
+    | undefined;
+};
+
+export function scrambleAirInterception(
+  database: CampaignDatabase,
+  input: ScrambleAirInterceptionInput,
+): ScrambleAirInterceptionResult {
+  const formId = input.interceptorFormationId ?? input.formationId;
+  if (!formId) {
+    return {
+      ok: false,
+      message: "Formation ID required.",
+      reason: "Formation ID required.",
+    };
+  }
+
+  const formation = database
+    .prepare(
+      `SELECT id, name, unit_type, side, country_id, hex_id, action_points, max_action_points,
+              strength, status, metadata_json
+       FROM campaign_formations
+       WHERE campaign_id = ? AND id = ?`,
+    )
+    .get(input.campaignId, formId) as
+    | {
+        id: string;
+        name: string;
+        unit_type: FormationUnitType;
+        side: "blufor" | "opfor" | "neutral";
+        country_id: string;
+        hex_id: string;
+        action_points: number;
+        max_action_points: number;
+        strength: number;
+        status: CampaignFormationStatus;
+        metadata_json: string | null;
+      }
+    | undefined;
+
+  if (!formation) {
+    return {
+      ok: false,
+      message: "Formation not found.",
+      reason: "Formation not found.",
+    };
+  }
+
+  if (formation.status === "depleted") {
+    return {
+      ok: false,
+      message: `${formation.name} is depleted and cannot scramble.`,
+      reason: "Formation depleted.",
+    };
+  }
+
+  if (
+    formation.status === "embarked" ||
+    formation.status === "embarking" ||
+    formation.status === "disembarking"
+  ) {
+    return {
+      ok: false,
+      message: `Cannot scramble air interception while ${formation.status}.`,
+      reason: `Formation is ${formation.status}.`,
+    };
+  }
+
+  if (formation.action_points < 1) {
+    return {
+      ok: false,
+      message: `${formation.name} has no remaining Action Points (0 AP) for a combat scramble this turn.`,
+      reason: "Insufficient Action Points (0 AP).",
+    };
+  }
+
+  const archetype = FORMATION_ARCHETYPES[formation.unit_type];
+  let isAirAsset =
+    archetype?.domain === "air" ||
+    formation.unit_type.includes("air") ||
+    formation.unit_type.includes("fighter");
+
+  if (!isAirAsset && formation.metadata_json) {
+    try {
+      const comp = JSON.parse(formation.metadata_json)?.composition;
+      if (
+        comp?.totalAircraft > 0 ||
+        (Array.isArray(comp?.units) &&
+          comp.units.some((u: { classIniRef?: string }) =>
+            Boolean(
+              u.classIniRef &&
+              /f-16|f-15|f-5|mig|tu-22|draken|viggen/i.test(u.classIniRef),
+            ),
+          ))
+      ) {
+        isAirAsset = true;
+      }
+    } catch {
+      // ignore
+    }
+  }
+
+  if (!isAirAsset) {
+    return {
+      ok: false,
+      message: `${formation.name} is not an aviation or interceptor asset capable of an aerial scramble.`,
+      reason: "Non-aviation formation.",
+    };
+  }
+
+  const sourceHex = getHexCellDefinition(formation.hex_id);
+  const targetHex = getHexCellDefinition(input.targetHexId);
+  const distance = getAxialDistance(sourceHex.axial, targetHex.axial);
+
+  if (distance > 3) {
+    return {
+      ok: false,
+      message: `Target sector ${targetHex.name} is beyond maximum combat scramble radius (3 hexes / ~900km). Distance: ${distance} hexes.`,
+      reason: `Distance (${distance} hexes) exceeds maximum scramble range (3 hexes).`,
+    };
+  }
+
+  const now = new Date().toISOString();
+  const newAP = formation.action_points - 1;
+
+  database
+    .prepare(
+      `UPDATE campaign_formations
+       SET hex_id = ?,
+           action_points = ?,
+           status = 'engaged',
+           updated_at = ?
+       WHERE campaign_id = ? AND id = ?`,
+    )
+    .run(input.targetHexId, newAP, now, input.campaignId, formation.id);
+
+  // Check if target sector has hostile units
+  const hostileFormations = database
+    .prepare(
+      `SELECT id, name FROM campaign_formations
+       WHERE campaign_id = ? AND hex_id = ? AND side != ? AND status != 'depleted'`,
+    )
+    .all(input.campaignId, input.targetHexId, formation.side) as Array<{
+    id: string;
+    name: string;
+  }>;
+
+  if (hostileFormations.length > 0) {
+    database
+      .prepare(
+        `UPDATE campaign_hex_cells SET contested = 1 WHERE campaign_id = ? AND hex_id = ?`,
+      )
+      .run(input.campaignId, input.targetHexId);
+
+    database
+      .prepare(
+        `UPDATE campaign_formations
+         SET status = 'engaged', updated_at = ?
+         WHERE campaign_id = ? AND hex_id = ? AND side != ? AND status != 'depleted'`,
+      )
+      .run(now, input.campaignId, input.targetHexId, formation.side);
+  }
+
+  return {
+    ok: true,
+    interceptorName: formation.name,
+    sourceHexId: formation.hex_id,
+    targetHexId: input.targetHexId,
+    distance,
+    actionPointsRemaining: newAP,
+    formation: {
+      id: formation.id,
+      name: formation.name,
+      hexId: input.targetHexId,
+      status: "engaged",
+      actionPoints: newAP,
+    },
+    message: `⚡ SCRAMBLE LAUNCHED: ${formation.name} intercepted sector ${targetHex.name}! ${hostileFormations.length > 0 ? "Engaged hostile forces en route." : "Sector patrolled."}`,
+  };
+}
+
+export type HexAutoCombatResult = {
+  ok: boolean;
+  victory: "blufor" | "opfor" | "stalemate";
+  title: string;
+  summary: string;
+  bluforCasualtiesPct: number;
+  opforCasualtiesPct: number;
+  bluforAmmoExpended: number;
+  opforAmmoExpended: number;
+  retreatedFormations: Array<{ id: string; name: string; toHexId: string }>;
+  hexLiberated: boolean;
+  contested: boolean;
+  reason?: string | undefined;
+};
+
+export function resolveHexAutoCombat(
+  database: CampaignDatabase,
+  input: { campaignId: string; hexId: string },
+): HexAutoCombatResult {
+  const hex = getHexCellDefinition(input.hexId);
+  const bluforFormations = database
+    .prepare(
+      `SELECT id, name, unit_type, side, country_id, strength, action_points, metadata_json
+       FROM campaign_formations
+       WHERE campaign_id = ? AND hex_id = ? AND side = 'blufor' AND status != 'depleted'`,
+    )
+    .all(input.campaignId, input.hexId) as Array<{
+    id: string;
+    name: string;
+    unit_type: FormationUnitType;
+    side: "blufor";
+    country_id: string;
+    strength: number;
+    action_points: number;
+    metadata_json: string | null;
+  }>;
+
+  const opforFormations = database
+    .prepare(
+      `SELECT id, name, unit_type, side, country_id, strength, action_points, metadata_json
+       FROM campaign_formations
+       WHERE campaign_id = ? AND hex_id = ? AND side = 'opfor' AND status != 'depleted'`,
+    )
+    .all(input.campaignId, input.hexId) as Array<{
+    id: string;
+    name: string;
+    unit_type: FormationUnitType;
+    side: "opfor";
+    country_id: string;
+    strength: number;
+    action_points: number;
+    metadata_json: string | null;
+  }>;
+
+  if (bluforFormations.length === 0 || opforFormations.length === 0) {
+    return {
+      ok: false,
+      victory: "stalemate",
+      title: `No Battle at ${hex.name}`,
+      summary: "Sector does not contain opposing forces ready for combat.",
+      bluforCasualtiesPct: 0,
+      opforCasualtiesPct: 0,
+      bluforAmmoExpended: 0,
+      opforAmmoExpended: 0,
+      retreatedFormations: [],
+      hexLiberated: false,
+      contested: false,
+      reason: "No opposing formations found in hex.",
+    };
+  }
+
+  type CombatUnitRecord = {
+    strength: number;
+    ammo_level: number;
+    morale: number;
+    unit_type: FormationUnitType;
+    veterancy_rank: string;
+    metadata: Record<string, unknown>;
+  };
+
+  const parseCombatRecord = (f: {
+    strength: number;
+    unit_type: FormationUnitType;
+    country_id: string;
+    metadata_json: string | null;
+  }): CombatUnitRecord => {
+    const meta = jsonParse<Record<string, unknown>>(f.metadata_json ?? "{}");
+    const ammo_level =
+      typeof meta.ammoLevel === "number" ? meta.ammoLevel : 100;
+    const morale = typeof meta.morale === "number" ? meta.morale : 100;
+    const experience =
+      typeof meta.experience === "number"
+        ? meta.experience
+        : f.country_id === "united-states" || f.country_id === "soviet-union"
+          ? 65
+          : 40;
+    const veterancy_rank =
+      typeof meta.rank === "string"
+        ? meta.rank
+        : calculateVeterancyRank(experience);
+    return {
+      strength: f.strength,
+      ammo_level,
+      morale,
+      unit_type: f.unit_type,
+      veterancy_rank,
+      metadata: meta,
+    };
+  };
+
+  const calcPower = (forms: CombatUnitRecord[]): number => {
+    let power = 0;
+    for (const f of forms) {
+      const vRank = f.veterancy_rank.toLowerCase();
+      const rankMult =
+        vRank === "elite"
+          ? 1.5
+          : vRank === "veteran"
+            ? 1.25
+            : vRank === "green"
+              ? 0.8
+              : 1.0;
+      const ammoMult = Math.max(0.2, f.ammo_level / 100);
+      const moraleMult = 0.5 + 0.5 * (f.morale / 100);
+      const strengthMult = f.strength / 100;
+      const archetype = FORMATION_ARCHETYPES[f.unit_type];
+      const domainWeight =
+        archetype?.domain === "air"
+          ? 1.3
+          : archetype?.domain === "ground"
+            ? 1.2
+            : 1.1;
+      power +=
+        strengthMult * rankMult * ammoMult * moraleMult * domainWeight * 100;
+    }
+    return Math.max(1, power);
+  };
+
+  const bluforRecords = bluforFormations.map(parseCombatRecord);
+  const opforRecords = opforFormations.map(parseCombatRecord);
+
+  const bluforPower = calcPower(bluforRecords);
+  const opforPower = calcPower(opforRecords);
+  const odds = bluforPower / opforPower;
+
+  let victory: "blufor" | "opfor" | "stalemate" = "stalemate";
+  let bluforCasualtiesPct = 25;
+  let opforCasualtiesPct = 25;
+
+  if (odds >= 1.35) {
+    victory = "blufor";
+    opforCasualtiesPct = Math.min(85, Math.round(45 * odds));
+    bluforCasualtiesPct = Math.max(8, Math.round(25 / odds));
+  } else if (odds <= 0.74) {
+    victory = "opfor";
+    bluforCasualtiesPct = Math.min(85, Math.round(45 / odds));
+    opforCasualtiesPct = Math.max(8, Math.round(25 * odds));
+  } else {
+    victory = "stalemate";
+    bluforCasualtiesPct = 28;
+    opforCasualtiesPct = 28;
+  }
+
+  const now = new Date().toISOString();
+  const retreatedFormations: Array<{
+    id: string;
+    name: string;
+    toHexId: string;
+  }> = [];
+
+  // Apply damage & update BLUFOR
+  for (let i = 0; i < bluforFormations.length; i++) {
+    const f = bluforFormations[i];
+    const rec = bluforRecords[i];
+    if (!f || !rec) continue;
+    const newStr = Math.max(0, f.strength - bluforCasualtiesPct);
+    const newAmmo = Math.max(0, rec.ammo_level - 25);
+    const currFuel =
+      typeof rec.metadata.fuelCurrent === "number"
+        ? rec.metadata.fuelCurrent
+        : 100;
+    const newFuel = Math.max(0, currFuel - 10);
+    const newMorale =
+      victory === "blufor"
+        ? Math.min(100, rec.morale + 12)
+        : Math.max(20, rec.morale - 25);
+    const currXP =
+      typeof rec.metadata.experience === "number"
+        ? rec.metadata.experience
+        : 40;
+    const newXP = currXP + (victory === "blufor" ? 18 : 6);
+    const newRank = calculateVeterancyRank(newXP);
+    const newStatus =
+      newStr <= 0
+        ? "depleted"
+        : victory === "blufor"
+          ? "ready"
+          : victory === "opfor"
+            ? "ready"
+            : "engaged";
+
+    const updatedMeta = {
+      ...rec.metadata,
+      ammoLevel: newAmmo,
+      fuelCurrent: newFuel,
+      morale: newMorale,
+      experience: newXP,
+      rank: newRank,
+    };
+
+    database
+      .prepare(
+        `UPDATE campaign_formations
+         SET strength = ?, status = ?, metadata_json = ?, updated_at = ?
+         WHERE campaign_id = ? AND id = ?`,
+      )
+      .run(
+        newStr,
+        newStatus,
+        JSON.stringify(updatedMeta),
+        now,
+        input.campaignId,
+        f.id,
+      );
+  }
+
+  // Apply damage & update OPFOR
+  for (let i = 0; i < opforFormations.length; i++) {
+    const f = opforFormations[i];
+    const rec = opforRecords[i];
+    if (!f || !rec) continue;
+    const newStr = Math.max(0, f.strength - opforCasualtiesPct);
+    const newAmmo = Math.max(0, rec.ammo_level - 25);
+    const currFuel =
+      typeof rec.metadata.fuelCurrent === "number"
+        ? rec.metadata.fuelCurrent
+        : 100;
+    const newFuel = Math.max(0, currFuel - 10);
+    const newMorale =
+      victory === "opfor"
+        ? Math.min(100, rec.morale + 12)
+        : Math.max(20, rec.morale - 25);
+    const currXP =
+      typeof rec.metadata.experience === "number"
+        ? rec.metadata.experience
+        : 40;
+    const newXP = currXP + (victory === "opfor" ? 18 : 6);
+    const newRank = calculateVeterancyRank(newXP);
+    const newStatus =
+      newStr <= 0
+        ? "depleted"
+        : victory === "opfor"
+          ? "ready"
+          : victory === "blufor"
+            ? "ready"
+            : "engaged";
+
+    const updatedMeta = {
+      ...rec.metadata,
+      ammoLevel: newAmmo,
+      fuelCurrent: newFuel,
+      morale: newMorale,
+      experience: newXP,
+      rank: newRank,
+    };
+
+    database
+      .prepare(
+        `UPDATE campaign_formations
+         SET strength = ?, status = ?, metadata_json = ?, updated_at = ?
+         WHERE campaign_id = ? AND id = ?`,
+      )
+      .run(
+        newStr,
+        newStatus,
+        JSON.stringify(updatedMeta),
+        now,
+        input.campaignId,
+        f.id,
+      );
+  }
+
+  // Retreat handling
+  let hexLiberated = false;
+  let contested = true;
+
+  const neighbors = getHexNeighbors(hex);
+
+  if (victory === "blufor") {
+    // Surviving OPFOR retreat to adjacent friendly or neutral hex
+    const retreatCandidate =
+      neighbors.find((n) => n.ownership.side !== "blufor") ?? neighbors[0];
+    for (const f of opforFormations) {
+      if (f.strength - opforCasualtiesPct > 0 && retreatCandidate) {
+        database
+          .prepare(
+            `UPDATE campaign_formations SET hex_id = ?, status = 'ready', updated_at = ? WHERE id = ?`,
+          )
+          .run(retreatCandidate.id, now, f.id);
+        retreatedFormations.push({
+          id: f.id,
+          name: f.name,
+          toHexId: retreatCandidate.id,
+        });
+      }
+    }
+
+    const playerCountry = bluforFormations[0]?.country_id ?? "norway";
+    database
+      .prepare(
+        `UPDATE campaign_hex_cells
+         SET side = 'blufor', country_id = ?, contested = 0
+         WHERE campaign_id = ? AND hex_id = ?`,
+      )
+      .run(playerCountry, input.campaignId, input.hexId);
+
+    hexLiberated = true;
+    contested = false;
+  } else if (victory === "opfor") {
+    // Surviving BLUFOR retreat to adjacent friendly hex
+    const retreatCandidate =
+      neighbors.find((n) => n.ownership.side === "blufor") ?? neighbors[0];
+    for (const f of bluforFormations) {
+      if (f.strength - bluforCasualtiesPct > 0 && retreatCandidate) {
+        database
+          .prepare(
+            `UPDATE campaign_formations SET hex_id = ?, status = 'ready', updated_at = ? WHERE id = ?`,
+          )
+          .run(retreatCandidate.id, now, f.id);
+        retreatedFormations.push({
+          id: f.id,
+          name: f.name,
+          toHexId: retreatCandidate.id,
+        });
+      }
+    }
+
+    const opforCountry = opforFormations[0]?.country_id ?? "soviet-union";
+    database
+      .prepare(
+        `UPDATE campaign_hex_cells
+         SET side = 'opfor', country_id = ?, contested = 0
+         WHERE campaign_id = ? AND hex_id = ?`,
+      )
+      .run(opforCountry, input.campaignId, input.hexId);
+
+    contested = false;
+  } else {
+    // Stalemate: remains contested
+    database
+      .prepare(
+        `UPDATE campaign_hex_cells SET contested = 1 WHERE campaign_id = ? AND hex_id = ?`,
+      )
+      .run(input.campaignId, input.hexId);
+    contested = true;
+  }
+
+  const summary =
+    victory === "blufor"
+      ? `🏆 DECISIVE BLUFOR VICTORY: Allied forces routed OPFOR in ${hex.name} (Losses: BLUFOR -${bluforCasualtiesPct}% / OPFOR -${opforCasualtiesPct}%). Surviving enemy units retreated. Sector secured!`
+      : victory === "opfor"
+        ? `💀 OPFOR REPULSE: Hostile strike forces overwhelmed defenses in ${hex.name} (Losses: BLUFOR -${bluforCasualtiesPct}% / OPFOR -${opforCasualtiesPct}%). Allied units retreated to friendly lines.`
+        : `⚖️ INCONCLUSIVE SKIRMISH: Heavy combat in ${hex.name} resulted in mutual attrition (-${bluforCasualtiesPct}% casualties, -25% ammo). Hostile forces remain engaged.`;
+
+  return {
+    ok: true,
+    victory,
+    title: `Battle of ${hex.name}`,
+    summary,
+    bluforCasualtiesPct,
+    opforCasualtiesPct,
+    bluforAmmoExpended: 25,
+    opforAmmoExpended: 25,
+    retreatedFormations,
+    hexLiberated,
+    contested,
+  };
+}
+
+export function resolveHexManualDebrief(
+  database: CampaignDatabase,
+  input: {
+    campaignId: string;
+    hexId: string;
+    outcome: "blufor_victory" | "stalemate" | "opfor_victory";
+  },
+): HexAutoCombatResult {
+  const hex = getHexCellDefinition(input.hexId);
+  const now = new Date().toISOString();
+
+  const bluforFormations = database
+    .prepare(
+      `SELECT id, name, strength, metadata_json, country_id FROM campaign_formations
+       WHERE campaign_id = ? AND hex_id = ? AND side = 'blufor' AND status != 'depleted'`,
+    )
+    .all(input.campaignId, input.hexId) as Array<{
+    id: string;
+    name: string;
+    strength: number;
+    metadata_json: string | null;
+    country_id: string;
+  }>;
+
+  const opforFormations = database
+    .prepare(
+      `SELECT id, name, strength, metadata_json, country_id FROM campaign_formations
+       WHERE campaign_id = ? AND hex_id = ? AND side = 'opfor' AND status != 'depleted'`,
+    )
+    .all(input.campaignId, input.hexId) as Array<{
+    id: string;
+    name: string;
+    strength: number;
+    metadata_json: string | null;
+    country_id: string;
+  }>;
+
+  const neighbors = getHexNeighbors(hex);
+  const retreatedFormations: Array<{
+    id: string;
+    name: string;
+    toHexId: string;
+  }> = [];
+
+  let bluforCasualtiesPct = 15;
+  let opforCasualtiesPct = 65;
+  let hexLiberated = false;
+  let contested = false;
+
+  if (input.outcome === "blufor_victory") {
+    bluforCasualtiesPct = 12;
+    opforCasualtiesPct = 65;
+    hexLiberated = true;
+    contested = false;
+
+    // Retreat OPFOR
+    const retreatCandidate =
+      neighbors.find((n) => n.ownership.side !== "blufor") ?? neighbors[0];
+    for (const f of opforFormations) {
+      const newStr = Math.max(0, f.strength - opforCasualtiesPct);
+      if (newStr > 0 && retreatCandidate) {
+        database
+          .prepare(
+            `UPDATE campaign_formations SET hex_id = ?, strength = ?, status = 'ready', updated_at = ? WHERE id = ?`,
+          )
+          .run(retreatCandidate.id, newStr, now, f.id);
+        retreatedFormations.push({
+          id: f.id,
+          name: f.name,
+          toHexId: retreatCandidate.id,
+        });
+      } else {
+        database
+          .prepare(
+            `UPDATE campaign_formations SET strength = 0, status = 'depleted', updated_at = ? WHERE id = ?`,
+          )
+          .run(now, f.id);
+      }
+    }
+
+    // Award BLUFOR
+    const playerCountry = bluforFormations[0]?.country_id ?? "norway";
+    for (const f of bluforFormations) {
+      const meta = jsonParse<Record<string, unknown>>(f.metadata_json ?? "{}");
+      const currAmmo =
+        typeof meta.ammoLevel === "number" ? meta.ammoLevel : 100;
+      const currMorale = typeof meta.morale === "number" ? meta.morale : 100;
+      const currXP = typeof meta.experience === "number" ? meta.experience : 40;
+
+      const newStr = Math.max(10, f.strength - bluforCasualtiesPct);
+      const newAmmo = Math.max(0, currAmmo - 25);
+      const newMorale = Math.min(100, currMorale + 15);
+      const newXP = currXP + 20;
+      const newRank = calculateVeterancyRank(newXP);
+
+      const updatedMeta = {
+        ...meta,
+        ammoLevel: newAmmo,
+        morale: newMorale,
+        experience: newXP,
+        rank: newRank,
+      };
+
+      database
+        .prepare(
+          `UPDATE campaign_formations SET strength = ?, status = 'ready', metadata_json = ?, updated_at = ? WHERE id = ?`,
+        )
+        .run(newStr, JSON.stringify(updatedMeta), now, f.id);
+    }
+
+    database
+      .prepare(
+        `UPDATE campaign_hex_cells SET side = 'blufor', country_id = ?, contested = 0 WHERE campaign_id = ? AND hex_id = ?`,
+      )
+      .run(playerCountry, input.campaignId, input.hexId);
+  } else if (input.outcome === "opfor_victory") {
+    bluforCasualtiesPct = 50;
+    opforCasualtiesPct = 15;
+    hexLiberated = false;
+    contested = false;
+
+    // Retreat BLUFOR
+    const retreatCandidate =
+      neighbors.find((n) => n.ownership.side === "blufor") ?? neighbors[0];
+    for (const f of bluforFormations) {
+      const newStr = Math.max(0, f.strength - bluforCasualtiesPct);
+      if (newStr > 0 && retreatCandidate) {
+        database
+          .prepare(
+            `UPDATE campaign_formations SET hex_id = ?, strength = ?, status = 'ready', updated_at = ? WHERE id = ?`,
+          )
+          .run(retreatCandidate.id, newStr, now, f.id);
+        retreatedFormations.push({
+          id: f.id,
+          name: f.name,
+          toHexId: retreatCandidate.id,
+        });
+      } else {
+        database
+          .prepare(
+            `UPDATE campaign_formations SET strength = 0, status = 'depleted', updated_at = ? WHERE id = ?`,
+          )
+          .run(now, f.id);
+      }
+    }
+
+    const opforCountry = opforFormations[0]?.country_id ?? "soviet-union";
+    database
+      .prepare(
+        `UPDATE campaign_hex_cells SET side = 'opfor', country_id = ?, contested = 0 WHERE campaign_id = ? AND hex_id = ?`,
+      )
+      .run(opforCountry, input.campaignId, input.hexId);
+  } else {
+    bluforCasualtiesPct = 30;
+    opforCasualtiesPct = 30;
+    contested = true;
+
+    for (const f of bluforFormations) {
+      const newStr = Math.max(0, f.strength - bluforCasualtiesPct);
+      database
+        .prepare(
+          `UPDATE campaign_formations SET strength = ?, status = 'engaged', updated_at = ? WHERE id = ?`,
+        )
+        .run(newStr, now, f.id);
+    }
+    for (const f of opforFormations) {
+      const newStr = Math.max(0, f.strength - opforCasualtiesPct);
+      database
+        .prepare(
+          `UPDATE campaign_formations SET strength = ?, status = 'engaged', updated_at = ? WHERE id = ?`,
+        )
+        .run(newStr, now, f.id);
+    }
+    database
+      .prepare(
+        `UPDATE campaign_hex_cells SET contested = 1 WHERE campaign_id = ? AND hex_id = ?`,
+      )
+      .run(input.campaignId, input.hexId);
+  }
+
+  const summary =
+    input.outcome === "blufor_victory"
+      ? `🏆 TACTICAL SORTIE DEBRIEF: Decisive victory confirmed in ${hex.name}! OPFOR routed and retreated. Sovereign control established.`
+      : input.outcome === "opfor_victory"
+        ? `💀 TACTICAL SORTIE DEBRIEF: Repulse in ${hex.name}. Friendly forces fell back to adjacent lines.`
+        : `⚖️ TACTICAL SORTIE DEBRIEF: Stalemate in ${hex.name}. Both sides took heavy attrition; sector remains contested.`;
+
+  return {
+    ok: true,
+    victory:
+      input.outcome === "blufor_victory"
+        ? "blufor"
+        : input.outcome === "opfor_victory"
+          ? "opfor"
+          : "stalemate",
+    title: `Debrief: Battle of ${hex.name}`,
+    summary,
+    bluforCasualtiesPct,
+    opforCasualtiesPct,
+    bluforAmmoExpended: 25,
+    opforAmmoExpended: 25,
+    retreatedFormations,
+    hexLiberated,
+    contested,
   };
 }
 

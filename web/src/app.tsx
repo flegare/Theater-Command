@@ -971,18 +971,160 @@ function CommandCenter({
       campaignState.refetch();
     },
   });
+  const [activeTacticalEngagement, setActiveTacticalEngagement] = useState<{
+    hexId: string;
+    hexName: string;
+    missionText: string;
+    filePath?: string | undefined;
+    fileName: string;
+    unitsCount: number;
+    bluforUnits: Array<{
+      name: string;
+      type: string;
+      domain: string;
+      count: number;
+    }>;
+    opforUnits: Array<{
+      name: string;
+      type: string;
+      domain: string;
+      count: number;
+    }>;
+  } | null>(null);
+
+  const [autoResolveResult, setAutoResolveResult] = useState<{
+    ok: boolean;
+    victory: "blufor" | "opfor" | "stalemate";
+    title: string;
+    summary: string;
+    bluforCasualtiesPct: number;
+    opforCasualtiesPct: number;
+    hexLiberated: boolean;
+    contested: boolean;
+    retreatedFormations: Array<{ id: string; name: string; toHexId: string }>;
+  } | null>(null);
+
+  const [manualDebriefResult, setManualDebriefResult] = useState<{
+    ok: boolean;
+    victory: string;
+    title: string;
+    summary: string;
+    bluforCasualtiesPct: number;
+    opforCasualtiesPct: number;
+    hexLiberated: boolean;
+  } | null>(null);
+
   const engageHex = useMutation({
     mutationFn: (input: { hexId: string; missionTitle?: string }) =>
       api<{
         ok: boolean;
         missionText: string;
-        filePath?: string;
+        filePath?: string | undefined;
+        fileName: string;
         unitsCount: number;
+        bluforUnits: Array<{
+          name: string;
+          type: string;
+          domain: string;
+          count: number;
+        }>;
+        opforUnits: Array<{
+          name: string;
+          type: string;
+          domain: string;
+          count: number;
+        }>;
       }>(`/api/v1/campaigns/current/hex-cells/${input.hexId}/engage`, {
         method: "POST",
         body: JSON.stringify(input),
       }),
-    onSuccess: () => {
+    onSuccess: (data, variables) => {
+      setAutoResolveResult(null);
+      setManualDebriefResult(null);
+      const hexDef = hexGrid.data?.hexCells.find(
+        (c) => c.id === variables.hexId,
+      );
+      setActiveTacticalEngagement({
+        hexId: variables.hexId,
+        hexName: hexDef?.name ?? variables.hexId,
+        missionText: data.missionText,
+        filePath: data.filePath,
+        fileName: data.fileName,
+        unitsCount: data.unitsCount,
+        bluforUnits: data.bluforUnits ?? [],
+        opforUnits: data.opforUnits ?? [],
+      });
+      hexGrid.refetch();
+      campaignState.refetch();
+    },
+  });
+
+  const scrambleIntercept = useMutation({
+    mutationFn: (input: { formationId: string; targetHexId: string }) =>
+      api<{
+        ok: boolean;
+        message: string;
+        interceptorName?: string;
+        targetHexId?: string;
+      }>(
+        `/api/v1/campaigns/current/formations/${input.formationId}/scramble-intercept`,
+        {
+          method: "POST",
+          body: JSON.stringify({ targetHexId: input.targetHexId }),
+        },
+      ),
+    onSuccess: (_data, variables) => {
+      hexGrid.refetch();
+      campaignState.refetch();
+      engageHex.mutate({ hexId: variables.targetHexId });
+    },
+  });
+
+  const autoResolveHexCombat = useMutation({
+    mutationFn: (hexId: string) =>
+      api<{
+        ok: boolean;
+        victory: "blufor" | "opfor" | "stalemate";
+        title: string;
+        summary: string;
+        bluforCasualtiesPct: number;
+        opforCasualtiesPct: number;
+        hexLiberated: boolean;
+        contested: boolean;
+        retreatedFormations: Array<{
+          id: string;
+          name: string;
+          toHexId: string;
+        }>;
+      }>(`/api/v1/campaigns/current/hex-cells/${hexId}/auto-resolve`, {
+        method: "POST",
+      }),
+    onSuccess: (data) => {
+      setAutoResolveResult(data);
+      hexGrid.refetch();
+      campaignState.refetch();
+    },
+  });
+
+  const manualDebriefHexCombat = useMutation({
+    mutationFn: (input: {
+      hexId: string;
+      outcome: "blufor_victory" | "stalemate" | "opfor_victory";
+    }) =>
+      api<{
+        ok: boolean;
+        victory: string;
+        title: string;
+        summary: string;
+        bluforCasualtiesPct: number;
+        opforCasualtiesPct: number;
+        hexLiberated: boolean;
+      }>(`/api/v1/campaigns/current/hex-cells/${input.hexId}/resolve-manual`, {
+        method: "POST",
+        body: JSON.stringify({ outcome: input.outcome }),
+      }),
+    onSuccess: (data) => {
+      setManualDebriefResult(data);
       hexGrid.refetch();
       campaignState.refetch();
     },
@@ -1776,6 +1918,18 @@ function CommandCenter({
         isResolvingSortie={resolveCovertSortieMutation.isPending}
       />
 
+      <TacticalEngagementModal
+        isOpen={activeTacticalEngagement !== null}
+        onClose={() => setActiveTacticalEngagement(null)}
+        engagement={activeTacticalEngagement}
+        onAutoResolve={(hexId) => autoResolveHexCombat.mutate(hexId)}
+        isAutoResolving={autoResolveHexCombat.isPending}
+        autoResolveResult={autoResolveResult}
+        onManualDebrief={(input) => manualDebriefHexCombat.mutate(input)}
+        isDebriefing={manualDebriefHexCombat.isPending}
+        manualDebriefResult={manualDebriefResult}
+      />
+
       <FormationCompositionEditorModal
         isOpen={editingFormation !== null}
         formation={editingFormation}
@@ -1860,6 +2014,9 @@ function CommandCenter({
               })
             }
             onEngageHex={(hexId) => engageHex.mutate({ hexId })}
+            onScrambleIntercept={(formationId, targetHexId) =>
+              scrambleIntercept.mutate({ formationId, targetHexId })
+            }
             onOpenFormationEditor={(form) => setEditingFormation(form)}
             onUpgradeInvestment={(hexId) =>
               upgradeHexInvestmentMutation.mutate(hexId)
@@ -1877,7 +2034,10 @@ function CommandCenter({
               refuelRearmFormation.isPending ||
               restRefitFormation.isPending ||
               trainFormation.isPending ||
-              engageHex.isPending
+              engageHex.isPending ||
+              scrambleIntercept.isPending ||
+              autoResolveHexCombat.isPending ||
+              manualDebriefHexCombat.isPending
             }
             world={world.data}
             onViewportChange={onViewportChange}
@@ -2272,6 +2432,7 @@ function createHexTacticalPopupContent(
   playerCountryId?: string,
   playerCountryName?: string,
   onUpgradeInvestment?: (hexId: string) => void,
+  onScrambleIntercept?: (formationId: string, targetHexId: string) => void,
 ): HTMLElement {
   const popup = document.createElement("div");
   popup.className = "hex-tactical-popup";
@@ -2316,13 +2477,28 @@ function createHexTacticalPopupContent(
   header.appendChild(badge);
   popup.appendChild(header);
 
-  // 1. Contested / Occupation Progress Status Callout
-  if (hex.status === "contested") {
+  // 1. Contested / Hostile Combat Alert Callout
+  const hasOpposingForces =
+    hexFormations.some((f) => f.side === "blufor") &&
+    hexFormations.some((f) => f.side === "opfor");
+
+  if (hex.status === "contested" || hasOpposingForces) {
     const contestedAlert = document.createElement("div");
     contestedAlert.className = "contested-alert-box";
     contestedAlert.style.cssText =
-      "background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #fca5a5; padding: 6px 10px; border-radius: 4px; margin-bottom: 8px; font-size: 11px; font-weight: bold;";
-    contestedAlert.innerHTML = `⚠️ <span>CONTESTED SECTOR — Hostile forces engaged! Daily economic yields frozen to $0.</span>`;
+      "background: rgba(239, 68, 68, 0.25); border: 1px solid #ef4444; color: #fca5a5; padding: 8px 10px; border-radius: 4px; margin-bottom: 8px; font-size: 11px; font-weight: bold;";
+    contestedAlert.innerHTML = `
+      <div>⚔️ <span>HOSTILE FORCES ENGAGED — Sector Contested!</span></div>
+      <div style="margin-top: 6px;">
+        <button type="button" class="formation-btn sp-battle" style="width: 100%; font-weight: bold; background: #dc2626; color: white; padding: 6px 10px; cursor: pointer; border: none; border-radius: 4px;">
+          ⚔️ Launch Tactical Engagement & Sortie (.ini / Auto-Resolve)
+        </button>
+      </div>
+    `;
+    const launchBtn = contestedAlert.querySelector("button");
+    if (launchBtn && onEngage) {
+      launchBtn.onclick = () => onEngage(hex.id);
+    }
     popup.appendChild(contestedAlert);
   } else if (hex.captureTurnsCounter && hex.captureTurnsCounter > 0) {
     const captureAlert = document.createElement("div");
@@ -2758,6 +2934,39 @@ function createHexTacticalPopupContent(
           }
         }
 
+        const isAirWing =
+          form.unitType.includes("air") ||
+          form.unitType.includes("fighter") ||
+          Boolean(
+            form.composition && (form.composition.totalAircraft ?? 0) > 0,
+          );
+        if (
+          isAirWing &&
+          form.actionPoints >= 1 &&
+          form.status !== "depleted" &&
+          form.status !== "embarked" &&
+          form.status !== "embarking"
+        ) {
+          const scrambleBtn = document.createElement("button");
+          scrambleBtn.type = "button";
+          scrambleBtn.className = "formation-btn intercept-action";
+          scrambleBtn.style.cssText =
+            "background: #e11d48; color: #fff; font-weight: bold; border: 1px solid #f43f5e;";
+          scrambleBtn.textContent = "⚡ Scramble Intercept ➔";
+          scrambleBtn.title =
+            "Scramble combat air patrol to intercept hostile sector within 3 hexes";
+          scrambleBtn.onclick = () => {
+            const target = prompt(
+              `Enter target sector ID to intercept with ${form.name} (within 3 hexes):`,
+              hex.id,
+            );
+            if (target && onScrambleIntercept) {
+              onScrambleIntercept(form.id, target.trim());
+            }
+          };
+          actionsDiv.appendChild(scrambleBtn);
+        }
+
         const customizeBtn = document.createElement("button");
         customizeBtn.type = "button";
         customizeBtn.className = "formation-btn customize";
@@ -2830,7 +3039,7 @@ function createHexTacticalPopupContent(
     facSection.className = "sector-popup-section";
     const facTitle = document.createElement("p");
     facTitle.className = "sector-popup-section-title";
-    facTitle.textContent = "STRATEGIC FACILITIES";
+    facTitle.textContent = "TACTICAL FACILITIES";
     facSection.appendChild(facTitle);
     const facGrid = document.createElement("div");
     facGrid.className = "sector-site-tags";
@@ -2849,7 +3058,8 @@ function createHexTacticalPopupContent(
   const battleBtn = document.createElement("button");
   battleBtn.type = "button";
   battleBtn.className = "formation-btn sp-battle";
-  battleBtn.textContent = "⚔️ Generate Sea Power Engagement (.ini)";
+  battleBtn.textContent =
+    "⚔️ Tactical Engagement & Mission Generator (.ini / Auto-Resolve)";
   battleBtn.onclick = () => {
     if (onEngage) {
       onEngage(hex.id);
@@ -4121,6 +4331,643 @@ function AiIntelLogModal({
               )}
             </>
           )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+interface TacticalEngagementData {
+  hexId: string;
+  hexName: string;
+  missionText: string;
+  filePath?: string | undefined;
+  fileName: string;
+  unitsCount: number;
+  bluforUnits: Array<{
+    name: string;
+    type: string;
+    domain: string;
+    count: number;
+  }>;
+  opforUnits: Array<{
+    name: string;
+    type: string;
+    domain: string;
+    count: number;
+  }>;
+}
+
+function TacticalEngagementModal({
+  isOpen,
+  onClose,
+  engagement,
+  onAutoResolve,
+  isAutoResolving,
+  autoResolveResult,
+  onManualDebrief,
+  isDebriefing,
+  manualDebriefResult,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  engagement: TacticalEngagementData | null;
+  onAutoResolve: (hexId: string) => void;
+  isAutoResolving: boolean;
+  autoResolveResult?: {
+    ok: boolean;
+    victory: "blufor" | "opfor" | "stalemate";
+    title: string;
+    summary: string;
+    bluforCasualtiesPct: number;
+    opforCasualtiesPct: number;
+    hexLiberated: boolean;
+    contested: boolean;
+    retreatedFormations: Array<{ id: string; name: string; toHexId: string }>;
+  } | null;
+  onManualDebrief: (input: {
+    hexId: string;
+    outcome: "blufor_victory" | "stalemate" | "opfor_victory";
+  }) => void;
+  isDebriefing: boolean;
+  manualDebriefResult?: {
+    ok: boolean;
+    victory: string;
+    title: string;
+    summary: string;
+    bluforCasualtiesPct: number;
+    opforCasualtiesPct: number;
+    hexLiberated: boolean;
+  } | null;
+}): ReactElement | null {
+  const [copied, setCopied] = useState(false);
+  const [activeTab, setActiveTab] = useState<
+    "tactical_mission" | "auto_resolve"
+  >("tactical_mission");
+
+  if (!isOpen || !engagement) return null;
+
+  const handleDownload = () => {
+    const blob = new Blob([engagement.missionText], {
+      type: "text/plain;charset=utf-8",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = engagement.fileName;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(engagement.missionText).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    });
+  };
+
+  const activeResult = autoResolveResult || manualDebriefResult;
+
+  return (
+    <div className="recruitment-modal-backdrop" onClick={onClose}>
+      <div
+        className="recruitment-modal tactical-engagement-modal"
+        onClick={(e) => e.stopPropagation()}
+        style={{ maxWidth: "780px", width: "95%" }}
+      >
+        <div className="recruitment-modal-header">
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <span style={{ fontSize: "24px" }}>⚔️</span>
+            <div>
+              <h3 style={{ margin: 0, color: "#f87171" }}>
+                Tactical Engagement: {engagement.hexName}
+              </h3>
+              <div style={{ fontSize: "12px", color: "#94a3b8" }}>
+                Sector ID: <code>{engagement.hexId}</code> · Combatants:{" "}
+                {engagement.unitsCount} formations
+              </div>
+            </div>
+          </div>
+          <button type="button" className="close-btn" onClick={onClose}>
+            ✕
+          </button>
+        </div>
+
+        <div
+          className="modal-body"
+          style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+        >
+          {/* Opposing Orders of Battle (OOB) */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "12px",
+              background: "rgba(15, 23, 42, 0.7)",
+              padding: "12px",
+              borderRadius: "6px",
+              border: "1px solid rgba(148, 163, 184, 0.2)",
+            }}
+          >
+            {/* BLUFOR Column */}
+            <div>
+              <div
+                style={{
+                  fontWeight: "bold",
+                  color: "#38bdf8",
+                  borderBottom: "1px solid rgba(56, 189, 248, 0.3)",
+                  paddingBottom: "4px",
+                  marginBottom: "8px",
+                }}
+              >
+                🛡️ BLUFOR Task Group (Allied / NATO)
+              </div>
+              {engagement.bluforUnits.length === 0 ? (
+                <div style={{ fontSize: "12px", color: "#94a3b8" }}>
+                  No active formations identified
+                </div>
+              ) : (
+                <ul
+                  style={{
+                    listStyle: "none",
+                    padding: 0,
+                    margin: 0,
+                    fontSize: "12px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "4px",
+                  }}
+                >
+                  {engagement.bluforUnits.map((u, i) => (
+                    <li
+                      key={i}
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        color: "#e2e8f0",
+                      }}
+                    >
+                      <span>
+                        {u.domain === "aircraft"
+                          ? "✈️"
+                          : u.domain === "land"
+                            ? "🛡️"
+                            : "⚓"}{" "}
+                        {u.count}x {u.name}
+                      </span>
+                      <code style={{ fontSize: "10px", color: "#94a3b8" }}>
+                        [{u.type}]
+                      </code>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            {/* OPFOR Column */}
+            <div>
+              <div
+                style={{
+                  fontWeight: "bold",
+                  color: "#f87171",
+                  borderBottom: "1px solid rgba(248, 113, 113, 0.3)",
+                  paddingBottom: "4px",
+                  marginBottom: "8px",
+                }}
+              >
+                ⚔️ OPFOR Task Group (Warsaw Pact)
+              </div>
+              {engagement.opforUnits.length === 0 ? (
+                <div style={{ fontSize: "12px", color: "#94a3b8" }}>
+                  No active formations identified
+                </div>
+              ) : (
+                <ul
+                  style={{
+                    listStyle: "none",
+                    padding: 0,
+                    margin: 0,
+                    fontSize: "12px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "4px",
+                  }}
+                >
+                  {engagement.opforUnits.map((u, i) => (
+                    <li
+                      key={i}
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        color: "#e2e8f0",
+                      }}
+                    >
+                      <span>
+                        {u.domain === "aircraft"
+                          ? "✈️"
+                          : u.domain === "land"
+                            ? "🛡️"
+                            : "⚓"}{" "}
+                        {u.count}x {u.name}
+                      </span>
+                      <code style={{ fontSize: "10px", color: "#94a3b8" }}>
+                        [{u.type}]
+                      </code>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+
+          {/* Outcome Banner (if battle was resolved) */}
+          {activeResult && (
+            <div
+              style={{
+                background:
+                  activeResult.victory === "blufor" ||
+                  activeResult.victory === "blufor_victory"
+                    ? "rgba(34, 197, 94, 0.2)"
+                    : activeResult.victory === "opfor" ||
+                        activeResult.victory === "opfor_victory"
+                      ? "rgba(239, 68, 68, 0.2)"
+                      : "rgba(234, 179, 8, 0.2)",
+                border: `1px solid ${
+                  activeResult.victory === "blufor" ||
+                  activeResult.victory === "blufor_victory"
+                    ? "#22c55e"
+                    : activeResult.victory === "opfor" ||
+                        activeResult.victory === "opfor_victory"
+                      ? "#ef4444"
+                      : "#eab308"
+                }`,
+                borderRadius: "6px",
+                padding: "12px",
+                color: "#f8fafc",
+              }}
+            >
+              <div
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "14px",
+                  marginBottom: "4px",
+                }}
+              >
+                {activeResult.title}
+              </div>
+              <div style={{ fontSize: "13px", marginBottom: "8px" }}>
+                {activeResult.summary}
+              </div>
+              <div style={{ display: "flex", gap: "12px", fontSize: "12px" }}>
+                <span style={{ color: "#38bdf8" }}>
+                  BLUFOR Casualties: -{activeResult.bluforCasualtiesPct}%
+                </span>
+                <span style={{ color: "#f87171" }}>
+                  OPFOR Casualties: -{activeResult.opforCasualtiesPct}%
+                </span>
+                {activeResult.hexLiberated && (
+                  <span style={{ color: "#4ade80", fontWeight: "bold" }}>
+                    🚩 Sector Sovereign Control Secured!
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Resolution Mode Switcher */}
+          <div
+            style={{
+              display: "flex",
+              gap: "8px",
+              borderBottom: "1px solid rgba(148, 163, 184, 0.2)",
+              paddingBottom: "8px",
+            }}
+          >
+            <button
+              type="button"
+              className={`mode-tab-btn ${activeTab === "tactical_mission" ? "active" : ""}`}
+              onClick={() => setActiveTab("tactical_mission")}
+              style={{
+                padding: "8px 16px",
+                background:
+                  activeTab === "tactical_mission"
+                    ? "rgba(56, 189, 248, 0.2)"
+                    : "rgba(30, 41, 59, 0.5)",
+                border:
+                  activeTab === "tactical_mission"
+                    ? "1px solid #38bdf8"
+                    : "1px solid rgba(148, 163, 184, 0.2)",
+                color: activeTab === "tactical_mission" ? "#38bdf8" : "#94a3b8",
+                borderRadius: "4px",
+                cursor: "pointer",
+                fontWeight: "bold",
+              }}
+            >
+              🎮 Mode A: Tactical Sea Power Mission (.ini)
+            </button>
+            <button
+              type="button"
+              className={`mode-tab-btn ${activeTab === "auto_resolve" ? "active" : ""}`}
+              onClick={() => setActiveTab("auto_resolve")}
+              style={{
+                padding: "8px 16px",
+                background:
+                  activeTab === "auto_resolve"
+                    ? "rgba(244, 63, 94, 0.2)"
+                    : "rgba(30, 41, 59, 0.5)",
+                border:
+                  activeTab === "auto_resolve"
+                    ? "1px solid #f43f5e"
+                    : "1px solid rgba(148, 163, 184, 0.2)",
+                color: activeTab === "auto_resolve" ? "#f43f5e" : "#94a3b8",
+                borderRadius: "4px",
+                cursor: "pointer",
+                fontWeight: "bold",
+              }}
+            >
+              🎲 Mode B: Instant Auto-Resolve
+            </button>
+          </div>
+
+          {/* Mode A Content */}
+          {activeTab === "tactical_mission" && (
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "12px" }}
+            >
+              <div
+                style={{
+                  background: "rgba(30, 41, 59, 0.6)",
+                  padding: "10px",
+                  borderRadius: "4px",
+                  border: "1px solid rgba(148, 163, 184, 0.2)",
+                  fontSize: "12px",
+                  color: "#cbd5e1",
+                }}
+              >
+                <div
+                  style={{
+                    fontWeight: "bold",
+                    color: "#38bdf8",
+                    marginBottom: "4px",
+                  }}
+                >
+                  ✅ Sea Power Mission Scenario Ready
+                </div>
+                <div>
+                  <strong>File:</strong> <code>{engagement.fileName}</code>
+                </div>
+                {engagement.filePath && (
+                  <div>
+                    <strong>Direct Path:</strong>{" "}
+                    <code>{engagement.filePath}</code>
+                  </div>
+                )}
+                <div style={{ marginTop: "4px", color: "#94a3b8" }}>
+                  Start Sea Power &rarr; User Missions &rarr; Select{" "}
+                  <strong>{engagement.fileName}</strong> to fly or fight the
+                  engagement!
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div style={{ display: "flex", gap: "10px" }}>
+                <button
+                  type="button"
+                  className="formation-btn"
+                  onClick={handleDownload}
+                  style={{
+                    flex: 1,
+                    padding: "10px",
+                    background: "#0284c7",
+                    color: "#fff",
+                    fontWeight: "bold",
+                  }}
+                >
+                  💾 Download .ini File
+                </button>
+                <button
+                  type="button"
+                  className="formation-btn"
+                  onClick={handleCopy}
+                  style={{
+                    flex: 1,
+                    padding: "10px",
+                    background: copied ? "#16a34a" : "#334155",
+                    color: "#fff",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {copied
+                    ? "✅ Copied to Clipboard!"
+                    : "📋 Copy .ini to Clipboard"}
+                </button>
+              </div>
+
+              {/* Collapsible Mission Preview */}
+              <details
+                style={{
+                  background: "rgba(15, 23, 42, 0.8)",
+                  border: "1px solid rgba(148, 163, 184, 0.2)",
+                  borderRadius: "4px",
+                  padding: "8px",
+                }}
+              >
+                <summary
+                  style={{
+                    cursor: "pointer",
+                    color: "#94a3b8",
+                    fontSize: "12px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  🔍 Preview Generated .ini Mission Script (
+                  {engagement.missionText.split("\n").length} lines)
+                </summary>
+                <pre
+                  style={{
+                    maxHeight: "160px",
+                    overflowY: "auto",
+                    fontSize: "11px",
+                    color: "#a5b4fc",
+                    marginTop: "8px",
+                  }}
+                >
+                  {engagement.missionText}
+                </pre>
+              </details>
+
+              {/* Tactical Sortie Debrief Reporter */}
+              <div
+                style={{
+                  background: "rgba(30, 41, 59, 0.6)",
+                  padding: "12px",
+                  borderRadius: "6px",
+                  border: "1px solid rgba(148, 163, 184, 0.2)",
+                }}
+              >
+                <div
+                  style={{
+                    fontWeight: "bold",
+                    color: "#f8fafc",
+                    fontSize: "13px",
+                    marginBottom: "4px",
+                  }}
+                >
+                  🎮 Tactical Sortie Debrief Reporter
+                </div>
+                <div
+                  style={{
+                    fontSize: "12px",
+                    color: "#94a3b8",
+                    marginBottom: "10px",
+                  }}
+                >
+                  After playing the tactical scenario in Sea Power, submit the
+                  debrief result to reconcile strategic campaign state:
+                </div>
+                <div style={{ display: "flex", gap: "8px" }}>
+                  <button
+                    type="button"
+                    className="formation-btn"
+                    disabled={isDebriefing}
+                    onClick={() =>
+                      onManualDebrief({
+                        hexId: engagement.hexId,
+                        outcome: "blufor_victory",
+                      })
+                    }
+                    style={{
+                      flex: 1,
+                      padding: "8px",
+                      background: "rgba(34, 197, 94, 0.2)",
+                      border: "1px solid #22c55e",
+                      color: "#4ade80",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🏆 BLUFOR Victory
+                  </button>
+                  <button
+                    type="button"
+                    className="formation-btn"
+                    disabled={isDebriefing}
+                    onClick={() =>
+                      onManualDebrief({
+                        hexId: engagement.hexId,
+                        outcome: "stalemate",
+                      })
+                    }
+                    style={{
+                      flex: 1,
+                      padding: "8px",
+                      background: "rgba(234, 179, 8, 0.2)",
+                      border: "1px solid #eab308",
+                      color: "#facc15",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    ⚖️ Inconclusive / Stalemate
+                  </button>
+                  <button
+                    type="button"
+                    className="formation-btn"
+                    disabled={isDebriefing}
+                    onClick={() =>
+                      onManualDebrief({
+                        hexId: engagement.hexId,
+                        outcome: "opfor_victory",
+                      })
+                    }
+                    style={{
+                      flex: 1,
+                      padding: "8px",
+                      background: "rgba(239, 68, 68, 0.2)",
+                      border: "1px solid #ef4444",
+                      color: "#f87171",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    💀 OPFOR Victory (Retreat)
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Mode B Content */}
+          {activeTab === "auto_resolve" && (
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "12px" }}
+            >
+              <div
+                style={{
+                  background: "rgba(30, 41, 59, 0.6)",
+                  padding: "12px",
+                  borderRadius: "6px",
+                  border: "1px solid rgba(148, 163, 184, 0.2)",
+                  fontSize: "12px",
+                  color: "#cbd5e1",
+                }}
+              >
+                <div
+                  style={{
+                    fontWeight: "bold",
+                    color: "#f43f5e",
+                    marginBottom: "4px",
+                  }}
+                >
+                  🎲 Lanchester Deterministic Auto-Resolve Engine
+                </div>
+                <div>
+                  Calculates battle outcome, weapon release, attrition rates,
+                  and retreat vectors using mathematical combat power modeling:
+                </div>
+                <ul style={{ margin: "6px 0 0 16px", color: "#94a3b8" }}>
+                  <li>Factors unit strength, fuel & ammunition levels</li>
+                  <li>
+                    Applies veterancy rank multipliers (Elite 1.5x &gt; Veteran
+                    1.25x &gt; Regular 1.0x &gt; Green 0.8x)
+                  </li>
+                  <li>
+                    Applies tactical air superiority and ground defense domain
+                    weights
+                  </li>
+                  <li>
+                    Forces defeated combatants to retreat to adjacent sectors
+                  </li>
+                </ul>
+              </div>
+
+              <button
+                type="button"
+                className="formation-btn"
+                disabled={isAutoResolving}
+                onClick={() => onAutoResolve(engagement.hexId)}
+                style={{
+                  padding: "12px",
+                  background: isAutoResolving ? "#475569" : "#e11d48",
+                  color: "#fff",
+                  fontWeight: "bold",
+                  fontSize: "14px",
+                  cursor: isAutoResolving ? "not-allowed" : "pointer",
+                }}
+              >
+                {isAutoResolving
+                  ? "🎲 Calculating Combat Attrition..."
+                  : "🎲 Run Instant Auto-Resolve Simulation"}
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div className="recruitment-modal-footer">
+          <button
+            type="button"
+            className="recruitment-cancel-btn"
+            onClick={onClose}
+          >
+            Close Battle Command
+          </button>
         </div>
       </div>
     </div>
@@ -8094,6 +8941,7 @@ function StrategicMap({
   onRestRefit,
   onTrainFormation,
   onEngageHex,
+  onScrambleIntercept,
   onOpenFormationEditor,
   onUpgradeInvestment,
   actionPending,
@@ -8122,6 +8970,7 @@ function StrategicMap({
   onRestRefit?: (formationId: string) => void;
   onTrainFormation?: (formationId: string, turns?: number) => void;
   onEngageHex?: (hexId: string) => void;
+  onScrambleIntercept?: (formationId: string, targetHexId: string) => void;
   onOpenFormationEditor?: (formation: CampaignFormation) => void;
   onUpgradeInvestment?: (hexId: string) => void;
   actionPending: boolean;
@@ -8189,6 +9038,8 @@ function StrategicMap({
   onTrainFormationRef.current = onTrainFormation;
   const onEngageHexRef = useRef(onEngageHex);
   onEngageHexRef.current = onEngageHex;
+  const onScrambleInterceptRef = useRef(onScrambleIntercept);
+  onScrambleInterceptRef.current = onScrambleIntercept;
   const onOpenFormationEditorRef = useRef(onOpenFormationEditor);
   onOpenFormationEditorRef.current = onOpenFormationEditor;
   const onUpgradeInvestmentRef = useRef(onUpgradeInvestment);
@@ -8313,6 +9164,7 @@ function StrategicMap({
         playerCountryIdRef.current,
         playerCountryNameRef.current,
         onUpgradeInvestmentRef.current,
+        onScrambleInterceptRef.current,
       );
 
       L.popup({
@@ -8724,6 +9576,7 @@ function StrategicMap({
           playerCountryIdRef.current,
           playerCountryNameRef.current,
           onUpgradeInvestmentRef.current,
+          onScrambleInterceptRef.current,
         );
         L.popup({
           maxWidth: 360,

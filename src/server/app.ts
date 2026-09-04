@@ -42,6 +42,9 @@ import {
   restAndRefitFormation,
   orderCombatTraining,
   generateSeaPowerHexBattle,
+  scrambleAirInterception,
+  resolveHexAutoCombat,
+  resolveHexManualDebrief,
   updateFormationComposition,
 } from "../application/hexStrategicSystem.js";
 import {
@@ -2204,6 +2207,63 @@ export function createApp(
   );
 
   app.post(
+    "/api/v1/campaigns/current/formations/:formationId/scramble-intercept",
+    requireCampaignSession,
+    (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+      const parsed = z
+        .object({
+          targetHexId: z.string().min(1),
+        })
+        .safeParse(request.body ?? {});
+
+      if (!parsed.success) {
+        response.status(400).json({
+          error: {
+            code: "INVALID_SCRAMBLE_INPUT",
+            message: "Missing or invalid targetHexId for air scramble.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      const formationIdParam =
+        typeof request.params.formationId === "string"
+          ? request.params.formationId
+          : "";
+
+      const result = scrambleAirInterception(dependencies.database, {
+        campaignId: request.perspective!.campaignId,
+        interceptorFormationId: formationIdParam,
+        targetHexId: parsed.data.targetHexId,
+      });
+
+      if (!result.ok) {
+        response.status(400).json({
+          ...result,
+          requestId: response.locals.requestId,
+        });
+        return;
+      }
+
+      response.status(200).json({
+        ...result,
+        requestId: response.locals.requestId,
+      });
+    },
+  );
+
+  app.post(
     "/api/v1/campaigns/current/hex-cells/:hexId/engage",
     requireCampaignSession,
     (request, response) => {
@@ -2232,6 +2292,113 @@ export function createApp(
           ? { missionTitle: parsed.data.missionTitle }
           : {}),
       });
+      response.status(200).json({
+        ...result,
+        requestId: response.locals.requestId,
+      });
+    },
+  );
+
+  app.get(
+    "/api/v1/campaigns/current/hex-cells/:hexId/mission.ini",
+    requireCampaignSession,
+    (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+      const hexIdParam =
+        typeof request.params.hexId === "string" ? request.params.hexId : "";
+
+      const result = generateSeaPowerHexBattle(dependencies.database, {
+        campaignId: request.perspective!.campaignId,
+        hexId: hexIdParam,
+      });
+
+      response.setHeader("Content-Type", "text/plain; charset=utf-8");
+      response.setHeader(
+        "Content-Disposition",
+        `attachment; filename="${result.fileName}"`,
+      );
+      response.status(200).send(result.missionText);
+    },
+  );
+
+  app.post(
+    "/api/v1/campaigns/current/hex-cells/:hexId/auto-resolve",
+    requireCampaignSession,
+    (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+      const hexIdParam =
+        typeof request.params.hexId === "string" ? request.params.hexId : "";
+
+      const result = resolveHexAutoCombat(dependencies.database, {
+        campaignId: request.perspective!.campaignId,
+        hexId: hexIdParam,
+      });
+
+      response.status(200).json({
+        ...result,
+        requestId: response.locals.requestId,
+      });
+    },
+  );
+
+  app.post(
+    "/api/v1/campaigns/current/hex-cells/:hexId/resolve-manual",
+    requireCampaignSession,
+    (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+      const hexIdParam =
+        typeof request.params.hexId === "string" ? request.params.hexId : "";
+      const parsed = z
+        .object({
+          outcome: z.enum(["blufor_victory", "stalemate", "opfor_victory"]),
+        })
+        .safeParse(request.body ?? {});
+
+      if (!parsed.success) {
+        response.status(400).json({
+          error: {
+            code: "INVALID_OUTCOME",
+            message:
+              "Must provide outcome: blufor_victory, stalemate, or opfor_victory.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      const result = resolveHexManualDebrief(dependencies.database, {
+        campaignId: request.perspective!.campaignId,
+        hexId: hexIdParam,
+        outcome: parsed.data.outcome,
+      });
+
       response.status(200).json({
         ...result,
         requestId: response.locals.requestId,
