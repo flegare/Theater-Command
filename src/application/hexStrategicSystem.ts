@@ -251,6 +251,72 @@ export function seedCampaignFormations(
       hexId: "hex-ger-rostock",
     },
 
+    // RED BANNER NORTHERN FLEET & KOLA PENINSULA BASTION (Murmansk / Severomorsk / Polyarny)
+    {
+      id: `${campaignId}:form:sov-kirov-kug`,
+      name: "Red Banner Northern Fleet KUG (Kirov)",
+      unitType: "surface_action_group",
+      side: "opfor",
+      countryId: "soviet-union",
+      hexId: "hex-sov-kola",
+    },
+    {
+      id: `${campaignId}:form:sov-kiev-csg`,
+      name: "Northern Fleet Heavy Aircraft Cruiser Group (Kiev)",
+      unitType: "carrier_strike_group",
+      side: "opfor",
+      countryId: "soviet-union",
+      hexId: "hex-sov-kola",
+    },
+    {
+      id: `${campaignId}:form:sov-11th-sub-flotilla`,
+      name: "11th Submarine Flotilla (Typhoon & Victor III)",
+      unitType: "submarine_squadron",
+      side: "opfor",
+      countryId: "soviet-union",
+      hexId: "hex-sov-polyarny",
+    },
+    {
+      id: `${campaignId}:form:sov-olenya-backfire`,
+      name: "924th Maritime Strike Aviation (Tu-22M3 Backfire)",
+      unitType: "maritime_strike_squadron",
+      side: "opfor",
+      countryId: "soviet-union",
+      hexId: "hex-sov-kola",
+    },
+    {
+      id: `${campaignId}:form:sov-174th-interceptor-wing`,
+      name: "174th Guards Fighter Aviation Regiment (MiG-31)",
+      unitType: "tactical_fighter_wing",
+      side: "opfor",
+      countryId: "soviet-union",
+      hexId: "hex-sov-kola",
+    },
+    {
+      id: `${campaignId}:form:sov-54th-motor-rifle`,
+      name: "54th Motorized Rifle Division (Kola Defense)",
+      unitType: "pact_tank_division",
+      side: "opfor",
+      countryId: "soviet-union",
+      hexId: "hex-sov-kola",
+    },
+    {
+      id: `${campaignId}:form:sov-61st-naval-infantry`,
+      name: "61st 'Kirkenes' Red Banner Naval Infantry Brigade",
+      unitType: "marine_amphibious_brigade",
+      side: "opfor",
+      countryId: "soviet-union",
+      hexId: "hex-sov-kola",
+    },
+    {
+      id: `${campaignId}:form:sov-kola-convoy`,
+      name: "Kola Arctic Merchant Convoy Flotilla",
+      unitType: "merchant_supply_convoy",
+      side: "opfor",
+      countryId: "soviet-union",
+      hexId: "hex-sov-kola",
+    },
+
     // NEUTRAL / UNALIGNED
     {
       id: `${campaignId}:form:swe-karlskrona-sag`,

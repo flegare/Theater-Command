@@ -131,6 +131,22 @@ describe("hex strategic economy and tactical bridge", () => {
     expect(sovUnits.some((u) => u.unitType === "pact_tank_division")).toBe(
       true,
     );
+
+    // Verify Murmansk / Kola Peninsula / Polyarny garrison & fleet
+    const kolaUnits = state.formations.filter((f) => f.hexId === "hex-sov-kola");
+    expect(kolaUnits.length).toBeGreaterThanOrEqual(6);
+    expect(kolaUnits.some((u) => u.unitType === "surface_action_group")).toBe(true);
+    expect(kolaUnits.some((u) => u.unitType === "carrier_strike_group")).toBe(true);
+    expect(kolaUnits.some((u) => u.unitType === "maritime_strike_squadron")).toBe(true);
+    expect(kolaUnits.some((u) => u.unitType === "tactical_fighter_wing")).toBe(true);
+    expect(kolaUnits.some((u) => u.unitType === "marine_amphibious_brigade")).toBe(true);
+    expect(kolaUnits.some((u) => u.unitType === "pact_tank_division")).toBe(true);
+
+    const polyarnyUnits = state.formations.filter(
+      (f) => f.hexId === "hex-sov-polyarny",
+    );
+    expect(polyarnyUnits.length).toBeGreaterThanOrEqual(1);
+    expect(polyarnyUnits.some((u) => u.unitType === "submarine_squadron")).toBe(true);
   });
 
   it("moveFormation moves division to valid neighbor and expends AP", () => {

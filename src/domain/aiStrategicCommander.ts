@@ -64,9 +64,11 @@ export function processAiStrategicTurns(
     "hex-nor-oslo",
   ]);
   navalBasesBySide.set("opfor", [
-    "hex-sov-murmansk",
-    "hex-sov-severomorsk",
+    "hex-sov-kola",
+    "hex-sov-polyarny",
     "hex-sov-kaliningrad",
+    "hex-sov-kronstadt",
+    "hex-sov-tallinn",
   ]);
   navalBasesBySide.set("neutral", ["hex-swe-stockholm", "hex-fin-helsinki"]);
 
