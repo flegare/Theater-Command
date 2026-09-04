@@ -339,6 +339,17 @@ const migrations: Migration[] = [
       CREATE INDEX campaign_ai_turn_logs_idx ON campaign_ai_turn_logs(campaign_id, turn_number, country_id);
     `,
   },
+  {
+    id: "011_covert_ops_assigned_unit_and_mission",
+    sql: `
+      ALTER TABLE covert_operations ADD COLUMN assigned_formation_id TEXT;
+      ALTER TABLE covert_operations ADD COLUMN assigned_formation_name TEXT;
+      ALTER TABLE covert_operations ADD COLUMN resolution_mode TEXT NOT NULL DEFAULT 'auto_resolve';
+      ALTER TABLE covert_operations ADD COLUMN tactical_mission_ini TEXT;
+      ALTER TABLE covert_operations ADD COLUMN sortie_outcome TEXT DEFAULT 'pending';
+      ALTER TABLE covert_operations ADD COLUMN war_declared INTEGER NOT NULL DEFAULT 0;
+    `,
+  },
 ];
 
 function checksum(sql: string): string {

@@ -94,6 +94,10 @@ flowchart LR
   - Dynamic visibility matrix powered by radar stations, air patrols, SOSUS acoustic hydrophones, and recon overflights.
 - [x] **Story: God Mode Strategic Debugger & Route Telemetry Overlay** (#32)
   - Debugger mode revealing all foreign nations' hidden units, orders, and active mission routes.
+- [x] **Story: Black Ops Infiltration Engine (Assigned Units, Tactical Sea Power Mission Generator & War Escalation)** (#33)
+  - Mandatory unit assignment (SSN/SSK flotillas, Commandos) requiring 1 AP and targeted hex selection.
+  - Dual resolution: tactical Sea Power `.ini` mission generator with coastal ASW screens vs odds auto-resolve.
+  - Full-scale war escalation trigger on nearshore compromise/destruction (DEFCON 1, bilateral war stance, treaty annulment, emergency telegrams).
 
 ---
 

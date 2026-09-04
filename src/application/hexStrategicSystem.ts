@@ -153,6 +153,14 @@ export function seedCampaignFormations(
       hexId: "hex-nor-bergen",
     },
     {
+      id: `${campaignId}:form:nor-kobben-sub`,
+      name: "KNM Kobben Submarine Squadron (S318)",
+      unitType: "submarine_squadron",
+      side: "blufor",
+      countryId: "norway",
+      hexId: "hex-nor-bergen",
+    },
+    {
       id: `${campaignId}:form:nor-sealift-1`,
       name: "1st Norwegian Strategic Sealift Flotilla",
       unitType: "sealift_transport_flotilla",

@@ -81,6 +81,8 @@ import {
   executeCovertOperation,
   getCovertOperations,
   getCampaignTension,
+  getEligibleFormationsForCovertOp,
+  resolveTacticalCovertSortie,
   type CovertOpType,
 } from "../domain/covertOperations.js";
 import { getCampaignAiTurnLogs } from "../domain/aiStrategicCommander.js";
@@ -3007,6 +3009,38 @@ export function createApp(
     },
   );
 
+  app.get(
+    "/api/v1/campaigns/current/covert-ops/eligible-formations",
+    requireCampaignSession,
+    (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      const opType =
+        (request.query.opType as CovertOpType) || "PROXY_SUBMARINE_INCURSION";
+      const formations = getEligibleFormationsForCovertOp(
+        dependencies.database,
+        request.perspective!.campaignId,
+        request.perspective!.playerCountryId,
+        opType,
+      );
+
+      response.json({
+        ok: true,
+        formations,
+        requestId: response.locals.requestId,
+      });
+    },
+  );
+
   app.post(
     "/api/v1/campaigns/current/covert-ops/launch",
     requireCampaignSession,
@@ -3026,6 +3060,8 @@ export function createApp(
         targetCountryId?: string;
         targetHexId?: string;
         opType?: CovertOpType;
+        assignedFormationId?: string;
+        resolutionMode?: "auto_resolve" | "tactical_mission";
       };
 
       if (!body.targetCountryId || !body.targetHexId || !body.opType) {
@@ -3048,6 +3084,8 @@ export function createApp(
             targetCountryId: body.targetCountryId,
             targetHexId: body.targetHexId,
             opType: body.opType,
+            assignedFormationId: body.assignedFormationId,
+            resolutionMode: body.resolutionMode,
           },
         );
 
@@ -3068,6 +3106,111 @@ export function createApp(
           },
         });
       }
+    },
+  );
+
+  app.post(
+    "/api/v1/campaigns/current/covert-ops/:operationId/resolve-sortie",
+    requireCampaignSession,
+    (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      const body = request.body as {
+        outcome?:
+          "clean_success" | "compromised_evaded" | "destroyed_nearshore";
+      };
+
+      if (!body.outcome) {
+        response.status(400).json({
+          error: {
+            code: "INVALID_SORTIE_OUTCOME",
+            message:
+              "Missing sortie outcome (clean_success, compromised_evaded, or destroyed_nearshore).",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      try {
+        const result = resolveTacticalCovertSortie(
+          dependencies.database,
+          request.perspective!.campaignId,
+          String(request.params.operationId),
+          body.outcome,
+        );
+
+        response.json({
+          ...result,
+          requestId: response.locals.requestId,
+        });
+      } catch (err: unknown) {
+        const message =
+          err instanceof Error
+            ? err.message
+            : "Failed to resolve tactical sortie.";
+        response.status(400).json({
+          error: {
+            code: "SORTIE_RESOLUTION_FAILED",
+            message,
+            requestId: response.locals.requestId,
+          },
+        });
+      }
+    },
+  );
+
+  app.get(
+    "/api/v1/campaigns/current/covert-ops/:operationId/mission.ini",
+    requireCampaignSession,
+    (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      const row = dependencies.database
+        .prepare(
+          "SELECT tactical_mission_ini FROM covert_operations WHERE id = ? AND campaign_id = ?",
+        )
+        .get(
+          String(request.params.operationId),
+          request.perspective!.campaignId,
+        ) as { tactical_mission_ini: string | null } | undefined;
+
+      if (!row || !row.tactical_mission_ini) {
+        response.status(404).json({
+          error: {
+            code: "MISSION_INI_NOT_FOUND",
+            message:
+              "Tactical mission INI not found for this covert operation.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      response.setHeader("Content-Type", "text/plain; charset=utf-8");
+      response.setHeader(
+        "Content-Disposition",
+        `attachment; filename="covert_mission_${request.params.operationId}.ini"`,
+      );
+      response.send(row.tactical_mission_ini);
     },
   );
 

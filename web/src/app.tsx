@@ -1130,12 +1130,46 @@ function CommandCenter({
       targetCountryId: string;
       targetHexId: string;
       opType: CovertOpType;
+      assignedFormationId: string;
+      resolutionMode: "tactical_mission" | "auto_resolve";
     }) =>
-      api<{ ok: boolean; message: string }>(
-        "/api/v1/campaigns/current/covert-ops/launch",
+      api<{
+        ok: boolean;
+        message: string;
+        operation: CovertOperationRecord;
+        tacticalMissionIni?: string | null;
+        warDeclared?: boolean;
+      }>("/api/v1/campaigns/current/covert-ops/launch", {
+        method: "POST",
+        body: JSON.stringify(input),
+      }),
+    onSuccess: (data) => {
+      hexGrid.refetch();
+      campaignState.refetch();
+      campaignTension.refetch();
+      covertOps.refetch();
+      if (data.operation.resolutionMode === "auto_resolve") {
+        alert(`[CLANDESTINE OPERATION EXECUTED]\n${data.message}`);
+      }
+    },
+  });
+
+  const resolveCovertSortieMutation = useMutation({
+    mutationFn: (input: {
+      operationId: string;
+      outcome: "clean_success" | "compromised_evaded" | "destroyed_nearshore";
+    }) =>
+      api<{
+        ok: boolean;
+        message: string;
+        operation: CovertOperationRecord;
+        warDeclared: boolean;
+        tensionState: unknown;
+      }>(
+        `/api/v1/campaigns/current/covert-ops/${input.operationId}/resolve-sortie`,
         {
           method: "POST",
-          body: JSON.stringify(input),
+          body: JSON.stringify({ outcome: input.outcome }),
         },
       ),
     onSuccess: (data) => {
@@ -1143,7 +1177,14 @@ function CommandCenter({
       campaignState.refetch();
       campaignTension.refetch();
       covertOps.refetch();
-      alert(`[CLANDESTINE OPERATION EXECUTED]\n${data.message}`);
+      diplomacyCables.refetch();
+      if (data.warDeclared) {
+        alert(
+          `🚨 [FULL-SCALE WAR DECLARED!]\nDEFCON 1 active! ${data.message}`,
+        );
+      } else {
+        alert(`[TACTICAL SORTIE REPORTED]\n${data.message}`);
+      }
     },
   });
 
@@ -1728,6 +1769,11 @@ function CommandCenter({
         operations={covertOps.data?.operations ?? []}
         onLaunch={(input) => launchCovertOpMutation.mutate(input)}
         isLaunching={launchCovertOpMutation.isPending}
+        lastLaunchedOp={launchCovertOpMutation.data?.operation}
+        onResolveSortie={(operationId, outcome) =>
+          resolveCovertSortieMutation.mutate({ operationId, outcome })
+        }
+        isResolvingSortie={resolveCovertSortieMutation.isPending}
       />
 
       <FormationCompositionEditorModal
@@ -3558,6 +3604,10 @@ export type CovertOpCatalogListing = {
   baseSuccessRate: number;
   baseAttributionRisk: number;
   tensionImpact: number;
+  requiredCategory?: "submarine" | "surface_combatant" | "land_commando";
+  requiredUnitLabel?: string;
+  minActionPoints?: number;
+  targetTerrainTypes?: string[];
 };
 
 export type CovertOperationRecord = {
@@ -3575,6 +3625,23 @@ export type CovertOperationRecord = {
   resultSummary: string;
   createdAt: string;
   updatedAt: string;
+  assignedFormationId?: string | null;
+  assignedFormationName?: string | null;
+  resolutionMode?: "tactical_mission" | "auto_resolve";
+  tacticalMissionIni?: string | null;
+  sortieOutcome?: string | null;
+  warDeclared?: boolean;
+};
+
+export type EligibleCovertFormation = {
+  id: string;
+  name: string;
+  unitType: string;
+  actionPoints: number;
+  maxActionPoints: number;
+  strength: number;
+  status: string;
+  hexId: string;
 };
 
 export type DiplomaticCable = {
@@ -4069,6 +4136,9 @@ function CovertOperationsModal({
   operations,
   onLaunch,
   isLaunching,
+  lastLaunchedOp,
+  onResolveSortie,
+  isResolvingSortie,
 }: {
   isOpen: boolean;
   onClose: () => void;
@@ -4080,15 +4150,66 @@ function CovertOperationsModal({
     targetCountryId: string;
     targetHexId: string;
     opType: CovertOpType;
+    assignedFormationId: string;
+    resolutionMode: "tactical_mission" | "auto_resolve";
   }) => void;
   isLaunching: boolean;
+  lastLaunchedOp?: CovertOperationRecord | undefined;
+  onResolveSortie?: (
+    operationId: string,
+    outcome: "clean_success" | "compromised_evaded" | "destroyed_nearshore",
+  ) => void;
+  isResolvingSortie?: boolean;
 }): ReactElement | null {
   const [selectedOpType, setSelectedOpType] = useState<CovertOpType>(
-    "SABOTAGE_STOCKPILE_DEPOT",
+    "PROXY_SUBMARINE_INCURSION",
   );
   const [targetHexId, setTargetHexId] = useState<string>("hex-sov-murmansk");
   const [targetCountryId, setTargetCountryId] =
     useState<string>("soviet-union");
+  const [assignedFormationId, setAssignedFormationId] = useState<string>("");
+  const [resolutionMode, setResolutionMode] = useState<
+    "tactical_mission" | "auto_resolve"
+  >("tactical_mission");
+  const [activeTacticalOp, setActiveTacticalOp] =
+    useState<CovertOperationRecord | null>(null);
+  const [copiedIni, setCopiedIni] = useState(false);
+
+  const eligibleFormationsQuery = useQuery({
+    queryKey: ["eligibleCovertFormations", selectedOpType],
+    queryFn: () =>
+      api<{ ok: boolean; formations: EligibleCovertFormation[] }>(
+        `/api/v1/campaigns/current/covert-ops/eligible-formations?opType=${selectedOpType}`,
+      ),
+    enabled: isOpen,
+  });
+
+  const eligibleFormations = useMemo(
+    () => eligibleFormationsQuery.data?.formations ?? [],
+    [eligibleFormationsQuery.data?.formations],
+  );
+
+  useEffect(() => {
+    if (eligibleFormations.length > 0) {
+      if (
+        !assignedFormationId ||
+        !eligibleFormations.some((f) => f.id === assignedFormationId)
+      ) {
+        setAssignedFormationId(eligibleFormations[0]!.id);
+      }
+    } else {
+      setAssignedFormationId("");
+    }
+  }, [eligibleFormations, assignedFormationId]);
+
+  useEffect(() => {
+    if (
+      lastLaunchedOp &&
+      lastLaunchedOp.resolutionMode === "tactical_mission"
+    ) {
+      setActiveTacticalOp(lastLaunchedOp);
+    }
+  }, [lastLaunchedOp]);
 
   if (!isOpen) return null;
 
@@ -4104,7 +4225,7 @@ function CovertOperationsModal({
     <div className="recruitment-modal-backdrop" onClick={onClose}>
       <div
         className="recruitment-modal"
-        style={{ maxWidth: "800px" }}
+        style={{ maxWidth: "860px" }}
         onClick={(e) => e.stopPropagation()}
       >
         <div
@@ -4112,7 +4233,7 @@ function CovertOperationsModal({
           style={{ borderBottomColor: "#dc2626" }}
         >
           <h3 style={{ color: "#f87171" }}>
-            🗡️ Clandestine Black Operations & Sabotage
+            🗡️ Clandestine Black Operations &amp; Sabotage
           </h3>
           <button
             type="button"
@@ -4124,119 +4245,368 @@ function CovertOperationsModal({
         </div>
 
         <div className="recruitment-modal-body">
-          {/* Operation Cards Selection */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "8px",
-              marginBottom: "16px",
-            }}
-          >
-            {catalog.map((op) => {
-              const isSelected = op.opType === selectedOpType;
-              return (
-                <div
-                  key={op.opType}
-                  onClick={() => setSelectedOpType(op.opType)}
+          {activeTacticalOp ? (
+            <div className="tactical-mission-card">
+              <div className="tactical-mission-header">
+                <div className="tactical-mission-title">
+                  <span>🎮 Sea Power Tactical Mission Generated:</span>
+                  <span style={{ color: "#38bdf8" }}>
+                    {activeTacticalOp.targetHexId}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  className="action-button secondary-action"
+                  style={{ fontSize: "11px", padding: "4px 8px" }}
+                  onClick={() => setActiveTacticalOp(null)}
+                >
+                  ↩ Return to Planner
+                </button>
+              </div>
+
+              <div className="tactical-mission-threat-box">
+                <div className="tactical-mission-threat-item">
+                  <span>
+                    <strong>Assigned Unit:</strong>{" "}
+                    {activeTacticalOp.assignedFormationName ||
+                      "Naval Infiltration Element"}
+                  </span>
+                  <span style={{ color: "#fb923c" }}>
+                    Target: {activeTacticalOp.targetCountryId.toUpperCase()}{" "}
+                    Sector
+                  </span>
+                </div>
+                <div className="tactical-mission-threat-item">
+                  <span>
+                    <strong>OPFOR Coastal Defense Screen:</strong> Grisha-III
+                    ASW Corvette (wp_cor_grisha3) &amp; Ka-25 Hormone Helo
+                    (wp_helo_ka25_asw)
+                  </span>
+                  <span style={{ color: "#ef4444", fontWeight: "bold" }}>
+                    ASW Threat: CRITICAL
+                  </span>
+                </div>
+              </div>
+
+              <div className="tactical-actions-row">
+                <a
+                  href={`/api/v1/campaigns/current/covert-ops/${activeTacticalOp.id}/mission.ini`}
+                  download={`SeaPower_BlackOp_${activeTacticalOp.targetHexId}.ini`}
+                  className="action-button primary-action"
                   style={{
-                    background: isSelected
-                      ? "rgba(220, 38, 38, 0.2)"
-                      : "rgba(30, 41, 59, 0.6)",
-                    border: `1px solid ${
-                      isSelected ? "#ef4444" : "rgba(148, 163, 184, 0.2)"
-                    }`,
-                    borderRadius: "6px",
-                    padding: "10px",
-                    cursor: "pointer",
+                    textDecoration: "none",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "6px",
                   }}
                 >
-                  <div
-                    style={{
-                      fontWeight: "bold",
-                      fontSize: "13px",
-                      color: isSelected ? "#fca5a5" : "#f1f5f9",
-                      marginBottom: "4px",
+                  📥 Download Sea Power Mission .ini
+                </a>
+                <button
+                  type="button"
+                  className="action-button secondary-action"
+                  onClick={() => {
+                    if (activeTacticalOp.tacticalMissionIni) {
+                      navigator.clipboard.writeText(
+                        activeTacticalOp.tacticalMissionIni,
+                      );
+                      setCopiedIni(true);
+                      setTimeout(() => setCopiedIni(false), 2500);
+                    }
+                  }}
+                >
+                  {copiedIni
+                    ? "✓ Copied to Clipboard!"
+                    : "📋 Copy .ini to Clipboard"}
+                </button>
+              </div>
+
+              <div
+                style={{
+                  background: "rgba(10, 15, 25, 0.7)",
+                  padding: "8px 12px",
+                  borderRadius: "4px",
+                  fontSize: "11px",
+                  color: "#94a3b8",
+                  lineHeight: 1.4,
+                }}
+              >
+                💡 <strong>Instructions:</strong> Save the <code>.ini</code>{" "}
+                into your Sea Power user scenarios folder (
+                <code>Sea Power/User/Missions</code>) or import into the
+                scenario editor. Execute the covert sortie. Once resolved,
+                report the outcome below:
+              </div>
+
+              <div className="sortie-outcome-section">
+                <div className="sortie-outcome-title">
+                  Report Tactical Sortie Debrief
+                </div>
+                <div className="sortie-outcome-grid">
+                  <button
+                    type="button"
+                    className="sortie-outcome-btn clean"
+                    disabled={isResolvingSortie}
+                    onClick={() => {
+                      if (onResolveSortie) {
+                        onResolveSortie(activeTacticalOp.id, "clean_success");
+                        setActiveTacticalOp(null);
+                      }
                     }}
                   >
-                    {op.title}
-                  </div>
-                  <p
-                    style={{
-                      margin: "0 0 6px 0",
-                      fontSize: "11px",
-                      color: "#94a3b8",
+                    <span className="sortie-outcome-btn-title">
+                      🟢 Clean Infiltration
+                    </span>
+                    <span className="sortie-outcome-btn-desc">
+                      Depot detonated (50% fuel &amp; missiles destroyed).
+                      Stealth preserved. Zero attribution (+10 Tension).
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    className="sortie-outcome-btn evaded"
+                    disabled={isResolvingSortie}
+                    onClick={() => {
+                      if (onResolveSortie) {
+                        onResolveSortie(
+                          activeTacticalOp.id,
+                          "compromised_evaded",
+                        );
+                        setActiveTacticalOp(null);
+                      }
                     }}
                   >
-                    {op.summary}
-                  </p>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      fontSize: "11px",
-                      fontWeight: "bold",
+                    <span className="sortie-outcome-btn-title">
+                      🟡 Detected &amp; Evaded
+                    </span>
+                    <span className="sortie-outcome-btn-desc">
+                      Submarine pinged and depth-charged. Escaped with battle
+                      damage (-35% Str). Relations Hostile (+30 Tension).
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    className="sortie-outcome-btn destroyed"
+                    disabled={isResolvingSortie}
+                    onClick={() => {
+                      if (
+                        confirm(
+                          "🚨 CRITICAL WARNING: Submarine sunk nearshore! Acoustic torpedo signatures will positively identify attack origin, triggering DEFCON 1 and FULL-SCALE WAR!\n\nAre you sure you want to report nearshore destruction?",
+                        )
+                      ) {
+                        if (onResolveSortie) {
+                          onResolveSortie(
+                            activeTacticalOp.id,
+                            "destroyed_nearshore",
+                          );
+                          setActiveTacticalOp(null);
+                        }
+                      }
                     }}
                   >
-                    <span style={{ color: "#38bdf8" }}>
-                      Cost: ${op.fundsCost}
+                    <span className="sortie-outcome-btn-title">
+                      🚨 Destroyed Nearshore
                     </span>
-                    <span style={{ color: "#4ade80" }}>
-                      Success: {Math.round(op.baseSuccessRate * 100)}%
+                    <span className="sortie-outcome-btn-desc">
+                      Submarine sunk in sovereign waters! DEFCON 1 Maximum
+                      Readiness, Bilateral War Declared &amp; Treaties Annulled!
                     </span>
-                    <span style={{ color: "#fb923c" }}>
-                      Risk: {Math.round(op.baseAttributionRisk * 100)}%
-                    </span>
+                  </button>
+                </div>
+
+                <div className="war-escalation-alert">
+                  ⚠️ <strong>ESCALATION WARNING:</strong> Sunk nearshore
+                  triggers an immediate state of war between nations and
+                  dispatches an emergency war declaration telegram to your
+                  embassy inbox.
+                </div>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "8px",
+                  marginBottom: "16px",
+                }}
+              >
+                {effectiveCatalog.map((op) => {
+                  const isSelected = op.opType === selectedOpType;
+                  return (
+                    <div
+                      key={op.opType}
+                      onClick={() => setSelectedOpType(op.opType)}
+                      style={{
+                        background: isSelected
+                          ? "rgba(220, 38, 38, 0.2)"
+                          : "rgba(30, 41, 59, 0.6)",
+                        border: `1px solid ${
+                          isSelected ? "#ef4444" : "rgba(148, 163, 184, 0.2)"
+                        }`,
+                        borderRadius: "6px",
+                        padding: "10px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontWeight: "bold",
+                          fontSize: "13px",
+                          color: isSelected ? "#fca5a5" : "#f1f5f9",
+                          marginBottom: "4px",
+                        }}
+                      >
+                        {op.title}
+                      </div>
+                      <p
+                        style={{
+                          margin: "0 0 6px 0",
+                          fontSize: "11px",
+                          color: "#94a3b8",
+                        }}
+                      >
+                        {op.summary}
+                      </p>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          fontSize: "11px",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        <span style={{ color: "#38bdf8" }}>
+                          Cost: ${op.fundsCost}
+                        </span>
+                        <span style={{ color: "#4ade80" }}>
+                          Success: {Math.round(op.baseSuccessRate * 100)}%
+                        </span>
+                        <span style={{ color: "#fb923c" }}>
+                          Risk: {Math.round(op.baseAttributionRisk * 100)}%
+                        </span>
+                      </div>
+                      <div className="formation-requirement-badge">
+                        ⚓ Requires:{" "}
+                        {op.requiredUnitLabel || "Combat Formation"} (≥
+                        {op.minActionPoints || 1} AP)
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="recruitment-controls-row">
+                <div className="recruitment-control-group">
+                  <label>Mandatory Assigned Formation</label>
+                  {eligibleFormationsQuery.isLoading ? (
+                    <div style={{ fontSize: "12px", color: "#94a3b8" }}>
+                      Scanning military rosters...
+                    </div>
+                  ) : eligibleFormations.length > 0 ? (
+                    <select
+                      value={assignedFormationId}
+                      onChange={(e) => setAssignedFormationId(e.target.value)}
+                    >
+                      {eligibleFormations.map((f) => (
+                        <option key={f.id} value={f.id}>
+                          {f.name} — AP: {f.actionPoints}/{f.maxActionPoints} |
+                          Str: {f.strength}% ({f.unitType})
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <div
+                      style={{
+                        padding: "8px 10px",
+                        background: "rgba(239, 68, 68, 0.15)",
+                        border: "1px solid rgba(239, 68, 68, 0.4)",
+                        borderRadius: "4px",
+                        fontSize: "11px",
+                        color: "#fca5a5",
+                      }}
+                    >
+                      ⚠️ No eligible {currentOp.requiredUnitLabel || "unit"}{" "}
+                      ready with ≥{currentOp.minActionPoints || 1} AP.
+                    </div>
+                  )}
+                </div>
+
+                <div className="recruitment-control-group">
+                  <label>Target Nation</label>
+                  <select
+                    value={targetCountryId}
+                    onChange={(e) => setTargetCountryId(e.target.value)}
+                  >
+                    <option value="soviet-union">Soviet Union (OPFOR)</option>
+                    <option value="east-germany">East Germany (OPFOR)</option>
+                    <option value="poland">Poland (OPFOR)</option>
+                    <option value="sweden">Sweden (Neutral)</option>
+                    <option value="finland">Finland (Neutral)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div
+                className="recruitment-controls-row"
+                style={{ marginTop: "10px" }}
+              >
+                <div className="recruitment-control-group">
+                  <label>Target Strategic Sector</label>
+                  <select
+                    value={targetHexId}
+                    onChange={(e) => setTargetHexId(e.target.value)}
+                  >
+                    {targetHexes.map((h) => (
+                      <option key={h.id} value={h.id}>
+                        {h.name} ({h.ownership.countryId}) — {h.terrain}
+                      </option>
+                    ))}
+                    {targetHexes.length === 0 && (
+                      <option value="hex-sov-murmansk">
+                        Murmansk Naval Bastion (soviet-union)
+                      </option>
+                    )}
+                  </select>
+                </div>
+
+                <div className="recruitment-control-group">
+                  <label>Resolution Mode</label>
+                  <div className="covert-mode-toggle">
+                    <button
+                      type="button"
+                      className={`covert-mode-btn ${
+                        resolutionMode === "tactical_mission" ? "active" : ""
+                      }`}
+                      onClick={() => setResolutionMode("tactical_mission")}
+                    >
+                      🎮 Tactical Mission (.ini)
+                    </button>
+                    <button
+                      type="button"
+                      className={`covert-mode-btn ${
+                        resolutionMode === "auto_resolve" ? "active" : ""
+                      }`}
+                      onClick={() => setResolutionMode("auto_resolve")}
+                    >
+                      🎲 Instant Auto-Resolve
+                    </button>
                   </div>
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            </>
+          )}
 
-          {/* Operation Target Selector */}
-          <div className="recruitment-controls-row">
-            <div className="recruitment-control-group">
-              <label>Target Nation</label>
-              <select
-                value={targetCountryId}
-                onChange={(e) => setTargetCountryId(e.target.value)}
-              >
-                <option value="soviet-union">Soviet Union (OPFOR)</option>
-                <option value="east-germany">East Germany (OPFOR)</option>
-                <option value="poland">Poland (OPFOR)</option>
-                <option value="sweden">Sweden (Neutral)</option>
-                <option value="finland">Finland (Neutral)</option>
-              </select>
-            </div>
-
-            <div className="recruitment-control-group">
-              <label>Target Strategic Sector</label>
-              <select
-                value={targetHexId}
-                onChange={(e) => setTargetHexId(e.target.value)}
-              >
-                {targetHexes.map((h) => (
-                  <option key={h.id} value={h.id}>
-                    {h.name} ({h.ownership.countryId})
-                  </option>
-                ))}
-                {targetHexes.length === 0 && (
-                  <option value="hex-sov-murmansk">
-                    Murmansk Naval Bastion (soviet-union)
-                  </option>
-                )}
-              </select>
-            </div>
-          </div>
-
-          {/* History of Covert Actions */}
           <div
             style={{
               marginTop: "16px",
               background: "rgba(15, 23, 42, 0.8)",
               padding: "10px",
               borderRadius: "6px",
-              maxHeight: "140px",
+              maxHeight: "150px",
               overflowY: "auto",
             }}
           >
@@ -4249,7 +4619,7 @@ function CovertOperationsModal({
                 textTransform: "uppercase",
               }}
             >
-              Clandestine Intelligence Log ({operations.length})
+              Clandestine Intelligence Log &amp; Sorties ({operations.length})
             </div>
             {operations.length === 0 ? (
               <p style={{ margin: 0, fontSize: "12px", color: "#64748b" }}>
@@ -4266,19 +4636,49 @@ function CovertOperationsModal({
                       fontSize: "11px",
                       padding: "6px 8px",
                       borderRadius: "4px",
-                      background: op.detected
-                        ? "rgba(239, 68, 68, 0.15)"
-                        : "rgba(34, 197, 94, 0.15)",
+                      background: op.warDeclared
+                        ? "rgba(220, 38, 38, 0.3)"
+                        : op.detected
+                          ? "rgba(239, 68, 68, 0.15)"
+                          : "rgba(34, 197, 94, 0.15)",
                       border: `1px solid ${
-                        op.detected
-                          ? "rgba(239, 68, 68, 0.4)"
-                          : "rgba(34, 197, 94, 0.4)"
+                        op.warDeclared
+                          ? "#ef4444"
+                          : op.detected
+                            ? "rgba(239, 68, 68, 0.4)"
+                            : "rgba(34, 197, 94, 0.4)"
                       }`,
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      gap: "8px",
                     }}
                   >
-                    <strong>{op.opType}</strong> against{" "}
-                    <em>{op.targetHexId}</em> ({op.targetCountryId}):{" "}
-                    <span>{op.resultSummary}</span>
+                    <div>
+                      <strong>{op.opType}</strong>{" "}
+                      {op.assignedFormationName
+                        ? `[${op.assignedFormationName}]`
+                        : ""}{" "}
+                      against <em>{op.targetHexId}</em> ({op.targetCountryId}):{" "}
+                      <span>{op.resultSummary}</span>
+                    </div>
+
+                    {op.resolutionMode === "tactical_mission" &&
+                      (op.sortieOutcome === "pending" ||
+                        op.status === "planned") && (
+                        <button
+                          type="button"
+                          className="action-button secondary-action"
+                          style={{
+                            fontSize: "10px",
+                            padding: "2px 6px",
+                            whiteSpace: "nowrap",
+                          }}
+                          onClick={() => setActiveTacticalOp(op)}
+                        >
+                          🎮 Debrief Sortie
+                        </button>
+                      )}
                   </div>
                 ))}
               </div>
@@ -4294,25 +4694,38 @@ function CovertOperationsModal({
           >
             Close
           </button>
-          <button
-            type="button"
-            className="recruitment-submit-btn"
-            style={{ background: "#dc2626" }}
-            disabled={isLaunching || funds < currentOp.fundsCost}
-            onClick={() => {
-              onLaunch({
-                targetCountryId,
-                targetHexId,
-                opType: currentOp.opType,
-              });
-            }}
-          >
-            {isLaunching
-              ? "Executing Infiltration..."
-              : funds < currentOp.fundsCost
-                ? `Insufficient Funds ($${currentOp.fundsCost})`
-                : `Authorize Black Op ($${currentOp.fundsCost})`}
-          </button>
+          {!activeTacticalOp && (
+            <button
+              type="button"
+              className="recruitment-submit-btn"
+              style={{ background: "#dc2626" }}
+              disabled={
+                isLaunching ||
+                funds < currentOp.fundsCost ||
+                !assignedFormationId ||
+                eligibleFormations.length === 0
+              }
+              onClick={() => {
+                onLaunch({
+                  targetCountryId,
+                  targetHexId,
+                  opType: currentOp.opType,
+                  assignedFormationId,
+                  resolutionMode,
+                });
+              }}
+            >
+              {isLaunching
+                ? "Authorizing Sortie..."
+                : funds < currentOp.fundsCost
+                  ? `Insufficient Funds ($${currentOp.fundsCost})`
+                  : !assignedFormationId || eligibleFormations.length === 0
+                    ? "Requires Eligible Formation"
+                    : resolutionMode === "tactical_mission"
+                      ? `🎮 Generate Tactical Mission ($${currentOp.fundsCost})`
+                      : `🎲 Launch Auto-Resolve ($${currentOp.fundsCost})`}
+            </button>
+          )}
         </div>
       </div>
     </div>
