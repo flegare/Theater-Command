@@ -27,19 +27,25 @@ async function runQA() {
   await page.waitForSelector(".recruitment-modal");
   await page.waitForTimeout(600);
 
-  console.log("5. Testing Step 1 (Target Country) and Step 2 (Event Ledger with Soviet Union)...");
+  console.log(
+    "5. Testing Step 1 (Target Country) and Step 2 (Event Ledger with Soviet Union)...",
+  );
   await page.locator("select").nth(0).selectOption("soviet-union");
   await page.waitForTimeout(800);
   await page.screenshot({ path: "artifacts/qa-step1-target-country.png" });
   console.log("  -> Captured artifacts/qa-step1-target-country.png");
 
-  console.log("6. Switching to Sweden to inspect positive Scandinavian Event Ledger...");
+  console.log(
+    "6. Switching to Sweden to inspect positive Scandinavian Event Ledger...",
+  );
   await page.locator("select").nth(0).selectOption("sweden");
   await page.waitForTimeout(800);
   await page.screenshot({ path: "artifacts/qa-step2-event-ledger.png" });
   console.log("  -> Captured artifacts/qa-step2-event-ledger.png");
 
-  console.log("7. Configuring Step 3 Multi-Asset Concession Package (Funds, Fuel, PP, Tech)...");
+  console.log(
+    "7. Configuring Step 3 Multi-Asset Concession Package (Funds, Fuel, PP, Tech)...",
+  );
   const techCheckbox = page.locator("#tech-sharing-toggle");
   if (await techCheckbox.isVisible()) {
     await techCheckbox.check();
@@ -57,7 +63,9 @@ async function runQA() {
   await page.screenshot({ path: "artifacts/qa-step3-ultimatum-demand.png" });
   console.log("  -> Captured artifacts/qa-step3-ultimatum-demand.png");
 
-  console.log("9. Transmitting Sovereign Ultimatum to Soviet Union & Testing Transmitting Animation...");
+  console.log(
+    "9. Transmitting Sovereign Ultimatum to Soviet Union & Testing Transmitting Animation...",
+  );
   const transmitUltimatumBtn = page.getByRole("button", {
     name: /Transmit Sovereign Ultimatum/i,
   });
@@ -67,18 +75,26 @@ async function runQA() {
   await page.screenshot({ path: "artifacts/qa-transmitting-animation.png" });
   console.log("  -> Captured artifacts/qa-transmitting-animation.png");
 
-  console.log("10. Awaiting response and verifying auto-scroll focus to top...");
+  console.log(
+    "10. Awaiting response and verifying auto-scroll focus to top...",
+  );
   await page.waitForSelector("text=DIPLOMATIC TELEGRAM", { timeout: 15000 });
   await page.waitForTimeout(1000); // Allow smooth auto-scroll to finish
 
   const modalBody = page.locator(".recruitment-modal-body");
   const currentScrollTop = await modalBody.evaluate((el) => el.scrollTop);
-  console.log(`  -> Auto-scroll verification: modal scrollTop is ${currentScrollTop} (auto-scrolled to top)`);
+  console.log(
+    `  -> Auto-scroll verification: modal scrollTop is ${currentScrollTop} (auto-scrolled to top)`,
+  );
 
-  await page.screenshot({ path: "artifacts/qa-auto-scroll-response-focused.png" });
+  await page.screenshot({
+    path: "artifacts/qa-auto-scroll-response-focused.png",
+  });
   console.log("  -> Captured artifacts/qa-auto-scroll-response-focused.png");
 
-  console.log("11. Testing Sweden Joint Production Pact for Diplomatic Counter-Offer & Sliders...");
+  console.log(
+    "11. Testing Sweden Joint Production Pact for Diplomatic Counter-Offer & Sliders...",
+  );
   // Switch to Sweden
   await page.locator("select").nth(0).selectOption("sweden");
   await page.waitForTimeout(400);
@@ -107,10 +123,14 @@ async function runQA() {
   // Check if counter-offer card appeared
   const counterCard = page.locator("text=DIPLOMATIC COUNTER-PROPOSAL");
   if (await counterCard.isVisible()) {
-    console.log("  -> Sweden counter-proposal received! Testing multi-asset interactive controls...");
+    console.log(
+      "  -> Sweden counter-proposal received! Testing multi-asset interactive controls...",
+    );
 
     // Capture counter-offer with multi-asset adjustment controls
-    await page.screenshot({ path: "artifacts/qa-counter-offer-multi-asset.png" });
+    await page.screenshot({
+      path: "artifacts/qa-counter-offer-multi-asset.png",
+    });
     console.log("  -> Captured artifacts/qa-counter-offer-multi-asset.png");
 
     // Test Waive PP button
@@ -119,7 +139,9 @@ async function runQA() {
       await waivePpBtn.click();
       console.log("  -> Clicked Waive Production to 0 PP");
       await page.waitForTimeout(400);
-      await page.screenshot({ path: "artifacts/qa-counter-offer-waived-pp.png" });
+      await page.screenshot({
+        path: "artifacts/qa-counter-offer-waived-pp.png",
+      });
       console.log("  -> Captured artifacts/qa-counter-offer-waived-pp.png");
     }
 
@@ -132,7 +154,9 @@ async function runQA() {
     }
   } else {
     // Direct accept or decline, capture the telegram
-    await page.screenshot({ path: "artifacts/qa-counter-offer-multi-asset.png" });
+    await page.screenshot({
+      path: "artifacts/qa-counter-offer-multi-asset.png",
+    });
   }
 
   // Capture final modal showing active ratified treaties
@@ -157,4 +181,3 @@ runQA().catch((err) => {
   console.error("QA script failed:", err);
   process.exit(1);
 });
-

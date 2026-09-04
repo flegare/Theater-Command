@@ -83,6 +83,7 @@ import {
   getCampaignTension,
   type CovertOpType,
 } from "../domain/covertOperations.js";
+import { getCampaignAiTurnLogs } from "../domain/aiStrategicCommander.js";
 import type { AppConfig } from "../infrastructure/config.js";
 import type { CampaignDatabase } from "../infrastructure/database.js";
 import {
@@ -1460,10 +1461,12 @@ export function createApp(
         });
         return;
       }
+      const godMode = request.query.godMode === "true";
       const hexState = getCampaignHexState(
         dependencies.database,
         request.perspective!.campaignId,
         request.perspective!.playerCountryId,
+        { godMode, filterFogOfWar: true },
       );
 
       const west = request.query.west ? Number(request.query.west) : undefined;
@@ -2779,8 +2782,7 @@ export function createApp(
           : 0,
         techSharing: request.query.techSharing === "true",
         transferredFormationId: request.query.transferredFormationId as
-          | string
-          | undefined,
+          string | undefined,
         cededHexId: request.query.cededHexId as string | undefined,
       };
 
@@ -2971,6 +2973,35 @@ export function createApp(
         ok: true,
         catalog: COVERT_OPS_CATALOG,
         operations,
+        requestId: response.locals.requestId,
+      });
+    },
+  );
+
+  app.get(
+    "/api/v1/campaigns/current/ai-turn-logs",
+    requireCampaignSession,
+    (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+
+      const turn = request.query.turn ? Number(request.query.turn) : undefined;
+      const logs = getCampaignAiTurnLogs(
+        dependencies.database,
+        request.perspective!.campaignId,
+        turn,
+      );
+      response.json({
+        ok: true,
+        logs,
         requestId: response.locals.requestId,
       });
     },

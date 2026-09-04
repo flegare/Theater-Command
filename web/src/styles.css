@@ -2524,3 +2524,218 @@ legend {
   animation: diplomaticArrivalGlow 1.6s ease-out;
 }
 
+/* 👁️ God Mode & Fog of War Visual Controls */
+.god-mode-toggle-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-family: inherit;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.god-mode-toggle-button.active {
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  border: 1px solid #34d399;
+  color: #ecfdf5;
+  box-shadow:
+    0 0 14px rgba(16, 185, 129, 0.6),
+    inset 0 0 6px rgba(255, 255, 255, 0.2);
+  animation: godPulse 2.4s infinite ease-in-out;
+}
+
+.god-mode-toggle-button.inactive {
+  background: #1e293b;
+  border: 1px solid #475569;
+  color: #94a3b8;
+}
+
+.god-mode-toggle-button.inactive:hover {
+  background: #334155;
+  color: #f1f5f9;
+  border-color: #64748b;
+}
+
+@keyframes godPulse {
+  0% {
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(16, 185, 129, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+  }
+}
+
+/* FoW Sensor Contact Counters */
+.formation-counter-icon.contact {
+  background: rgba(245, 158, 11, 0.88) !important;
+  border: 1px dashed #fbbf24 !important;
+  color: #1c1917 !important;
+  font-weight: 800;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+}
+
+.formation-counter-icon.god-revealed {
+  border: 1px solid #ec4899 !important;
+  box-shadow: 0 0 8px rgba(236, 72, 153, 0.6);
+}
+
+/* AI Intel Log Modal */
+.ai-intel-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 10, 18, 0.85);
+  backdrop-filter: blur(6px);
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.ai-intel-content {
+  background: #09121a;
+  border: 1px solid #0284c7;
+  border-radius: 8px;
+  width: 95%;
+  max-width: 960px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 40px rgba(2, 132, 199, 0.35);
+  color: #f8fafc;
+}
+
+.ai-intel-header {
+  padding: 16px 20px;
+  background: #040c14;
+  border-bottom: 1px solid #1e3a5f;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ai-intel-header h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #38bdf8;
+}
+
+.ai-intel-body {
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ai-intel-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #1e293b;
+  padding-bottom: 12px;
+}
+
+.ai-intel-tab-btn {
+  background: #0f172a;
+  border: 1px solid #334155;
+  color: #94a3b8;
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.ai-intel-tab-btn.active {
+  background: #0284c7;
+  border-color: #38bdf8;
+  color: #ffffff;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+}
+
+.ai-intel-card {
+  background: #0b1824;
+  border: 1px solid #1e293b;
+  border-radius: 6px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ai-intel-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #162a3e;
+  padding-bottom: 8px;
+}
+
+.ai-stance-badge {
+  padding: 3px 8px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ai-stance-badge.hostile {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid #ef4444;
+  color: #fca5a5;
+}
+
+.ai-stance-badge.allied {
+  background: rgba(59, 130, 246, 0.2);
+  border: 1px solid #3b82f6;
+  color: #93c5fd;
+}
+
+.ai-stance-badge.neutral {
+  background: rgba(234, 179, 8, 0.2);
+  border: 1px solid #eab308;
+  color: #fde047;
+}
+
+.ai-intel-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ai-intel-section-title {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #7dd3fc;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ai-progress-track {
+  background: #040910;
+  border: 1px solid #1e293b;
+  border-radius: 4px;
+  height: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.ai-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0284c7 0%, #38bdf8 100%);
+  transition: width 0.3s ease;
+}

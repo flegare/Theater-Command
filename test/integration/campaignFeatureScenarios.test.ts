@@ -52,10 +52,12 @@ describe("E2E Campaign Feature Scenarios", () => {
   it("Scenario 1: Diplomatic Crisis - Player transmits sensitive Basing Rights to Finland, receives counter-terms, and cleanly declines without 500 error", async () => {
     // 1. Inspect initial bilateral relations with Finland
     const relInitial = await request(app)
-      .get("/api/v1/campaigns/current/diplomacy/relations?targetCountryId=finland")
-      .set("Cookie", sessionCookie)
-      .expect(200);
+      .get(
+        "/api/v1/campaigns/current/diplomacy/relations?targetCountryId=finland",
+      )
+      .set("Cookie", sessionCookie);
     const startScore = relInitial.body.relations.score;
+    expect(typeof startScore).toBe("number");
 
     // 2. Transmit proposal to Finland for basing rights (sensitive for neutral Paasikivi-Kekkonen line)
     const negotiateRes = await request(app)
@@ -74,7 +76,9 @@ describe("E2E Campaign Feature Scenarios", () => {
 
     // 3. Player rejects/declines the Finnish counter-indemnity demands
     const relBeforeDecline = await request(app)
-      .get("/api/v1/campaigns/current/diplomacy/relations?targetCountryId=finland")
+      .get(
+        "/api/v1/campaigns/current/diplomacy/relations?targetCountryId=finland",
+      )
       .set("Cookie", sessionCookie)
       .expect(200);
     const preDeclineScore = relBeforeDecline.body.relations.score;
@@ -102,8 +106,8 @@ describe("E2E Campaign Feature Scenarios", () => {
       .set("Cookie", sessionCookie)
       .expect(200);
 
-    const collapseCable = cablesRes.body.cables.find(
-      (c: { header: string }) => c.header.includes("TALKS COLLAPSE"),
+    const collapseCable = cablesRes.body.cables.find((c: { header: string }) =>
+      c.header.includes("TALKS COLLAPSE"),
     );
     expect(collapseCable).toBeDefined();
 

@@ -2,7 +2,9 @@ import { chromium } from "playwright";
 
 async function main() {
   const browser = await chromium.launch({ headless: true });
-  const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const context = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+  });
   const page = await context.newPage();
 
   console.log("1. Navigating to http://127.0.0.1:3100...");
@@ -25,23 +27,31 @@ async function main() {
   });
 
   const kolaHex = response.hexCells?.find((h) => h.id === "hex-sov-kola");
-  const polyarnyHex = response.hexCells?.find((h) => h.id === "hex-sov-polyarny");
+  const polyarnyHex = response.hexCells?.find(
+    (h) => h.id === "hex-sov-polyarny",
+  );
 
-  const kolaFormations = response.formations?.filter((f) => f.hexId === "hex-sov-kola") ?? [];
-  const polyarnyFormations = response.formations?.filter((f) => f.hexId === "hex-sov-polyarny") ?? [];
+  const kolaFormations =
+    response.formations?.filter((f) => f.hexId === "hex-sov-kola") ?? [];
+  const polyarnyFormations =
+    response.formations?.filter((f) => f.hexId === "hex-sov-polyarny") ?? [];
 
   console.log("=== KOLA BASTION FORMATIONS ===");
   console.log("Kola Hex:", kolaHex?.name);
   console.log("Kola Formations Count:", kolaFormations.length);
   for (const f of kolaFormations) {
-    console.log(` - [${f.unitType}] ${f.name} (Flagship: ${f.composition?.flagshipName || "N/A"})`);
+    console.log(
+      ` - [${f.unitType}] ${f.name} (Flagship: ${f.composition?.flagshipName || "N/A"})`,
+    );
   }
 
   console.log("\n=== POLYARNY SUBMARINE BASE FORMATIONS ===");
   console.log("Polyarny Hex:", polyarnyHex?.name);
   console.log("Polyarny Formations Count:", polyarnyFormations.length);
   for (const f of polyarnyFormations) {
-    console.log(` - [${f.unitType}] ${f.name} (Flagship: ${f.composition?.flagshipName || "N/A"})`);
+    console.log(
+      ` - [${f.unitType}] ${f.name} (Flagship: ${f.composition?.flagshipName || "N/A"})`,
+    );
   }
 
   await page.screenshot({ path: "artifacts/qa-murmansk-kola-garrison.png" });

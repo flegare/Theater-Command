@@ -581,11 +581,10 @@ export async function negotiateDiplomaticProposal(
   const proposingPersona = getCountryPersona(input.proposingCountryId);
 
   // Normalize tribute
-  const normalizedTribute: TributePackage =
-    input.tribute ?? {
-      mode: "offer",
-      funds: input.offeredTributeFunds ?? 0,
-    };
+  const normalizedTribute: TributePackage = input.tribute ?? {
+    mode: "offer",
+    funds: input.offeredTributeFunds ?? 0,
+  };
 
   // 1. Calculate probabilistic odds and check hard redlines
   const oddsCalc = calculateTreatyOdds(
@@ -614,8 +613,7 @@ export async function negotiateDiplomaticProposal(
     ) {
       relationDelta -= 10;
     }
-    relationReason =
-      "Outrageous sovereign ultimatum demanding foreign tribute";
+    relationReason = "Outrageous sovereign ultimatum demanding foreign tribute";
   } else {
     // Mode is offer
     if ((normalizedTribute.funds ?? 0) >= 300) {

@@ -322,6 +322,23 @@ const migrations: Migration[] = [
       CREATE INDEX country_relation_events_idx ON country_relation_events(campaign_id, country_id, related_country_id);
     `,
   },
+  {
+    id: "010_campaign_ai_turn_logs",
+    sql: `
+      CREATE TABLE campaign_ai_turn_logs (
+        id TEXT PRIMARY KEY,
+        campaign_id TEXT NOT NULL REFERENCES campaigns(id) ON DELETE CASCADE,
+        turn_number INTEGER NOT NULL,
+        country_id TEXT NOT NULL,
+        country_name TEXT NOT NULL,
+        stance TEXT NOT NULL,
+        orders_summary TEXT NOT NULL,
+        actions_json TEXT NOT NULL,
+        created_at TEXT NOT NULL
+      );
+      CREATE INDEX campaign_ai_turn_logs_idx ON campaign_ai_turn_logs(campaign_id, turn_number, country_id);
+    `,
+  },
 ];
 
 function checksum(sql: string): string {

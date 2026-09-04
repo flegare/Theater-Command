@@ -751,7 +751,14 @@ export function adjustBilateralRelations(
              relation_score = excluded.relation_score,
              casus_belli_json = excluded.casus_belli_json`,
         )
-        .run(campaignId, countryA, countryB, newStance, newScore, casusBelliJson);
+        .run(
+          campaignId,
+          countryA,
+          countryB,
+          newStance,
+          newScore,
+          casusBelliJson,
+        );
 
       database
         .prepare(
@@ -762,7 +769,14 @@ export function adjustBilateralRelations(
              relation_score = excluded.relation_score,
              casus_belli_json = excluded.casus_belli_json`,
         )
-        .run(campaignId, countryB, countryA, newStance, newScore, casusBelliJson);
+        .run(
+          campaignId,
+          countryB,
+          countryA,
+          newStance,
+          newScore,
+          casusBelliJson,
+        );
 
       try {
         database
@@ -770,14 +784,30 @@ export function adjustBilateralRelations(
             `INSERT INTO country_relation_events (id, campaign_id, country_id, related_country_id, delta_score, reason, created_at)
              VALUES (?, ?, ?, ?, ?, ?, ?)`,
           )
-          .run(eventId1, campaignId, countryA, countryB, deltaScore, reason, now);
+          .run(
+            eventId1,
+            campaignId,
+            countryA,
+            countryB,
+            deltaScore,
+            reason,
+            now,
+          );
 
         database
           .prepare(
             `INSERT INTO country_relation_events (id, campaign_id, country_id, related_country_id, delta_score, reason, created_at)
              VALUES (?, ?, ?, ?, ?, ?, ?)`,
           )
-          .run(eventId2, campaignId, countryB, countryA, deltaScore, reason, now);
+          .run(
+            eventId2,
+            campaignId,
+            countryB,
+            countryA,
+            deltaScore,
+            reason,
+            now,
+          );
       } catch {
         // Ignore if table not yet migrated in isolated unit tests
       }
@@ -1111,13 +1141,19 @@ export function calculateTreatyOdds(
   if (tribute.mode === "demand") {
     let demandPenalty = -35;
     if ((tribute.funds ?? 0) > 0) {
-      demandPenalty -= Math.min(20, Math.round(((tribute.funds ?? 0) / 100) * 3));
+      demandPenalty -= Math.min(
+        20,
+        Math.round(((tribute.funds ?? 0) / 100) * 3),
+      );
     }
     if ((tribute.fuel ?? 0) > 0) {
       demandPenalty -= Math.min(20, Math.round(((tribute.fuel ?? 0) / 20) * 2));
     }
     if ((tribute.production ?? 0) > 0) {
-      demandPenalty -= Math.min(20, Math.round(((tribute.production ?? 0) / 10) * 2));
+      demandPenalty -= Math.min(
+        20,
+        Math.round(((tribute.production ?? 0) / 10) * 2),
+      );
     }
     if (tribute.techSharing) {
       demandPenalty -= 20;
@@ -1133,7 +1169,10 @@ export function calculateTreatyOdds(
   } else {
     // Mode is "offer"
     if ((tribute.funds ?? 0) > 0) {
-      const fundsBonus = Math.min(30, Math.round(((tribute.funds ?? 0) / 100) * 5));
+      const fundsBonus = Math.min(
+        30,
+        Math.round(((tribute.funds ?? 0) / 100) * 5),
+      );
       baseOdds += fundsBonus;
       breakdown.push({
         factor: `Offered Concession / Tribute Funds ($${tribute.funds})`,
@@ -1141,7 +1180,10 @@ export function calculateTreatyOdds(
       });
     }
     if ((tribute.fuel ?? 0) > 0) {
-      const fuelBonus = Math.min(25, Math.round(((tribute.fuel ?? 0) / 20) * 3));
+      const fuelBonus = Math.min(
+        25,
+        Math.round(((tribute.fuel ?? 0) / 20) * 3),
+      );
       baseOdds += fuelBonus;
       breakdown.push({
         factor: `Strategic Fuel Allocation (${tribute.fuel} bbl)`,
@@ -1149,7 +1191,10 @@ export function calculateTreatyOdds(
       });
     }
     if ((tribute.production ?? 0) > 0) {
-      const prodBonus = Math.min(25, Math.round(((tribute.production ?? 0) / 10) * 3));
+      const prodBonus = Math.min(
+        25,
+        Math.round(((tribute.production ?? 0) / 10) * 3),
+      );
       baseOdds += prodBonus;
       breakdown.push({
         factor: `Industrial Munitions Quota (${tribute.production} PP)`,

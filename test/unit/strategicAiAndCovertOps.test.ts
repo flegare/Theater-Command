@@ -819,7 +819,9 @@ describe("Strategic AI, Country Personas & Covert Operations", () => {
       "sweden",
     );
     expect(initialRel.score).toBe(25);
-    expect(initialRel.baselineReason).toContain("Scandinavian Armed Neutrality");
+    expect(initialRel.baselineReason).toContain(
+      "Scandinavian Armed Neutrality",
+    );
     expect(initialRel.events).toBeDefined();
     expect(initialRel.events!.length).toBeGreaterThan(0);
 
@@ -1024,4 +1026,3 @@ describe("Strategic AI, Country Personas & Covert Operations", () => {
     expect(transferredForm.side).toBe("neutral");
   });
 });
-

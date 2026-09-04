@@ -264,9 +264,55 @@ type HexTurnEconomySummary = {
   controlledHexCount: number;
 };
 
+type HexVisibilityLevel = "full" | "recon" | "shrouded";
+type HexVisibilityMatrix = Record<string, HexVisibilityLevel>;
+
+type CampaignAiTurnLog = {
+  id: string;
+  campaignId: string;
+  turnNumber: number;
+  countryId: string;
+  countryName: string;
+  stance: string;
+  ordersSummary: string;
+  actions: {
+    movements: Array<{
+      formationId: string;
+      formationName: string;
+      action: "move" | "rtb" | "defend" | "assault" | "patrol";
+      targetHexId: string;
+      description: string;
+    }>;
+    diplomacy: Array<{
+      action: "cable_sent" | "proposal_issued" | "stance_adjusted" | "demarche";
+      targetCountryId: string;
+      summary: string;
+    }>;
+    covertOps: Array<{
+      opType: string;
+      targetHexId: string;
+      outcome: "planned" | "executed" | "aborted";
+      description: string;
+    }>;
+    research: {
+      activeProject: string;
+      doctrineFocus: string;
+      progressPct: number;
+    };
+  };
+  createdAt: string;
+};
+
 type HexGridStateSnapshot = {
   hexCells: StrategicHexCell[];
-  formations: CampaignFormation[];
+  formations: Array<
+    CampaignFormation & {
+      isContact?: boolean;
+      contactType?: "surface" | "subsurface" | "air" | "ground";
+      intelConfidence?:
+        "confirmed" | "acoustic_track" | "radar_return" | "visual_sentry";
+    }
+  >;
   economy: {
     funds: number;
     productionPoints: number;
@@ -276,6 +322,8 @@ type HexGridStateSnapshot = {
     projectedDailyFuelDelta: number;
   };
   turnSummary: HexTurnEconomySummary;
+  visibilityMatrix?: HexVisibilityMatrix;
+  godModeActive?: boolean;
 };
 type SectorSnapshot = {
   theaterId: string;
@@ -714,15 +762,51 @@ function CommandCenter({
     ],
     queryFn: () => api<SectorSnapshot>("/api/v1/campaigns/current/sectors"),
   });
+  const [godMode, setGodMode] = useState(false);
+  const [showAiIntelModal, setShowAiIntelModal] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement ||
+        e.target instanceof HTMLSelectElement
+      ) {
+        return;
+      }
+      if (e.key === "g" || e.key === "G") {
+        setGodMode((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   const hexGrid = useQuery({
     queryKey: [
       "campaign-hex-grid",
       session.scenarioFamilyId,
       session.name,
       session.countryId,
+      godMode,
     ],
     queryFn: () =>
-      api<HexGridStateSnapshot>("/api/v1/campaigns/current/hex-grid"),
+      api<HexGridStateSnapshot>(
+        `/api/v1/campaigns/current/hex-grid?godMode=${godMode}`,
+      ),
+  });
+
+  const aiTurnLogs = useQuery({
+    queryKey: [
+      "campaign-ai-turn-logs",
+      session.name,
+      hexGrid.data?.turnSummary.controlledHexCount,
+    ],
+    queryFn: () =>
+      api<{ ok: boolean; logs: CampaignAiTurnLog[] }>(
+        "/api/v1/campaigns/current/ai-turn-logs",
+      ),
+    enabled: showAiIntelModal,
   });
   const [selectedLaneId, setSelectedLaneId] = useState<string | undefined>();
   const [generatedMission, setGeneratedMission] =
@@ -926,6 +1010,7 @@ function CommandCenter({
       queryClient.invalidateQueries({ queryKey: ["diplomacyCables"] });
       queryClient.invalidateQueries({ queryKey: ["diplomacyWorldNews"] });
       queryClient.invalidateQueries({ queryKey: ["diplomacyTreaties"] });
+      queryClient.invalidateQueries({ queryKey: ["campaign-ai-turn-logs"] });
     },
   });
   const sectorPurchase = useMutation({
@@ -1529,6 +1614,24 @@ function CommandCenter({
           </button>
           <button
             type="button"
+            className="recruitment-catalog-button"
+            style={{ background: "#059669" }}
+            onClick={() => setShowAiIntelModal(true)}
+            data-testid="ai-intel-log-button"
+          >
+            📡 AI Intel Log
+          </button>
+          <button
+            type="button"
+            className={`god-mode-toggle-button ${godMode ? "active" : "inactive"}`}
+            onClick={() => setGodMode((prev) => !prev)}
+            title="Toggle God Mode (Press 'G') to reveal all foreign units and orders"
+            data-testid="god-mode-toggle-button"
+          >
+            {godMode ? "👁️ GOD MODE: ON" : "👁️ GOD MODE: OFF"}
+          </button>
+          <button
+            type="button"
             className="advance-turn-button"
             onClick={() => advanceDay.mutate()}
             disabled={advanceDay.isPending}
@@ -1641,6 +1744,14 @@ function CommandCenter({
         onClose={() => setEditingFormation(null)}
         onSave={(updates) => updateFormationMutation.mutate(updates)}
         isSaving={updateFormationMutation.isPending}
+      />
+
+      <AiIntelLogModal
+        isOpen={showAiIntelModal}
+        onClose={() => setShowAiIntelModal(false)}
+        logs={aiTurnLogs.data?.logs ?? []}
+        isLoading={aiTurnLogs.isLoading}
+        currentTurn={aiTurnLogs.data?.logs?.[0]?.turnNumber}
       />
 
       <section className="command-grid">
@@ -2089,9 +2200,16 @@ function formatCountryName(countryId?: string): string {
   }
 }
 
+type TacticalMapFormation = CampaignFormation & {
+  isContact?: boolean;
+  contactType?: "surface" | "subsurface" | "air" | "ground";
+  intelConfidence?:
+    "confirmed" | "acoustic_track" | "radar_return" | "visual_sentry";
+};
+
 function createHexTacticalPopupContent(
   hex: StrategicHexCell,
-  hexFormations: CampaignFormation[],
+  hexFormations: TacticalMapFormation[],
   onStartMovePlanning?: (
     form: CampaignFormation,
     hex: StrategicHexCell,
@@ -2279,6 +2397,7 @@ function createHexTacticalPopupContent(
     );
 
     for (const form of hexFormations) {
+      const isContact = Boolean(form.isContact);
       const isNationalCommand =
         !playerCountryId || form.countryId === playerCountryId;
       const isAlliedFormation = form.side === "blufor" && !isNationalCommand;
@@ -2293,15 +2412,32 @@ function createHexTacticalPopupContent(
       nameSpan.textContent = form.name;
 
       const sideBadge = document.createElement("span");
-      sideBadge.className = `formation-tag ${form.side} ${isAlliedFormation ? "allied" : isNationalCommand && form.side === "blufor" ? "sovereign" : ""}`;
-      sideBadge.textContent = isAlliedFormation
-        ? `ALLIED (${(form.countryId || "NATO").toUpperCase().replace(/-/g, " ")})`
-        : isNationalCommand && form.side === "blufor"
-          ? `${(playerCountryName ?? "NORWAY").toUpperCase()} (SOVEREIGN)`
-          : form.side.toUpperCase();
+      if (isContact) {
+        sideBadge.className = "formation-tag contact";
+        sideBadge.textContent = `CONTACT [${String(form.intelConfidence ?? "TRACK").toUpperCase()}]`;
+      } else {
+        sideBadge.className = `formation-tag ${form.side} ${isAlliedFormation ? "allied" : isNationalCommand && form.side === "blufor" ? "sovereign" : ""}`;
+        sideBadge.textContent = isAlliedFormation
+          ? `ALLIED (${(form.countryId || "NATO").toUpperCase().replace(/-/g, " ")})`
+          : isNationalCommand && form.side === "blufor"
+            ? `${(playerCountryName ?? "NORWAY").toUpperCase()} (SOVEREIGN)`
+            : form.side.toUpperCase();
+      }
       cardHeader.appendChild(nameSpan);
       cardHeader.appendChild(sideBadge);
       card.appendChild(cardHeader);
+
+      if (isContact) {
+        const contactLine = document.createElement("div");
+        contactLine.className = "formation-status-line";
+        contactLine.innerHTML = `
+          <span>Confidence: <strong>${form.intelConfidence ?? "Unconfirmed"}</strong></span>
+          <span>Domain: <strong>${String(form.contactType ?? "surface").toUpperCase()}</strong></span>
+        `;
+        card.appendChild(contactLine);
+        formList.appendChild(card);
+        continue;
+      }
 
       const statusDisplay =
         form.status === "embarking"
@@ -2322,6 +2458,14 @@ function createHexTacticalPopupContent(
         <span>Status: ${statusDisplay}</span>
       `;
       card.appendChild(statusLine);
+
+      if (form.side === "opfor" && form.activeRoute?.targetHexId) {
+        const godRouteLine = document.createElement("div");
+        godRouteLine.style.cssText =
+          "font-size: 10px; color: #ec4899; padding: 2px 0;";
+        godRouteLine.innerHTML = `<span>👁️ Mission Route: <strong>&rarr; ${form.activeRoute.targetHexId}</strong></span>`;
+        card.appendChild(godRouteLine);
+      }
 
       // Readiness & Morale Chips
       const readinessDiv = document.createElement("div");
@@ -2673,6 +2817,7 @@ function createHexTacticalPopupContent(
 
 interface CanvasHexGridOverlayInstance extends L.Layer {
   setSelectedHexId(hexId: string | null): void;
+  setHexGrid(hexGrid: HexGridStateSnapshot | undefined): void;
   render(): void;
 }
 
@@ -2681,6 +2826,7 @@ const CanvasHexGridOverlay = L.Layer.extend({
     this._canvas = null;
     this._ctx = null;
     this._selectedHexId = null;
+    this._hexGrid = null;
   },
 
   onAdd(map: L.Map) {
@@ -2711,6 +2857,11 @@ const CanvasHexGridOverlay = L.Layer.extend({
 
   setSelectedHexId(hexId: string | null) {
     this._selectedHexId = hexId;
+    this.render();
+  },
+
+  setHexGrid(hexGrid: HexGridStateSnapshot | undefined) {
+    this._hexGrid = hexGrid;
     this.render();
   },
 
@@ -2745,6 +2896,9 @@ const CanvasHexGridOverlay = L.Layer.extend({
     const minR = Math.max(-100, Math.floor(minY / MERCATOR_SPACING_Y) - 1);
     const maxR = Math.min(100, Math.ceil(maxY / MERCATOR_SPACING_Y) + 1);
 
+    const isGodMode = Boolean(this._hexGrid?.godModeActive);
+    const visibilityMatrix = this._hexGrid?.visibilityMatrix;
+
     for (let r = minR; r <= maxR; r++) {
       const minQ = Math.floor(minX / MERCATOR_SPACING_X - r * 0.5) - 1;
       const maxQ = Math.ceil(maxX / MERCATOR_SPACING_X - r * 0.5) + 1;
@@ -2755,6 +2909,10 @@ const CanvasHexGridOverlay = L.Layer.extend({
         const isSelected = hex.id === this._selectedHexId;
         const isBlufor = hex.ownership.side === "blufor";
         const isOpfor = hex.ownership.side === "opfor";
+
+        const visibility = isGodMode
+          ? "full"
+          : (visibilityMatrix?.[hex.id] ?? "shrouded");
 
         const polygon = hex.polygon;
         ctx.beginPath();
@@ -2767,34 +2925,69 @@ const CanvasHexGridOverlay = L.Layer.extend({
         }
         ctx.closePath();
 
-        // Subtle Faction Background Fills
-        if (isSelected) {
-          ctx.fillStyle = "rgba(56, 189, 248, 0.32)";
+        if (visibility === "shrouded") {
+          // Shrouded hex in Fog of War: dark fog tint & desaturated outline
+          ctx.fillStyle = isSelected
+            ? "rgba(56, 189, 248, 0.2)"
+            : "rgba(8, 14, 24, 0.65)";
           ctx.fill();
-        } else if (isBlufor) {
-          ctx.fillStyle = "rgba(59, 130, 246, 0.12)";
-          ctx.fill();
-        } else if (isOpfor) {
-          ctx.fillStyle = "rgba(239, 68, 68, 0.12)";
-          ctx.fill();
-        } else {
-          ctx.fillStyle = "rgba(202, 138, 4, 0.05)";
-          ctx.fill();
-        }
 
-        // Crisp Hex Grid Outline (Matches user's uploaded Kepler.gl/H3 screenshots)
-        if (isSelected) {
-          ctx.strokeStyle = "#38bdf8";
-          ctx.lineWidth = 2.5;
+          ctx.strokeStyle = isSelected ? "#38bdf8" : "rgba(51, 65, 85, 0.35)";
+          ctx.lineWidth = 0.8;
           ctx.stroke();
+        } else if (visibility === "recon") {
+          // Edge-of-sensor reconnaissance sector: tactical dashed outline
+          if (isSelected) {
+            ctx.fillStyle = "rgba(56, 189, 248, 0.28)";
+          } else if (isBlufor) {
+            ctx.fillStyle = "rgba(59, 130, 246, 0.12)";
+          } else if (isOpfor) {
+            ctx.fillStyle = "rgba(239, 68, 68, 0.12)";
+          } else {
+            ctx.fillStyle = "rgba(202, 138, 4, 0.05)";
+          }
+          ctx.fill();
+
+          ctx.strokeStyle = isSelected
+            ? "#38bdf8"
+            : isBlufor
+              ? "rgba(96, 165, 250, 0.55)"
+              : isOpfor
+                ? "rgba(248, 113, 113, 0.55)"
+                : "rgba(234, 179, 8, 0.40)";
+          ctx.lineWidth = 1.1;
+          ctx.setLineDash([4, 4]);
+          ctx.stroke();
+          ctx.setLineDash([]);
         } else {
-          ctx.strokeStyle = isBlufor
-            ? "rgba(96, 165, 250, 0.65)"
-            : isOpfor
-              ? "rgba(248, 113, 113, 0.65)"
-              : "rgba(234, 179, 8, 0.45)";
-          ctx.lineWidth = hex.isCoreTheater ? 1.4 : 0.9;
-          ctx.stroke();
+          // Full visibility (Friendly sector, visual lock, or God Mode)
+          if (isSelected) {
+            ctx.fillStyle = "rgba(56, 189, 248, 0.32)";
+            ctx.fill();
+          } else if (isBlufor) {
+            ctx.fillStyle = "rgba(59, 130, 246, 0.12)";
+            ctx.fill();
+          } else if (isOpfor) {
+            ctx.fillStyle = "rgba(239, 68, 68, 0.12)";
+            ctx.fill();
+          } else {
+            ctx.fillStyle = "rgba(202, 138, 4, 0.05)";
+            ctx.fill();
+          }
+
+          if (isSelected) {
+            ctx.strokeStyle = "#38bdf8";
+            ctx.lineWidth = 2.5;
+            ctx.stroke();
+          } else {
+            ctx.strokeStyle = isBlufor
+              ? "rgba(96, 165, 250, 0.65)"
+              : isOpfor
+                ? "rgba(248, 113, 113, 0.65)"
+                : "rgba(234, 179, 8, 0.45)";
+            ctx.lineWidth = hex.isCoreTheater ? 1.4 : 0.9;
+            ctx.stroke();
+          }
         }
       }
     }
@@ -3484,6 +3677,389 @@ export type DiplomaticOddsCalculation = {
     | undefined;
 };
 
+function AiIntelLogModal({
+  isOpen,
+  onClose,
+  logs,
+  isLoading,
+  currentTurn,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  logs: CampaignAiTurnLog[];
+  isLoading: boolean;
+  currentTurn?: number | undefined;
+}): ReactElement | null {
+  const [selectedCountryId, setSelectedCountryId] = useState<string>("");
+
+  useEffect(() => {
+    if (
+      logs.length > 0 &&
+      (!selectedCountryId ||
+        !logs.some((l) => l.countryId === selectedCountryId))
+    ) {
+      setSelectedCountryId(logs[0]!.countryId);
+    }
+  }, [logs, selectedCountryId]);
+
+  if (!isOpen) return null;
+
+  const activeLog =
+    logs.find((l) => l.countryId === selectedCountryId) ?? logs[0];
+
+  return (
+    <div className="ai-intel-modal" onClick={onClose}>
+      <div
+        className="ai-intel-content"
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-label="Strategic AI Intel Log"
+      >
+        <div className="ai-intel-header">
+          <div>
+            <h2>📡 STRATEGIC AI INTELLIGENCE DEBRIEF</h2>
+            <p
+              style={{
+                margin: "2px 0 0",
+                fontSize: "0.75rem",
+                color: "#94a3b8",
+              }}
+            >
+              Autonomous Non-Player Decisions &bull; Strategic Turn{" "}
+              {currentTurn ?? activeLog?.turnNumber ?? 1}
+            </p>
+          </div>
+          <button
+            type="button"
+            className="secondary-btn"
+            style={{ padding: "4px 10px", fontSize: "0.8rem" }}
+            onClick={onClose}
+          >
+            ✕ Close
+          </button>
+        </div>
+
+        <div className="ai-intel-body">
+          {isLoading ? (
+            <div
+              style={{ padding: "30px", textAlign: "center", color: "#38bdf8" }}
+            >
+              <span className="diplomatic-pulse-icon">📡</span> Intercepting
+              Foreign Intelligence Dispatches...
+            </div>
+          ) : logs.length === 0 ? (
+            <div
+              style={{ padding: "30px", textAlign: "center", color: "#94a3b8" }}
+            >
+              No foreign intelligence logs recorded for this strategic turn yet.
+              Advance turn to collect data.
+            </div>
+          ) : (
+            <>
+              <div className="ai-intel-tabs">
+                {logs.map((log) => (
+                  <button
+                    key={log.id}
+                    type="button"
+                    className={`ai-intel-tab-btn ${log.countryId === selectedCountryId ? "active" : ""}`}
+                    onClick={() => setSelectedCountryId(log.countryId)}
+                  >
+                    {log.countryName}
+                  </button>
+                ))}
+              </div>
+
+              {activeLog && (
+                <div className="ai-intel-card">
+                  <div className="ai-intel-card-header">
+                    <div>
+                      <h3
+                        style={{
+                          margin: 0,
+                          fontSize: "1.05rem",
+                          color: "#f8fafc",
+                        }}
+                      >
+                        {activeLog.countryName}
+                      </h3>
+                      <p
+                        style={{
+                          margin: "2px 0 0",
+                          fontSize: "0.75rem",
+                          color: "#94a3b8",
+                        }}
+                      >
+                        {activeLog.ordersSummary}
+                      </p>
+                    </div>
+                    <span className={`ai-stance-badge ${activeLog.stance}`}>
+                      {activeLog.stance}
+                    </span>
+                  </div>
+
+                  {/* 1. Tactical Movements */}
+                  <div className="ai-intel-section">
+                    <span className="ai-intel-section-title">
+                      🎯 Tactical Formations &amp; Sorties (
+                      {activeLog.actions.movements.length})
+                    </span>
+                    {activeLog.actions.movements.length === 0 ? (
+                      <p
+                        style={{
+                          fontSize: "0.8rem",
+                          color: "#64748b",
+                          margin: 0,
+                        }}
+                      >
+                        All strategic units holding defensive positions and port
+                        garrisons.
+                      </p>
+                    ) : (
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "6px",
+                        }}
+                      >
+                        {activeLog.actions.movements.map((m, idx) => (
+                          <div
+                            key={idx}
+                            style={{
+                              background: "#07131e",
+                              border: "1px solid #1e293b",
+                              borderRadius: "4px",
+                              padding: "8px 12px",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                            }}
+                          >
+                            <div>
+                              <strong
+                                style={{
+                                  fontSize: "0.82rem",
+                                  color: "#38bdf8",
+                                }}
+                              >
+                                {m.formationName}
+                              </strong>
+                              <p
+                                style={{
+                                  margin: "2px 0 0",
+                                  fontSize: "0.75rem",
+                                  color: "#cbd5e1",
+                                }}
+                              >
+                                {m.description}
+                              </p>
+                            </div>
+                            <span
+                              style={{
+                                background: "#0f172a",
+                                border: "1px solid #334155",
+                                color: "#f59e0b",
+                                padding: "2px 6px",
+                                borderRadius: "3px",
+                                fontSize: "0.68rem",
+                                fontWeight: 800,
+                              }}
+                            >
+                              {m.action.toUpperCase()} &rarr; {m.targetHexId}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* 2. Diplomatic Activity */}
+                  <div className="ai-intel-section">
+                    <span className="ai-intel-section-title">
+                      📜 Foreign Policy &amp; Diplomatic Dispatches (
+                      {activeLog.actions.diplomacy.length})
+                    </span>
+                    {activeLog.actions.diplomacy.length === 0 ? (
+                      <p
+                        style={{
+                          fontSize: "0.8rem",
+                          color: "#64748b",
+                          margin: 0,
+                        }}
+                      >
+                        No formal demarches or diplomatic cables transmitted
+                        this turn.
+                      </p>
+                    ) : (
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "6px",
+                        }}
+                      >
+                        {activeLog.actions.diplomacy.map((d, idx) => (
+                          <div
+                            key={idx}
+                            style={{
+                              background: "#07131e",
+                              border: "1px solid #1e293b",
+                              borderRadius: "4px",
+                              padding: "8px 12px",
+                            }}
+                          >
+                            <span
+                              style={{
+                                fontSize: "0.68rem",
+                                fontWeight: 800,
+                                color: "#a855f7",
+                                textTransform: "uppercase",
+                              }}
+                            >
+                              [{d.action.replace("_", " ")}] &rarr;{" "}
+                              {d.targetCountryId}
+                            </span>
+                            <p
+                              style={{
+                                margin: "4px 0 0",
+                                fontSize: "0.78rem",
+                                color: "#e2e8f0",
+                              }}
+                            >
+                              {d.summary}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* 3. Covert & Recon Operations */}
+                  <div className="ai-intel-section">
+                    <span className="ai-intel-section-title">
+                      🗡️ Intelligence &amp; Covert Operations (
+                      {activeLog.actions.covertOps.length})
+                    </span>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "6px",
+                      }}
+                    >
+                      {activeLog.actions.covertOps.map((op, idx) => (
+                        <div
+                          key={idx}
+                          style={{
+                            background: "#07131e",
+                            border: "1px solid #1e293b",
+                            borderRadius: "4px",
+                            padding: "8px 12px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <div>
+                            <span
+                              style={{
+                                fontSize: "0.7rem",
+                                fontWeight: 800,
+                                color: "#ef4444",
+                              }}
+                            >
+                              {op.opType} ({op.outcome.toUpperCase()})
+                            </span>
+                            <p
+                              style={{
+                                margin: "2px 0 0",
+                                fontSize: "0.75rem",
+                                color: "#cbd5e1",
+                              }}
+                            >
+                              {op.description}
+                            </p>
+                          </div>
+                          <span
+                            style={{ fontSize: "0.7rem", color: "#94a3b8" }}
+                          >
+                            {op.targetHexId}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 4. R&D & Doctrine Focus */}
+                  <div className="ai-intel-section">
+                    <span className="ai-intel-section-title">
+                      🔬 Strategic Doctrine &amp; R&amp;D Modernization
+                    </span>
+                    <div
+                      style={{
+                        background: "#07131e",
+                        border: "1px solid #1e293b",
+                        borderRadius: "4px",
+                        padding: "10px 14px",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "6px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <strong
+                          style={{ fontSize: "0.82rem", color: "#38bdf8" }}
+                        >
+                          {activeLog.actions.research.activeProject}
+                        </strong>
+                        <span
+                          style={{
+                            fontSize: "0.78rem",
+                            fontWeight: 800,
+                            color: "#7dd3fc",
+                          }}
+                        >
+                          {activeLog.actions.research.progressPct}% Complete
+                        </span>
+                      </div>
+                      <p
+                        style={{
+                          margin: 0,
+                          fontSize: "0.75rem",
+                          color: "#94a3b8",
+                        }}
+                      >
+                        Doctrine Focus:{" "}
+                        {activeLog.actions.research.doctrineFocus}
+                      </p>
+                      <div
+                        className="ai-progress-track"
+                        style={{ marginTop: "4px" }}
+                      >
+                        <div
+                          className="ai-progress-fill"
+                          style={{
+                            width: `${activeLog.actions.research.progressPct}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function CovertOperationsModal({
   isOpen,
   onClose,
@@ -4121,26 +4697,45 @@ function DiplomaticTreatiesModal({
                     </span>
                   )}
                 </div>
-                <span
-                  style={{
-                    fontSize: "11px",
-                    padding: "2px 8px",
-                    borderRadius: "4px",
-                    background:
-                      latestNegotiation.decision === "accept"
-                        ? "#15803d"
-                        : latestNegotiation.decision === "threaten_war"
-                          ? "#b91c1c"
-                          : latestNegotiation.decision === "counter_offer"
-                            ? "#d97706"
-                            : "#64748b",
-                    color: "#fff",
-                    fontWeight: "bold",
-                    textTransform: "uppercase",
-                  }}
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
                 >
-                  DECISION: {latestNegotiation.decision.replace(/_/g, " ")}
-                </span>
+                  <span
+                    style={{
+                      fontSize: "11px",
+                      padding: "2px 8px",
+                      borderRadius: "4px",
+                      background:
+                        latestNegotiation.decision === "accept"
+                          ? "#15803d"
+                          : latestNegotiation.decision === "threaten_war"
+                            ? "#b91c1c"
+                            : latestNegotiation.decision === "counter_offer"
+                              ? "#d97706"
+                              : "#64748b",
+                      color: "#fff",
+                      fontWeight: "bold",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    DECISION: {latestNegotiation.decision.replace(/_/g, " ")}
+                  </span>
+                  <button
+                    type="button"
+                    title="Dismiss communique"
+                    style={{
+                      background: "none",
+                      border: "none",
+                      color: "#94a3b8",
+                      cursor: "pointer",
+                      fontSize: "12px",
+                      padding: "2px 6px",
+                    }}
+                    onClick={onClearNegotiation}
+                  >
+                    ✕
+                  </button>
+                </div>
               </div>
 
               <div
@@ -4179,500 +4774,506 @@ function DiplomaticTreatiesModal({
               </div>
 
               {/* Counter-Offer Interactive Card */}
-              {latestNegotiation.counterTerms && (() => {
-                const origFunds =
-                  latestNegotiation.counterTerms.demandedFunds ?? 0;
-                const origFuel =
-                  latestNegotiation.counterTerms.demandedFuel ?? 0;
-                const origProd =
-                  latestNegotiation.counterTerms.demandedProduction ?? 0;
+              {latestNegotiation.counterTerms &&
+                (() => {
+                  const origFunds =
+                    latestNegotiation.counterTerms.demandedFunds ?? 0;
+                  const origFuel =
+                    latestNegotiation.counterTerms.demandedFuel ?? 0;
+                  const origProd =
+                    latestNegotiation.counterTerms.demandedProduction ?? 0;
 
-                const effFunds =
-                  counterAdjustment?.funds !== undefined
-                    ? counterAdjustment.funds
-                    : origFunds;
-                const effFuel =
-                  counterAdjustment?.fuel !== undefined
-                    ? counterAdjustment.fuel
-                    : origFuel;
-                const effProduction =
-                  counterAdjustment?.production !== undefined
-                    ? counterAdjustment.production
-                    : origProd;
-                const effDuration =
-                  counterAdjustment?.duration ??
-                  latestNegotiation.counterTerms.durationTurns ??
-                  durationTurns;
+                  const effFunds =
+                    counterAdjustment?.funds !== undefined
+                      ? counterAdjustment.funds
+                      : origFunds;
+                  const effFuel =
+                    counterAdjustment?.fuel !== undefined
+                      ? counterAdjustment.fuel
+                      : origFuel;
+                  const effProduction =
+                    counterAdjustment?.production !== undefined
+                      ? counterAdjustment.production
+                      : origProd;
+                  const effDuration =
+                    counterAdjustment?.duration ??
+                    latestNegotiation.counterTerms.durationTurns ??
+                    durationTurns;
 
-                const fundsExceeded = effFunds > playerFunds;
-                const fuelExceeded = effFuel > playerFuel;
-                const prodExceeded = effProduction > playerProduction;
-                const hasExceededReserves =
-                  fundsExceeded || fuelExceeded || prodExceeded;
+                  const fundsExceeded = effFunds > playerFunds;
+                  const fuelExceeded = effFuel > playerFuel;
+                  const prodExceeded = effProduction > playerProduction;
+                  const hasExceededReserves =
+                    fundsExceeded || fuelExceeded || prodExceeded;
 
-                return (
-                  <div
-                    style={{
-                      marginTop: "12px",
-                      background: "rgba(180, 83, 9, 0.2)",
-                      border: "1px solid #f59e0b",
-                      borderRadius: "6px",
-                      padding: "12px",
-                    }}
-                  >
+                  return (
                     <div
                       style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        marginBottom: "6px",
+                        marginTop: "12px",
+                        background: "rgba(180, 83, 9, 0.2)",
+                        border: "1px solid #f59e0b",
+                        borderRadius: "6px",
+                        padding: "12px",
                       }}
                     >
-                      <strong style={{ color: "#f59e0b", fontSize: "12px" }}>
-                        ⚖️ DIPLOMATIC COUNTER-PROPOSAL: COMPENSATORY SECURITY
-                        INDEMNITY
-                      </strong>
-                      <span style={{ fontSize: "11px", color: "#fde68a" }}>
-                        CONCESSIONS REQUIRED
-                      </span>
-                    </div>
-                    <p
-                      style={{
-                        margin: "0 0 10px 0",
-                        fontSize: "12px",
-                        color: "#fef3c7",
-                      }}
-                    >
-                      {latestNegotiation.counterTerms.conditionSummary ||
-                        "The foreign government has countered with compensatory security demands."}
-                    </p>
-
-                    {/* Interactive 3-Asset Adjustment Sliders */}
-                    <div
-                      style={{
-                        display: "grid",
-                        gridTemplateColumns: "1fr 1fr 1fr",
-                        gap: "10px",
-                        marginBottom: "10px",
-                      }}
-                    >
-                      {/* Funds Slider */}
                       <div
                         style={{
-                          background: "rgba(0,0,0,0.35)",
-                          padding: "8px 10px",
-                          borderRadius: "4px",
-                          border: `1px solid ${fundsExceeded ? "#ef4444" : "rgba(148, 163, 184, 0.2)"}`,
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          marginBottom: "6px",
                         }}
                       >
+                        <strong style={{ color: "#f59e0b", fontSize: "12px" }}>
+                          ⚖️ DIPLOMATIC COUNTER-PROPOSAL: COMPENSATORY SECURITY
+                          INDEMNITY
+                        </strong>
+                        <span style={{ fontSize: "11px", color: "#fde68a" }}>
+                          CONCESSIONS REQUIRED
+                        </span>
+                      </div>
+                      <p
+                        style={{
+                          margin: "0 0 10px 0",
+                          fontSize: "12px",
+                          color: "#fef3c7",
+                        }}
+                      >
+                        {latestNegotiation.counterTerms.conditionSummary ||
+                          "The foreign government has countered with compensatory security demands."}
+                      </p>
+
+                      {/* Interactive 3-Asset Adjustment Sliders */}
+                      <div
+                        style={{
+                          display: "grid",
+                          gridTemplateColumns: "1fr 1fr 1fr",
+                          gap: "10px",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        {/* Funds Slider */}
                         <div
                           style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            fontSize: "11px",
-                            marginBottom: "4px",
+                            background: "rgba(0,0,0,0.35)",
+                            padding: "8px 10px",
+                            borderRadius: "4px",
+                            border: `1px solid ${fundsExceeded ? "#ef4444" : "rgba(148, 163, 184, 0.2)"}`,
                           }}
                         >
-                          <strong>Treasury Funds:</strong>
-                          <span
+                          <div
                             style={{
-                              color: fundsExceeded ? "#f87171" : "#fef08a",
-                              fontWeight: "bold",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              fontSize: "11px",
+                              marginBottom: "4px",
                             }}
                           >
-                            ${effFunds}
-                          </span>
-                        </div>
-                        <input
-                          type="range"
-                          min={0}
-                          max={Math.max(origFunds, 1000)}
-                          step={25}
-                          value={effFunds}
-                          onChange={(e) =>
-                            setCounterAdjustment({
-                              funds: Number(e.target.value),
-                              fuel: effFuel,
-                              production: effProduction,
-                              duration: effDuration,
-                            })
-                          }
-                          style={{ width: "100%" }}
-                        />
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            fontSize: "10px",
-                            marginTop: "4px",
-                          }}
-                        >
-                          <span
-                            style={{
-                              color: fundsExceeded ? "#f87171" : "#94a3b8",
-                            }}
-                          >
-                            {fundsExceeded
-                              ? `⚠️ Short by $${effFunds - playerFunds}`
-                              : `Stock: $${playerFunds}`}
-                          </span>
-                          <button
-                            type="button"
-                            style={{
-                              background: "none",
-                              border: "none",
-                              color: "#38bdf8",
-                              cursor: "pointer",
-                              fontSize: "10px",
-                              textDecoration: "underline",
-                            }}
-                            onClick={() =>
+                            <strong>Treasury Funds:</strong>
+                            <span
+                              style={{
+                                color: fundsExceeded ? "#f87171" : "#fef08a",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              ${effFunds}
+                            </span>
+                          </div>
+                          <input
+                            type="range"
+                            min={0}
+                            max={Math.max(origFunds, 1000)}
+                            step={25}
+                            value={effFunds}
+                            onChange={(e) =>
                               setCounterAdjustment({
-                                funds: effFunds === 0 ? origFunds : 0,
+                                funds: Number(e.target.value),
                                 fuel: effFuel,
                                 production: effProduction,
                                 duration: effDuration,
                               })
                             }
-                          >
-                            {effFunds === 0
-                              ? `Reset ($${origFunds})`
-                              : "Waive ($0)"}
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Fuel Slider */}
-                      <div
-                        style={{
-                          background: "rgba(0,0,0,0.35)",
-                          padding: "8px 10px",
-                          borderRadius: "4px",
-                          border: `1px solid ${fuelExceeded ? "#ef4444" : "rgba(148, 163, 184, 0.2)"}`,
-                        }}
-                      >
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            fontSize: "11px",
-                            marginBottom: "4px",
-                          }}
-                        >
-                          <strong>Naval Fuel:</strong>
-                          <span
+                            style={{ width: "100%" }}
+                          />
+                          <div
                             style={{
-                              color: fuelExceeded ? "#f87171" : "#fef08a",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            {effFuel} bbl
-                          </span>
-                        </div>
-                        <input
-                          type="range"
-                          min={0}
-                          max={Math.max(origFuel, 500)}
-                          step={20}
-                          value={effFuel}
-                          onChange={(e) =>
-                            setCounterAdjustment({
-                              funds: effFunds,
-                              fuel: Number(e.target.value),
-                              production: effProduction,
-                              duration: effDuration,
-                            })
-                          }
-                          style={{ width: "100%" }}
-                        />
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            fontSize: "10px",
-                            marginTop: "4px",
-                          }}
-                        >
-                          <span
-                            style={{
-                              color: fuelExceeded ? "#f87171" : "#94a3b8",
-                            }}
-                          >
-                            {fuelExceeded
-                              ? `⚠️ Short by ${effFuel - playerFuel} bbl`
-                              : `Stock: ${playerFuel} bbl`}
-                          </span>
-                          <button
-                            type="button"
-                            style={{
-                              background: "none",
-                              border: "none",
-                              color: "#38bdf8",
-                              cursor: "pointer",
+                              display: "flex",
+                              justifyContent: "space-between",
                               fontSize: "10px",
-                              textDecoration: "underline",
+                              marginTop: "4px",
                             }}
-                            onClick={() =>
+                          >
+                            <span
+                              style={{
+                                color: fundsExceeded ? "#f87171" : "#94a3b8",
+                              }}
+                            >
+                              {fundsExceeded
+                                ? `⚠️ Short by $${effFunds - playerFunds}`
+                                : `Stock: $${playerFunds}`}
+                            </span>
+                            <button
+                              type="button"
+                              style={{
+                                background: "none",
+                                border: "none",
+                                color: "#38bdf8",
+                                cursor: "pointer",
+                                fontSize: "10px",
+                                textDecoration: "underline",
+                              }}
+                              onClick={() =>
+                                setCounterAdjustment({
+                                  funds: effFunds === 0 ? origFunds : 0,
+                                  fuel: effFuel,
+                                  production: effProduction,
+                                  duration: effDuration,
+                                })
+                              }
+                            >
+                              {effFunds === 0
+                                ? `Reset ($${origFunds})`
+                                : "Waive ($0)"}
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Fuel Slider */}
+                        <div
+                          style={{
+                            background: "rgba(0,0,0,0.35)",
+                            padding: "8px 10px",
+                            borderRadius: "4px",
+                            border: `1px solid ${fuelExceeded ? "#ef4444" : "rgba(148, 163, 184, 0.2)"}`,
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              fontSize: "11px",
+                              marginBottom: "4px",
+                            }}
+                          >
+                            <strong>Naval Fuel:</strong>
+                            <span
+                              style={{
+                                color: fuelExceeded ? "#f87171" : "#fef08a",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              {effFuel} bbl
+                            </span>
+                          </div>
+                          <input
+                            type="range"
+                            min={0}
+                            max={Math.max(origFuel, 500)}
+                            step={20}
+                            value={effFuel}
+                            onChange={(e) =>
                               setCounterAdjustment({
                                 funds: effFunds,
-                                fuel: effFuel === 0 ? origFuel : 0,
+                                fuel: Number(e.target.value),
                                 production: effProduction,
                                 duration: effDuration,
                               })
                             }
-                          >
-                            {effFuel === 0
-                              ? `Reset (${origFuel} bbl)`
-                              : "Waive (0 bbl)"}
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Production Slider */}
-                      <div
-                        style={{
-                          background: "rgba(0,0,0,0.35)",
-                          padding: "8px 10px",
-                          borderRadius: "4px",
-                          border: `1px solid ${prodExceeded ? "#ef4444" : "rgba(148, 163, 184, 0.2)"}`,
-                        }}
-                      >
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            fontSize: "11px",
-                            marginBottom: "4px",
-                          }}
-                        >
-                          <strong>Production Quota:</strong>
-                          <span
+                            style={{ width: "100%" }}
+                          />
+                          <div
                             style={{
-                              color: prodExceeded
-                                ? "#f87171"
-                                : effProduction === 0
-                                  ? "#4ade80"
-                                  : "#fef08a",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            {effProduction > 0
-                              ? `${effProduction} PP`
-                              : "0 PP (Waived)"}
-                          </span>
-                        </div>
-                        <input
-                          type="range"
-                          min={0}
-                          max={Math.max(origProd, 200)}
-                          step={10}
-                          value={effProduction}
-                          onChange={(e) =>
-                            setCounterAdjustment({
-                              funds: effFunds,
-                              fuel: effFuel,
-                              production: Number(e.target.value),
-                              duration: effDuration,
-                            })
-                          }
-                          style={{ width: "100%" }}
-                        />
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            fontSize: "10px",
-                            marginTop: "4px",
-                          }}
-                        >
-                          <span
-                            style={{
-                              color: prodExceeded ? "#f87171" : "#94a3b8",
-                            }}
-                          >
-                            {prodExceeded
-                              ? `⚠️ Short by ${effProduction - playerProduction} PP`
-                              : `Stock: ${playerProduction} PP`}
-                          </span>
-                          <button
-                            type="button"
-                            style={{
-                              background: "none",
-                              border: "none",
-                              color: "#38bdf8",
-                              cursor: "pointer",
+                              display: "flex",
+                              justifyContent: "space-between",
                               fontSize: "10px",
-                              textDecoration: "underline",
+                              marginTop: "4px",
                             }}
-                            onClick={() =>
+                          >
+                            <span
+                              style={{
+                                color: fuelExceeded ? "#f87171" : "#94a3b8",
+                              }}
+                            >
+                              {fuelExceeded
+                                ? `⚠️ Short by ${effFuel - playerFuel} bbl`
+                                : `Stock: ${playerFuel} bbl`}
+                            </span>
+                            <button
+                              type="button"
+                              style={{
+                                background: "none",
+                                border: "none",
+                                color: "#38bdf8",
+                                cursor: "pointer",
+                                fontSize: "10px",
+                                textDecoration: "underline",
+                              }}
+                              onClick={() =>
+                                setCounterAdjustment({
+                                  funds: effFunds,
+                                  fuel: effFuel === 0 ? origFuel : 0,
+                                  production: effProduction,
+                                  duration: effDuration,
+                                })
+                              }
+                            >
+                              {effFuel === 0
+                                ? `Reset (${origFuel} bbl)`
+                                : "Waive (0 bbl)"}
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Production Slider */}
+                        <div
+                          style={{
+                            background: "rgba(0,0,0,0.35)",
+                            padding: "8px 10px",
+                            borderRadius: "4px",
+                            border: `1px solid ${prodExceeded ? "#ef4444" : "rgba(148, 163, 184, 0.2)"}`,
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              fontSize: "11px",
+                              marginBottom: "4px",
+                            }}
+                          >
+                            <strong>Production Quota:</strong>
+                            <span
+                              style={{
+                                color: prodExceeded
+                                  ? "#f87171"
+                                  : effProduction === 0
+                                    ? "#4ade80"
+                                    : "#fef08a",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              {effProduction > 0
+                                ? `${effProduction} PP`
+                                : "0 PP (Waived)"}
+                            </span>
+                          </div>
+                          <input
+                            type="range"
+                            min={0}
+                            max={Math.max(origProd, 200)}
+                            step={10}
+                            value={effProduction}
+                            onChange={(e) =>
                               setCounterAdjustment({
                                 funds: effFunds,
                                 fuel: effFuel,
-                                production: effProduction === 0 ? origProd : 0,
+                                production: Number(e.target.value),
                                 duration: effDuration,
                               })
                             }
+                            style={{ width: "100%" }}
+                          />
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              fontSize: "10px",
+                              marginTop: "4px",
+                            }}
                           >
-                            {effProduction === 0
-                              ? `Reset (${origProd} PP)`
-                              : "Waive (0 PP)"}
-                          </button>
+                            <span
+                              style={{
+                                color: prodExceeded ? "#f87171" : "#94a3b8",
+                              }}
+                            >
+                              {prodExceeded
+                                ? `⚠️ Short by ${effProduction - playerProduction} PP`
+                                : `Stock: ${playerProduction} PP`}
+                            </span>
+                            <button
+                              type="button"
+                              style={{
+                                background: "none",
+                                border: "none",
+                                color: "#38bdf8",
+                                cursor: "pointer",
+                                fontSize: "10px",
+                                textDecoration: "underline",
+                              }}
+                              onClick={() =>
+                                setCounterAdjustment({
+                                  funds: effFunds,
+                                  fuel: effFuel,
+                                  production:
+                                    effProduction === 0 ? origProd : 0,
+                                  duration: effDuration,
+                                })
+                              }
+                            >
+                              {effProduction === 0
+                                ? `Reset (${origProd} PP)`
+                                : "Waive (0 PP)"}
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* Sufficiency Status Banner */}
-                    <div
-                      style={{
-                        fontSize: "11px",
-                        marginBottom: "10px",
-                        padding: "6px 10px",
-                        borderRadius: "4px",
-                        background: hasExceededReserves
-                          ? "rgba(220, 38, 38, 0.2)"
-                          : "rgba(22, 163, 74, 0.2)",
-                        border: `1px solid ${hasExceededReserves ? "#ef4444" : "#22c55e"}`,
-                        color: hasExceededReserves ? "#fca5a5" : "#86efac",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
-                    >
-                      <span>
-                        {hasExceededReserves
-                          ? "⚠️ Demanded concessions exceed current national reserves. Use sliders or 'Waive' buttons to adjust downward."
-                          : "✓ Counter-concessions within national strategic reserves. Ready for ratification."}
-                      </span>
-                      <button
-                        type="button"
+                      {/* Sufficiency Status Banner */}
+                      <div
                         style={{
-                          background: "none",
-                          border: "1px solid currentColor",
-                          color: "inherit",
-                          padding: "2px 6px",
-                          borderRadius: "3px",
-                          fontSize: "10px",
-                          cursor: "pointer",
-                        }}
-                        onClick={() =>
-                          setCounterAdjustment({
-                            funds: 0,
-                            fuel: 0,
-                            production: 0,
-                            duration: effDuration,
-                          })
-                        }
-                      >
-                        ⚡ Waive All to Zero
-                      </button>
-                    </div>
-
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        gap: "8px",
-                      }}
-                    >
-                      <button
-                        type="button"
-                        className="recruitment-cancel-btn"
-                        style={{
-                          background: "rgba(239, 68, 68, 0.2)",
-                          borderColor: "#ef4444",
-                          color: "#fca5a5",
-                          fontSize: "12px",
-                          padding: "6px 14px",
-                        }}
-                        disabled={isDecliningCounter || isAcceptingCounter}
-                        onClick={() => {
-                          onDeclineCounterOffer({
-                            targetCountryId,
-                            treatyType,
-                            reason:
-                              "Leadership rejected foreign compensatory indemnity demands",
-                          });
-                        }}
-                      >
-                        {isDecliningCounter ? "Declining..." : "Decline Demands"}
-                      </button>
-                      <button
-                        type="button"
-                        className="recruitment-cancel-btn"
-                        style={{
-                          background: "rgba(245, 158, 11, 0.2)",
-                          borderColor: "#f59e0b",
-                          color: "#fcd34d",
-                          fontSize: "12px",
-                          padding: "6px 14px",
-                        }}
-                        disabled={isDecliningCounter || isAcceptingCounter}
-                        onClick={() => {
-                          if (latestNegotiation.counterTerms) {
-                            if (
-                              latestNegotiation.counterTerms.durationTurns !==
-                              undefined
-                            ) {
-                              setDurationTurns(
-                                latestNegotiation.counterTerms.durationTurns,
-                              );
-                            }
-                            setTributeMode("offer");
-                            setTributeFunds(Math.min(1000, effFunds));
-                            setTributeFuel(Math.min(500, effFuel));
-                            setTributeProduction(Math.min(200, effProduction));
-                            setFormGuidanceNotice(
-                              "💡 Counter-demands transferred to proposal builder below. Adjust concessions and transmit.",
-                            );
-                            proposalSectionRef.current?.scrollIntoView({
-                              behavior: "smooth",
-                            });
-                          }
-                        }}
-                      >
-                        Adjust & Counter-Offer
-                      </button>
-                      <button
-                        type="button"
-                        className="recruitment-submit-btn"
-                        style={{
+                          fontSize: "11px",
+                          marginBottom: "10px",
+                          padding: "6px 10px",
+                          borderRadius: "4px",
                           background: hasExceededReserves
-                            ? "#334155"
-                            : "#16a34a",
-                          borderColor: hasExceededReserves
-                            ? "#475569"
-                            : "#22c55e",
-                          fontSize: "12px",
-                          padding: "6px 14px",
-                          cursor: hasExceededReserves
-                            ? "not-allowed"
-                            : "pointer",
-                        }}
-                        disabled={
-                          isAcceptingCounter ||
-                          isDecliningCounter ||
-                          hasExceededReserves
-                        }
-                        onClick={() => {
-                          onAcceptCounterOffer({
-                            targetCountryId,
-                            treatyType,
-                            durationTurns: effDuration,
-                            demandedFunds: effFunds,
-                            demandedFuel: effFuel,
-                            demandedProduction: effProduction,
-                            conditionSummary: `Bilateral counter-terms ratified ($${effFunds} funds, ${effFuel} bbl fuel, ${effProduction} PP).`,
-                          });
+                            ? "rgba(220, 38, 38, 0.2)"
+                            : "rgba(22, 163, 74, 0.2)",
+                          border: `1px solid ${hasExceededReserves ? "#ef4444" : "#22c55e"}`,
+                          color: hasExceededReserves ? "#fca5a5" : "#86efac",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
                         }}
                       >
-                        {isAcceptingCounter
-                          ? "Ratifying Accord..."
-                          : `Accept & Ratify ($${effFunds}, ${effFuel} bbl, ${effProduction} PP)`}
-                      </button>
+                        <span>
+                          {hasExceededReserves
+                            ? "⚠️ Demanded concessions exceed current national reserves. Use sliders or 'Waive' buttons to adjust downward."
+                            : "✓ Counter-concessions within national strategic reserves. Ready for ratification."}
+                        </span>
+                        <button
+                          type="button"
+                          style={{
+                            background: "none",
+                            border: "1px solid currentColor",
+                            color: "inherit",
+                            padding: "2px 6px",
+                            borderRadius: "3px",
+                            fontSize: "10px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() =>
+                            setCounterAdjustment({
+                              funds: 0,
+                              fuel: 0,
+                              production: 0,
+                              duration: effDuration,
+                            })
+                          }
+                        >
+                          ⚡ Waive All to Zero
+                        </button>
+                      </div>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          gap: "8px",
+                        }}
+                      >
+                        <button
+                          type="button"
+                          className="recruitment-cancel-btn"
+                          style={{
+                            background: "rgba(239, 68, 68, 0.2)",
+                            borderColor: "#ef4444",
+                            color: "#fca5a5",
+                            fontSize: "12px",
+                            padding: "6px 14px",
+                          }}
+                          disabled={isDecliningCounter || isAcceptingCounter}
+                          onClick={() => {
+                            onDeclineCounterOffer({
+                              targetCountryId,
+                              treatyType,
+                              reason:
+                                "Leadership rejected foreign compensatory indemnity demands",
+                            });
+                          }}
+                        >
+                          {isDecliningCounter
+                            ? "Declining..."
+                            : "Decline Demands"}
+                        </button>
+                        <button
+                          type="button"
+                          className="recruitment-cancel-btn"
+                          style={{
+                            background: "rgba(245, 158, 11, 0.2)",
+                            borderColor: "#f59e0b",
+                            color: "#fcd34d",
+                            fontSize: "12px",
+                            padding: "6px 14px",
+                          }}
+                          disabled={isDecliningCounter || isAcceptingCounter}
+                          onClick={() => {
+                            if (latestNegotiation.counterTerms) {
+                              if (
+                                latestNegotiation.counterTerms.durationTurns !==
+                                undefined
+                              ) {
+                                setDurationTurns(
+                                  latestNegotiation.counterTerms.durationTurns,
+                                );
+                              }
+                              setTributeMode("offer");
+                              setTributeFunds(Math.min(1000, effFunds));
+                              setTributeFuel(Math.min(500, effFuel));
+                              setTributeProduction(
+                                Math.min(200, effProduction),
+                              );
+                              setFormGuidanceNotice(
+                                "💡 Counter-demands transferred to proposal builder below. Adjust concessions and transmit.",
+                              );
+                              proposalSectionRef.current?.scrollIntoView({
+                                behavior: "smooth",
+                              });
+                            }
+                          }}
+                        >
+                          Adjust & Counter-Offer
+                        </button>
+                        <button
+                          type="button"
+                          className="recruitment-submit-btn"
+                          style={{
+                            background: hasExceededReserves
+                              ? "#334155"
+                              : "#16a34a",
+                            borderColor: hasExceededReserves
+                              ? "#475569"
+                              : "#22c55e",
+                            fontSize: "12px",
+                            padding: "6px 14px",
+                            cursor: hasExceededReserves
+                              ? "not-allowed"
+                              : "pointer",
+                          }}
+                          disabled={
+                            isAcceptingCounter ||
+                            isDecliningCounter ||
+                            hasExceededReserves
+                          }
+                          onClick={() => {
+                            onAcceptCounterOffer({
+                              targetCountryId,
+                              treatyType,
+                              durationTurns: effDuration,
+                              demandedFunds: effFunds,
+                              demandedFuel: effFuel,
+                              demandedProduction: effProduction,
+                              conditionSummary: `Bilateral counter-terms ratified ($${effFunds} funds, ${effFuel} bbl fuel, ${effProduction} PP).`,
+                            });
+                          }}
+                        >
+                          {isAcceptingCounter
+                            ? "Ratifying Accord..."
+                            : `Accept & Ratify ($${effFunds}, ${effFuel} bbl, ${effProduction} PP)`}
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                );
-              })()}
+                  );
+                })()}
 
               {/* Third-Party Diplomatic Fallout Alert Cables */}
               {latestNegotiation.thirdPartyFalloutCables &&
@@ -5008,8 +5609,7 @@ function DiplomaticTreatiesModal({
                           <span
                             style={{
                               fontWeight: 700,
-                              color:
-                                evt.deltaScore > 0 ? "#4ade80" : "#f87171",
+                              color: evt.deltaScore > 0 ? "#4ade80" : "#f87171",
                               minWidth: "38px",
                             }}
                           >
@@ -5120,7 +5720,8 @@ function DiplomaticTreatiesModal({
                     ✈️ Military Transit Rights (Airspace & Waters: 14–180 Days)
                   </option>
                   <option value="basing_rights">
-                    ⚓ Basing & Port Access Rights (Naval Facilities: 30–180 Days)
+                    ⚓ Basing & Port Access Rights (Naval Facilities: 30–180
+                    Days)
                   </option>
                   <option value="non_aggression">
                     Non-Aggression Pact (30–365 Days)
@@ -7607,18 +8208,20 @@ function StrategicMap({
         }
       }
     }
+    canvasOverlayRef.current?.setHexGrid(hexGrid);
   }, [hexGrid]);
 
   useEffect(() => {
     const layer = hexGridLayerRef.current;
     if (!layer) return;
     layer.clearLayers();
+    canvasOverlayRef.current?.setHexGrid(hexGrid);
     canvasOverlayRef.current?.render();
 
     if (!hexGrid) return;
 
     // Group formations by hexId
-    const formationsByHex = new Map<string, CampaignFormation[]>();
+    const formationsByHex = new Map<string, TacticalMapFormation[]>();
     for (const formation of hexGrid.formations) {
       const list = formationsByHex.get(formation.hexId) ?? [];
       list.push(formation);
@@ -7632,30 +8235,61 @@ function StrategicMap({
       const topForm = hexFormations[0];
       if (!topForm) continue;
 
-      const tag =
+      const isContact = Boolean(topForm.isContact);
+      const isGodMode = Boolean(hexGrid.godModeActive);
+      const isAllied =
+        playerCountryId &&
+        topForm.side === "blufor" &&
+        topForm.countryId !== playerCountryId;
+
+      let tag =
         topForm.archetype?.domain === "ground"
           ? "ARM"
           : topForm.archetype?.domain === "naval"
             ? "SAG"
             : "AIR";
-      const isAllied =
-        playerCountryId &&
-        topForm.side === "blufor" &&
-        topForm.countryId !== playerCountryId;
-      const counterClass = isAllied
-        ? "formation-counter-icon allied"
-        : `formation-counter-icon ${topForm.side}`;
-      const iconHtml = `<div class="${counterClass}">[${tag}] ${hexFormations.length > 1 ? `+${hexFormations.length - 1}` : ""}</div>`;
+      if (isContact) {
+        tag = "?";
+      }
+
+      let counterClass = "formation-counter-icon ";
+      if (isContact) {
+        counterClass += "contact";
+      } else if (isGodMode && topForm.side === "opfor") {
+        counterClass += "opfor god-revealed";
+      } else if (isAllied) {
+        counterClass += "allied";
+      } else {
+        counterClass += topForm.side;
+      }
+
+      let labelText = `[${tag}] ${hexFormations.length > 1 ? `+${hexFormations.length - 1}` : ""}`;
+      if (isContact) {
+        labelText = `[?] ${String(topForm.contactType ?? "TRACK").toUpperCase()}`;
+      }
+
+      const iconHtml = `<div class="${counterClass}">${labelText}</div>`;
       const counterIcon = L.divIcon({
         className: "formation-map-counter",
         html: iconHtml,
-        iconSize: [46, 20],
-        iconAnchor: [23, 10],
+        iconSize: [isContact ? 64 : 46, 20],
+        iconAnchor: [isContact ? 32 : 23, 10],
       });
+
+      let tooltipText = "";
+      if (isContact) {
+        tooltipText = `[UNCLASSIFIED SENSOR CONTACT] ${topForm.name} (${String(topForm.intelConfidence ?? "radar")})`;
+      } else if (isGodMode && topForm.countryId !== playerCountryId) {
+        const route = topForm.activeRoute?.targetHexId
+          ? ` -> ${topForm.activeRoute.targetHexId}`
+          : " (Holding)";
+        tooltipText = `[👁️ GOD INTEL] ${topForm.name} [${(topForm.countryId || "OPFOR").toUpperCase()}] Orders: ${topForm.status.toUpperCase()}${route}`;
+      } else {
+        tooltipText = `${isAllied ? "[ALLIED] " : ""}${topForm.name} (${hexFormations.length} Formations)`;
+      }
+
       const marker = L.marker(hex.centroid, { icon: counterIcon })
-        .bindTooltip(
-          `${isAllied ? "[ALLIED] " : ""}${topForm.name} (${hexFormations.length} Formations)`,
-        )
+        .bindTooltip(tooltipText)
         .addTo(layer);
 
       marker.on("click", (e) => {

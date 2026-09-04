@@ -105,9 +105,9 @@ describe("Per-Feature & Page Endpoint Integration Matrix", () => {
         .run();
       const gridRes = await request(app)
         .get("/api/v1/campaigns/current/hex-grid")
-        .set("Cookie", sessionCookie)
-        .expect(200);
+        .set("Cookie", sessionCookie);
       const startingFunds = gridRes.body.economy.funds;
+      expect(typeof startingFunds).toBe("number");
       const friendlyNavalHex = gridRes.body.hexCells.find(
         (c: { side: string; facilities?: string[] }) =>
           c.side === "blufor" &&
@@ -133,7 +133,9 @@ describe("Per-Feature & Page Endpoint Integration Matrix", () => {
         console.error("Recruit error:", recruitRes.body);
       }
       expect(recruitRes.status).toBe(201);
-      expect(recruitRes.body.formation.name).toBe("3rd Coastal Escort Flotilla");
+      expect(recruitRes.body.formation.name).toBe(
+        "3rd Coastal Escort Flotilla",
+      );
       expect(recruitRes.body.formation.id).toBeDefined();
     });
 
@@ -207,8 +209,8 @@ describe("Per-Feature & Page Endpoint Integration Matrix", () => {
       const gridRes = await request(app)
         .get("/api/v1/campaigns/current/hex-grid")
         .set("Cookie", sessionCookie);
-      const siteCell = gridRes.body.hexCells.find(
-        (c: { siteId?: string }) => Boolean(c.siteId),
+      const siteCell = gridRes.body.hexCells.find((c: { siteId?: string }) =>
+        Boolean(c.siteId),
       );
       if (!siteCell) return;
 
@@ -248,8 +250,8 @@ describe("Per-Feature & Page Endpoint Integration Matrix", () => {
       const gridRes = await request(app)
         .get("/api/v1/campaigns/current/hex-grid")
         .set("Cookie", sessionCookie);
-      const portCell = gridRes.body.hexCells.find(
-        (c: { siteId?: string }) => Boolean(c.siteId),
+      const portCell = gridRes.body.hexCells.find((c: { siteId?: string }) =>
+        Boolean(c.siteId),
       );
       const targetHexId = portCell ? portCell.id : gridRes.body.hexCells[0].id;
 

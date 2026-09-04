@@ -2,7 +2,9 @@ import { chromium } from "playwright";
 
 async function main() {
   const browser = await chromium.launch({ headless: true });
-  const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const context = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+  });
   const page = await context.newPage();
 
   console.log("Navigating to http://127.0.0.1:3100...");
@@ -25,23 +27,31 @@ async function main() {
   });
 
   console.log("\n=== SWEDISH ARMED FORCES ===");
-  const sweFormations = response.formations?.filter((f) => f.countryId === "sweden") ?? [];
+  const sweFormations =
+    response.formations?.filter((f) => f.countryId === "sweden") ?? [];
   console.log(`Total Swedish Formations: ${sweFormations.length}`);
   for (const f of sweFormations) {
     const hex = response.hexCells?.find((h) => h.id === f.hexId);
-    console.log(` - [${f.unitType}] ${f.name} @ ${hex?.name || f.hexId} (Flagship: ${f.composition?.flagshipName || "N/A"})`);
+    console.log(
+      ` - [${f.unitType}] ${f.name} @ ${hex?.name || f.hexId} (Flagship: ${f.composition?.flagshipName || "N/A"})`,
+    );
   }
 
   console.log("\n=== FINNISH DEFENSE FORCES ===");
-  const finFormations = response.formations?.filter((f) => f.countryId === "finland") ?? [];
+  const finFormations =
+    response.formations?.filter((f) => f.countryId === "finland") ?? [];
   console.log(`Total Finnish Formations: ${finFormations.length}`);
   for (const f of finFormations) {
     const hex = response.hexCells?.find((h) => h.id === f.hexId);
-    console.log(` - [${f.unitType}] ${f.name} @ ${hex?.name || f.hexId} (Flagship: ${f.composition?.flagshipName || "N/A"})`);
+    console.log(
+      ` - [${f.unitType}] ${f.name} @ ${hex?.name || f.hexId} (Flagship: ${f.composition?.flagshipName || "N/A"})`,
+    );
   }
 
   await page.screenshot({ path: "artifacts/qa-finland-sweden-garrisons.png" });
-  console.log("\nScreenshot saved to artifacts/qa-finland-sweden-garrisons.png");
+  console.log(
+    "\nScreenshot saved to artifacts/qa-finland-sweden-garrisons.png",
+  );
   await browser.close();
 }
 

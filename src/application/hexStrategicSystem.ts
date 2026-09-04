@@ -35,7 +35,13 @@ import {
   adjustCampaignTension,
   calculateDefcon,
 } from "../domain/covertOperations.js";
-import { processAiStrategicTurns } from "../domain/aiStrategicCommander.js";
+import { processAutonomousCountryTurns } from "../domain/aiStrategicCommander.js";
+import {
+  calculatePlayerVisibilityMatrix,
+  filterFormationsByVisibility,
+  type HexVisibilityMatrix,
+  type FilteredCampaignFormation,
+} from "../domain/fogOfWar.js";
 import {
   hasMilitaryTransitRights,
   hasBasingRights,
@@ -57,7 +63,7 @@ export type HexTurnEconomySummary = {
 
 export type HexGridStateSnapshot = {
   hexCells: StrategicHexCell[];
-  formations: CampaignFormation[];
+  formations: (CampaignFormation | FilteredCampaignFormation)[];
   economy: {
     funds: number;
     productionPoints: number;
@@ -67,6 +73,8 @@ export type HexGridStateSnapshot = {
     projectedDailyFuelDelta: number;
   };
   turnSummary: HexTurnEconomySummary;
+  visibilityMatrix?: HexVisibilityMatrix | undefined;
+  godModeActive?: boolean | undefined;
 };
 
 export function getStartingEconomyForCountry(countryId: string): {
@@ -572,6 +580,10 @@ export function getCampaignHexState(
   database: CampaignDatabase,
   campaignId: string,
   playerCountryIdParam?: string,
+  options?: {
+    godMode?: boolean;
+    filterFogOfWar?: boolean;
+  },
 ): HexGridStateSnapshot {
   // Determine player national perspective (e.g. "norway")
   const playerRow = database
@@ -746,9 +758,49 @@ export function getCampaignHexState(
     controlledHexCount,
   };
 
+  // 5. Fog of War and Sensor Visibility
+  let visibilityMatrix: HexVisibilityMatrix | undefined;
+  let returnedFormations: (CampaignFormation | FilteredCampaignFormation)[] =
+    formations;
+
+  try {
+    visibilityMatrix = calculatePlayerVisibilityMatrix(
+      database,
+      campaignId,
+      playerCountryId,
+    );
+
+    if (options?.filterFogOfWar) {
+      const alliedCountries = new Set<string>([playerCountryId]);
+      if (
+        playerCountryId === "norway" ||
+        playerCountryId === "united-states" ||
+        playerCountryId === "united-kingdom" ||
+        playerCountryId === "denmark" ||
+        playerCountryId === "west-germany"
+      ) {
+        alliedCountries.add("norway");
+        alliedCountries.add("united-states");
+        alliedCountries.add("united-kingdom");
+        alliedCountries.add("denmark");
+        alliedCountries.add("west-germany");
+      }
+
+      returnedFormations = filterFormationsByVisibility(
+        formations,
+        visibilityMatrix,
+        playerCountryId,
+        alliedCountries,
+        Boolean(options?.godMode),
+      );
+    }
+  } catch {
+    // Fallback if FoW tables or schema unmigrated
+  }
+
   return {
     hexCells: coreCells,
-    formations,
+    formations: returnedFormations,
     economy: {
       funds,
       productionPoints,
@@ -758,6 +810,8 @@ export function getCampaignHexState(
       projectedDailyFuelDelta: turnSummary.netFuelDelta,
     },
     turnSummary,
+    visibilityMatrix,
+    godModeActive: Boolean(options?.godMode),
   };
 }
 
@@ -2590,7 +2644,8 @@ export type StrategicHexTurnEvent = {
     | "market_delivered"
     | "treaty_expired"
     | "tension_escalated"
-    | "ai_command_executed";
+    | "ai_command_executed"
+    | "ai_country_turn_completed";
   summary: string;
 };
 
@@ -2906,16 +2961,22 @@ export function processTurnStrategicHexesUpdate(
       .run(nextPeace, now, campaignId);
   }
 
-  // 5. Process AI Strategic Commander Decisions
-  const aiOrders = processAiStrategicTurns(
+  // 5. Process AI Strategic Commander Decisions across all sovereign non-player nations
+  const aiTurnResult = processAutonomousCountryTurns(
     database,
     campaignId,
     playerCountryId,
   );
-  for (const order of aiOrders) {
+  for (const order of aiTurnResult.orders) {
     events.push({
       kind: "ai_command_executed",
       summary: order.summary,
+    });
+  }
+  for (const log of aiTurnResult.logs) {
+    events.push({
+      kind: "ai_country_turn_completed",
+      summary: `${log.countryName}: ${log.ordersSummary}`,
     });
   }
 
