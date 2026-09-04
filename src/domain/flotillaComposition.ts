@@ -321,6 +321,46 @@ export function getFlotillaComposition(
         };
       }
 
+      if (normCountry === "finland") {
+        return {
+          formationType: unitType,
+          countryId: "finland",
+          side: "neutral",
+          callsignPrefix: "Suomen Merivoimat Rannikkolaivue",
+          totalVessels: 4,
+          totalSubmarines: 0,
+          totalAircraft: 0,
+          totalVehicles: 0,
+          flagshipName: "Turunmaa (Gun Corvette 03)",
+          summary:
+            "Finnish Coastal Navy archipelago defense group armed with Bofors 120mm automatic naval artillery, sea mines, and Gabriel/RBS-15 anti-ship missiles.",
+          units: [
+            {
+              id: "fin-turunmaa",
+              name: "Turunmaa (03)",
+              unitClass: "Turunmaa-class Gun Corvette",
+              classIniRef: "wp_mpk_petya2",
+              category: "vessel",
+              role: "Flagship / Archipelago Heavy Gun & ASW Screen",
+              count: 2,
+              isProxy: true,
+              proxyFor: "Turunmaa-class Gun Corvette proxy via Petya MPK",
+            },
+            {
+              id: "fin-helsinki",
+              name: "Helsinki (60)",
+              unitClass: "Helsinki-class Fast Attack Missile Craft",
+              classIniRef: "wp_pt_turya",
+              category: "vessel",
+              role: "Fast Archipelago Anti-Ship Missile Interception",
+              count: 2,
+              isProxy: true,
+              proxyFor: "Helsinki-class FAC proxy via Turya PT",
+            },
+          ],
+        };
+      }
+
       // Default: Royal Norwegian Navy (Norway)
       return {
         formationType: unitType,
@@ -1238,6 +1278,45 @@ export function getFlotillaComposition(
         };
       }
 
+      if (normCountry === "finland") {
+        return {
+          formationType: unitType,
+          countryId: "finland",
+          side: "neutral",
+          callsignPrefix: "Ilmavoimat Hävittäjälennosto (HavLLv 31 / 11)",
+          totalVessels: 0,
+          totalSubmarines: 0,
+          totalAircraft: 16,
+          totalVehicles: 0,
+          flagshipName: "MiG-21bis Fishbed-N (Lennostoupseeri Lead)",
+          summary:
+            "Finnish Air Force interceptor wing operating MiG-21bis and Saab 35FS Drakens from hardened highway strips and underground rock caverns.",
+          units: [
+            {
+              id: "fin-mig21",
+              name: "MiG-21bis Fishbed-N",
+              unitClass: "MiG-21bis All-Weather Supersonic Interceptor",
+              classIniRef: "wp_mig-21bis",
+              category: "aircraft",
+              role: "Flagship / R-60M & R-13M Quick-Reaction Interception",
+              count: 8,
+              isProxy: false,
+            },
+            {
+              id: "fin-draken",
+              name: "Saab 35FS Draken",
+              unitClass: "Saab 35FS Draken Double-Delta Interceptor",
+              classIniRef: "fr_mirage_iii",
+              category: "aircraft",
+              role: "Arctic Highway Dispersal & High-Altitude Intercept",
+              count: 8,
+              isProxy: true,
+              proxyFor: "Saab 35 Draken proxy via Mirage III",
+            },
+          ],
+        };
+      }
+
       // Default: Royal Norwegian Air Force (332/338 Skvadron) / USAF
       return {
         formationType: unitType,
@@ -1343,6 +1422,106 @@ export function getFlotillaComposition(
     // =========================================================================
     case "nato_armored_division":
     case "mechanized_infantry_division": {
+      if (normCountry === "sweden") {
+        return {
+          formationType: unitType,
+          countryId: "sweden",
+          side: "neutral",
+          callsignPrefix: "Pansarbrigaden / Norrlandsbrigaden",
+          totalVessels: 0,
+          totalSubmarines: 0,
+          totalAircraft: 0,
+          totalVehicles: 32,
+          flagshipName: "Stridsvagn 103C S-Tank Command (Enköping)",
+          summary:
+            "Swedish armored brigade equipped with the turretless Stridsvagn 103 S-Tank, Centurion Strv 104, Pbv 302 APCs, and Bandkanon 1 heavy artillery.",
+          units: [
+            {
+              id: "swe-s-tank",
+              name: "Stridsvagn 103C (S-Tank)",
+              unitClass: "Strv 103C Turretless Main Battle Tank",
+              classIniRef: "usa_mbt_abrams",
+              category: "land_unit",
+              role: "Flagship / Defensive Hull-Down 105mm Autoloader",
+              count: 14,
+              isProxy: true,
+              proxyFor: "Strv 103C S-Tank proxy via M1 Abrams",
+            },
+            {
+              id: "swe-pbv302",
+              name: "Pbv 302 Pansarbandvagn",
+              unitClass: "Pbv 302 Armored Personnel Carrier",
+              classIniRef: "usa_ifv_bradley",
+              category: "land_unit",
+              role: "Amphibious Mechanized Infantry Support (20mm Hispano)",
+              count: 12,
+              isProxy: true,
+              proxyFor: "Pbv 302 APC proxy via M2 Bradley",
+            },
+            {
+              id: "swe-bkan1",
+              name: "Bandkanon 1 155mm SPG",
+              unitClass: "Bandkanon 1 Self-Propelled Gun",
+              classIniRef: "usa_spa_m109a2",
+              category: "land_unit",
+              role: "Autoloading Rapid-Fire Heavy Artillery",
+              count: 6,
+              isProxy: true,
+              proxyFor: "Bandkanon 1 proxy via M109A2",
+            },
+          ],
+        };
+      }
+
+      if (normCountry === "finland") {
+        return {
+          formationType: unitType,
+          countryId: "finland",
+          side: "neutral",
+          callsignPrefix: "Panssariprikaati & Jääkäriprikaati (FDF)",
+          totalVessels: 0,
+          totalSubmarines: 0,
+          totalAircraft: 0,
+          totalVehicles: 30,
+          flagshipName: "Panssaripataljoona Command (Parola)",
+          summary:
+            "Finnish combined arms brigade blending modernized T-55M tanks, BMP-1 combat vehicles, and indigenous Sisu XA-180 Pasi APCs optimized for forest and Arctic defense.",
+          units: [
+            {
+              id: "fin-t55m",
+              name: "T-55M Modernized MBT",
+              unitClass: "T-55M Main Battle Tank (FCS & Armor Upgrade)",
+              classIniRef: "wp_mbt_t-55m",
+              category: "land_unit",
+              role: "Flagship / Forest Ambush & Defensive Armor",
+              count: 12,
+              isProxy: false,
+            },
+            {
+              id: "fin-bmp1",
+              name: "BMP-1PS Armored Infantry Vehicle",
+              unitClass: "BMP-1 Infantry Fighting Vehicle",
+              classIniRef: "wp_ifv_bmp1",
+              category: "land_unit",
+              role: "Mechanized Jaeger Strike & 73mm Grom Cannon",
+              count: 10,
+              isProxy: false,
+            },
+            {
+              id: "fin-sisu-pasi",
+              name: "Sisu XA-180 Pasi 6x6 APC",
+              unitClass: "Sisu XA-180 Pasi Wheeled APC",
+              classIniRef: "wp_car_ural",
+              category: "land_unit",
+              role: "Rapid Arctic Road & Cross-Country Troop Transport",
+              count: 8,
+              isProxy: true,
+              proxyFor: "Sisu XA-180 Pasi proxy via Ural transport",
+            },
+          ],
+        };
+      }
+
       return {
         formationType: unitType,
         countryId: normCountry,

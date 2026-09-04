@@ -73,6 +73,12 @@ describe("E2E Campaign Feature Scenarios", () => {
     expect(negotiateRes.body.negotiation).toBeDefined();
 
     // 3. Player rejects/declines the Finnish counter-indemnity demands
+    const relBeforeDecline = await request(app)
+      .get("/api/v1/campaigns/current/diplomacy/relations?targetCountryId=finland")
+      .set("Cookie", sessionCookie)
+      .expect(200);
+    const preDeclineScore = relBeforeDecline.body.relations.score;
+
     const declineRes = await request(app)
       .post("/api/v1/campaigns/current/diplomacy/counter-offer/decline")
       .set("Cookie", sessionCookie)
@@ -88,7 +94,7 @@ describe("E2E Campaign Feature Scenarios", () => {
     expect(declineRes.body.ok).toBe(true);
     expect(declineRes.body.cableRecorded).toBeDefined();
     expect(declineRes.body.cableRecorded.header).toContain("TALKS COLLAPSE");
-    expect(declineRes.body.updatedRelations.score).toBe(startScore - 5);
+    expect(declineRes.body.updatedRelations.score).toBe(preDeclineScore - 5);
 
     // 4. Verify ambassadorial cable is recorded in diplomatic feed
     const cablesRes = await request(app)

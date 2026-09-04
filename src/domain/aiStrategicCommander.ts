@@ -70,7 +70,11 @@ export function processAiStrategicTurns(
     "hex-sov-kronstadt",
     "hex-sov-tallinn",
   ]);
-  navalBasesBySide.set("neutral", ["hex-swe-stockholm", "hex-fin-helsinki"]);
+  navalBasesBySide.set("neutral", [
+    "hex-swe-stockholm",
+    "hex-swe-karlskrona",
+    "hex-fin-helsinki",
+  ]);
 
   for (const form of aiFormations) {
     // If unit already has an active route in transit, skip issuing new command

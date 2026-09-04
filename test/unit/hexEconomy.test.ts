@@ -147,6 +147,25 @@ describe("hex strategic economy and tactical bridge", () => {
     );
     expect(polyarnyUnits.length).toBeGreaterThanOrEqual(1);
     expect(polyarnyUnits.some((u) => u.unitType === "submarine_squadron")).toBe(true);
+
+    // Verify Sweden starting formations (Stockholm, Karlskrona, Gotland, Luleå)
+    const sweUnits = state.formations.filter((f) => f.countryId === "sweden");
+    expect(sweUnits.length).toBeGreaterThanOrEqual(8);
+    expect(sweUnits.some((u) => u.hexId === "hex-swe-stockholm")).toBe(true);
+    expect(sweUnits.some((u) => u.hexId === "hex-swe-karlskrona")).toBe(true);
+    expect(sweUnits.some((u) => u.hexId === "hex-bal-gotland")).toBe(true);
+    expect(sweUnits.some((u) => u.hexId === "hex-swe-lulea")).toBe(true);
+    expect(sweUnits.some((u) => u.unitType === "submarine_squadron")).toBe(true);
+    expect(sweUnits.some((u) => u.unitType === "surface_action_group")).toBe(true);
+
+    // Verify Finland starting formations (Helsinki, Lapland)
+    const finUnits = state.formations.filter((f) => f.countryId === "finland");
+    expect(finUnits.length).toBeGreaterThanOrEqual(5);
+    expect(finUnits.some((u) => u.hexId === "hex-fin-helsinki")).toBe(true);
+    expect(finUnits.some((u) => u.hexId === "hex-fin-lapland")).toBe(true);
+    expect(finUnits.some((u) => u.unitType === "surface_action_group")).toBe(true);
+    expect(finUnits.some((u) => u.unitType === "mechanized_infantry_division")).toBe(true);
+    expect(finUnits.some((u) => u.unitType === "tactical_fighter_wing")).toBe(true);
   });
 
   it("moveFormation moves division to valid neighbor and expends AP", () => {
