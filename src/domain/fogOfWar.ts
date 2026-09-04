@@ -3,7 +3,9 @@ import {
   getAllBalticCoreHexCells,
   getHexNeighbors,
   getAxialDistance,
+  getHexCellDefinition,
 } from "./hexGrid.js";
+import { generatedLandHexes } from "./generatedGlobalHexData.js";
 import type { CampaignFormation } from "./militaryFormations.js";
 
 export type HexVisibilityLevel = "full" | "recon" | "shrouded";
@@ -16,6 +18,23 @@ export type FilteredCampaignFormation = CampaignFormation & {
   intelConfidence?:
     "confirmed" | "acoustic_track" | "radar_return" | "visual_sentry";
 };
+
+// Fast lookup map for land hexes grouped by sovereign country ID
+const countryLandHexMap = new Map<string, string[]>();
+for (const [key, land] of Object.entries(generatedLandHexes)) {
+  const match = /^q(-?\d+)_r(-?\d+)$/.exec(key);
+  if (match) {
+    const q = Number.parseInt(match[1]!, 10);
+    const r = Number.parseInt(match[2]!, 10);
+    const hexId = `hex-w-q${q >= 0 ? `p${q}` : `m${Math.abs(q)}`}-r${r >= 0 ? `p${r}` : `m${Math.abs(r)}`}`;
+    let list = countryLandHexMap.get(land.c);
+    if (!list) {
+      list = [];
+      countryLandHexMap.set(land.c, list);
+    }
+    list.push(hexId);
+  }
+}
 
 /**
  * Calculates the complete Fog of War sensor and intelligence visibility matrix
@@ -36,20 +55,52 @@ export function calculatePlayerVisibilityMatrix(
 
   // 1. Determine player side & allied countries with intelligence-sharing treaties
   let playerSide = "blufor";
+  const alliedCountries = new Set<string>([playerCountryId]);
+
   try {
-    const playerSideRow = database
+    const playerRow = database
       .prepare(
-        `SELECT co.side FROM countries c
-         JOIN coalitions co ON c.coalition_id = co.id AND c.campaign_id = co.campaign_id
+        `SELECT c.coalition_id, co.id AS co_id, co.side
+         FROM countries c
+         LEFT JOIN coalitions co ON c.coalition_id = co.id AND c.campaign_id = co.campaign_id
          WHERE c.campaign_id = ? AND c.id = ? LIMIT 1`,
       )
-      .get(campaignId, playerCountryId) as { side?: string } | undefined;
-    playerSide = playerSideRow?.side ?? "blufor";
+      .get(campaignId, playerCountryId) as
+      { coalition_id?: string; co_id?: string; side?: string } | undefined;
+
+    const rawSide = (playerRow?.side ?? "").toLowerCase();
+    const rawCoId = (
+      playerRow?.co_id ??
+      playerRow?.coalition_id ??
+      ""
+    ).toLowerCase();
+    if (
+      rawSide.includes("nato") ||
+      rawCoId.includes("nato") ||
+      rawSide === "blufor"
+    ) {
+      playerSide = "blufor";
+    } else if (
+      rawSide.includes("warsaw") ||
+      rawCoId.includes("warsaw") ||
+      rawSide === "opfor"
+    ) {
+      playerSide = "opfor";
+    }
+
+    if (playerRow?.coalition_id) {
+      const members = database
+        .prepare(
+          `SELECT id FROM countries WHERE campaign_id = ? AND coalition_id = ?`,
+        )
+        .all(campaignId, playerRow.coalition_id) as Array<{ id: string }>;
+      for (const m of members) {
+        alliedCountries.add(m.id);
+      }
+    }
   } catch {
     playerSide = "blufor";
   }
-
-  const alliedCountries = new Set<string>([playerCountryId]);
 
   // Check active treaties in database (mutual defense, intelligence sharing, or NATO coalition)
   try {
@@ -82,8 +133,9 @@ export function calculatePlayerVisibilityMatrix(
     // Treaties table may be empty or unmigrated in tests
   }
 
-  // Also include baseline alliance partners if player is NATO
-  if (playerSide === "blufor") {
+  // Baseline alliance partners if player is NATO / BLUFOR
+  if (playerSide === "blufor" || playerCountryId === "norway") {
+    alliedCountries.add("norway");
     alliedCountries.add("united-states");
     alliedCountries.add("united-kingdom");
     alliedCountries.add("denmark");
@@ -93,26 +145,41 @@ export function calculatePlayerVisibilityMatrix(
   // 2. Process friendly & allied strategic hexes and facilities
   const hexOverrides = database
     .prepare(
-      `SELECT hex_id, side, country_id FROM campaign_hex_cells WHERE campaign_id = ?`,
+      `SELECT hex_id, side, country_id, occupying_country_id, contested FROM campaign_hex_cells WHERE campaign_id = ?`,
     )
     .all(campaignId) as Array<{
     hex_id: string;
     side: string;
     country_id: string;
+    occupying_country_id: string | null;
+    contested: number;
   }>;
   const hexOwnershipMap = new Map<
     string,
-    { side: string; countryId: string }
+    {
+      side: string;
+      countryId: string;
+      occupyingCountryId?: string | null;
+      contested?: boolean;
+    }
   >();
   for (const o of hexOverrides) {
-    hexOwnershipMap.set(o.hex_id, { side: o.side, countryId: o.country_id });
+    hexOwnershipMap.set(o.hex_id, {
+      side: o.side,
+      countryId: o.country_id,
+      occupyingCountryId: o.occupying_country_id,
+      contested: Boolean(o.contested),
+    });
   }
 
   for (const hex of allHexes) {
-    const owner = hexOwnershipMap.get(hex.id) ?? hex.ownership;
+    const override = hexOwnershipMap.get(hex.id);
+    const ownerCountryId = override?.countryId ?? hex.ownership.countryId;
     const isFriendlyOwner =
-      alliedCountries.has(owner.countryId) ||
-      owner.countryId === playerCountryId;
+      alliedCountries.has(ownerCountryId) ||
+      ownerCountryId === playerCountryId ||
+      override?.side === "blufor" ||
+      (hex.ownership.side === "blufor" && playerSide === "blufor");
 
     if (isFriendlyOwner) {
       // Sovereign / allied base sectors have full internal visibility
@@ -150,6 +217,38 @@ export function calculatePlayerVisibilityMatrix(
     }
   }
 
+  // 2b. All procedural sovereign & allied land hexes:
+  // "hex owned by a country shouldnt be invisible on the fog of war (ie. local authorities would report a full scale invasion to hq)"
+  for (const cid of alliedCountries) {
+    const hexList = countryLandHexMap.get(cid);
+    if (hexList) {
+      for (const hId of hexList) {
+        const override = hexOwnershipMap.get(hId);
+        // Only shroud if completely conquered, pacified, and non-contested by enemy
+        if (
+          override &&
+          override.side === "opfor" &&
+          !override.contested &&
+          override.countryId !== playerCountryId
+        ) {
+          continue;
+        }
+        matrix[hId] = "full";
+      }
+    }
+  }
+
+  // Also include any campaign_hex_cells records belonging to player/allies
+  for (const o of hexOverrides) {
+    if (
+      o.country_id === playerCountryId ||
+      alliedCountries.has(o.country_id) ||
+      o.side === "blufor"
+    ) {
+      matrix[o.hex_id] = "full";
+    }
+  }
+
   // 3. Process friendly & allied mobile formations (Ships, Aircraft, Ground forces)
   const formations = database
     .prepare(
@@ -170,7 +269,7 @@ export function calculatePlayerVisibilityMatrix(
       alliedCountries.has(f.country_id) || f.country_id === playerCountryId;
     if (!isFriendly) continue;
 
-    const currentHex = allHexes.find((h) => h.id === f.hex_id);
+    const currentHex = getHexCellDefinition(f.hex_id);
     if (!currentHex) continue;
 
     // Unit's own sector is always 100% full visibility
@@ -189,12 +288,12 @@ export function calculatePlayerVisibilityMatrix(
       f.unit_type === "tactical_fighter_wing" ||
       f.unit_type === "maritime_strike_squadron"
     ) {
-      for (const target of allHexes) {
-        const dist = getAxialDistance(currentHex.axial, target.axial);
-        if (dist <= 1) {
-          matrix[target.id] = "full";
-        } else if (dist === 2 && matrix[target.id] !== "full") {
-          matrix[target.id] = "recon";
+      for (const n of neighbors) {
+        const nNeighbors = getHexNeighbors(n);
+        for (const n2 of nNeighbors) {
+          if (matrix[n2.id] !== "full") {
+            matrix[n2.id] = "recon";
+          }
         }
       }
     }
@@ -210,7 +309,7 @@ export function calculatePlayerVisibilityMatrix(
       .all(campaignId) as Array<{ target_hex_id: string }>;
 
     for (const op of activeReconOps) {
-      const reconHex = allHexes.find((h) => h.id === op.target_hex_id);
+      const reconHex = getHexCellDefinition(op.target_hex_id);
       if (reconHex) {
         matrix[reconHex.id] = "full";
         for (const n of getHexNeighbors(reconHex)) {
@@ -260,10 +359,18 @@ export function filterFormationsByVisibility(
       continue;
     }
 
-    const visibility = visibilityMatrix[f.hexId] ?? "shrouded";
+    // Check if the formation is located in sovereign or allied territory:
+    // Local civilian authorities, border sentries, police, and home guard immediately report invaders to military HQ!
+    const cell = getHexCellDefinition(f.hexId);
+    const inSovereignTerritory =
+      cell.ownership.countryId === playerCountryId ||
+      alliedCountryIds.has(cell.ownership.countryId);
 
-    if (visibility === "full") {
-      // Direct visual/radar lock: fully identified
+    const visibility =
+      visibilityMatrix[f.hexId] ?? (inSovereignTerritory ? "full" : "shrouded");
+
+    if (visibility === "full" || inSovereignTerritory) {
+      // Direct visual/radar lock or reported by local sovereign civilian/military authorities: fully identified
       filtered.push({
         ...f,
         intelConfidence: "confirmed",

@@ -439,7 +439,7 @@ async function api<T>(path: string, init?: RequestInit): Promise<T> {
   return response.json() as Promise<T>;
 }
 
-function exportLaneMission(mission: GeneratedLaneMission): void {
+function exportLaneMission(mission: GeneratedLaneMission): string {
   const fileName = `${mission.laneId}-${mission.seed}`
     .replace(/[^a-z0-9-_]+/gi, "-")
     .replace(/-+/g, "-")
@@ -450,9 +450,15 @@ function exportLaneMission(mission: GeneratedLaneMission): void {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = `${fileName || "lane-mission"}.ini`;
+  const fullFileName = `${fileName || "lane-mission"}.ini`;
+  link.download = fullFileName;
   link.click();
   window.setTimeout(() => URL.revokeObjectURL(url), 0);
+  console.log(
+    "[SeaPowerMission] Download initiated for mission:",
+    fullFileName,
+  );
+  return fullFileName;
 }
 
 export function App(): ReactElement {
@@ -812,6 +818,7 @@ function CommandCenter({
   const [generatedMission, setGeneratedMission] =
     useState<GeneratedLaneMission>();
   const [installedMission, setInstalledMission] = useState<InstalledMission>();
+  const [isLaneMissionModalOpen, setIsLaneMissionModalOpen] = useState(false);
   const createMissionSeed = () =>
     `${session.name}:${Date.now().toString(36)}:${crypto.randomUUID().slice(0, 8)}`;
   const laneAction = useMutation({
@@ -828,7 +835,18 @@ function CommandCenter({
         method: "POST",
         body: JSON.stringify(input),
       }),
-    onSuccess: setGeneratedMission,
+    onSuccess: (data) => {
+      console.log(
+        "[SeaPowerMission] Lane mission generated successfully:",
+        data,
+      );
+      setGeneratedMission(data);
+      setIsLaneMissionModalOpen(true);
+    },
+    onError: (err) => {
+      console.error("[SeaPowerMission] Failed to generate lane mission:", err);
+      alert(`Failed to generate lane mission: ${err.message}`);
+    },
   });
   const installMission = useMutation({
     mutationFn: (input: { routeId: string; seed: string }) =>
@@ -836,7 +854,21 @@ function CommandCenter({
         method: "POST",
         body: JSON.stringify(input),
       }),
-    onSuccess: setInstalledMission,
+    onSuccess: (data) => {
+      console.log(
+        "[SeaPowerMission] Lane mission installed directly to Sea Power:",
+        data,
+      );
+      setInstalledMission(data);
+      setIsLaneMissionModalOpen(true);
+    },
+    onError: (err) => {
+      console.error(
+        "[SeaPowerMission] Failed to install lane mission to Sea Power:",
+        err,
+      );
+      alert(`Failed to install mission to Sea Power: ${err.message}`);
+    },
   });
   const aaPurchase = useMutation({
     mutationFn: (input: { regionKey: string }) =>
@@ -1039,6 +1071,17 @@ function CommandCenter({
         body: JSON.stringify(input),
       }),
     onSuccess: (data, variables) => {
+      console.log(
+        "[TheaterCommand] Tactical engagement .ini generated successfully:",
+        {
+          hexId: variables.hexId,
+          fileName: data.fileName,
+          filePath: data.filePath,
+          unitsCount: data.unitsCount,
+          bluforUnits: data.bluforUnits?.length,
+          opforUnits: data.opforUnits?.length,
+        },
+      );
       setAutoResolveResult(null);
       setManualDebriefResult(null);
       const hexDef = hexGrid.data?.hexCells.find(
@@ -1056,6 +1099,16 @@ function CommandCenter({
       });
       hexGrid.refetch();
       campaignState.refetch();
+    },
+    onError: (error, variables) => {
+      console.error(
+        "[TheaterCommand] Tactical engagement generation failed for hex:",
+        variables.hexId,
+        error,
+      );
+      alert(
+        `Tactical Mission Generation Error: ${error.message}\nPlease verify game files and server status.`,
+      );
     },
   });
 
@@ -1930,6 +1983,27 @@ function CommandCenter({
         manualDebriefResult={manualDebriefResult}
       />
 
+      <LaneMissionModal
+        isOpen={isLaneMissionModalOpen}
+        onClose={() => setIsLaneMissionModalOpen(false)}
+        mission={generatedMission ?? null}
+        installedFileName={installedMission?.fileName}
+        installedPath={installedMission?.installedPath}
+        onInstallToGame={() => {
+          if (!generatedMission) return;
+          const routeId =
+            (missionBrief.data?.lanes ?? session.theaterLanes ?? []).find(
+              (lane) => lane.id === generatedMission.laneId,
+            )?.routeId ?? "";
+          if (!routeId) return;
+          installMission.mutate({
+            routeId,
+            seed: generatedMission.seed,
+          });
+        }}
+        isInstalling={installMission.isPending}
+      />
+
       <FormationCompositionEditorModal
         isOpen={editingFormation !== null}
         formation={editingFormation}
@@ -2053,7 +2127,10 @@ function CommandCenter({
               <button
                 type="button"
                 className="inline-action"
-                onClick={() => exportLaneMission(generatedMission)}
+                onClick={() => {
+                  exportLaneMission(generatedMission);
+                  setIsLaneMissionModalOpen(true);
+                }}
               >
                 Export Sea Power mission (.ini)
               </button>
@@ -2077,13 +2154,20 @@ function CommandCenter({
                 disabled={installMission.isPending}
               >
                 {installMission.isPending
-                  ? "Installing..."
+                  ? "⏳ Installing to Sea Power..."
                   : "Install mission to Sea Power"}
               </button>
+              <button
+                type="button"
+                className="inline-action"
+                onClick={() => setIsLaneMissionModalOpen(true)}
+              >
+                📋 View Mission Steps &amp; Context
+              </button>
               {installedMission?.missionId === generatedMission.id && (
-                <p className="air-roe-note">
-                  Installed as <strong>{installedMission.fileName}</strong> in
-                  the Sea Power user missions folder.
+                <p className="air-roe-note" style={{ color: "#4ade80" }}>
+                  ✅ Installed as <strong>{installedMission.fileName}</strong>{" "}
+                  in the Sea Power user missions folder.
                 </p>
               )}
             </section>
@@ -2497,7 +2581,17 @@ function createHexTacticalPopupContent(
     `;
     const launchBtn = contestedAlert.querySelector("button");
     if (launchBtn && onEngage) {
-      launchBtn.onclick = () => onEngage(hex.id);
+      launchBtn.onclick = () => {
+        launchBtn.textContent =
+          "⏳ Generating Mission .ini & Loading Briefing...";
+        launchBtn.disabled = true;
+        launchBtn.style.opacity = "0.75";
+        console.log(
+          "[TheaterCommand] Launching tactical mission .ini generation for hex:",
+          hex.id,
+        );
+        onEngage(hex.id);
+      };
     }
     popup.appendChild(contestedAlert);
   } else if (hex.captureTurnsCounter && hex.captureTurnsCounter > 0) {
@@ -3062,6 +3156,14 @@ function createHexTacticalPopupContent(
     "⚔️ Tactical Engagement & Mission Generator (.ini / Auto-Resolve)";
   battleBtn.onclick = () => {
     if (onEngage) {
+      battleBtn.textContent =
+        "⏳ Generating Mission .ini & Loading Briefing...";
+      battleBtn.disabled = true;
+      battleBtn.style.opacity = "0.75";
+      console.log(
+        "[TheaterCommand] Requesting tactical engagement .ini for hex:",
+        hex.id,
+      );
       onEngage(hex.id);
     }
   };
@@ -3166,9 +3268,18 @@ const CanvasHexGridOverlay = L.Layer.extend({
         const isBlufor = hex.ownership.side === "blufor";
         const isOpfor = hex.ownership.side === "opfor";
 
+        const isSovereignSoil =
+          hex.ownership.countryId === "norway" ||
+          hex.ownership.countryId === "united-states" ||
+          hex.ownership.countryId === "united-kingdom" ||
+          hex.ownership.countryId === "denmark" ||
+          hex.ownership.countryId === "west-germany" ||
+          isBlufor;
+
         const visibility = isGodMode
           ? "full"
-          : (visibilityMatrix?.[hex.id] ?? "shrouded");
+          : (visibilityMatrix?.[hex.id] ??
+            (isSovereignSoil ? "full" : "shrouded"));
 
         const polygon = hex.polygon;
         ctx.beginPath();
@@ -4358,6 +4469,394 @@ interface TacticalEngagementData {
   }>;
 }
 
+function LaneMissionModal({
+  isOpen,
+  onClose,
+  mission,
+  installedFileName,
+  installedPath,
+  onInstallToGame,
+  isInstalling,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  mission: GeneratedLaneMission | null;
+  installedFileName?: string | undefined;
+  installedPath?: string | undefined;
+  onInstallToGame?: () => void;
+  isInstalling?: boolean;
+}): ReactElement | null {
+  const [copiedIni, setCopiedIni] = useState(false);
+  const [copiedPath, setCopiedPath] = useState(false);
+
+  if (!isOpen || !mission) return null;
+
+  const fileName =
+    installedFileName ||
+    `${mission.laneId}-${mission.seed}`
+      .replace(/[^a-z0-9-_]+/gi, "-")
+      .replace(/-+/g, "-")
+      .toLowerCase() + ".ini";
+
+  const directPath =
+    installedPath ||
+    `s:\\SteamLibrary\\steamapps\\common\\Sea Power\\Sea Power_Data\\StreamingAssets\\user\\missions\\${fileName}`;
+
+  const missionIniText = renderNativeMissionIni(mission);
+
+  const handleDownload = () => {
+    exportLaneMission(mission);
+  };
+
+  const handleCopyIni = () => {
+    navigator.clipboard.writeText(missionIniText).then(() => {
+      setCopiedIni(true);
+      console.log(
+        "[SeaPowerMission] Copied .ini script to clipboard:",
+        fileName,
+      );
+      setTimeout(() => setCopiedIni(false), 2500);
+    });
+  };
+
+  const handleCopyPath = () => {
+    navigator.clipboard.writeText(directPath).then(() => {
+      setCopiedPath(true);
+      console.log(
+        "[SeaPowerMission] Copied file path to clipboard:",
+        directPath,
+      );
+      setTimeout(() => setCopiedPath(false), 2500);
+    });
+  };
+
+  const militaryUnits = mission.units.filter(
+    (u) => u.role === "possible_military",
+  );
+  const merchantUnits = mission.units.filter(
+    (u) => u.role !== "possible_military",
+  );
+
+  return (
+    <div className="recruitment-modal-backdrop" onClick={onClose}>
+      <div
+        className="recruitment-modal tactical-engagement-modal"
+        onClick={(e) => e.stopPropagation()}
+        style={{ maxWidth: "780px", width: "95%" }}
+      >
+        <div className="recruitment-modal-header">
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <span style={{ fontSize: "24px" }}>🎮</span>
+            <div>
+              <h3 style={{ margin: 0, fontSize: "16px", color: "#f8fafc" }}>
+                Sea Power Mission Generator &amp; Scenario Dispatch
+              </h3>
+              <div
+                style={{ fontSize: "12px", color: "#94a3b8", marginTop: "2px" }}
+              >
+                {mission.title}
+              </div>
+            </div>
+          </div>
+          <button
+            type="button"
+            className="recruitment-modal-close"
+            onClick={onClose}
+            aria-label="Close"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div
+          className="recruitment-modal-body"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "14px",
+            padding: "16px",
+          }}
+        >
+          {/* Status Banner */}
+          <div
+            style={{
+              background: installedFileName
+                ? "rgba(34, 197, 94, 0.15)"
+                : "rgba(56, 189, 248, 0.15)",
+              border: `1px solid ${installedFileName ? "#22c55e" : "#38bdf8"}`,
+              borderRadius: "6px",
+              padding: "12px 14px",
+              color: "#f8fafc",
+            }}
+          >
+            <div
+              style={{
+                fontWeight: "bold",
+                fontSize: "13px",
+                color: installedFileName ? "#4ade80" : "#38bdf8",
+                marginBottom: "4px",
+              }}
+            >
+              {installedFileName
+                ? "✅ Mission Installed Directly to Sea Power!"
+                : "💾 Mission Scenario Generated (.ini ready)"}
+            </div>
+            <div style={{ fontSize: "12px", color: "#cbd5e1" }}>
+              Mission file: <code style={{ color: "#38bdf8" }}>{fileName}</code>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                marginTop: "4px",
+                fontSize: "11px",
+                color: "#94a3b8",
+              }}
+            >
+              <span>
+                Disk Path: <code>{directPath}</code>
+              </span>
+              <button
+                type="button"
+                onClick={handleCopyPath}
+                style={{
+                  padding: "2px 6px",
+                  fontSize: "10px",
+                  background: copiedPath ? "#16a34a" : "#334155",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "3px",
+                  cursor: "pointer",
+                }}
+              >
+                {copiedPath ? "✅ Path Copied!" : "📋 Copy Path"}
+              </button>
+            </div>
+          </div>
+
+          {/* 4-Step Instructions */}
+          <div
+            style={{
+              background: "rgba(15, 23, 42, 0.7)",
+              border: "1px solid rgba(148, 163, 184, 0.2)",
+              borderRadius: "6px",
+              padding: "12px",
+            }}
+          >
+            <div
+              style={{
+                fontWeight: "bold",
+                fontSize: "12px",
+                color: "#e2e8f0",
+                marginBottom: "8px",
+              }}
+            >
+              📋 How to Play This Mission in Sea Power:
+            </div>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "8px",
+                fontSize: "11px",
+              }}
+            >
+              <div
+                style={{
+                  background: "rgba(30, 41, 59, 0.5)",
+                  padding: "8px 10px",
+                  borderRadius: "4px",
+                }}
+              >
+                <strong style={{ color: "#38bdf8" }}>Step 1:</strong> Launch{" "}
+                <em>Sea Power</em> via Steam
+              </div>
+              <div
+                style={{
+                  background: "rgba(30, 41, 59, 0.5)",
+                  padding: "8px 10px",
+                  borderRadius: "4px",
+                }}
+              >
+                <strong style={{ color: "#38bdf8" }}>Step 2:</strong> Main Menu
+                &rarr; <strong>Single Missions &rarr; User Missions</strong>
+              </div>
+              <div
+                style={{
+                  background: "rgba(30, 41, 59, 0.5)",
+                  padding: "8px 10px",
+                  borderRadius: "4px",
+                }}
+              >
+                <strong style={{ color: "#38bdf8" }}>Step 3:</strong> Select{" "}
+                <strong>{fileName}</strong>
+              </div>
+              <div
+                style={{
+                  background: "rgba(30, 41, 59, 0.5)",
+                  padding: "8px 10px",
+                  borderRadius: "4px",
+                }}
+              >
+                <strong style={{ color: "#38bdf8" }}>Step 4:</strong> Click{" "}
+                <strong>Start Mission</strong> to engage!
+              </div>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div style={{ display: "flex", gap: "10px" }}>
+            <button
+              type="button"
+              className="formation-btn"
+              onClick={handleDownload}
+              style={{
+                flex: 1,
+                padding: "10px",
+                background: "#0284c7",
+                color: "#fff",
+                fontWeight: "bold",
+              }}
+            >
+              📥 Download .ini File
+            </button>
+            <button
+              type="button"
+              className="formation-btn"
+              onClick={handleCopyIni}
+              style={{
+                flex: 1,
+                padding: "10px",
+                background: copiedIni ? "#16a34a" : "#334155",
+                color: "#fff",
+                fontWeight: "bold",
+              }}
+            >
+              {copiedIni ? "✅ Script Copied!" : "📋 Copy .ini to Clipboard"}
+            </button>
+            {onInstallToGame && !installedFileName && (
+              <button
+                type="button"
+                className="formation-btn"
+                onClick={onInstallToGame}
+                disabled={isInstalling}
+                style={{
+                  flex: 1,
+                  padding: "10px",
+                  background: isInstalling ? "#475569" : "#16a34a",
+                  color: "#fff",
+                  fontWeight: "bold",
+                }}
+              >
+                {isInstalling ? "⏳ Installing..." : "🚀 Install to Sea Power"}
+              </button>
+            )}
+          </div>
+
+          {/* Unit Composition Briefing */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "10px",
+              fontSize: "11px",
+            }}
+          >
+            <div
+              style={{
+                background: "rgba(30, 41, 59, 0.4)",
+                padding: "8px 10px",
+                borderRadius: "4px",
+                border: "1px solid rgba(56, 189, 248, 0.2)",
+              }}
+            >
+              <div
+                style={{
+                  fontWeight: "bold",
+                  color: "#38bdf8",
+                  marginBottom: "4px",
+                }}
+              >
+                🚢 Commercial &amp; Maritime Traffic ({merchantUnits.length}{" "}
+                Vessels)
+              </div>
+              {merchantUnits.slice(0, 4).map((u, i) => (
+                <div key={i} style={{ color: "#cbd5e1", marginTop: "2px" }}>
+                  • {u.id} ({u.category} • {u.countryId.toUpperCase()})
+                </div>
+              ))}
+            </div>
+            <div
+              style={{
+                background: "rgba(30, 41, 59, 0.4)",
+                padding: "8px 10px",
+                borderRadius: "4px",
+                border: "1px solid rgba(244, 63, 94, 0.2)",
+              }}
+            >
+              <div
+                style={{
+                  fontWeight: "bold",
+                  color: "#f43f5e",
+                  marginBottom: "4px",
+                }}
+              >
+                ⚠️ Possible Military &amp; Surface Contacts (
+                {militaryUnits.length} Contacts)
+              </div>
+              {militaryUnits.length > 0 ? (
+                militaryUnits.slice(0, 4).map((u, i) => (
+                  <div key={i} style={{ color: "#cbd5e1", marginTop: "2px" }}>
+                    • {u.id} ({u.category} • {u.countryId.toUpperCase()})
+                  </div>
+                ))
+              ) : (
+                <div style={{ color: "#94a3b8" }}>
+                  Assigned transit corridor patrol &amp; escort track
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Collapsible Mission Script Preview */}
+          <details
+            style={{
+              background: "rgba(15, 23, 42, 0.8)",
+              border: "1px solid rgba(148, 163, 184, 0.2)",
+              borderRadius: "4px",
+              padding: "8px",
+            }}
+          >
+            <summary
+              style={{
+                cursor: "pointer",
+                color: "#94a3b8",
+                fontSize: "12px",
+                fontWeight: "bold",
+              }}
+            >
+              🔍 Preview Generated .ini Mission Script (
+              {missionIniText.split("\n").length} lines)
+            </summary>
+            <pre
+              style={{
+                maxHeight: "160px",
+                overflowY: "auto",
+                fontSize: "11px",
+                color: "#a5b4fc",
+                marginTop: "8px",
+              }}
+            >
+              {missionIniText}
+            </pre>
+          </details>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function TacticalEngagementModal({
   isOpen,
   onClose,
@@ -4401,6 +4900,7 @@ function TacticalEngagementModal({
   } | null;
 }): ReactElement | null {
   const [copied, setCopied] = useState(false);
+  const [copiedPath, setCopiedPath] = useState(false);
   const [activeTab, setActiveTab] = useState<
     "tactical_mission" | "auto_resolve"
   >("tactical_mission");
@@ -4417,12 +4917,32 @@ function TacticalEngagementModal({
     link.download = engagement.fileName;
     link.click();
     URL.revokeObjectURL(url);
+    console.log(
+      "[SeaPowerTactical] Downloaded mission .ini file:",
+      engagement.fileName,
+    );
   };
 
   const handleCopy = () => {
     navigator.clipboard.writeText(engagement.missionText).then(() => {
       setCopied(true);
+      console.log(
+        "[SeaPowerTactical] Copied mission .ini text to clipboard:",
+        engagement.fileName,
+      );
       setTimeout(() => setCopied(false), 2500);
+    });
+  };
+
+  const handleCopyPath = () => {
+    if (!engagement.filePath) return;
+    navigator.clipboard.writeText(engagement.filePath).then(() => {
+      setCopiedPath(true);
+      console.log(
+        "[SeaPowerTactical] Copied mission file path:",
+        engagement.filePath,
+      );
+      setTimeout(() => setCopiedPath(false), 2500);
     });
   };
 
@@ -4697,9 +5217,9 @@ function TacticalEngagementModal({
               <div
                 style={{
                   background: "rgba(30, 41, 59, 0.6)",
-                  padding: "10px",
-                  borderRadius: "4px",
-                  border: "1px solid rgba(148, 163, 184, 0.2)",
+                  padding: "12px",
+                  borderRadius: "6px",
+                  border: "1px solid rgba(56, 189, 248, 0.3)",
                   fontSize: "12px",
                   color: "#cbd5e1",
                 }}
@@ -4708,24 +5228,75 @@ function TacticalEngagementModal({
                   style={{
                     fontWeight: "bold",
                     color: "#38bdf8",
-                    marginBottom: "4px",
+                    marginBottom: "6px",
+                    fontSize: "13px",
                   }}
                 >
-                  ✅ Sea Power Mission Scenario Ready
+                  ✅ Sea Power Mission Scenario Ready &amp; Installed
                 </div>
                 <div>
                   <strong>File:</strong> <code>{engagement.fileName}</code>
                 </div>
                 {engagement.filePath && (
-                  <div>
-                    <strong>Direct Path:</strong>{" "}
-                    <code>{engagement.filePath}</code>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      marginTop: "4px",
+                    }}
+                  >
+                    <span>
+                      <strong>Direct Path:</strong>{" "}
+                      <code>{engagement.filePath}</code>
+                    </span>
+                    <button
+                      type="button"
+                      onClick={handleCopyPath}
+                      style={{
+                        padding: "2px 6px",
+                        fontSize: "10px",
+                        background: copiedPath ? "#16a34a" : "#334155",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "3px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      {copiedPath ? "✅ Path Copied!" : "📋 Copy Path"}
+                    </button>
                   </div>
                 )}
-                <div style={{ marginTop: "4px", color: "#94a3b8" }}>
-                  Start Sea Power &rarr; User Missions &rarr; Select{" "}
-                  <strong>{engagement.fileName}</strong> to fly or fight the
-                  engagement!
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: "8px",
+                    marginTop: "10px",
+                    background: "rgba(15, 23, 42, 0.6)",
+                    padding: "8px 10px",
+                    borderRadius: "4px",
+                    fontSize: "11px",
+                  }}
+                >
+                  <div>
+                    <strong style={{ color: "#38bdf8" }}>Step 1:</strong> Launch{" "}
+                    <em>Sea Power</em> via Steam
+                  </div>
+                  <div>
+                    <strong style={{ color: "#38bdf8" }}>Step 2:</strong> Main
+                    Menu &rarr;{" "}
+                    <strong>Single Missions &rarr; User Missions</strong>
+                  </div>
+                  <div>
+                    <strong style={{ color: "#38bdf8" }}>Step 3:</strong> Select{" "}
+                    <strong>{engagement.fileName}</strong> &amp; Click{" "}
+                    <strong>Start</strong>
+                  </div>
+                  <div>
+                    <strong style={{ color: "#38bdf8" }}>Step 4:</strong> Fight
+                    sortie &amp; report outcome in Debrief below!
+                  </div>
                 </div>
               </div>
 

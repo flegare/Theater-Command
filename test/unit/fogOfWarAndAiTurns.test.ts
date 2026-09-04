@@ -11,7 +11,10 @@ import {
   seedCampaignFormations,
   getCampaignHexState,
 } from "../../src/application/hexStrategicSystem.js";
-import { calculatePlayerVisibilityMatrix } from "../../src/domain/fogOfWar.js";
+import {
+  calculatePlayerVisibilityMatrix,
+  filterFormationsByVisibility,
+} from "../../src/domain/fogOfWar.js";
 import {
   processAutonomousCountryTurns,
   getCampaignAiTurnLogs,
@@ -279,5 +282,57 @@ describe("Fog of War, Sensor Arrays & Autonomous AI Turn Control", () => {
     expect(persistedLogs.some((l) => l.countryId === "soviet-union")).toBe(
       true,
     );
+  });
+
+  it("ensures sovereign procedural hexes are fully visible and enemy invasions are immediately reported to HQ", () => {
+    const matrix = calculatePlayerVisibilityMatrix(
+      database,
+      campaignId,
+      "norway",
+    );
+
+    // Procedural sovereign Norwegian hexes must be fully visible (not shrouded)
+    expect(matrix["hex-w-qm13-rp31"]).toBe("full");
+    expect(matrix["hex-w-qm14-rp32"]).toBe("full");
+
+    // Place an invading Soviet ground formation inside sovereign Norwegian territory
+    const testInvader = {
+      id: "invader-sov-1",
+      name: "54th Motorized Rifle Division (Invasion Force)",
+      side: "opfor" as const,
+      countryId: "soviet-union",
+      hexId: "hex-w-qm13-rp31", // Inside Norway
+      unitType: "mechanized_infantry_division" as const,
+      status: "ready" as const,
+      strength: 100,
+      actionPoints: 1,
+      maxActionPoints: 1,
+      fuelPct: 100,
+      ammoPct: 100,
+      moralePct: 100,
+      veterancyRank: "regular" as const,
+      killsCount: 0,
+      turnCreated: 1,
+      lastOrderSummary: "Ground assault into Norway",
+    };
+
+    const filtered = filterFormationsByVisibility(
+      [testInvader],
+      matrix,
+      "norway",
+      new Set([
+        "norway",
+        "united-states",
+        "united-kingdom",
+        "denmark",
+        "west-germany",
+      ]),
+      false,
+    );
+
+    // Must NOT be hidden or shrouded: local authorities report the invasion directly to HQ
+    expect(filtered.length).toBe(1);
+    expect(filtered[0]!.id).toBe("invader-sov-1");
+    expect(filtered[0]!.intelConfidence).toBe("confirmed");
   });
 });

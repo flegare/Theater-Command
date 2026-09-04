@@ -781,6 +781,23 @@ export function getCampaignHexState(
 
     if (options?.filterFogOfWar) {
       const alliedCountries = new Set<string>([playerCountryId]);
+      try {
+        const coalitionMembers = database
+          .prepare(
+            `SELECT id FROM countries WHERE campaign_id = ? AND coalition_id = (
+               SELECT coalition_id FROM countries WHERE campaign_id = ? AND id = ?
+             )`,
+          )
+          .all(campaignId, campaignId, playerCountryId) as Array<{
+          id: string;
+        }>;
+        for (const m of coalitionMembers) {
+          alliedCountries.add(m.id);
+        }
+      } catch {
+        // ignore
+      }
+
       if (
         playerCountryId === "norway" ||
         playerCountryId === "united-states" ||
