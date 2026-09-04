@@ -1,81 +1,151 @@
-# Sea Power Theater Campaign
+# Sea Power: Theater Command
 
-This is the external strategic campaign application for Sea Power. It is deliberately separate from `../admiral_dashboard`: it can be developed, tested, and run without the game or its tactical telemetry bridge.
+**Sea Power: Theater Command** is an autonomous grand-strategic campaign simulation and dynamic mission generator designed for _Sea Power: Naval Combat in the Missile Age_.
 
-Run `npm install`, then `npm run dev` for local development or `npm run build && npm start` for the production build at `http://127.0.0.1:3100`.
+It bridges theater-level national statecraft, Cold War naval logistics, and tactical combat sorties across a GIS-accurate hexagonal simulation of the Northern Flank, North Sea, Baltic approaches, and the Kola Peninsula.
 
-## Mission Outcome Model
+---
 
-Generated lane missions now include dual-side briefing and objective documentation in the exported mission INI so scenarios can be side-flipped with clearer intent for both coalitions.
+## 🚀 Quick Start Guide
 
-- BLUFOR mission intent: preserve sea-lane throughput, classify contacts correctly, and protect critical regional infrastructure.
-- REDFOR mission intent: gather high-confidence reconnaissance on defended assets and optionally disrupt strategic logistics.
+### Prerequisites
 
-## Theater Campaign Integration Notes
+- **Node.js**: v20.x or later installed (`node -v`).
+- **Git**: For source version control.
+- _(Optional)_ **Ollama**: For local LLM-powered diplomatic negotiations.
 
-Mission outcomes are designed to feed theater-level progression and should be consumed by campaign logic in follow-up work:
+### 1. Installation
 
-- BLUFOR success can increase regional revenue, preserve production, and accelerate defensive reinforcement or new capability availability.
-- REDFOR success can degrade local production, reduce revenue and readiness, and in severe escalations support follow-on invasion pressure.
+Clone the repository and install dependencies:
 
-The mission generator currently documents end-state rules in INI briefing/objective text and comments. Hard mission-completion triggers remain intentionally lightweight and should be finalized in campaign orchestration logic.
-
-## Refinery Scenario Support
-
-Refinery and air-defense templates can now emit side-specific land-unit formations and a seeded objective profile. When the generator finds a refinery-style layout, it can choose between refinery disruption, air-defense reconnaissance, shipping interdiction, and industrial target identification while skipping options that would be too far away to execute credibly.
-
-## Modular Mission Rules
-
-Mission generation and INI rendering now support a modular rule orchestrator so theater-specific logic can be enabled or disabled by context instead of remaining hardcoded.
-
-- Mission modules live under [src/domain/mission-mods](src/domain/mission-mods).
-- Context configuration is passed as `generationConfig` on lane mission APIs.
-- The orchestrator resolves active modules from area profile, module allow/deny lists, and campaign state.
-
-Current modules:
-
-- `fisherman_intel_reports`: enables fisherman-based submarine and surface contact intel triggers for coastal/littoral missions.
-- `refinery_state_continuity`: keeps refinery objective/trigger logic active unless campaign state marks refinery infrastructure as destroyed.
-
-Example request payload fragment:
-
-```json
-{
-  "routeId": "bergen-scapa-shipping-lane",
-  "seed": "1983-03f84a54",
-  "generationConfig": {
-    "areaProfile": "coastal",
-    "enabledModules": ["fisherman_intel_reports"],
-    "disabledModules": [],
-    "campaignState": {
-      "destroyedInfrastructureTags": ["mongstad-refinery"]
-    }
-  }
-}
+```bash
+git clone git@github.com:flegare/Theater-Command.git
+cd Theater-Command
+npm install
 ```
 
-This allows follow-up missions to reflect persistent campaign outcomes (for example, suppressing refinery continuity behavior after refinery destruction).
+### 2. Running the Application
 
-## Persistent World Ledger
+#### Option A: Development Server (Hot Reloading)
 
-The campaign now uses a generalized persistence ledger in SQLite for world entities, force inventory, and daily economic effects.
+```bash
+npm run dev
+```
 
-Tracked entity classes:
+Starts both the Express API backend and Vite client on **`http://127.0.0.1:3100`**.
 
-- Infrastructure and fixed world objects (for example, ports, refinery sites, HAWK sites).
-- Force inventory for BLUFOR and OPFOR platforms (purchase, loss, repair lifecycle).
-- Optional mission-spawned persistent objects via API registration.
+#### Option B: Production Build
 
-Lifecycle statuses supported:
+```bash
+npm run build
+npm start
+```
 
-- `active`, `damaged`, `repairing`, `destroyed`, `sunk`.
+Compiles TypeScript, bundles web assets with Vite, and serves the unified web client on **`http://127.0.0.1:3100`**.
 
-Key API endpoints:
+---
 
-- `GET /api/v1/campaigns/current/state`: full snapshot (economy, entities, inventory, destroyed tags).
-- `POST /api/v1/campaigns/current/state/entities`: register a persistent world entity with optional daily economic effect.
-- `PATCH /api/v1/campaigns/current/state/entities/:entityId`: update lifecycle status and quantity.
-- `POST /api/v1/campaigns/current/state/forces/:inventoryId/actions`: apply `purchase`, `loss`, or `repair` to force inventory.
-- `POST /api/v1/campaigns/current/state/advance-day`: advance campaign day and apply active daily effects.
+## 🤖 LLM Integration & Ollama Setup
 
-Mission generation now auto-merges destroyed infrastructure tags from the ledger into generation config, so persistence rules apply even when clients do not manually pass those tags.
+The simulation features an autonomous diplomatic negotiation engine where foreign powers evaluate ceasefires, non-aggression treaties, basing rights, and multi-asset tribute demands.
+
+### Installing Ollama
+
+1. Download Ollama from **[ollama.com/download](https://ollama.com/download)** (Windows, macOS, or Linux).
+2. Install and ensure the service is running. It exposes an API on `http://127.0.0.1:11434`.
+3. Pull a recommended model in your terminal:
+   ```bash
+   # Recommended for fast turns and low VRAM (~3 GB)
+   ollama pull gemma3:4b
+
+   # Recommended for deeper Cold War diplomatic dialogue (~5.5 GB VRAM)
+   ollama pull llama3.1:8b
+   ```
+
+### Configuration Options
+
+The server automatically detects active Ollama models. You can optionally set custom parameters via environment variables or a `.env` file:
+
+```env
+PORT=3100
+HOST=127.0.0.1
+OLLAMA_URL=http://127.0.0.1:11434
+OLLAMA_MODEL=gemma3:4b
+```
+
+### Zero-Config Heuristic Fallback
+
+**You do NOT need Ollama installed to run the game.** If Ollama is offline or not installed:
+
+- The server automatically detects this on startup and displays `⚪ LLM: Offline` in the UI header.
+- The game automatically switches to the built-in **Cold War Heuristic Statecraft AI**, providing deterministic, authentic diplomatic evaluations, counter-offers, and cables without errors.
+
+For detailed model benchmarks, troubleshooting, and custom prompts, see the **[Ollama Setup & AI Statecraft Guide](docs/11-ollama-setup-and-ai-statecraft-guide.md)**.
+
+---
+
+## 🌟 Key Features
+
+### 1. GIS Hexagonal Strategic Theater (48 Hex Sectors)
+
+- Accurately mapped maritime and land sectors across Norway, the UK, West Germany, Denmark, Sweden, Finland, and the Soviet Kola Peninsula.
+- Physical resource depots (fuel, munitions, production points) and a 5-turn uncontested sector capture engine.
+- Construction catalog for airbases, naval bases, radar stations, refineries, and coastal batteries with GIS land/water polygon validation.
+
+### 2. Complete Order of Battle
+
+- **Soviet Northern Fleet & Kola Bastion**: _Kirov_ KUG surface groups, _Kiev_ aircraft cruisers, 11th Submarine Flotilla (Oscar/Victor/Alfa), Tu-22M3 Backfire missile aviation, MiG-25/31 interceptors, and the 61st Sputnik Naval Infantry.
+- **Scandinavian Neutrality**: Royal Swedish Coastal Fleet, Gotland Island Brigade, Muskö Strike Flotilla, F 16 & F 21 Viggen wings; Finnish Coastal Fleet, Panssariprikaati (T-55M), and Lapland Jaeger Brigade.
+- **NATO Northern Flank**: Royal Norwegian Navy fjord flotillas, UK Carrier Strike Group, US Amphibious Ready Group.
+
+### 3. Autonomous AI Country Turns
+
+- Each turn, non-player nations autonomously issue:
+  - **Military Sorties & Fleet Movements**: Frontline patrols, ASW barriers, and automatic RTB when fuel < 40%.
+  - **Foreign Policy**: Demarches, escalatory warnings, or neutrality reaffirmations.
+  - **Covert Black Ops**: SIGINT wiretapping, COMINT overflights, or coastal hydrophone maintenance.
+  - **R&D Doctrines**: Turn-by-turn progression across national defense doctrines.
+- Inspect every decision in real time via the **`[ 📡 AI INTEL LOG ]`** debrief modal.
+
+### 4. Fog of War & Sensor Network
+
+- Hidden enemy units in unmonitored hexes.
+- Radar stations (radius 2), coastal air patrols, and SOSUS acoustic hydrophone barriers.
+- **Contact Fuzzing**: Perimeter radar returns render as unclassified `[?] TRACK` markers (radar return, acoustic contact, or visual sentry) concealing ship names and exact compositions until positively identified.
+
+### 5. God Mode Debugger
+
+- Toggle with the **`[ 👁️ GOD MODE: ON / OFF ]`** button or by pressing **`G`**.
+- Immediately reveals all shrouded enemy sectors, hidden units, orders, and active mission routes (`👁️ Mission Route: → targetHexId`).
+
+---
+
+## 🧪 Testing & Verification
+
+Run the comprehensive test and quality suite:
+
+```bash
+# Run format, linter, typecheck, unit tests, and integration tests
+npm run check
+
+# Run unit tests only
+npm run test:unit
+
+# Run API integration tests
+npm run test:integration
+
+# Auto-format codebase
+npm run format
+```
+
+All **137 / 137 tests** pass with 100% compliance under strict TypeScript settings (`exactOptionalPropertyTypes: true`).
+
+---
+
+## 📚 Documentation Index
+
+- **[Ollama Setup & AI Statecraft Guide](docs/11-ollama-setup-and-ai-statecraft-guide.md)**
+- **[System Architecture & Data Model](docs/architecture/01-system-architecture-and-data-model.md)**
+- **[Product Requirements Document (PRD)](docs/prd/01-product-requirements-document.md)**
+- **[GitHub Stories Backlog & Delivery Roadmap](docs/roadmap/github-stories-backlog.md)**
+- **[Modding Overview & Anchor Chain](docs/01-modding-overview.md)**
