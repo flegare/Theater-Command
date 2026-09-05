@@ -2257,25 +2257,78 @@ export function generateSeaPowerHexBattle(
       }
     }
 
+    const sanitizeClassIni = (clsName: string, isBlu: boolean): string => {
+      const lower = clsName.toLowerCase();
+      // Land combatants
+      if (
+        lower === "land_m1_abrams" ||
+        lower.includes("abrams") ||
+        lower.includes("tank")
+      ) {
+        return isBlu ? "usa_mbt_abrams" : "wp_mbt_t-72a";
+      }
+      if (
+        lower === "land_t80" ||
+        lower.includes("t-80") ||
+        lower.includes("t80") ||
+        lower.includes("t-72")
+      ) {
+        return "wp_mbt_t-72a";
+      }
+      if (lower.includes("t-55")) return "wp_mbt_t-55";
+      if (
+        lower.includes("m113") ||
+        lower.includes("apc") ||
+        lower.includes("mechanized")
+      ) {
+        return isBlu ? "usa_apc_m113" : "wp_mbt_t-72a";
+      }
+      if (lower.includes("bradley") || lower.includes("ifv")) {
+        return isBlu ? "usa_ifv_bradley" : "wp_mbt_t-72a";
+      }
+      // Naval vessels & submarines
+      if (lower.includes("oslo")) return "knm_ffg_oslo";
+      if (lower.includes("kobben")) return "knm_ss_kobben";
+      if (lower.includes("grisha")) return "wp_mpk_grisha3";
+      if (lower.includes("victor")) return "wp_ssn_victor3";
+      // Tactical aircraft
+      if (
+        lower.includes("f-16") ||
+        lower.includes("f16") ||
+        lower.includes("falcon")
+      ) {
+        return isBlu ? "usaf_f-15a" : "wp_mig-25pd";
+      }
+      if (
+        lower.includes("mig-25") ||
+        lower.includes("mig25") ||
+        lower.includes("foxbat")
+      ) {
+        return "wp_mig-25pd";
+      }
+      return clsName;
+    };
+
     if (compUnits.length === 0) {
-      let defaultClass = isBlue ? "usaf_f-16a" : "wp_mig-25pd";
+      let defaultClass = isBlue ? "usaf_f-15a" : "wp_mig-25pd";
       if (form.unit_type === "surface_action_group") {
-        defaultClass = isBlue ? "knm_oslo" : "wp_cor_grisha3";
+        defaultClass = isBlue ? "knm_ffg_oslo" : "wp_mpk_grisha3";
       } else if (form.unit_type === "submarine_squadron") {
-        defaultClass = isBlue ? "no_ss_kobben" : "wp_ssn_victor3";
+        defaultClass = isBlue ? "knm_ss_kobben" : "wp_ssn_victor3";
       } else if (
         form.unit_type === "nato_armored_division" ||
         form.unit_type === "pact_tank_division" ||
         form.unit_type === "mechanized_infantry_division" ||
         form.unit_type === "marine_amphibious_brigade"
       ) {
-        defaultClass = isBlue ? "land_m1_abrams" : "land_t80";
+        defaultClass = isBlue ? "usa_mbt_abrams" : "wp_mbt_t-72a";
       }
       compUnits = [{ name: form.name, classIniRef: defaultClass, count: 4 }];
     }
 
     for (const unit of compUnits) {
-      const cls = unit.classIniRef.toLowerCase();
+      const realType = sanitizeClassIni(unit.classIniRef, isBlue);
+      const cls = realType.toLowerCase();
       let domain: "aircraft" | "vessel" | "land" = "aircraft";
       if (
         cls.includes("mbt") ||
@@ -2286,11 +2339,14 @@ export function generateSeaPowerHexBattle(
         cls.includes("mlrs") ||
         cls.includes("launcher") ||
         cls.includes("zsu") ||
+        cls.includes("apc") ||
+        cls.includes("ifv") ||
         cls.includes("land_")
       ) {
         domain = "land";
       } else if (
         cls.includes("cor_") ||
+        cls.includes("mpk_") ||
         cls.includes("ffg") ||
         cls.includes("ddg") ||
         cls.includes("cg_") ||
@@ -2309,18 +2365,21 @@ export function generateSeaPowerHexBattle(
       const summaryList = isBlue ? bluforUnits : opforUnits;
       summaryList.push({
         name: unit.name,
-        type: unit.classIniRef,
+        type: realType,
         domain,
         count: unit.count,
       });
 
       if (isBlue) {
         const offsetIndex = tf1Units.length;
-        const relPosNm = `${(-8 + (offsetIndex % 3) * 2).toFixed(2)},0,${(-8 + Math.floor(offsetIndex / 3) * 2).toFixed(2)}`;
+        const xPos = (-8 + (offsetIndex % 3) * 2).toFixed(2);
+        const yPos = (-8 + Math.floor(offsetIndex / 3) * 2).toFixed(2);
+        const relPosNm =
+          domain === "aircraft" ? `${xPos},18000,${yPos}` : `${xPos},0,${yPos}`;
         tf1Units.push({
           name: unit.name,
-          type: unit.classIniRef,
-          variant: "Default",
+          type: realType,
+          variant: "Variant1",
           nation: form.country_id === "norway" ? "Norway" : "UnitedStates",
           domain,
           relPosNm,
@@ -2333,13 +2392,15 @@ export function generateSeaPowerHexBattle(
         else tf1LandCount++;
       } else {
         const offsetIndex = tf2Units.length;
-        const relPosNm = `${(8 - (offsetIndex % 3) * 2).toFixed(2)},0,${(8 - Math.floor(offsetIndex / 3) * 2).toFixed(2)}`;
+        const xPos = (8 - (offsetIndex % 3) * 2).toFixed(2);
+        const yPos = (8 - Math.floor(offsetIndex / 3) * 2).toFixed(2);
+        const relPosNm =
+          domain === "aircraft" ? `${xPos},20000,${yPos}` : `${xPos},0,${yPos}`;
         tf2Units.push({
           name: unit.name,
-          type: unit.classIniRef,
-          variant: "Default",
-          nation:
-            form.country_id === "soviet-union" ? "SovietUnion" : "SovietUnion",
+          type: realType,
+          variant: "Variant1",
+          nation: "SovietUnion",
           domain,
           relPosNm,
           heading: 225,
@@ -2353,52 +2414,106 @@ export function generateSeaPowerHexBattle(
     }
   }
 
-  // If one side has no units, add representative skirmish combatants
-  if (tf1Units.length === 0) {
-    tf1Units.push({
-      name: "331 Skvadron F-16 Lead Flight",
-      type: "usaf_f-16a",
-      variant: "Default",
-      nation: "Norway",
-      domain: "aircraft",
-      relPosNm: "-6.0,0,-6.0",
-      heading: 45,
-      speed: 420,
-      altitude: 18000,
-    });
-    tf1AirCount = 1;
-    bluforUnits.push({
-      name: "F-16A Fighting Falcon",
-      type: "usaf_f-16a",
-      domain: "aircraft",
-      count: 2,
-    });
+  // Sea Power requires the player (Taskforce1) to possess at least 1 playable vessel or aircraft
+  if (tf1AirCount === 0 && tf1VesselCount === 0) {
+    if (
+      hex.terrain.includes("sea") ||
+      hex.terrain.includes("water") ||
+      hex.terrain.includes("fjord")
+    ) {
+      tf1Units.unshift({
+        name: "KNM Oslo (Flagship)",
+        type: "knm_ffg_oslo",
+        variant: "Variant1",
+        nation: "Norway",
+        domain: "vessel",
+        relPosNm: "0.00,0,0.00",
+        heading: 45,
+        speed: 18,
+        altitude: 0,
+      });
+      tf1VesselCount++;
+      bluforUnits.unshift({
+        name: "KNM Oslo (F300)",
+        type: "knm_ffg_oslo",
+        domain: "vessel",
+        count: 1,
+      });
+    } else {
+      tf1Units.unshift({
+        name: "331 Skvadron F-15 Lead Flight",
+        type: "usaf_f-15a",
+        variant: "Default",
+        nation: "Norway",
+        domain: "aircraft",
+        relPosNm: "-6.00,18000,-6.00",
+        heading: 45,
+        speed: 420,
+        altitude: 18000,
+      });
+      tf1AirCount++;
+      bluforUnits.unshift({
+        name: "F-15A Eagle Lead Flight",
+        type: "usaf_f-15a",
+        domain: "aircraft",
+        count: 2,
+      });
+    }
   }
+
+  // Ensure OPFOR (Taskforce2) has active combatants
   if (tf2Units.length === 0) {
-    tf2Units.push({
-      name: "174th Guards GvIAP MiG-25 Flight",
-      type: "wp_mig-25pd",
-      variant: "Default",
-      nation: "SovietUnion",
-      domain: "aircraft",
-      relPosNm: "8.0,0,8.0",
-      heading: 225,
-      speed: 550,
-      altitude: 24000,
-    });
-    tf2AirCount = 1;
-    opforUnits.push({
-      name: "MiG-25PD Foxbat Interceptor",
-      type: "wp_mig-25pd",
-      domain: "aircraft",
-      count: 2,
-    });
+    if (hex.terrain.includes("sea") || hex.terrain.includes("water")) {
+      tf2Units.push({
+        name: "Soviet Grisha-III ASW Corvette",
+        type: "wp_mpk_grisha3",
+        variant: "Variant1",
+        nation: "SovietUnion",
+        domain: "vessel",
+        relPosNm: "12.00,0,12.00",
+        heading: 225,
+        speed: 18,
+        altitude: 0,
+      });
+      tf2VesselCount++;
+      opforUnits.push({
+        name: "Grisha-III Corvette",
+        type: "wp_mpk_grisha3",
+        domain: "vessel",
+        count: 1,
+      });
+    } else {
+      tf2Units.push({
+        name: "174th Guards GvIAP MiG-25 Flight",
+        type: "wp_mig-25pd",
+        variant: "Default",
+        nation: "SovietUnion",
+        domain: "aircraft",
+        relPosNm: "12.00,20000,12.00",
+        heading: 225,
+        speed: 450,
+        altitude: 20000,
+      });
+      tf2AirCount++;
+      opforUnits.push({
+        name: "MiG-25PD Foxbat Interceptor",
+        type: "wp_mig-25pd",
+        domain: "aircraft",
+        count: 2,
+      });
+    }
   }
 
   const lines: string[] = [
     "; Sea Power: Naval Combat in the Missile Age",
     `; Tactical Hex Battle Scenario: ${title}`,
     "; Generated by Sea Power Theater Command",
+    "",
+    "[General]",
+    "Type=Mission",
+    "",
+    "[Debug]",
+    "DisableEnemyAIPlayer=False",
     "",
     "[Language_en]",
     `Name=${title}`,
@@ -2423,16 +2538,24 @@ export function generateSeaPowerHexBattle(
     "PlayerTaskforce=Taskforce1",
     "EnemyTaskforce=Taskforce2",
     `NumberOfTaskforce1Vessels=${tf1VesselCount}`,
+    "NumberOfTaskforce1Submarines=0",
     `NumberOfTaskforce1Aircraft=${tf1AirCount}`,
+    "NumberOfTaskforce1Helicopters=0",
     `NumberOfTaskforce1LandUnits=${tf1LandCount}`,
     `NumberOfTaskforce2Vessels=${tf2VesselCount}`,
+    "NumberOfTaskforce2Submarines=0",
     `NumberOfTaskforce2Aircraft=${tf2AirCount}`,
+    "NumberOfTaskforce2Helicopters=0",
     `NumberOfTaskforce2LandUnits=${tf2LandCount}`,
+    "NumberOfNeutralVessels=0",
+    "NumberOfNeutralSubmarines=0",
+    "NumberOfNeutralAircraft=0",
+    "NumberOfNeutralHelicopters=0",
+    "NumberOfNeutralLandUnits=0",
+    "NumberOfNeutralBiologics=0",
     "NumberOfTriggers=1",
     "",
-    "[Taskforce1]",
-    "Side=Allied",
-    "TaskforceName=BLUFOR Combined Defense Force",
+    "; [Taskforce1] - Allied Command",
     "",
   ];
 
@@ -2443,107 +2566,121 @@ export function generateSeaPowerHexBattle(
     if (u.domain === "aircraft") {
       lines.push(
         `[Taskforce1Aircraft${tf1A}]`,
-        `Name=${u.name}`,
         `Type=${u.type}`,
-        `VariantReference=${u.variant}`,
-        "SetSelected=True",
+        "SquadronReference=Default",
+        "LoadoutVariant=AirToAirLongRange",
+        "MissionType=Patrol",
+        "WeaponStatus=Free",
+        "CrewSkill=Trained",
         `RelativePositionInNM=${u.relPosNm}`,
+        "Telegraph=3",
         `Heading=${u.heading}`,
-        `Speed=${u.speed}`,
-        `Altitude=${u.altitude}`,
-        `Nation=${u.nation}`,
         "",
       );
       tf1A++;
     } else if (u.domain === "vessel") {
       lines.push(
         `[Taskforce1Vessel${tf1V}]`,
-        `Name=${u.name}`,
         `Type=${u.type}`,
-        `VariantReference=${u.variant}`,
-        "SetSelected=True",
+        "VariantReference=Variant1",
+        "StationRole=Core",
+        "RadarsActive=True",
+        "WeaponStatus=Free",
+        "CrewSkill=Trained",
+        "Morale=3",
         `RelativePositionInNM=${u.relPosNm}`,
+        "Telegraph=2",
         `Heading=${u.heading}`,
-        `Speed=${u.speed}`,
-        `Nation=${u.nation}`,
         "",
       );
       tf1V++;
     } else {
       lines.push(
         `[Taskforce1LandUnit${tf1L}]`,
-        `Name=${u.name}`,
         `Type=${u.type}`,
-        `VariantReference=${u.variant}`,
-        "SetSelected=True",
+        "VariantReference=Variant1",
+        "WeaponStatus=Free",
+        "CrewSkill=Trained",
         `RelativePositionInNM=${u.relPosNm}`,
         `Heading=${u.heading}`,
-        `Nation=${u.nation}`,
         "",
       );
       tf1L++;
     }
   }
 
-  lines.push(
-    "[Taskforce2]",
-    "Side=Soviet",
-    "TaskforceName=OPFOR Strike Group",
-    "",
-  );
+  lines.push("; [Taskforce2] - Warsaw Pact Forces", "");
 
   let tf2A = 1;
   let tf2V = 1;
   let tf2L = 1;
+  const enemyUnitKeys: string[] = [];
   for (const u of tf2Units) {
     if (u.domain === "aircraft") {
+      const key = `Taskforce2Aircraft${tf2A}`;
+      enemyUnitKeys.push(key);
       lines.push(
-        `[Taskforce2Aircraft${tf2A}]`,
-        `Name=${u.name}`,
+        `[${key}]`,
         `Type=${u.type}`,
-        `VariantReference=${u.variant}`,
+        "SquadronReference=Default",
+        "LoadoutVariant=AirToAirIntercept",
+        "MissionType=Patrol",
+        "WeaponStatus=Free",
+        "CrewSkill=Trained",
         `RelativePositionInNM=${u.relPosNm}`,
+        "Telegraph=3",
         `Heading=${u.heading}`,
-        `Speed=${u.speed}`,
-        `Altitude=${u.altitude}`,
-        `Nation=${u.nation}`,
         "",
       );
       tf2A++;
     } else if (u.domain === "vessel") {
+      const key = `Taskforce2Vessel${tf2V}`;
+      enemyUnitKeys.push(key);
       lines.push(
-        `[Taskforce2Vessel${tf2V}]`,
-        `Name=${u.name}`,
+        `[${key}]`,
         `Type=${u.type}`,
-        `VariantReference=${u.variant}`,
+        "VariantReference=Variant1",
+        "StationRole=Core",
+        "RadarsActive=True",
+        "WeaponStatus=Free",
+        "CrewSkill=Trained",
+        "Morale=3",
         `RelativePositionInNM=${u.relPosNm}`,
+        "Telegraph=2",
         `Heading=${u.heading}`,
-        `Speed=${u.speed}`,
-        `Nation=${u.nation}`,
         "",
       );
       tf2V++;
     } else {
+      const key = `Taskforce2LandUnit${tf2L}`;
+      enemyUnitKeys.push(key);
       lines.push(
-        `[Taskforce2LandUnit${tf2L}]`,
-        `Name=${u.name}`,
+        `[${key}]`,
         `Type=${u.type}`,
-        `VariantReference=${u.variant}`,
+        "VariantReference=Variant1",
+        "WeaponStatus=Free",
+        "CrewSkill=Trained",
         `RelativePositionInNM=${u.relPosNm}`,
         `Heading=${u.heading}`,
-        `Nation=${u.nation}`,
         "",
       );
       tf2L++;
     }
   }
 
+  const enemyKeysStr = enemyUnitKeys.join(",") || "Taskforce2Aircraft1";
   lines.push(
     "[Trigger1]",
-    "Name=NeutralizeHostiles",
-    "Description=Sector Clear",
-    "Condition=TaskforceDestroyed(Taskforce2)",
-    "Action=CompleteMission()",
+    "Name=Victory on Hostiles Neutralized",
+    "Condition_Condition1_Type=UnitDestroyed",
+    `Condition_Condition1_Units=${enemyKeysStr}`,
+    "ConditionsCompleted=<Condition1>",
+    "Action_EndMission=True",
+    "Action_Victory=Taskforce1",
+    "Action_ObjectivesCompleted=NeutralizeHostiles",
+    "",
+    "[Taskforce1_Objectives]",
+    "NeutralizeHostiles=100,-100,Incomplete,Main",
     "",
   );
 
