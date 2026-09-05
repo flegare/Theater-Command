@@ -3,14 +3,14 @@
   "name": "Sea Power Mission Companion",
   "version": "1.0.0",
   "description": "Companion extension for Theater Command to download and install custom Sea Power tactical missions directly without browser .ini warnings.",
-  "permissions": ["downloads", "storage"],
-  "host_permissions": ["http://localhost:*/*", "http://127.0.0.1:*/*"],
+  "permissions": ["downloads", "storage", "scripting", "tabs"],
+  "host_permissions": ["http://localhost/*", "http://127.0.0.1/*"],
   "background": {
     "service_worker": "background.js"
   },
   "content_scripts": [
     {
-      "matches": ["http://localhost:*/*", "http://127.0.0.1:*/*"],
+      "matches": ["http://localhost/*", "http://127.0.0.1/*"],
       "js": ["content.js"],
       "run_at": "document_start"
     }

@@ -1009,8 +1009,44 @@ function CommandCenter({
     undefined,
   );
 
-  // Ping companion extension on mount
+  // Check and ping companion extension on mount
   useEffect(() => {
+    const checkCompanion = () => {
+      const isDomMarked =
+        typeof document !== "undefined" &&
+        document.documentElement?.getAttribute(
+          "data-theater-companion-installed",
+        ) === "true";
+      const isWindowMarked =
+        typeof window !== "undefined" &&
+        Boolean(
+          (
+            window as unknown as {
+              __THEATER_COMMAND_COMPANION_INSTALLED__?: boolean;
+            }
+          ).__THEATER_COMMAND_COMPANION_INSTALLED__,
+        );
+
+      if (isDomMarked || isWindowMarked) {
+        setIsCompanionInstalled(true);
+        const ver =
+          (document.documentElement?.getAttribute(
+            "data-theater-companion-version",
+          ) as string | null) ||
+          (
+            window as unknown as {
+              __THEATER_COMMAND_COMPANION_VERSION__?: string;
+            }
+          ).__THEATER_COMMAND_COMPANION_VERSION__ ||
+          "1.0.0";
+        setCompanionVersion(ver);
+        return true;
+      }
+      return false;
+    };
+
+    checkCompanion();
+
     const handlePong = (evt: MessageEvent) => {
       if (
         evt.data &&
@@ -1018,7 +1054,7 @@ function CommandCenter({
         evt.data.payload?.installed
       ) {
         setIsCompanionInstalled(true);
-        setCompanionVersion(evt.data.payload.version);
+        setCompanionVersion(evt.data.payload.version || "1.0.0");
         console.log(
           "[SeaPowerWeb] Companion extension detected:",
           evt.data.payload,
@@ -1026,25 +1062,85 @@ function CommandCenter({
       }
     };
 
+    const handleReady = (evt: Event) => {
+      const customEvt = evt as CustomEvent<{ version?: string }>;
+      setIsCompanionInstalled(true);
+      setCompanionVersion(customEvt.detail?.version || "1.0.0");
+    };
+
     window.addEventListener("message", handlePong);
+    window.addEventListener("theater-command-companion-ready", handleReady);
+    document.addEventListener("theater-command-companion-ready", handleReady);
 
     // Initial ping
     window.postMessage({ action: "THEATER_COMMAND_PING" }, "*");
 
-    const timer = setTimeout(() => {
+    const timer1 = setTimeout(() => {
+      checkCompanion();
       window.postMessage({ action: "THEATER_COMMAND_PING" }, "*");
-    }, 1500);
+    }, 400);
+
+    const timer2 = setTimeout(() => {
+      checkCompanion();
+      window.postMessage({ action: "THEATER_COMMAND_PING" }, "*");
+    }, 1200);
 
     return () => {
       window.removeEventListener("message", handlePong);
-      clearTimeout(timer);
+      window.removeEventListener(
+        "theater-command-companion-ready",
+        handleReady,
+      );
+      document.removeEventListener(
+        "theater-command-companion-ready",
+        handleReady,
+      );
+      clearTimeout(timer1);
+      clearTimeout(timer2);
     };
   }, []);
 
   const testCompanionConnection = () => {
+    const isDomMarked =
+      typeof document !== "undefined" &&
+      document.documentElement?.getAttribute(
+        "data-theater-companion-installed",
+      ) === "true";
+    const isWindowMarked =
+      typeof window !== "undefined" &&
+      Boolean(
+        (
+          window as unknown as {
+            __THEATER_COMMAND_COMPANION_INSTALLED__?: boolean;
+          }
+        ).__THEATER_COMMAND_COMPANION_INSTALLED__,
+      );
+
+    if (isDomMarked || isWindowMarked) {
+      setIsCompanionInstalled(true);
+      const ver =
+        (document.documentElement?.getAttribute(
+          "data-theater-companion-version",
+        ) as string | null) ||
+        (
+          window as unknown as {
+            __THEATER_COMMAND_COMPANION_VERSION__?: string;
+          }
+        ).__THEATER_COMMAND_COMPANION_VERSION__ ||
+        "1.0.0";
+      setCompanionVersion(ver);
+      return;
+    }
+
     window.postMessage({ action: "THEATER_COMMAND_PING" }, "*");
     setTimeout(() => {
+      const isDom =
+        typeof document !== "undefined" &&
+        document.documentElement?.getAttribute(
+          "data-theater-companion-installed",
+        ) === "true";
       if (
+        isDom ||
         (
           window as unknown as {
             __THEATER_COMMAND_COMPANION_INSTALLED__?: boolean;
@@ -1053,7 +1149,7 @@ function CommandCenter({
       ) {
         setIsCompanionInstalled(true);
       }
-    }, 300);
+    }, 250);
   };
 
   const [activeTacticalEngagement, setActiveTacticalEngagement] = useState<{
@@ -4664,7 +4760,7 @@ function CompanionSetupModal({
               >
                 {isInstalled
                   ? "Direct 1-click mission routing & .mis renaming active."
-                  : "Install the companion extension to enable silent 1-click installs."}
+                  : "If you just loaded the extension, click Check Connection or refresh this browser tab (F5)."}
               </div>
             </div>
             <button

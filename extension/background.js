@@ -2,6 +2,27 @@
 
 const DEFAULT_TARGET_SUBFOLDER = "SeaPower/user/missions";
 
+function injectContentScriptIntoOpenTabs() {
+  if (!chrome.tabs || !chrome.scripting) return;
+  chrome.tabs.query({}, (tabs) => {
+    for (const tab of tabs) {
+      if (
+        tab.id &&
+        tab.url &&
+        (tab.url.startsWith("http://localhost") ||
+          tab.url.startsWith("http://127.0.0.1"))
+      ) {
+        chrome.scripting
+          .executeScript({
+            target: { tabId: tab.id },
+            files: ["content.js"],
+          })
+          .catch(() => {});
+      }
+    }
+  });
+}
+
 // Initialize default storage on install
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.local.get(["targetSubfolder"], (res) => {
@@ -10,6 +31,11 @@ chrome.runtime.onInstalled.addListener(() => {
     }
   });
   console.log("[SeaPowerCompanion] Background service worker installed.");
+  injectContentScriptIntoOpenTabs();
+});
+
+chrome.runtime.onStartup.addListener(() => {
+  injectContentScriptIntoOpenTabs();
 });
 
 // Listen for messages from content script or popup
