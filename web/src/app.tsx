@@ -4677,11 +4677,22 @@ function CompanionSetupModal({
 }): ReactElement | null {
   const [copiedLink, setCopiedLink] = useState(false);
   const [copiedMklink, setCopiedMklink] = useState(false);
+  const [copiedPwsh, setCopiedPwsh] = useState(false);
 
   if (!isOpen) return null;
 
+  const pwshCmd =
+    'New-Item -ItemType Directory -Force -Path "$HOME\\Downloads\\SeaPower\\user" ; New-Item -ItemType Junction -Path "$HOME\\Downloads\\SeaPower\\user\\missions" -Target "s:\\SteamLibrary\\steamapps\\common\\Sea Power\\Sea Power_Data\\StreamingAssets\\user\\missions"';
+
   const mklinkCmd =
-    'mklink /J "%USERPROFILE%\\Downloads\\SeaPower\\user\\missions" "s:\\SteamLibrary\\steamapps\\common\\Sea Power\\Sea Power_Data\\StreamingAssets\\user\\missions"';
+    'cmd /c mklink /J "%USERPROFILE%\\Downloads\\SeaPower\\user\\missions" "s:\\SteamLibrary\\steamapps\\common\\Sea Power\\Sea Power_Data\\StreamingAssets\\user\\missions"';
+
+  const handleCopyPwsh = () => {
+    navigator.clipboard.writeText(pwshCmd).then(() => {
+      setCopiedPwsh(true);
+      setTimeout(() => setCopiedPwsh(false), 2500);
+    });
+  };
 
   const handleCopyMklink = () => {
     navigator.clipboard.writeText(mklinkCmd).then(() => {
@@ -4914,46 +4925,106 @@ function CompanionSetupModal({
               By default, Chrome allows extensions to write subfolders inside
               your default Downloads folder (e.g.{" "}
               <code>Downloads\SeaPower\user\missions</code>). To have Chrome
-              write directly into Sea Power without moving anything, open an
-              Administrator Command Prompt and run:
+              write directly into Sea Power without moving anything, open
+              PowerShell (or CMD) and run:
             </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                marginTop: "6px",
-              }}
-            >
-              <code
+            {/* PowerShell Command */}
+            <div style={{ marginTop: "6px" }}>
+              <div
                 style={{
-                  background: "#0f172a",
-                  padding: "6px 8px",
-                  borderRadius: "4px",
-                  color: "#4ade80",
                   fontSize: "10px",
-                  wordBreak: "break-all",
-                  flex: 1,
+                  color: "#94a3b8",
+                  marginBottom: "2px",
                 }}
               >
-                {mklinkCmd}
-              </code>
-              <button
-                type="button"
-                onClick={handleCopyMklink}
+                PowerShell (Recommended):
+              </div>
+              <div
                 style={{
-                  padding: "4px 8px",
-                  fontSize: "10px",
-                  background: copiedMklink ? "#16a34a" : "#0284c7",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "3px",
-                  cursor: "pointer",
-                  whiteSpace: "nowrap",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
                 }}
               >
-                {copiedMklink ? "✅ Copied!" : "📋 Copy Link Command"}
-              </button>
+                <code
+                  style={{
+                    background: "#0f172a",
+                    padding: "6px 8px",
+                    borderRadius: "4px",
+                    color: "#4ade80",
+                    fontSize: "10px",
+                    wordBreak: "break-all",
+                    flex: 1,
+                  }}
+                >
+                  {pwshCmd}
+                </code>
+                <button
+                  type="button"
+                  onClick={handleCopyPwsh}
+                  style={{
+                    padding: "4px 8px",
+                    fontSize: "10px",
+                    background: copiedPwsh ? "#16a34a" : "#0284c7",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "3px",
+                    cursor: "pointer",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {copiedPwsh ? "✅ Copied!" : "📋 Copy PowerShell"}
+                </button>
+              </div>
+            </div>
+            {/* CMD Fallback */}
+            <div style={{ marginTop: "6px" }}>
+              <div
+                style={{
+                  fontSize: "10px",
+                  color: "#94a3b8",
+                  marginBottom: "2px",
+                }}
+              >
+                Command Prompt (cmd.exe):
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                }}
+              >
+                <code
+                  style={{
+                    background: "#0f172a",
+                    padding: "6px 8px",
+                    borderRadius: "4px",
+                    color: "#93c5fd",
+                    fontSize: "10px",
+                    wordBreak: "break-all",
+                    flex: 1,
+                  }}
+                >
+                  {mklinkCmd}
+                </code>
+                <button
+                  type="button"
+                  onClick={handleCopyMklink}
+                  style={{
+                    padding: "4px 8px",
+                    fontSize: "10px",
+                    background: copiedMklink ? "#16a34a" : "#334155",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "3px",
+                    cursor: "pointer",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {copiedMklink ? "✅ Copied!" : "📋 Copy CMD"}
+                </button>
+              </div>
             </div>
           </div>
         </div>
