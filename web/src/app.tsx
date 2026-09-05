@@ -1003,12 +1003,66 @@ function CommandCenter({
       campaignState.refetch();
     },
   });
+  const [isCompanionModalOpen, setIsCompanionModalOpen] = useState(false);
+  const [isCompanionInstalled, setIsCompanionInstalled] = useState(false);
+  const [companionVersion, setCompanionVersion] = useState<string | undefined>(
+    undefined,
+  );
+
+  // Ping companion extension on mount
+  useEffect(() => {
+    const handlePong = (evt: MessageEvent) => {
+      if (
+        evt.data &&
+        evt.data.action === "THEATER_COMMAND_PONG" &&
+        evt.data.payload?.installed
+      ) {
+        setIsCompanionInstalled(true);
+        setCompanionVersion(evt.data.payload.version);
+        console.log(
+          "[SeaPowerWeb] Companion extension detected:",
+          evt.data.payload,
+        );
+      }
+    };
+
+    window.addEventListener("message", handlePong);
+
+    // Initial ping
+    window.postMessage({ action: "THEATER_COMMAND_PING" }, "*");
+
+    const timer = setTimeout(() => {
+      window.postMessage({ action: "THEATER_COMMAND_PING" }, "*");
+    }, 1500);
+
+    return () => {
+      window.removeEventListener("message", handlePong);
+      clearTimeout(timer);
+    };
+  }, []);
+
+  const testCompanionConnection = () => {
+    window.postMessage({ action: "THEATER_COMMAND_PING" }, "*");
+    setTimeout(() => {
+      if (
+        (
+          window as unknown as {
+            __THEATER_COMMAND_COMPANION_INSTALLED__?: boolean;
+          }
+        ).__THEATER_COMMAND_COMPANION_INSTALLED__
+      ) {
+        setIsCompanionInstalled(true);
+      }
+    }, 300);
+  };
+
   const [activeTacticalEngagement, setActiveTacticalEngagement] = useState<{
     hexId: string;
     hexName: string;
     missionText: string;
     filePath?: string | undefined;
     fileName: string;
+    fileNameMis?: string | undefined;
     unitsCount: number;
     bluforUnits: Array<{
       name: string;
@@ -1053,6 +1107,7 @@ function CommandCenter({
         missionText: string;
         filePath?: string | undefined;
         fileName: string;
+        fileNameMis?: string | undefined;
         unitsCount: number;
         bluforUnits: Array<{
           name: string;
@@ -1076,6 +1131,7 @@ function CommandCenter({
         {
           hexId: variables.hexId,
           fileName: data.fileName,
+          fileNameMis: data.fileNameMis,
           filePath: data.filePath,
           unitsCount: data.unitsCount,
           bluforUnits: data.bluforUnits?.length,
@@ -1093,6 +1149,7 @@ function CommandCenter({
         missionText: data.missionText,
         filePath: data.filePath,
         fileName: data.fileName,
+        fileNameMis: data.fileNameMis,
         unitsCount: data.unitsCount,
         bluforUnits: data.bluforUnits ?? [],
         opforUnits: data.opforUnits ?? [],
@@ -1656,6 +1713,37 @@ function CommandCenter({
               <strong>Strategic AI: Heuristic Fallback</strong>
             </div>
           )}
+          {/* Sea Power Companion Status Badge */}
+          <button
+            type="button"
+            onClick={() => setIsCompanionModalOpen(true)}
+            style={{
+              fontSize: "12px",
+              padding: "4px 10px",
+              borderRadius: "4px",
+              background: isCompanionInstalled
+                ? "rgba(34, 197, 94, 0.2)"
+                : "rgba(56, 189, 248, 0.2)",
+              border: `1px solid ${isCompanionInstalled ? "#22c55e" : "#38bdf8"}`,
+              color: isCompanionInstalled ? "#4ade80" : "#38bdf8",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              cursor: "pointer",
+              fontWeight: "bold",
+            }}
+            title="Configure Sea Power Mission Companion Chrome Extension"
+          >
+            <span
+              className="status-dot"
+              style={{
+                background: isCompanionInstalled ? "#22c55e" : "#38bdf8",
+              }}
+            />
+            {isCompanionInstalled
+              ? `🔌 Companion: Active v${companionVersion || "1.0.0"}`
+              : "🔌 Mission Companion (Setup)"}
+          </button>
           <div className="header-status">
             <span className="status-dot" />
             {session.status}
@@ -2002,6 +2090,14 @@ function CommandCenter({
           });
         }}
         isInstalling={installMission.isPending}
+      />
+
+      <CompanionSetupModal
+        isOpen={isCompanionModalOpen}
+        onClose={() => setIsCompanionModalOpen(false)}
+        isInstalled={isCompanionInstalled}
+        companionVersion={companionVersion}
+        onTestConnection={testCompanionConnection}
       />
 
       <FormationCompositionEditorModal
@@ -4454,6 +4550,7 @@ interface TacticalEngagementData {
   missionText: string;
   filePath?: string | undefined;
   fileName: string;
+  fileNameMis?: string | undefined;
   unitsCount: number;
   bluforUnits: Array<{
     name: string;
@@ -4467,6 +4564,306 @@ interface TacticalEngagementData {
     domain: string;
     count: number;
   }>;
+}
+
+function CompanionSetupModal({
+  isOpen,
+  onClose,
+  isInstalled,
+  companionVersion,
+  onTestConnection,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  isInstalled: boolean;
+  companionVersion?: string | undefined;
+  onTestConnection: () => void;
+}): ReactElement | null {
+  const [copiedLink, setCopiedLink] = useState(false);
+  const [copiedMklink, setCopiedMklink] = useState(false);
+
+  if (!isOpen) return null;
+
+  const mklinkCmd =
+    'mklink /J "%USERPROFILE%\\Downloads\\SeaPower\\user\\missions" "s:\\SteamLibrary\\steamapps\\common\\Sea Power\\Sea Power_Data\\StreamingAssets\\user\\missions"';
+
+  const handleCopyMklink = () => {
+    navigator.clipboard.writeText(mklinkCmd).then(() => {
+      setCopiedMklink(true);
+      setTimeout(() => setCopiedMklink(false), 2500);
+    });
+  };
+
+  const extensionPath =
+    "s:\\SteamLibrary\\steamapps\\common\\Sea Power\\theater_campaign\\extension";
+
+  const handleCopyPath = () => {
+    navigator.clipboard.writeText(extensionPath).then(() => {
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2500);
+    });
+  };
+
+  return (
+    <div className="recruitment-modal-backdrop" onClick={onClose}>
+      <div
+        className="recruitment-modal"
+        onClick={(e) => e.stopPropagation()}
+        style={{ maxWidth: "720px", width: "95%" }}
+      >
+        <div className="recruitment-modal-header">
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <span style={{ fontSize: "24px" }}>🔌</span>
+            <div>
+              <h3 style={{ margin: 0, color: "#38bdf8" }}>
+                Sea Power Mission Companion Setup &amp; Configuration
+              </h3>
+              <div style={{ fontSize: "12px", color: "#94a3b8" }}>
+                Bypass Chrome/Windows .ini file warnings &amp; enable 1-click
+                direct installation
+              </div>
+            </div>
+          </div>
+          <button type="button" className="close-btn" onClick={onClose}>
+            ✕
+          </button>
+        </div>
+
+        <div
+          className="modal-body"
+          style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+        >
+          {/* Status Indicator */}
+          <div
+            style={{
+              background: isInstalled
+                ? "rgba(34, 197, 94, 0.15)"
+                : "rgba(234, 179, 8, 0.15)",
+              border: `1px solid ${isInstalled ? "#22c55e" : "#eab308"}`,
+              borderRadius: "6px",
+              padding: "12px 14px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "13px",
+                  color: isInstalled ? "#4ade80" : "#fde047",
+                }}
+              >
+                {isInstalled
+                  ? `✅ Companion Extension Active (v${companionVersion || "1.0.0"})`
+                  : "⚠️ Companion Extension Not Detected"}
+              </div>
+              <div
+                style={{ fontSize: "12px", color: "#cbd5e1", marginTop: "2px" }}
+              >
+                {isInstalled
+                  ? "Direct 1-click mission routing & .mis renaming active."
+                  : "Install the companion extension to enable silent 1-click installs."}
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={onTestConnection}
+              style={{
+                padding: "6px 12px",
+                background: "#0284c7",
+                color: "#fff",
+                border: "none",
+                borderRadius: "4px",
+                fontSize: "12px",
+                cursor: "pointer",
+                fontWeight: "bold",
+              }}
+            >
+              🔄 Check Connection
+            </button>
+          </div>
+
+          {/* Step by Step Installation Guide */}
+          <div
+            style={{
+              background: "rgba(15, 23, 42, 0.7)",
+              padding: "14px",
+              borderRadius: "6px",
+              border: "1px solid rgba(148, 163, 184, 0.2)",
+            }}
+          >
+            <h4
+              style={{
+                margin: "0 0 10px 0",
+                color: "#f8fafc",
+                fontSize: "14px",
+              }}
+            >
+              📋 Quick 4-Step Setup Guide (Chrome / Edge / Brave):
+            </h4>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+                fontSize: "12px",
+              }}
+            >
+              <div
+                style={{
+                  background: "rgba(30, 41, 59, 0.5)",
+                  padding: "10px",
+                  borderRadius: "4px",
+                }}
+              >
+                <strong>Step 1:</strong> Locate the companion extension folder
+                on your drive:
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    marginTop: "4px",
+                  }}
+                >
+                  <code style={{ color: "#38bdf8", wordBreak: "break-all" }}>
+                    {extensionPath}
+                  </code>
+                  <button
+                    type="button"
+                    onClick={handleCopyPath}
+                    style={{
+                      padding: "2px 8px",
+                      fontSize: "11px",
+                      background: copiedLink ? "#16a34a" : "#334155",
+                      color: "#fff",
+                      border: "none",
+                      borderRadius: "3px",
+                      cursor: "pointer",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {copiedLink ? "✅ Copied!" : "📋 Copy Path"}
+                  </button>
+                </div>
+              </div>
+
+              <div
+                style={{
+                  background: "rgba(30, 41, 59, 0.5)",
+                  padding: "10px",
+                  borderRadius: "4px",
+                }}
+              >
+                <strong>Step 2:</strong> Open your browser extensions manager:
+                <div style={{ marginTop: "4px", color: "#cbd5e1" }}>
+                  In Google Chrome, navigate to{" "}
+                  <code style={{ color: "#a5b4fc" }}>chrome://extensions</code>{" "}
+                  (or{" "}
+                  <code style={{ color: "#a5b4fc" }}>edge://extensions</code>
+                  ).
+                </div>
+              </div>
+
+              <div
+                style={{
+                  background: "rgba(30, 41, 59, 0.5)",
+                  padding: "10px",
+                  borderRadius: "4px",
+                }}
+              >
+                <strong>Step 3:</strong> Toggle{" "}
+                <strong style={{ color: "#f59e0b" }}>"Developer mode"</strong>{" "}
+                (top right corner switch).
+              </div>
+
+              <div
+                style={{
+                  background: "rgba(30, 41, 59, 0.5)",
+                  padding: "10px",
+                  borderRadius: "4px",
+                }}
+              >
+                <strong>Step 4:</strong> Click the{" "}
+                <strong style={{ color: "#38bdf8" }}>"Load unpacked"</strong>{" "}
+                button, paste or browse to the copied extension folder, and
+                select it.
+              </div>
+            </div>
+          </div>
+
+          {/* Optional Automation Hint */}
+          <div
+            style={{
+              background: "rgba(30, 41, 59, 0.4)",
+              padding: "12px",
+              borderRadius: "6px",
+              border: "1px solid rgba(56, 189, 248, 0.2)",
+              fontSize: "11px",
+              color: "#cbd5e1",
+            }}
+          >
+            <div
+              style={{
+                fontWeight: "bold",
+                color: "#38bdf8",
+                marginBottom: "4px",
+              }}
+            >
+              💡 Optional Power-User Tip (Instant Direct Game Folder Linking):
+            </div>
+            <div>
+              By default, Chrome allows extensions to write subfolders inside
+              your default Downloads folder (e.g.{" "}
+              <code>Downloads\SeaPower\user\missions</code>). To have Chrome
+              write directly into Sea Power without moving anything, open an
+              Administrator Command Prompt and run:
+            </div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                marginTop: "6px",
+              }}
+            >
+              <code
+                style={{
+                  background: "#0f172a",
+                  padding: "6px 8px",
+                  borderRadius: "4px",
+                  color: "#4ade80",
+                  fontSize: "10px",
+                  wordBreak: "break-all",
+                  flex: 1,
+                }}
+              >
+                {mklinkCmd}
+              </code>
+              <button
+                type="button"
+                onClick={handleCopyMklink}
+                style={{
+                  padding: "4px 8px",
+                  fontSize: "10px",
+                  background: copiedMklink ? "#16a34a" : "#0284c7",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "3px",
+                  cursor: "pointer",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {copiedMklink ? "✅ Copied!" : "📋 Copy Link Command"}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function LaneMissionModal({
@@ -4706,34 +5103,64 @@ function LaneMissionModal({
           </div>
 
           {/* Action Buttons */}
-          <div style={{ display: "flex", gap: "10px" }}>
+          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
             <button
               type="button"
               className="formation-btn"
               onClick={handleDownload}
               style={{
-                flex: 1,
+                flex: "1 1 140px",
                 padding: "10px",
                 background: "#0284c7",
                 color: "#fff",
                 fontWeight: "bold",
               }}
+              title="Download standard .ini mission file"
             >
-              📥 Download .ini File
+              📥 Download .ini
+            </button>
+            <button
+              type="button"
+              className="formation-btn"
+              onClick={() => {
+                const blob = new Blob([missionIniText], {
+                  type: "application/octet-stream",
+                });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement("a");
+                link.href = url;
+                link.download = fileName.replace(/\.ini$/i, ".mis");
+                link.click();
+                URL.revokeObjectURL(url);
+                console.log(
+                  "[SeaPowerMission] Downloaded safe .mis file:",
+                  link.download,
+                );
+              }}
+              style={{
+                flex: "1 1 140px",
+                padding: "10px",
+                background: "#059669",
+                color: "#fff",
+                fontWeight: "bold",
+              }}
+              title="Download with safe .mis extension (no browser .ini warnings)"
+            >
+              🛡️ Download .mis (Safe)
             </button>
             <button
               type="button"
               className="formation-btn"
               onClick={handleCopyIni}
               style={{
-                flex: 1,
+                flex: "1 1 140px",
                 padding: "10px",
                 background: copiedIni ? "#16a34a" : "#334155",
                 color: "#fff",
                 fontWeight: "bold",
               }}
             >
-              {copiedIni ? "✅ Script Copied!" : "📋 Copy .ini to Clipboard"}
+              {copiedIni ? "✅ Script Copied!" : "📋 Copy Script"}
             </button>
             {onInstallToGame && !installedFileName && (
               <button
@@ -4742,7 +5169,7 @@ function LaneMissionModal({
                 onClick={onInstallToGame}
                 disabled={isInstalling}
                 style={{
-                  flex: 1,
+                  flex: "1 1 140px",
                   padding: "10px",
                   background: isInstalling ? "#475569" : "#16a34a",
                   color: "#fff",
@@ -4907,6 +5334,11 @@ function TacticalEngagementModal({
 
   if (!isOpen || !engagement) return null;
 
+  const [companionStatusMsg, setCompanionStatusMsg] = useState<string | null>(
+    null,
+  );
+  const [isCompanionInstalling, setIsCompanionInstalling] = useState(false);
+
   const handleDownload = () => {
     const blob = new Blob([engagement.missionText], {
       type: "text/plain;charset=utf-8",
@@ -4921,6 +5353,78 @@ function TacticalEngagementModal({
       "[SeaPowerTactical] Downloaded mission .ini file:",
       engagement.fileName,
     );
+  };
+
+  const handleDownloadMis = () => {
+    const blob = new Blob([engagement.missionText], {
+      type: "application/octet-stream",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download =
+      engagement.fileNameMis || engagement.fileName.replace(/\.ini$/i, ".mis");
+    link.click();
+    URL.revokeObjectURL(url);
+    console.log("[SeaPowerTactical] Downloaded safe .mis file:", link.download);
+  };
+
+  const handleInstallCompanion = () => {
+    setIsCompanionInstalling(true);
+    setCompanionStatusMsg("⏳ Dispatching to Companion extension...");
+
+    // Send postMessage to content script
+    const reqId = "install_" + Date.now();
+
+    const handler = (evt: MessageEvent) => {
+      if (
+        evt.data &&
+        evt.data.action === "THEATER_COMMAND_INSTALL_RESULT" &&
+        evt.data.requestId === reqId
+      ) {
+        window.removeEventListener("message", handler);
+        setIsCompanionInstalling(false);
+        if (evt.data.payload && evt.data.payload.ok) {
+          setCompanionStatusMsg(
+            "✅ " +
+              (evt.data.payload.message ||
+                "Installed to Sea Power user missions!"),
+          );
+        } else {
+          setCompanionStatusMsg(
+            "⚠️ " +
+              (evt.data.payload?.message ||
+                "Companion install failed. Try downloading .mis directly."),
+          );
+        }
+        setTimeout(() => setCompanionStatusMsg(null), 5000);
+      }
+    };
+
+    window.addEventListener("message", handler);
+
+    window.postMessage(
+      {
+        action: "THEATER_COMMAND_INSTALL_MISSION",
+        requestId: reqId,
+        payload: {
+          fileName: engagement.fileName,
+          missionText: engagement.missionText,
+        },
+      },
+      "*",
+    );
+
+    // Timeout fallback
+    setTimeout(() => {
+      window.removeEventListener("message", handler);
+      setIsCompanionInstalling(false);
+      setCompanionStatusMsg((prev) =>
+        prev?.startsWith("⏳")
+          ? "⚠️ Companion did not respond. Is extension installed?"
+          : prev,
+      );
+    }, 4000);
   };
 
   const handleCopy = () => {
@@ -5300,37 +5804,96 @@ function TacticalEngagementModal({
                 </div>
               </div>
 
+              {/* Companion Status Message */}
+              {companionStatusMsg && (
+                <div
+                  style={{
+                    background: companionStatusMsg.startsWith("✅")
+                      ? "rgba(34, 197, 94, 0.2)"
+                      : companionStatusMsg.startsWith("⏳")
+                        ? "rgba(56, 189, 248, 0.2)"
+                        : "rgba(234, 179, 8, 0.2)",
+                    border: `1px solid ${
+                      companionStatusMsg.startsWith("✅")
+                        ? "#22c55e"
+                        : companionStatusMsg.startsWith("⏳")
+                          ? "#38bdf8"
+                          : "#eab308"
+                    }`,
+                    borderRadius: "4px",
+                    padding: "8px 12px",
+                    fontSize: "12px",
+                    color: "#f8fafc",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {companionStatusMsg}
+                </div>
+              )}
+
               {/* Action Buttons */}
-              <div style={{ display: "flex", gap: "10px" }}>
+              <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                <button
+                  type="button"
+                  className="formation-btn"
+                  onClick={handleInstallCompanion}
+                  disabled={isCompanionInstalling}
+                  style={{
+                    flex: "1 1 150px",
+                    padding: "10px",
+                    background: isCompanionInstalling ? "#475569" : "#16a34a",
+                    color: "#fff",
+                    fontWeight: "bold",
+                  }}
+                  title="Install directly to Sea Power user missions folder via Companion extension"
+                >
+                  {isCompanionInstalling
+                    ? "⏳ Installing..."
+                    : "⚡ 1-Click Install (Companion)"}
+                </button>
+                <button
+                  type="button"
+                  className="formation-btn"
+                  onClick={handleDownloadMis}
+                  style={{
+                    flex: "1 1 140px",
+                    padding: "10px",
+                    background: "#059669",
+                    color: "#fff",
+                    fontWeight: "bold",
+                  }}
+                  title="Download with safe .mis extension (no browser .ini warnings)"
+                >
+                  🛡️ Download .mis (Safe)
+                </button>
                 <button
                   type="button"
                   className="formation-btn"
                   onClick={handleDownload}
                   style={{
-                    flex: 1,
+                    flex: "1 1 130px",
                     padding: "10px",
                     background: "#0284c7",
                     color: "#fff",
                     fontWeight: "bold",
                   }}
+                  title="Download standard .ini mission file"
                 >
-                  💾 Download .ini File
+                  💾 Download .ini
                 </button>
                 <button
                   type="button"
                   className="formation-btn"
                   onClick={handleCopy}
                   style={{
-                    flex: 1,
+                    flex: "1 1 130px",
                     padding: "10px",
                     background: copied ? "#16a34a" : "#334155",
                     color: "#fff",
                     fontWeight: "bold",
                   }}
                 >
-                  {copied
-                    ? "✅ Copied to Clipboard!"
-                    : "📋 Copy .ini to Clipboard"}
+                  {copied ? "✅ Copied!" : "📋 Copy .ini"}
                 </button>
               </div>
 

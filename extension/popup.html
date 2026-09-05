@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Sea Power Mission Companion</title>
+    <style>
+      body {
+        width: 320px;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        margin: 0;
+        padding: 16px;
+        background: #0f172a;
+        color: #f8fafc;
+      }
+      h2 {
+        margin: 0 0 10px 0;
+        font-size: 15px;
+        color: #38bdf8;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .status-box {
+        background: rgba(30, 41, 59, 0.7);
+        border: 1px solid #334155;
+        border-radius: 6px;
+        padding: 10px;
+        margin-bottom: 12px;
+        font-size: 12px;
+      }
+      .status-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 4px;
+      }
+      .status-row:last-child {
+        margin-bottom: 0;
+      }
+      label {
+        font-size: 11px;
+        color: #94a3b8;
+        display: block;
+        margin-bottom: 4px;
+      }
+      input[type="text"] {
+        width: 100%;
+        box-sizing: border-box;
+        background: #1e293b;
+        border: 1px solid #475569;
+        color: #fff;
+        padding: 6px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        margin-bottom: 8px;
+      }
+      button {
+        background: #0284c7;
+        color: #fff;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 11px;
+        cursor: pointer;
+        font-weight: bold;
+        width: 100%;
+      }
+      button:hover {
+        background: #0369a1;
+      }
+      .tip {
+        font-size: 10px;
+        color: #64748b;
+        margin-top: 8px;
+        line-height: 1.4;
+      }
+      .saved-badge {
+        display: none;
+        color: #4ade80;
+        font-size: 11px;
+        text-align: center;
+        margin-top: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2><span>&#9875;</span> Sea Power Companion</h2>
+    <div class="status-box">
+      <div class="status-row">
+        <span style="color: #94a3b8">Status:</span>
+        <span style="color: #4ade80; font-weight: bold">Active (MV3)</span>
+      </div>
+      <div class="status-row">
+        <span style="color: #94a3b8">Version:</span>
+        <span>1.0.0</span>
+      </div>
+    </div>
+
+    <div>
+      <label for="targetFolder">Target Download Subfolder:</label>
+      <input type="text" id="targetFolder" value="SeaPower/user/missions" />
+      <button id="saveBtn">Save Settings</button>
+      <div id="savedBadge" class="saved-badge">&#9989; Path saved!</div>
+    </div>
+
+    <div class="tip">
+      Mission files are routed through the Companion into this folder to bypass
+      browser .ini warnings.
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

@@ -2330,6 +2330,51 @@ export function createApp(
     },
   );
 
+  app.get(
+    "/api/v1/campaigns/current/hex-cells/:hexId/mission.mis",
+    requireCampaignSession,
+    (request, response) => {
+      if (!dependencies.database) {
+        response.status(503).json({
+          error: {
+            code: "CAMPAIGN_STORE_UNAVAILABLE",
+            message: "Campaign storage is not available.",
+            requestId: response.locals.requestId,
+          },
+        });
+        return;
+      }
+      const hexIdParam =
+        typeof request.params.hexId === "string" ? request.params.hexId : "";
+
+      const result = generateSeaPowerHexBattle(dependencies.database, {
+        campaignId: request.perspective!.campaignId,
+        hexId: hexIdParam,
+      });
+
+      response.setHeader("Content-Type", "application/octet-stream");
+      response.setHeader(
+        "Content-Disposition",
+        `attachment; filename="${result.fileNameMis}"`,
+      );
+      response.status(200).send(result.missionText);
+    },
+  );
+
+  app.get("/api/v1/companion/info", (_request, response) => {
+    response.status(200).json({
+      ok: true,
+      extension: {
+        name: "Sea Power Mission Companion",
+        version: "1.0.0",
+        manifestVersion: 3,
+        defaultSubfolder: "SeaPower/user/missions",
+        gameMissionsPath:
+          "s:\\SteamLibrary\\steamapps\\common\\Sea Power\\Sea Power_Data\\StreamingAssets\\user\\missions",
+      },
+    });
+  });
+
   app.post(
     "/api/v1/campaigns/current/hex-cells/:hexId/auto-resolve",
     requireCampaignSession,

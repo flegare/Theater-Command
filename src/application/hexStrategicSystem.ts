@@ -2172,6 +2172,7 @@ export type GenerateSeaPowerHexBattleResult = {
   missionText: string;
   filePath?: string | undefined;
   fileName: string;
+  fileNameMis: string;
   unitsCount: number;
   bluforUnits: GeneratedHexUnitSummary[];
   opforUnits: GeneratedHexUnitSummary[];
@@ -2551,7 +2552,9 @@ export function generateSeaPowerHexBattle(
   const targetDir =
     "s:\\SteamLibrary\\steamapps\\common\\Sea Power\\Sea Power_Data\\StreamingAssets\\user\\missions";
   const slugName = hex.id.replace(/[^a-z0-9]+/g, "-");
-  const fileName = `hex-battle-${slugName}-${randomUUID().slice(0, 8)}.ini`;
+  const baseName = `hex-battle-${slugName}-${randomUUID().slice(0, 8)}`;
+  const fileName = `${baseName}.ini`;
+  const fileNameMis = `${baseName}.mis`;
   const filePath = join(targetDir, fileName);
 
   try {
@@ -2566,6 +2569,7 @@ export function generateSeaPowerHexBattle(
     missionText,
     filePath,
     fileName,
+    fileNameMis,
     unitsCount: formations.length,
     bluforUnits,
     opforUnits,
