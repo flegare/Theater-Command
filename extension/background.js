@@ -38,7 +38,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 
   if (request.action === "INSTALL_MISSION") {
-    const { fileName, missionText, extension } = request.payload || {};
+    const { fileName, missionText } = request.payload || {};
 
     if (!fileName || !missionText) {
       sendResponse({

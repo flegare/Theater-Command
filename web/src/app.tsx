@@ -5331,13 +5331,12 @@ function TacticalEngagementModal({
   const [activeTab, setActiveTab] = useState<
     "tactical_mission" | "auto_resolve"
   >("tactical_mission");
-
-  if (!isOpen || !engagement) return null;
-
   const [companionStatusMsg, setCompanionStatusMsg] = useState<string | null>(
     null,
   );
   const [isCompanionInstalling, setIsCompanionInstalling] = useState(false);
+
+  if (!isOpen || !engagement) return null;
 
   const handleDownload = () => {
     const blob = new Blob([engagement.missionText], {
