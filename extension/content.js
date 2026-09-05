@@ -20,21 +20,6 @@
     // Ignore error
   }
 
-  // Inject a small script to expose window flags directly to the main world
-  try {
-    const s = document.createElement("script");
-    s.textContent =
-      'window.__THEATER_COMMAND_COMPANION_INSTALLED__ = true; window.__THEATER_COMMAND_COMPANION_VERSION__ = "' +
-      EXTENSION_VERSION +
-      '"; window.dispatchEvent(new CustomEvent("theater-command-companion-ready", { detail: { version: "' +
-      EXTENSION_VERSION +
-      '" } }));';
-    (document.head || document.documentElement).appendChild(s);
-    s.remove();
-  } catch {
-    // Ignore error
-  }
-
   // Notify page that extension is active
   window.__THEATER_COMMAND_COMPANION_INSTALLED__ = true;
   window.__THEATER_COMMAND_COMPANION_VERSION__ = EXTENSION_VERSION;
